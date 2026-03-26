@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traxent — Track Your Path to Funded</title>
+<meta name="description" content="Traxent is the only trading education platform that scores your readiness against real prop firm rules. Learn to trade. Know when you're ready. Get funded.">
+<meta name="keywords" content="prop firm readiness, trading education, FTMO, Apex Trader Funding, MyFundedFutures, funded trading, learn to trade">
+<meta property="og:title" content="Traxent — Track Your Path to Funded">
+<meta property="og:description" content="The only trading education platform that tells you exactly which prop firm you're ready for.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://traxent.io">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://traxent.io">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f2;
+  --ink: #0e0e0c;
+  --ink2: #3a3a36;
+  --ink3: #7a7a72;
+  --accent: #0a6e4f;
+  --accent-light: #e8f5f0;
+  --accent-mid: #1a9e72;
+  --border: rgba(14,14,12,0.1);
+  --border2: rgba(14,14,12,0.06);
+  --surface: #ffffff;
+  --surface2: #f0efe9;
+  --good: #0a6e4f;
+  --warn: #b06000;
+  --bad: #9e1a1a;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', sans-serif;
+  --mono: 'Geist Mono', monospace;
+  --radius: 10px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@keyframes barGrow {
+  from { width: 0; }
+  to { width: var(--target-width); }
+}
+
+.fade-up { animation: fadeUp 0.7s ease forwards; }
+.fade-up-2 { animation: fadeUp 0.7s 0.15s ease forwards; opacity: 0; }
+.fade-up-3 { animation: fadeUp 0.7s 0.3s ease forwards; opacity: 0; }
+.fade-up-4 { animation: fadeUp 0.7s 0.45s ease forwards; opacity: 0; }
+
+/* ── TICKER ── */
+.ticker-wrap {
+  background: var(--ink);
+  overflow: hidden;
+  padding: 10px 0;
+  position: relative;
+}
+.ticker-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: ticker 28s linear infinite;
+}
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 32px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.ticker-item .val { color: #4ade80; }
+.ticker-item .val.neg { color: #f87171; }
+.ticker-item .dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: pulse 2s ease infinite;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(247,246,242,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.nav-logo em {
+  font-style: normal;
+  color: var(--accent);
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.nav-links a {
+  font-size: 13px;
+  color: var(--ink3);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-cta {
+  background: var(--ink);
+  color: var(--bg) !important;
+  font-size: 13px !important;
+  padding: 9px 20px;
+  border-radius: 6px;
+  transition: background 0.15s !important;
+}
+.nav-cta:hover { background: var(--accent) !important; color: white !important; }
+
+/* ── HERO ── */
+.hero {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 100px 40px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 28px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--accent);
+}
+.hero-h1 {
+  font-family: var(--serif);
+  font-size: 58px;
+  line-height: 1.04;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+}
+.hero-h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+.hero-body {
+  font-size: 17px;
+  color: var(--ink2);
+  line-height: 1.65;
+  margin-bottom: 40px;
+  max-width: 440px;
+  font-weight: 300;
+}
+
+/* Waitlist form */
+.waitlist-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 420px;
+}
+.waitlist-input-row {
+  display: flex;
+  gap: 8px;
+}
+.waitlist-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.waitlist-input::placeholder { color: var(--ink3); }
+.waitlist-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(10,110,79,0.08);
+}
+.btn-waitlist {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-waitlist:hover { background: #085e43; }
+.btn-waitlist:active { transform: scale(0.98); }
+.waitlist-note {
+  font-size: 12px;
+  color: var(--ink3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.waitlist-note::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  animation: pulse 2s ease infinite;
+}
+.waitlist-success {
+  display: none;
+  background: var(--accent-light);
+  border: 1px solid rgba(10,110,79,0.2);
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Hero social proof */
+.hero-proof {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+}
+.proof-avatars {
+  display: flex;
+}
+.proof-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  margin-right: -10px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: white;
+}
+.proof-text {
+  font-size: 13px;
+  color: var(--ink3);
+}
+.proof-text strong { color: var(--ink); font-weight: 500; }
+
+/* Hero right — mini readiness card */
+.hero-visual {
+  position: relative;
+}
+.readiness-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(14,14,12,0.08), 0 4px 16px rgba(14,14,12,0.04);
+}
+.rc-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.rc-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+.rc-live {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+}
+.rc-live::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s ease infinite;
+}
+.rc-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 18px; }
+
+.firm-row { display: flex; flex-direction: column; gap: 7px; }
+.firm-row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.firm-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+.firm-score { font-family: var(--mono); font-size: 20px; font-weight: 500; }
+.score-green { color: var(--good); }
+.score-amber { color: var(--warn); }
+.score-red { color: var(--bad); }
+.firm-bar-bg {
+  height: 3px;
+  background: var(--surface2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.firm-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  animation: barGrow 1.2s ease forwards;
+}
+
+.rc-rule-preview {
+  border-top: 1px solid var(--border2);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rule-mini {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.rule-mini-name { color: var(--ink2); }
+.rule-pill {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.pill-pass { background: #e8f5f0; color: var(--good); }
+.pill-warn { background: #fef3e2; color: var(--warn); }
+.pill-fail { background: #fdeaea; color: var(--bad); }
+
+.rc-footer {
+  padding: 14px 22px;
+  background: var(--surface2);
+  font-size: 12px;
+  color: var(--ink3);
+  text-align: center;
+  border-top: 1px solid var(--border2);
+}
+.rc-footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Floating label */
+.float-label {
+  position: absolute;
+  top: -14px;
+  right: 24px;
+  background: var(--ink);
+  color: white;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.float-label::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px; height: 4px;
+  background: var(--ink);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+/* ── SECTION BASE ── */
+.section {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 96px 40px;
+}
+.section-divider {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+.section-divider hr {
+  border: none;
+  border-top: 1px solid var(--border);
+}
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--accent);
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+.section-sub {
+  font-size: 16px;
+  color: var(--ink3);
+  line-height: 1.65;
+  max-width: 520px;
+  font-weight: 300;
+}
+
+/* ── HOW IT WORKS ── */
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 56px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.how-card {
+  background: var(--surface);
+  padding: 36px 32px;
+  position: relative;
+}
+.how-number {
+  font-family: var(--serif);
+  font-size: 64px;
+  font-weight: 400;
+  color: var(--surface2);
+  line-height: 1;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+.how-title {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.how-body {
+  font-size: 14px;
+  color: var(--ink3);
+  line-height: 1.65;
+  font-weight: 300;
+}
+.how-tag {
+  display: inline-block;
+  margin-top: 20px;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--accent-light);
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+
+/* ── READINESS SECTION ── */
+.readiness-section { background: var(--ink); }
+.readiness-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 96px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.readiness-inner .section-label { color: var(--accent-mid); }
+.readiness-inner .section-label::before { background: var(--accent-mid); }
+.readiness-inner .section-title { color: white; }
+.readiness-inner .section-sub { color: rgba(255,255,255,0.5); }
+
+.firms-list { display: flex; flex-direction: column; gap: 12px; }
+.firm-card-dark {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.15s, border-color 0.15s;
+}
+.firm-card-dark:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.14);
+}
+.fcd-left { display: flex; flex-direction: column; gap: 3px; }
+.fcd-name { font-size: 14px; font-weight: 500; color: white; }
+.fcd-rules { font-size: 12px; color: rgba(255,255,255,0.35); font-family: var(--mono); }
+.fcd-score {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 400;
+}
+.fcd-score.green { color: #4ade80; }
+.fcd-score.amber { color: #fbbf24; }
+.fcd-score.red { color: #f87171; }
+
+.readiness-caption {
+  margin-top: 20px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  font-family: var(--mono);
+  text-align: center;
+}
+
+/* ── PRICING ── */
+.pricing-toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 48px;
+  margin-bottom: 40px;
+}
+.currency-toggle {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.ct-btn {
+  padding: 8px 18px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.ct-btn.active {
+  background: var(--ink);
+  color: white;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.plan-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.plan-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(14,14,12,0.08);
+}
+.plan-card.featured {
+  border-color: var(--accent);
+  background: linear-gradient(160deg, rgba(10,110,79,0.03), var(--surface));
+}
+.plan-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: white;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+  letter-spacing: 0.06em;
+}
+.plan-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 20px;
+}
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.plan-price-val {
+  font-family: var(--serif);
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1;
+  font-style: italic;
+}
+.plan-price-mo { font-size: 14px; color: var(--ink3); }
+.plan-price-alt {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink3);
+  margin-bottom: 20px;
+}
+.plan-desc {
+  font-size: 13px;
+  color: var(--ink3);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  min-height: 52px;
+  font-weight: 300;
+}
+.plan-divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 20px;
+}
+.plan-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+  flex: 1;
+}
+.plan-features li {
+  font-size: 13px;
+  color: var(--ink2);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.4;
+}
+.plan-features li::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+  background: var(--ink3);
+}
+.plan-card.featured .plan-features li::before { background: var(--accent); }
+.plan-features li.dim { opacity: 0.35; }
+.plan-features li.dim::before { background: var(--ink3) !important; }
+
+.plan-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+}
+.plan-btn-outline {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--ink2);
+}
+.plan-btn-outline:hover { border-color: var(--ink); color: var(--ink); }
+.plan-btn-solid {
+  background: var(--ink);
+  color: white;
+}
+.plan-btn-solid:hover { background: var(--accent); }
+
+.plan-note {
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink3);
+  margin-top: 10px;
+  font-family: var(--mono);
+}
+
+/* ── DISCLAIMER ── */
+.disclaimer {
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+  padding: 20px 40px;
+}
+.disclaimer-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  font-size: 11px;
+  color: var(--ink3);
+  line-height: 1.6;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink);
+  padding: 56px 40px 40px;
+}
+.footer-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 32px;
+}
+.footer-logo {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+}
+.footer-logo em { font-style: normal; color: var(--accent-mid); }
+.footer-tagline {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 8px;
+  font-weight: 300;
+}
+.footer-links {
+  display: flex;
+  gap: 48px;
+}
+.footer-col-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 14px;
+}
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  margin-bottom: 8px;
+  transition: color 0.15s;
+}
+.footer-col a:hover { color: white; }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+}
+
+/* ── NOTIFICATION TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: var(--ink);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  transform: translateY(80px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-icon {
+  width: 20px; height: 20px;
+  background: var(--accent);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 48px; padding: 64px 24px 48px; }
+  .hero-h1 { font-size: 42px; }
+  .how-grid { grid-template-columns: 1fr; }
+  .readiness-inner { grid-template-columns: 1fr; gap: 48px; padding: 64px 24px; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .section { padding: 64px 24px; }
+  .nav-inner { padding: 0 24px; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Live ticker -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track" id="ticker">
+    <div class="ticker-item"><span class="dot"></span>ES1! <span class="val">5,234.75 +0.43%</span></div>
+    <div class="ticker-item">NQ1! <span class="val">18,342.50 +0.61%</span></div>
+    <div class="ticker-item">SPY <span class="val">523.18 +0.38%</span></div>
+    <div class="ticker-item">AAPL <span class="val neg">211.45 −0.22%</span></div>
+    <div class="ticker-item">NVDA <span class="val">875.30 +1.12%</span></div>
+    <div class="ticker-item">VIX <span class="val">18.4</span></div>
+    <div class="ticker-item">FTMO <span class="val">5% DDL · 10% max DD</span></div>
+    <div class="ticker-item">Apex <span class="val">30% consistency rule</span></div>
+    <div class="ticker-item">MFFU <span class="val">3% EOD drawdown</span></div>
+    <div class="ticker-item">FundedNext <span class="val">5 min trading days</span></div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span class="dot"></span>ES1! <span class="val">5,234.75 +0.43%</span></div>
+    <div class="ticker-item">NQ1! <span class="val">18,342.50 +0.61%</span></div>
+    <div class="ticker-item">SPY <span class="val">523.18 +0.38%</span></div>
+    <div class="ticker-item">AAPL <span class="val neg">211.45 −0.22%</span></div>
+    <div class="ticker-item">NVDA <span class="val">875.30 +1.12%</span></div>
+    <div class="ticker-item">VIX <span class="val">18.4</span></div>
+    <div class="ticker-item">FTMO <span class="val">5% DDL · 10% max DD</span></div>
+    <div class="ticker-item">Apex <span class="val">30% consistency rule</span></div>
+    <div class="ticker-item">MFFU <span class="val">3% EOD drawdown</span></div>
+    <div class="ticker-item">FundedNext <span class="val">5 min trading days</span></div>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">trax<em>ent</em></a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#readiness">Readiness</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#waitlist" class="nav-cta">Join waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section style="border-bottom: 1px solid var(--border)">
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow fade-up">Prop firm readiness platform</div>
+      <h1 class="hero-h1 fade-up-2">Know <em>exactly</em> when you're ready to get funded</h1>
+      <p class="hero-body fade-up-3">Traxent tracks your trading habits against the real rules of FTMO, Apex, MyFundedFutures, and FundedNext — so you fix what's wrong before you pay for a challenge.</p>
+
+      <div id="waitlist" class="fade-up-4">
+        <div class="waitlist-form">
+          <div class="waitlist-input-row">
+            <input class="waitlist-input" type="email" id="waitlist-email" placeholder="your@email.com" autocomplete="email">
+            <button class="btn-waitlist" onclick="joinWaitlist()">Join waitlist</button>
+          </div>
+          <div class="waitlist-note">Early access opens soon — be first in line. Free to join.</div>
+          <div class="waitlist-success" id="waitlist-success">
+            You're on the list. We'll be in touch before public launch.
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-proof fade-up-4">
+        <div class="proof-avatars">
+          <div class="proof-avatar" style="background:#2d6a4f">J</div>
+          <div class="proof-avatar" style="background:#1a5276">M</div>
+          <div class="proof-avatar" style="background:#6c3483">S</div>
+          <div class="proof-avatar" style="background:#935116">R</div>
+        </div>
+        <div class="proof-text"><strong>Founding members</strong> already signed up — join them</div>
+      </div>
+    </div>
+
+    <div class="hero-visual fade-up-3">
+      <div class="float-label">Live readiness score</div>
+      <div class="readiness-card">
+        <div class="rc-header">
+          <span class="rc-title">Your funded account readiness</span>
+          <span class="rc-live">Tracking</span>
+        </div>
+        <div class="rc-body">
+          <div class="firm-row">
+            <div class="firm-row-top">
+              <span class="firm-name">FTMO</span>
+              <span class="firm-score score-amber">71%</span>
+            </div>
+            <div class="firm-bar-bg">
+              <div class="firm-bar-fill" style="--target-width:71%;width:71%;background:#b06000"></div>
+            </div>
+          </div>
+          <div class="firm-row">
+            <div class="firm-row-top">
+              <span class="firm-name">Apex Trader Funding</span>
+              <span class="firm-score score-green">88%</span>
+            </div>
+            <div class="firm-bar-bg">
+              <div class="firm-bar-fill" style="--target-width:88%;width:88%;background:var(--good)"></div>
+            </div>
+          </div>
+          <div class="firm-row">
+            <div class="firm-row-top">
+              <span class="firm-name">MyFundedFutures</span>
+              <span class="firm-score score-red">44%</span>
+            </div>
+            <div class="firm-bar-bg">
+              <div class="firm-bar-fill" style="--target-width:44%;width:44%;background:var(--bad)"></div>
+            </div>
+          </div>
+          <div class="firm-row">
+            <div class="firm-row-top">
+              <span class="firm-name">FundedNext</span>
+              <span class="firm-score score-amber">63%</span>
+            </div>
+            <div class="firm-bar-bg">
+              <div class="firm-bar-fill" style="--target-width:63%;width:63%;background:#b06000"></div>
+            </div>
+          </div>
+          <div class="rc-rule-preview">
+            <div class="rule-mini">
+              <span class="rule-mini-name">Daily drawdown limit</span>
+              <span class="rule-pill pill-pass">Pass</span>
+            </div>
+            <div class="rule-mini">
+              <span class="rule-mini-name">Consistency rule</span>
+              <span class="rule-pill pill-warn">Close</span>
+            </div>
+            <div class="rule-mini">
+              <span class="rule-mini-name">EOD trailing drawdown</span>
+              <span class="rule-pill pill-fail">Fail</span>
+            </div>
+          </div>
+        </div>
+        <div class="rc-footer">
+          Scores based on your sim trade history · <a href="#pricing">Unlock full breakdown →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="section" id="how">
+  <div class="section-label">How it works</div>
+  <h2 class="section-title">From zero to funded,<br>one step at a time</h2>
+  <p class="section-sub">Traxent is built for traders who are serious about getting funded — not for gambling on charts.</p>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-number">01</div>
+      <div class="how-title">Learn with live market data</div>
+      <div class="how-body">Study real patterns on real charts. Our pattern school explains exactly what each signal means, why it forms, and how professional traders use it — without drowning you in jargon.</div>
+      <span class="how-tag">EDUCATION FIRST</span>
+    </div>
+    <div class="how-card">
+      <div class="how-number">02</div>
+      <div class="how-title">Sim trade and track everything</div>
+      <div class="how-body">Practice with simulated trades on live data. Every trade you log is analysed against your chosen prop firm's rules — building a real picture of whether you'd pass a challenge today.</div>
+      <span class="how-tag">NO REAL MONEY</span>
+    </div>
+    <div class="how-card">
+      <div class="how-number">03</div>
+      <div class="how-title">Know when you're genuinely ready</div>
+      <div class="how-body">Your readiness score updates with every trade. When you're consistently green across a firm's rules — daily drawdown, consistency, activity — that's your signal. Not hope. Evidence.</div>
+      <span class="how-tag">DATA DRIVEN</span>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- Readiness section -->
+<div class="readiness-section" id="readiness">
+  <div class="readiness-inner">
+    <div>
+      <div class="section-label">The USP</div>
+      <h2 class="section-title" style="color:white">Four firms.<br>One score.<br><em style="font-style:italic;color:#4ade80">Zero guesswork.</em></h2>
+      <p class="section-sub" style="color:rgba(255,255,255,0.45);margin-top:20px">Most traders pay £100–£500 for a prop firm challenge before they're ready. Traxent shows you exactly which rules you're breaking — before you spend a penny.</p>
+      <div style="margin-top:36px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,0.6)">
+          <span style="color:#4ade80;font-size:18px">✓</span> Built from each firm's published rules
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,0.6)">
+          <span style="color:#4ade80;font-size:18px">✓</span> Updates in real time as you sim trade
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,0.6)">
+          <span style="color:#4ade80;font-size:18px">✓</span> Tells you exactly what to fix, not just your score
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,0.6)">
+          <span style="color:#4ade80;font-size:18px">✓</span> No financial advice — ever
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="firms-list">
+        <div class="firm-card-dark">
+          <div class="fcd-left">
+            <div class="fcd-name">FTMO</div>
+            <div class="fcd-rules">7 rules tracked · 5% DDL · consistency</div>
+          </div>
+          <div class="fcd-score amber">71%</div>
+        </div>
+        <div class="firm-card-dark">
+          <div class="fcd-left">
+            <div class="fcd-name">Apex Trader Funding</div>
+            <div class="fcd-rules">7 rules tracked · trailing DD · 30% rule</div>
+          </div>
+          <div class="fcd-score green">88%</div>
+        </div>
+        <div class="firm-card-dark">
+          <div class="fcd-left">
+            <div class="fcd-name">MyFundedFutures</div>
+            <div class="fcd-rules">7 rules tracked · 3% EOD · activity</div>
+          </div>
+          <div class="fcd-score red">44%</div>
+        </div>
+        <div class="firm-card-dark">
+          <div class="fcd-left">
+            <div class="fcd-name">FundedNext</div>
+            <div class="fcd-rules">7 rules tracked · 5 day min · consistency</div>
+          </div>
+          <div class="fcd-score amber">63%</div>
+        </div>
+      </div>
+      <div class="readiness-caption">Example scores — yours will reflect your actual trading habits</div>
+    </div>
+  </div>
+</div>
+
+<!-- Pricing -->
+<section class="section" id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title">Start for less than<br>a cup of coffee</h2>
+  <p class="section-sub">No annual lock-in. Cancel any month. Every plan includes a 7-day free trial.</p>
+
+  <div class="pricing-toggle-wrap">
+    <div class="currency-toggle">
+      <button class="ct-btn active" onclick="setCurrency('gbp',this)">£ GBP</button>
+      <button class="ct-btn" onclick="setCurrency('usd',this)">$ USD</button>
+    </div>
+    <span style="font-size:12px;color:var(--ink3);font-family:var(--mono)">All prices include VAT where applicable</span>
+  </div>
+
+  <div class="pricing-grid" id="pricing-grid"></div>
+</section>
+
+<!-- Legal disclaimer -->
+<div class="disclaimer">
+  <div class="disclaimer-inner">
+    <strong>Important:</strong> Traxent is an educational platform only. Nothing on this site constitutes financial advice, investment advice, or a recommendation to trade. All trading involves risk. Sim trading results do not guarantee real trading performance. Prop firm readiness scores are based on publicly available information and do not guarantee acceptance by any funded account provider. Traxent is not FCA regulated. Past pattern performance does not indicate future results. By using Traxent you confirm you understand that all activity is simulated and for educational purposes only.
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">trax<em>ent</em></div>
+        <div class="footer-tagline">Track your path to funded.</div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <div class="footer-col-title">Product</div>
+          <a href="#how">How it works</a>
+          <a href="#readiness">Readiness tracker</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Firms</div>
+          <a href="#readiness">FTMO</a>
+          <a href="#readiness">Apex Trader Funding</a>
+          <a href="#readiness">MyFundedFutures</a>
+          <a href="#readiness">FundedNext</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Company</div>
+          <a href="#">Privacy policy</a>
+          <a href="#">Terms of service</a>
+          <a href="mailto:hello@traxent.io">hello@traxent.io</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Traxent Ltd. All rights reserved. Registered in England & Wales.</span>
+      <span style="font-family:var(--mono);font-size:11px">traxent.io</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast notification -->
+<div class="toast" id="toast">
+  <div class="toast-icon">✓</div>
+  <span id="toast-msg">You're on the waitlist!</span>
+</div>
+
+<script>
+// ── PRICING DATA ──────────────────────────────────────────────────
+const plans = [
+  {
+    name: 'Observer',
+    gbp: '0.99', usd: '1.25',
+    suffix: '/mo',
+    altGbp: '≈ $1.25/mo',
+    altUsd: '≈ £0.99/mo',
+    desc: 'Learn the fundamentals with real delayed data. Perfect for beginners.',
+    features: [
+      'Delayed price data (15 min)',
+      'Pattern recognition — 5 patterns',
+      'Pattern school explainers',
+      'Position size calculator',
+      { text: 'Prop firm readiness tracker', dim: true },
+      { text: 'Live data feed', dim: true },
+      { text: 'Sim trade journal', dim: true },
+    ],
+    btn: 'Start free trial',
+    btnClass: 'plan-btn-outline',
+    btnHref: '#waitlist',
+    featured: false,
+  },
+  {
+    name: 'Challenger',
+    gbp: '14.99', usd: '18.99',
+    suffix: '/mo',
+    altGbp: '≈ $18.99/mo',
+    altUsd: '≈ £14.99/mo',
+    desc: 'Live data, the full readiness tracker, and your sim trade journal.',
+    features: [
+      'Live price data — real time',
+      'All 15 pattern signals',
+      'Prop firm readiness tracker',
+      'Sim trade journal + analytics',
+      'Readiness score vs 4 firms',
+      'Weekly readiness report email',
+      { text: 'Premium data feed', dim: true },
+    ],
+    btn: 'Start 7-day free trial',
+    btnClass: 'plan-btn-solid',
+    btnHref: '#waitlist',
+    featured: true,
+  },
+  {
+    name: 'Funded Ready',
+    gbp: '24.99', usd: '31.99',
+    suffix: '/mo',
+    altGbp: '≈ $31.99/mo',
+    altUsd: '≈ £24.99/mo',
+    desc: 'Premium data and advanced coaching for traders serious about passing.',
+    features: [
+      'Premium institutional data feed',
+      'Everything in Challenger',
+      'Advanced news sentiment engine',
+      'Economic calendar alerts',
+      'Challenge simulation mode',
+      'Firm-specific rule coaching',
+      'Priority support',
+    ],
+    btn: 'Start 7-day free trial',
+    btnClass: 'plan-btn-outline',
+    btnHref: '#waitlist',
+    featured: false,
+  }
+];
+
+let currency = 'gbp';
+
+function setCurrency(c, btn) {
+  currency = c;
+  document.querySelectorAll('.ct-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPricing();
+}
+
+function renderPricing() {
+  const sym = currency === 'gbp' ? '£' : '$';
+  const grid = document.getElementById('pricing-grid');
+  grid.innerHTML = plans.map(p => {
+    const price = currency === 'gbp' ? p.gbp : p.usd;
+    const alt = currency === 'gbp' ? p.altGbp : p.altUsd;
+    const feats = p.features.map(f => {
+      const dim = typeof f === 'object' && f.dim;
+      const text = typeof f === 'object' ? f.text : f;
+      return `<li class="${dim ? 'dim' : ''}">${text}</li>`;
+    }).join('');
+    return `
+      <div class="plan-card ${p.featured ? 'featured' : ''}">
+        ${p.featured ? '<div class="plan-badge">MOST POPULAR</div>' : ''}
+        <div class="plan-name">${p.name}</div>
+        <div class="plan-price">
+          <span class="plan-price-val">${sym}${price}</span>
+          <span class="plan-price-mo">${p.suffix}</span>
+        </div>
+        <div class="plan-price-alt">${alt}</div>
+        <div class="plan-desc">${p.desc}</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">${feats}</ul>
+        <a href="${p.btnHref}" class="plan-btn ${p.btnClass}">${p.btn}</a>
+        <div class="plan-note">No card required · Cancel anytime</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ── WAITLIST ──────────────────────────────────────────────────────
+function joinWaitlist() {
+  const email = document.getElementById('waitlist-email').value.trim();
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!re.test(email)) {
+    showToast('Please enter a valid email address', false);
+    return;
+  }
+  // Replace this URL with your Formspree or backend endpoint
+  const ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+  fetch(ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ email, source: 'waitlist-hero', ts: new Date().toISOString() })
+  })
+  .then(r => {
+    if (r.ok) {
+      document.querySelector('.waitlist-input-row').style.display = 'none';
+      document.querySelector('.waitlist-note').style.display = 'none';
+      document.getElementById('waitlist-success').style.display = 'block';
+      showToast("You're on the list — we'll be in touch soon");
+    } else {
+      showToast('Something went wrong — please try again', false);
+    }
+  })
+  .catch(() => {
+    // Fallback — show success anyway for demo
+    document.querySelector('.waitlist-input-row').style.display = 'none';
+    document.querySelector('.waitlist-note').style.display = 'none';
+    document.getElementById('waitlist-success').style.display = 'block';
+    showToast("You're on the list!");
+  });
+}
+
+// Allow Enter key on email input
+document.getElementById('waitlist-email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') joinWaitlist();
+});
+
+// ── TOAST ─────────────────────────────────────────────────────────
+function showToast(msg, success = true) {
+  const toast = document.getElementById('toast');
+  const msgEl = document.getElementById('toast-msg');
+  msgEl.textContent = msg;
+  toast.style.borderLeft = success ? '3px solid #4ade80' : '3px solid #f87171';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+// ── SCROLL ANIMATIONS ─────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.how-card, .firm-card-dark, .plan-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+
+// ── INIT ──────────────────────────────────────────────────────────
+renderPricing();
+</script>
+</body>
+</html>

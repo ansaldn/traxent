@@ -880,6 +880,29 @@ footer {
 }
 </style>
 </head>
+<script>
+async function handleAuthClick() {
+  await initAuth0();
+  const isAuthenticated = await auth0Client.isAuthenticated();
+  if (isAuthenticated) {
+    window.location.href = '/dashboard.html';
+  } else {
+    await login();
+  }
+}
+
+// On page load — check if already logged in
+window.addEventListener('load', async () => {
+  await initAuth0();
+  const isAuthenticated = await auth0Client.isAuthenticated();
+  const btn = document.getElementById('auth-btn');
+  if (isAuthenticated) {
+    const user = await getUser();
+    const plan = await getUserPlan();
+    btn.textContent = 'Go to dashboard →';
+  }
+});
+</script>
 <body>
 
 <!-- Live ticker -->
@@ -917,7 +940,7 @@ footer {
       <a href="#how">How it works</a>
       <a href="#readiness">Readiness</a>
       <a href="#pricing">Pricing</a>
-      <a href="#waitlist" class="nav-cta">Join waitlist</a>
+      <a href="#" class="nav-cta" id="auth-btn" onclick="handleAuthClick()">Join waitlist</a>
     </div>
   </div>
 </nav>
@@ -1351,5 +1374,7 @@ document.querySelectorAll('.how-card, .firm-card-dark, .plan-card').forEach(el =
 // ── INIT ──────────────────────────────────────────────────────────
 renderPricing();
 </script>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="auth.js"></script>
 </body>
 </html>

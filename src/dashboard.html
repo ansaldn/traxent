@@ -348,70 +348,88 @@ const PLAN_FEATURES = {
 };
 
 async function initDashboard() {
-  await initAuth0();
-  const isAuthenticated = await auth0Client.isAuthenticated();
+  try {
+    // Initialise Auth0
+    await initAuth0();
 
-  if (!isAuthenticated) {
-    // Not logged in — send to login
-    await login();
-    return;
-  }
+    // Handle redirect callback
+    if (window.location.search.includes('code=') || window.location.search.includes('state=')) {
+      await auth0Client.handleRedirectCallback();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
 
-  // Hide loading screen
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('main-content').style.display = 'block';
+    const isAuthenticated = await auth0Client.isAuthenticated();
 
-  // Get user details
-  const user = await getUser();
-  const plan = await getUserPlan();
+    if (!isAuthenticated) {
+      await auth0Client.loginWithRedirect({
+        authorizationParams: { redirect_uri: window.location.origin + '/dashboard.html' }
+      });
+      return;
+    }
 
-  // Update nav
-  const initials = (user.name || user.email || 'T')
-    .split(' ')
-    .map(w => w[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
+    // Get user + plan
+    const user = await auth0Client.getUser();
+    const claims = await auth0Client.getIdTokenClaims();
+    const namespace = 'https://traxent.io';
+    const plan = (claims && claims[`${namespace}/plan`]) || 'free';
+    const roles = (claims && claims[`${namespace}/roles`]) || [];
 
-  document.getElementById('user-avatar').textContent = initials;
-  document.getElementById('user-name').textContent = displayName;
-  document.getElementById('plan-badge').textContent = plan.replace('_', ' ');
+    // Build display name
+    const firstName = user.given_name
+      || (user.name && !user.name.includes('@') ? user.name.split(' ')[0] : 'Trader');
 
-  // Welcome message
-  const firstName = user.given_name 
-  || (user.name && !user.name.includes('@') ? user.name.split(' ')[0] : null)
-  || 'Trader';
+    const displayName = user.name && !user.name.includes('@')
+      ? user.name
+      : (user.given_name && user.family_name
+          ? `${user.given_name} ${user.family_name}`
+          : user.given_name || user.email);
 
-  const displayName = user.name && !user.name.includes('@') 
-  ? user.name 
-  : (user.given_name && user.family_name 
-    ? `${user.given_name} ${user.family_name}` 
-    : user.given_name || user.email);
-  document.getElementById('welcome-title').textContent = `Welcome back, ${firstName}`;
-  document.getElementById('welcome-sub').textContent =
-    plan === 'free'
+    // Update nav
+    const initials = displayName
+      .split(' ')
+      .map(w => w[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+
+    document.getElementById('user-avatar').textContent = initials;
+    document.getElementById('user-name').textContent = displayName;
+    document.getElementById('plan-badge').textContent = plan.replace('_', ' ');
+
+    // Update welcome
+    document.getElementById('welcome-title').textContent = `Welcome back, ${firstName}`;
+    document.getElementById('welcome-sub').textContent = plan === 'free'
       ? "You're on the free plan. Upgrade to start tracking your readiness."
       : `You're on the ${plan.replace('_', ' ')} plan. Let's keep building your edge.`;
 
-  // Show plan gate for free users
-  if (plan === 'free') {
-    document.getElementById('plan-gate').style.display = 'flex';
-  }
+    // Show upgrade banner for free users
+    if (plan === 'free') {
+      document.getElementById('plan-gate').style.display = 'flex';
+    }
 
-  // Render dashboard cards
-  const features = PLAN_FEATURES[plan] || PLAN_FEATURES.free;
-  const grid = document.getElementById('dash-grid');
-  grid.innerHTML = features.map(f => `
-    <div class="dash-card ${f.available ? '' : 'locked'}">
-      <div class="card-icon">${f.icon}</div>
-      <div class="card-title">${f.title}</div>
-      <div class="card-desc">${f.desc}</div>
-      ${f.available ? `<span class="card-action">${f.action} →</span>` : ''}
-    </div>
-  `).join('');
+    // Render feature cards
+    const features = PLAN_FEATURES[plan] || PLAN_FEATURES.free;
+    document.getElementById('dash-grid').innerHTML = features.map(f => `
+      <div class="dash-card ${f.available ? '' : 'locked'}">
+        <div class="card-icon">${f.icon}</div>
+        <div class="card-title">${f.title}</div>
+        <div class="card-desc">${f.desc}</div>
+        ${f.available ? `<span class="card-action">${f.action} →</span>` : ''}
+      </div>
+    `).join('');
+
+    // Hide loading, show content
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+
+  } catch (err) {
+    console.error('Dashboard init error:', err);
+    // If something goes wrong, clear state and redirect to login
+    localStorage.clear();
+    window.location.href = '/';
+  }
 }
 
-// Kick off
 initDashboard();
 </script>
 </body>

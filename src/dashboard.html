@@ -374,11 +374,19 @@ async function initDashboard() {
     .slice(0, 2);
 
   document.getElementById('user-avatar').textContent = initials;
-  document.getElementById('user-name').textContent = user.name || user.email;
+  document.getElementById('user-name').textContent = displayName;
   document.getElementById('plan-badge').textContent = plan.replace('_', ' ');
 
   // Welcome message
-  const firstName = (user.name || '').split(' ')[0] || 'Trader';
+  const firstName = user.given_name 
+  || (user.name && !user.name.includes('@') ? user.name.split(' ')[0] : null)
+  || 'Trader';
+
+  const displayName = user.name && !user.name.includes('@') 
+  ? user.name 
+  : (user.given_name && user.family_name 
+    ? `${user.given_name} ${user.family_name}` 
+    : user.given_name || user.email);
   document.getElementById('welcome-title').textContent = `Welcome back, ${firstName}`;
   document.getElementById('welcome-sub').textContent =
     plan === 'free'

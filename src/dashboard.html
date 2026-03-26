@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traxent — Dashboard</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --ink: #0e0e0c;
+      --ink2: #3a3a36;
+      --ink3: #7a7a72;
+      --accent: #0a6e4f;
+      --border: rgba(14,14,12,0.1);
+      --surface: #ffffff;
+      --surface2: #f0efe9;
+      --sans: 'Geist', sans-serif;
+      --mono: 'Geist Mono', monospace;
+      --serif: 'Instrument Serif', Georgia, serif;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Loading screen */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 999;
+    }
+    .loading-logo {
+      font-family: var(--mono);
+      font-size: 20px;
+      color: var(--ink);
+    }
+    .loading-logo em { font-style: normal; color: var(--accent); }
+    .loading-bar {
+      width: 120px;
+      height: 2px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .loading-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: load 1.2s ease forwards;
+    }
+    @keyframes load {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    /* Nav */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 15px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo em { font-style: normal; color: var(--accent); }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px 6px 8px;
+      font-size: 13px;
+      color: var(--ink2);
+    }
+    .user-avatar {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .plan-badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      background: rgba(10,110,79,.1);
+      color: var(--accent);
+      border: 1px solid rgba(10,110,79,.2);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .btn-logout {
+      font-size: 12px;
+      color: var(--ink3);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: color 0.15s;
+    }
+    .btn-logout:hover { color: var(--ink); }
+
+    /* Main */
+    .main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 40px;
+    }
+    .welcome {
+      margin-bottom: 40px;
+    }
+    .welcome-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .welcome-title {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .welcome-sub {
+      font-size: 15px;
+      color: var(--ink3);
+      font-weight: 300;
+    }
+
+    /* Plan gate banner */
+    .plan-gate {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .plan-gate-text { font-size: 14px; color: var(--ink2); }
+    .plan-gate-text strong { color: var(--ink); }
+    .btn-upgrade {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: var(--sans);
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .btn-upgrade:hover { background: #085e43; }
+
+    /* Dashboard grid */
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .dash-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .dash-card:hover { transform: translateY(-2px); }
+    .dash-card.locked {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .dash-card.locked::after {
+      content: '🔒';
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 14px;
+    }
+    .card-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--accent-light, rgba(10,110,79,.1));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      margin-bottom: 14px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .card-desc {
+      font-size: 12px;
+      color: var(--ink3);
+      line-height: 1.5;
+      font-weight: 300;
+    }
+    .card-action {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Disclaimer */
+    .dash-disclaimer {
+      font-size: 11px;
+      color: var(--ink3);
+      line-height: 1.6;
+      padding: 16px 20px;
+      background: var(--surface2);
+      border-radius: 8px;
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading screen -->
+<div id="loading">
+  <div class="loading-logo">trax<em>ent</em></div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <div class="nav-right">
+    <div class="user-pill">
+      <div class="user-avatar" id="user-avatar">T</div>
+      <span id="user-name">Loading...</span>
+    </div>
+    <span class="plan-badge" id="plan-badge">free</span>
+    <button class="btn-logout" onclick="logout()">Sign out</button>
+  </div>
+</nav>
+
+<!-- Main -->
+<div class="main" id="main-content" style="display:none">
+  <div class="welcome">
+    <div class="welcome-eyebrow">Welcome back</div>
+    <h1 class="welcome-title" id="welcome-title">Good to see you</h1>
+    <p class="welcome-sub" id="welcome-sub">Here's where you are on your path to funded.</p>
+  </div>
+
+  <!-- Plan gate — shown for free users -->
+  <div class="plan-gate" id="plan-gate" style="display:none">
+    <div class="plan-gate-text">
+      You're on the <strong>free plan</strong> — upgrade to Observer to unlock pattern learning with real data.
+    </div>
+    <button class="btn-upgrade" onclick="window.location.href='/#pricing'">
+      View plans →
+    </button>
+  </div>
+
+  <!-- Dashboard cards -->
+  <div class="dash-grid" id="dash-grid"></div>
+
+  <div class="dash-disclaimer">
+    Traxent is an educational platform only. Nothing here constitutes financial advice. All trading activity is simulated. Prop firm readiness scores are based on publicly available information and do not guarantee acceptance by any funded account provider.
+  </div>
+</div>
+
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="auth.js"></script>
+<script>
+const PLAN_FEATURES = {
+  free: [
+    { icon: '📖', title: 'Pattern school', desc: 'Learn the 5 core trading patterns with plain-English explainers.', action: 'Start learning', available: true },
+    { icon: '🧮', title: 'Position size calculator', desc: 'Calculate your risk per trade and stop loss size.', action: 'Open calculator', available: true },
+    { icon: '📊', title: 'Live chart (delayed)', desc: 'View delayed 15-minute price data on key instruments.', action: 'View chart', available: false },
+    { icon: '🎯', title: 'Readiness tracker', desc: 'Score your habits against FTMO, Apex, MFFU and FundedNext.', action: 'See my score', available: false },
+    { icon: '📓', title: 'Sim trade journal', desc: 'Log and analyse your simulated trades over time.', action: 'Open journal', available: false },
+    { icon: '📰', title: 'News sentiment feed', desc: 'AI-tagged market news with bull/bear sentiment scoring.', action: 'Read feed', available: false },
+  ],
+  observer: [
+    { icon: '📖', title: 'Pattern school', desc: 'Learn the 5 core trading patterns with plain-English explainers.', action: 'Start learning', available: true },
+    { icon: '🧮', title: 'Position size calculator', desc: 'Calculate your risk per trade and stop loss size.', action: 'Open calculator', available: true },
+    { icon: '📊', title: 'Live chart (delayed)', desc: 'View delayed 15-minute price data on key instruments.', action: 'View chart', available: true },
+    { icon: '🎯', title: 'Readiness tracker', desc: 'Score your habits against FTMO, Apex, MFFU and FundedNext.', action: 'See my score', available: false },
+    { icon: '📓', title: 'Sim trade journal', desc: 'Log and analyse your simulated trades over time.', action: 'Open journal', available: false },
+    { icon: '📰', title: 'News sentiment feed', desc: 'AI-tagged market news with bull/bear sentiment scoring.', action: 'Read feed', available: false },
+  ],
+  challenger: [
+    { icon: '📖', title: 'Pattern school', desc: 'All 15 patterns with live chart examples.', action: 'Start learning', available: true },
+    { icon: '🧮', title: 'Position size calculator', desc: 'Full risk management suite with prop firm limits.', action: 'Open calculator', available: true },
+    { icon: '📊', title: 'Live chart', desc: 'Real-time price data on all tracked instruments.', action: 'View chart', available: true },
+    { icon: '🎯', title: 'Readiness tracker', desc: 'Full score breakdown vs all 4 prop firms.', action: 'See my score', available: true },
+    { icon: '📓', title: 'Sim trade journal', desc: 'Log trades, track win rate, R:R and consistency score.', action: 'Open journal', available: true },
+    { icon: '📰', title: 'News sentiment feed', desc: 'AI-tagged market news with bull/bear sentiment scoring.', action: 'Read feed', available: false },
+  ],
+  funded_ready: [
+    { icon: '📖', title: 'Pattern school', desc: 'All 15 patterns with premium data examples.', action: 'Start learning', available: true },
+    { icon: '🧮', title: 'Position size calculator', desc: 'Full risk management suite with prop firm limits.', action: 'Open calculator', available: true },
+    { icon: '📊', title: 'Live chart', desc: 'Premium institutional data feed — real time.', action: 'View chart', available: true },
+    { icon: '🎯', title: 'Readiness tracker', desc: 'Full score + personalised coaching per firm.', action: 'See my score', available: true },
+    { icon: '📓', title: 'Sim trade journal', desc: 'Full journal with challenge simulation mode.', action: 'Open journal', available: true },
+    { icon: '📰', title: 'News sentiment feed', desc: 'Premium news with economic calendar integration.', action: 'Read feed', available: true },
+  ]
+};
+
+async function initDashboard() {
+  await initAuth0();
+  const isAuthenticated = await auth0Client.isAuthenticated();
+
+  if (!isAuthenticated) {
+    // Not logged in — send to login
+    await login();
+    return;
+  }
+
+  // Hide loading screen
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('main-content').style.display = 'block';
+
+  // Get user details
+  const user = await getUser();
+  const plan = await getUserPlan();
+
+  // Update nav
+  const initials = (user.name || user.email || 'T')
+    .split(' ')
+    .map(w => w[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+
+  document.getElementById('user-avatar').textContent = initials;
+  document.getElementById('user-name').textContent = user.name || user.email;
+  document.getElementById('plan-badge').textContent = plan.replace('_', ' ');
+
+  // Welcome message
+  const firstName = (user.name || '').split(' ')[0] || 'Trader';
+  document.getElementById('welcome-title').textContent = `Welcome back, ${firstName}`;
+  document.getElementById('welcome-sub').textContent =
+    plan === 'free'
+      ? "You're on the free plan. Upgrade to start tracking your readiness."
+      : `You're on the ${plan.replace('_', ' ')} plan. Let's keep building your edge.`;
+
+  // Show plan gate for free users
+  if (plan === 'free') {
+    document.getElementById('plan-gate').style.display = 'flex';
+  }
+
+  // Render dashboard cards
+  const features = PLAN_FEATURES[plan] || PLAN_FEATURES.free;
+  const grid = document.getElementById('dash-grid');
+  grid.innerHTML = features.map(f => `
+    <div class="dash-card ${f.available ? '' : 'locked'}">
+      <div class="card-icon">${f.icon}</div>
+      <div class="card-title">${f.title}</div>
+      <div class="card-desc">${f.desc}</div>
+      ${f.available ? `<span class="card-action">${f.action} →</span>` : ''}
+    </div>
+  `).join('');
+}
+
+// Kick off
+initDashboard();
+</script>
+</body>
+</html>

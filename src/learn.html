@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn — Traxent</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f2;
+  --ink: #0e0e0c;
+  --ink2: #3a3a36;
+  --ink3: #7a7a72;
+  --accent: #0a6e4f;
+  --accent-light: rgba(10,110,79,.08);
+  --border: rgba(14,14,12,0.1);
+  --border2: rgba(14,14,12,0.06);
+  --surface: #ffffff;
+  --surface2: #f0efe9;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', sans-serif;
+  --mono: 'Geist Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+#loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 999; }
+.loading-logo { font-family: var(--mono); font-size: 20px; }
+.loading-logo em { font-style: normal; color: var(--accent); }
+.loading-bar { width: 120px; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.loading-bar-fill { height: 100%; background: var(--accent); animation: load 1.2s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+
+nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.nav-logo { font-family: var(--mono); font-size: 15px; color: var(--ink); text-decoration: none; }
+.nav-logo em { font-style: normal; color: var(--accent); }
+.nav-back { font-size: 13px; color: var(--ink3); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
+.nav-back:hover { color: var(--ink); }
+.nav-back::before { content: '←'; }
+
+.main { max-width: 1000px; margin: 0 auto; padding: 56px 40px 96px; }
+
+/* Header */
+.learn-header { margin-bottom: 56px; }
+.learn-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.learn-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--accent); }
+.learn-title { font-family: var(--serif); font-size: 48px; font-weight: 400; line-height: 1.08; color: var(--ink); margin-bottom: 14px; }
+.learn-sub { font-size: 16px; color: var(--ink3); line-height: 1.65; font-weight: 300; max-width: 560px; margin-bottom: 32px; }
+.learn-progress-row { display: flex; align-items: center; gap: 24px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; max-width: 480px; }
+.lpr-label { font-size: 13px; color: var(--ink3); white-space: nowrap; }
+.lpr-bar { flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+.lpr-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.6s ease; }
+.lpr-pct { font-family: var(--mono); font-size: 12px; color: var(--accent); white-space: nowrap; }
+
+/* Plan gate banner */
+.plan-banner { display: flex; align-items: center; justify-content: space-between; gap: 16px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 20px; margin-bottom: 40px; }
+.plan-banner-text { font-size: 14px; color: var(--ink2); line-height: 1.5; }
+.plan-banner-text strong { color: var(--ink); }
+.btn-banner-upgrade { background: var(--accent); color: white; border: none; border-radius: 6px; padding: 9px 18px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--sans); white-space: nowrap; transition: background 0.15s; text-decoration: none; display: inline-block; }
+.btn-banner-upgrade:hover { background: #085e43; }
+
+/* Module cards */
+.modules { display: flex; flex-direction: column; gap: 24px; }
+.module-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: box-shadow 0.2s; }
+.module-card:not(.locked):hover { box-shadow: 0 8px 32px rgba(14,14,12,0.06); }
+.module-card.locked { opacity: 0.6; }
+.module-card.active-module { border-color: var(--accent); }
+
+.module-top { display: grid; grid-template-columns: 1fr auto; gap: 24px; padding: 28px 32px; align-items: start; }
+.module-meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.module-num { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); }
+.module-tag { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 3px; letter-spacing: 0.06em; text-transform: uppercase; }
+.tag-free { background: var(--accent-light); color: var(--accent); border: 1px solid rgba(10,110,79,.2); }
+.tag-observer { background: rgba(100,100,200,.08); color: #4444aa; border: 1px solid rgba(100,100,200,.2); }
+.tag-locked { background: var(--surface2); color: var(--ink3); border: 1px solid var(--border); }
+.tag-complete { background: rgba(10,110,79,.12); color: var(--accent); border: 1px solid rgba(10,110,79,.25); }
+.module-title { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--ink); margin-bottom: 8px; }
+.module-desc { font-size: 14px; color: var(--ink3); line-height: 1.6; font-weight: 300; max-width: 520px; }
+.module-action { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; flex-shrink: 0; }
+.btn-start { background: var(--accent); color: white; border: none; border-radius: 8px; padding: 11px 22px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--sans); transition: background 0.15s; text-decoration: none; display: inline-block; white-space: nowrap; }
+.btn-start:hover { background: #085e43; }
+.btn-start.secondary { background: none; border: 1px solid var(--border); color: var(--ink2); }
+.btn-start.secondary:hover { border-color: var(--ink); color: var(--ink); }
+.btn-start.locked-btn { background: var(--surface2); color: var(--ink3); cursor: default; border: 1px solid var(--border); }
+.module-progress-mini { font-family: var(--mono); font-size: 11px; color: var(--ink3); }
+.module-progress-mini.done { color: var(--accent); }
+
+/* Lessons list inside card */
+.module-lessons { border-top: 1px solid var(--border2); padding: 0 32px; }
+.lesson-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border2); }
+.lesson-row:last-child { border-bottom: none; }
+.lesson-dot { width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 9px; font-family: var(--mono); color: var(--ink3); flex-shrink: 0; }
+.lesson-dot.done { background: var(--accent); border-color: var(--accent); color: white; font-size: 11px; }
+.lesson-row-name { font-size: 13px; color: var(--ink2); flex: 1; }
+.lesson-row-name.done { color: var(--ink3); text-decoration: line-through; text-decoration-color: rgba(10,110,79,.4); }
+.lesson-row-type { font-family: var(--mono); font-size: 10px; color: var(--ink3); background: var(--surface2); padding: 2px 8px; border-radius: 3px; }
+.lesson-row-type.quiz { color: var(--accent); background: var(--accent-light); }
+
+/* Coming soon card */
+.coming-soon { text-align: center; padding: 32px; border-top: 1px solid var(--border2); }
+.coming-soon-label { font-family: var(--mono); font-size: 11px; color: var(--ink3); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* Bottom CTA */
+.learn-cta { background: var(--ink); border-radius: 16px; padding: 40px 48px; margin-top: 40px; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+.learn-cta-left { display: flex; flex-direction: column; gap: 6px; }
+.learn-cta-title { font-family: var(--serif); font-size: 26px; font-weight: 400; color: white; }
+.learn-cta-sub { font-size: 14px; color: rgba(255,255,255,0.45); font-weight: 300; }
+.learn-cta-btn { background: #1a9e72; color: white; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background 0.15s; border: none; cursor: pointer; font-family: var(--sans); }
+.learn-cta-btn:hover { background: var(--accent); }
+
+@media (max-width: 700px) {
+  .main { padding: 36px 20px 64px; }
+  nav { padding: 0 20px; }
+  .learn-title { font-size: 36px; }
+  .module-top { grid-template-columns: 1fr; }
+  .module-action { align-items: flex-start; }
+  .module-lessons { padding: 0 20px; }
+  .module-top { padding: 20px; }
+  .learn-cta { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="loading-logo">trax<em>ent</em></div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <a href="/dashboard" class="nav-back">Dashboard</a>
+</nav>
+
+<div class="main" id="main-content" style="display:none">
+
+  <div class="learn-header">
+    <div class="learn-eyebrow">Learning centre</div>
+    <h1 class="learn-title">Your path to funded</h1>
+    <p class="learn-sub">Four modules covering everything you need to know — from trading fundamentals to prop firm mastery. Start free, unlock more as you progress.</p>
+    <div class="learn-progress-row">
+      <span class="lpr-label">Overall progress</span>
+      <div class="lpr-bar"><div class="lpr-fill" id="overall-fill" style="width:0%"></div></div>
+      <span class="lpr-pct" id="overall-pct">0%</span>
+    </div>
+  </div>
+
+  <div id="plan-banner" style="display:none" class="plan-banner">
+    <div class="plan-banner-text" id="plan-banner-text"></div>
+    <a href="/pricing" class="btn-banner-upgrade" id="plan-banner-btn">Upgrade →</a>
+  </div>
+
+  <div class="modules" id="modules-list">
+    <!-- Populated by JS -->
+  </div>
+
+  <div class="learn-cta" id="learn-cta" style="display:none">
+    <div class="learn-cta-left">
+      <div class="learn-cta-title">Ready for more?</div>
+      <div class="learn-cta-sub">Upgrade to Observer to unlock Modules 2, 3 and 4.</div>
+    </div>
+    <a href="/pricing" class="learn-cta-btn">See pricing →</a>
+  </div>
+
+</div>
+
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="auth.js"></script>
+<script>
+
+const MODULES = [
+  {
+    id: 'module-1',
+    num: 'Module 01',
+    title: 'Trading Fundamentals',
+    desc: 'Start here. Learn what prop firms are, how markets move, and how to calculate risk on any trade. No experience needed.',
+    tag: 'free',
+    tagLabel: 'Free',
+    minPlan: 'free',
+    duration: '~25 min',
+    link: '/learn-module-1',
+    lessons: [
+      { name: 'What is a prop firm?', type: 'Lesson', key: 'l1-1' },
+      { name: 'How markets move', type: 'Lesson', key: 'l1-2' },
+      { name: 'Your first risk calculation', type: 'Lesson', key: 'l1-3' },
+      { name: 'Module 1 quiz', type: 'Quiz', key: 'l1-quiz' },
+    ]
+  },
+  {
+    id: 'module-2',
+    num: 'Module 02',
+    title: 'Chart Patterns',
+    desc: 'The 15 most reliable chart patterns used by funded traders — bull flags, bear flags, inside bars, BOS, VWAP reclaims, and more.',
+    tag: 'observer',
+    tagLabel: 'Observer+',
+    minPlan: 'observer',
+    duration: '~40 min',
+    link: null,
+    lessons: [
+      { name: 'Bull flag and bear flag', type: 'Lesson', key: 'l2-1' },
+      { name: 'Inside bar — compression and breakout', type: 'Lesson', key: 'l2-2' },
+      { name: 'Break of structure (BOS)', type: 'Lesson', key: 'l2-3' },
+      { name: 'VWAP reclaim', type: 'Lesson', key: 'l2-4' },
+      { name: 'Advanced patterns and combinations', type: 'Lesson', key: 'l2-5' },
+      { name: 'Module 2 quiz', type: 'Quiz', key: 'l2-quiz' },
+    ]
+  },
+  {
+    id: 'module-3',
+    num: 'Module 03',
+    title: 'Risk Management',
+    desc: 'The skill that separates consistent traders from gamblers. Position sizing, stop placement, R:R ratios, and why most traders blow accounts.',
+    tag: 'observer',
+    tagLabel: 'Observer+',
+    minPlan: 'observer',
+    duration: '~35 min',
+    link: null,
+    lessons: [
+      { name: 'Position sizing in depth', type: 'Lesson', key: 'l3-1' },
+      { name: 'Stop loss placement strategies', type: 'Lesson', key: 'l3-2' },
+      { name: 'Risk to reward — the long game', type: 'Lesson', key: 'l3-3' },
+      { name: 'Over-leveraging — how accounts blow', type: 'Lesson', key: 'l3-4' },
+      { name: 'Module 3 quiz', type: 'Quiz', key: 'l3-quiz' },
+    ]
+  },
+  {
+    id: 'module-4',
+    num: 'Module 04',
+    title: 'Prop Firm Mastery',
+    desc: 'Deep dive into the specific rules of FTMO, Apex, MFFU and FundedNext. Build a challenge-ready trading plan and test it before you pay.',
+    tag: 'observer',
+    tagLabel: 'Observer+',
+    minPlan: 'observer',
+    duration: '~45 min',
+    link: null,
+    lessons: [
+      { name: 'FTMO rules decoded', type: 'Lesson', key: 'l4-1' },
+      { name: 'Apex and MFFU — key differences', type: 'Lesson', key: 'l4-2' },
+      { name: 'Building a consistent trading plan', type: 'Lesson', key: 'l4-3' },
+      { name: 'Final assessment — readiness check', type: 'Quiz', key: 'l4-quiz' },
+    ]
+  }
+];
+
+const PLAN_HIERARCHY = ['free', 'observer', 'challenger', 'funded_ready'];
+
+async function initLearn() {
+  try {
+    await initAuth0();
+
+    if (window.location.search.includes('code=') || window.location.search.includes('state=')) {
+      await auth0Client.handleRedirectCallback();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    const isAuthenticated = await auth0Client.isAuthenticated();
+    if (!isAuthenticated) {
+      await auth0Client.loginWithRedirect({
+        authorizationParams: { redirect_uri: window.location.origin + '/learn' }
+      });
+      return;
+    }
+
+    const claims = await auth0Client.getIdTokenClaims();
+    const ns = 'https://traxent.io';
+    const plan = (claims && claims[`${ns}/plan`]) || 'free';
+    const userLevel = PLAN_HIERARCHY.indexOf(plan);
+
+    // Load progress from localStorage
+    const progress = JSON.parse(localStorage.getItem('traxent_progress') || '{}');
+
+    // Show plan banner if on free plan
+    if (plan === 'free') {
+      document.getElementById('plan-banner').style.display = 'flex';
+      document.getElementById('plan-banner-text').innerHTML = `You're on the <strong>free plan</strong> — Module 1 is fully accessible. Upgrade to Observer at <strong>£4.99/mo</strong> to unlock all 4 modules.`;
+      document.getElementById('learn-cta').style.display = 'flex';
+    }
+
+    // Calculate overall progress
+    const totalLessons = MODULES.reduce((sum, m) => sum + m.lessons.length, 0);
+    const completedLessons = MODULES.reduce((sum, m) =>
+      sum + m.lessons.filter(l => progress[l.key]).length, 0);
+    const overallPct = Math.round((completedLessons / totalLessons) * 100);
+    document.getElementById('overall-fill').style.width = overallPct + '%';
+    document.getElementById('overall-pct').textContent = overallPct + '%';
+
+    // Render modules
+    const container = document.getElementById('modules-list');
+    container.innerHTML = MODULES.map((mod, idx) => {
+      const minLevel = PLAN_HIERARCHY.indexOf(mod.minPlan);
+      const isUnlocked = userLevel >= minLevel;
+      const completedInModule = mod.lessons.filter(l => progress[l.key]).length;
+      const isComplete = completedInModule === mod.lessons.length;
+      const isStarted = completedInModule > 0;
+      const isNext = !isStarted && idx > 0 && (() => {
+        const prev = MODULES[idx - 1];
+        return prev.lessons.filter(l => progress[l.key]).length === prev.lessons.length;
+      })();
+
+      const tagClass = isComplete ? 'tag-complete' : !isUnlocked ? 'tag-locked' : `tag-${mod.tag}`;
+      const tagLabel = isComplete ? '✓ Complete' : !isUnlocked ? `🔒 ${mod.tagLabel}` : mod.tagLabel;
+
+      let btnHTML = '';
+      if (!isUnlocked) {
+        btnHTML = `<a href="/pricing" class="btn-start locked-btn">Unlock →</a>`;
+      } else if (isComplete) {
+        btnHTML = `<a href="${mod.link}" class="btn-start secondary">Review →</a>`;
+      } else if (isStarted) {
+        btnHTML = `<a href="${mod.link}" class="btn-start">Continue →</a>`;
+      } else if (mod.link) {
+        btnHTML = `<a href="${mod.link}" class="btn-start">Start module →</a>`;
+      } else {
+        btnHTML = `<span class="btn-start locked-btn">Coming soon</span>`;
+      }
+
+      const progressMiniHTML = isComplete
+        ? `<div class="module-progress-mini done">✓ All ${mod.lessons.length} completed</div>`
+        : isStarted
+          ? `<div class="module-progress-mini">${completedInModule} / ${mod.lessons.length} done</div>`
+          : `<div class="module-progress-mini">${mod.lessons.length} lessons · ${mod.duration}</div>`;
+
+      const lessonsHTML = mod.lessons.map(l => {
+        const isDone = progress[l.key];
+        const isQuiz = l.type === 'Quiz';
+        return `
+          <div class="lesson-row">
+            <div class="lesson-dot ${isDone ? 'done' : ''}">${isDone ? '✓' : ''}</div>
+            <div class="lesson-row-name ${isDone ? 'done' : ''}">${l.name}</div>
+            <div class="lesson-row-type ${isQuiz ? 'quiz' : ''}">${l.type}</div>
+          </div>
+        `;
+      }).join('');
+
+      const comingSoon = !mod.link && isUnlocked
+        ? `<div class="coming-soon"><div class="coming-soon-label">Content in development — coming soon</div></div>`
+        : '';
+
+      return `
+        <div class="module-card ${!isUnlocked ? 'locked' : ''} ${isNext ? 'active-module' : ''}">
+          <div class="module-top">
+            <div>
+              <div class="module-meta-row">
+                <span class="module-num">${mod.num}</span>
+                <span class="module-tag ${tagClass}">${tagLabel}</span>
+              </div>
+              <div class="module-title">${mod.title}</div>
+              <div class="module-desc">${mod.desc}</div>
+            </div>
+            <div class="module-action">
+              ${btnHTML}
+              ${progressMiniHTML}
+            </div>
+          </div>
+          <div class="module-lessons">
+            ${lessonsHTML}
+          </div>
+          ${comingSoon}
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+
+  } catch (err) {
+    console.error('Learn page error:', err);
+    window.location.href = '/';
+  }
+}
+
+initLearn();
+</script>
+</body>
+</html>

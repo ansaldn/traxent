@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Readiness Tracker — Traxent</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f2;
+  --ink: #0e0e0c;
+  --ink2: #3a3a36;
+  --ink3: #7a7a72;
+  --accent: #0a6e4f;
+  --accent-light: rgba(10,110,79,.08);
+  --border: rgba(14,14,12,0.1);
+  --border2: rgba(14,14,12,0.06);
+  --surface: #ffffff;
+  --surface2: #f0efe9;
+  --good: #0a6e4f;
+  --good-bg: rgba(10,110,79,.08);
+  --warn: #b06000;
+  --warn-bg: rgba(176,96,0,.07);
+  --bad: #9e1a1a;
+  --bad-bg: rgba(158,26,26,.06);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', sans-serif;
+  --mono: 'Geist Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+/* Loading */
+#loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 999; }
+.loading-logo { font-family: var(--mono); font-size: 20px; }
+.loading-logo em { font-style: normal; color: var(--accent); }
+.loading-bar { width: 120px; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.loading-bar-fill { height: 100%; background: var(--accent); animation: load 1.2s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+
+/* Nav */
+nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.nav-logo { font-family: var(--mono); font-size: 15px; color: var(--ink); text-decoration: none; }
+.nav-logo em { font-style: normal; color: var(--accent); }
+.nav-back { font-size: 13px; color: var(--ink3); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
+.nav-back:hover { color: var(--ink); }
+.nav-back::before { content: '←'; }
+
+/* Layout */
+.main { max-width: 1100px; margin: 0 auto; padding: 48px 40px 96px; }
+
+/* Page header */
+.page-header { margin-bottom: 40px; }
+.page-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.page-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--accent); }
+.page-title { font-family: var(--serif); font-size: 40px; font-weight: 400; color: var(--ink); margin-bottom: 8px; }
+.page-sub { font-size: 15px; color: var(--ink3); font-weight: 300; line-height: 1.6; max-width: 560px; }
+
+/* Firm selector */
+.firm-selector-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 32px; }
+.selector-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.selector-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); }
+.selector-count { font-size: 12px; color: var(--ink3); }
+.selector-count span { color: var(--accent); font-weight: 500; }
+.firms-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 8px; }
+.firm-chip { border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: all 0.15s; background: var(--bg); position: relative; }
+.firm-chip:hover { border-color: var(--accent); background: var(--accent-light); }
+.firm-chip.selected { border-color: var(--accent); background: var(--accent-light); }
+.firm-chip.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+.firm-chip-check { position: absolute; top: 8px; right: 8px; width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 9px; transition: all 0.15s; }
+.firm-chip.selected .firm-chip-check { background: var(--accent); border-color: var(--accent); color: white; }
+.firm-chip-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.firm-chip.selected .firm-chip-name { color: var(--accent); }
+.firm-chip-type { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
+.firm-chip-region { font-size: 10px; color: var(--ink3); margin-top: 4px; }
+.selector-note { font-size: 12px; color: var(--ink3); margin-top: 8px; }
+.coming-soon-chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border2); }
+.coming-chip { border: 1px dashed var(--border); border-radius: 8px; padding: 12px 14px; opacity: 0.5; }
+.coming-chip-name { font-size: 13px; color: var(--ink3); margin-bottom: 3px; }
+.coming-chip-label { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
+
+/* Two column layout */
+.tracker-layout { display: grid; grid-template-columns: 340px 1fr; gap: 28px; align-items: start; }
+
+/* Inputs panel */
+.inputs-panel { position: sticky; top: 76px; }
+.panel-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+.panel-header { padding: 14px 18px; border-bottom: 1px solid var(--border2); }
+.panel-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); }
+.input-row { padding: 14px 18px; border-bottom: 1px solid var(--border2); }
+.input-row:last-child { border-bottom: none; }
+.input-label { font-size: 12px; color: var(--ink); font-weight: 500; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; }
+.input-hint { font-size: 11px; color: var(--ink3); margin-bottom: 8px; line-height: 1.4; }
+.input-field { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; font-family: var(--sans); font-size: 13px; color: var(--ink); outline: none; transition: border-color 0.15s; }
+.input-field:focus { border-color: var(--accent); }
+.input-field-unit { display: flex; gap: 0; }
+.input-field-unit .input-field { border-radius: 6px 0 0 6px; border-right: none; }
+.unit-label { background: var(--surface2); border: 1px solid var(--border); border-radius: 0 6px 6px 0; padding: 8px 10px; font-size: 12px; color: var(--ink3); font-family: var(--mono); display: flex; align-items: center; }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; }
+.toggle { position: relative; width: 36px; height: 20px; cursor: pointer; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; transition: all 0.2s; }
+.toggle-slider::before { content: ''; position: absolute; width: 14px; height: 14px; left: 2px; top: 2px; background: var(--ink3); border-radius: 50%; transition: all 0.2s; }
+.toggle input:checked + .toggle-slider { background: var(--accent); border-color: var(--accent); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(16px); background: white; }
+.btn-calculate { width: 100%; background: var(--accent); color: white; border: none; border-radius: 8px; padding: 13px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--sans); transition: background 0.15s; margin-top: 4px; }
+.btn-calculate:hover { background: #085e43; }
+
+/* Trade log */
+.trade-log-row { display: grid; grid-template-columns: 1fr 80px 60px 28px; gap: 6px; align-items: center; margin-bottom: 6px; }
+.trade-log-row:last-of-type { margin-bottom: 10px; }
+.trade-result-btn { padding: 7px 0; border-radius: 5px; font-size: 11px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--ink3); font-family: var(--sans); transition: all 0.15s; }
+.trade-result-btn.win.active { background: var(--good-bg); border-color: var(--good); color: var(--good); }
+.trade-result-btn.loss.active { background: var(--bad-bg); border-color: var(--bad); color: var(--bad); }
+.btn-remove-trade { background: none; border: none; cursor: pointer; color: var(--ink3); font-size: 14px; transition: color 0.15s; padding: 0; }
+.btn-remove-trade:hover { color: var(--bad); }
+.btn-add-trade { background: none; border: 1px dashed var(--border); border-radius: 6px; padding: 7px 14px; font-size: 12px; color: var(--ink3); cursor: pointer; font-family: var(--sans); width: 100%; transition: all 0.15s; }
+.btn-add-trade:hover { border-color: var(--accent); color: var(--accent); }
+.trade-log-header { display: grid; grid-template-columns: 1fr 80px 60px 28px; gap: 6px; margin-bottom: 6px; }
+.trade-col-label { font-size: 10px; font-family: var(--mono); color: var(--ink3); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* Results panel */
+.results-panel { display: flex; flex-direction: column; gap: 20px; }
+.no-firms-msg { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 48px; text-align: center; }
+.no-firms-msg-title { font-family: var(--serif); font-size: 22px; color: var(--ink3); margin-bottom: 8px; }
+.no-firms-msg-sub { font-size: 14px; color: var(--ink3); font-weight: 300; }
+
+/* Score card */
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.score-card-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border2); display: flex; align-items: center; justify-content: space-between; }
+.score-firm-name { font-size: 16px; font-weight: 500; color: var(--ink); }
+.score-firm-type { font-family: var(--mono); font-size: 10px; color: var(--ink3); margin-top: 2px; }
+.score-big { display: flex; align-items: baseline; gap: 6px; }
+.score-num { font-family: var(--serif); font-size: 52px; font-weight: 400; font-style: italic; line-height: 1; }
+.score-num.pass { color: var(--good); }
+.score-num.warn { color: var(--warn); }
+.score-num.fail { color: var(--bad); }
+.score-label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+.score-label.pass { color: var(--good); }
+.score-label.warn { color: var(--warn); }
+.score-label.fail { color: var(--bad); }
+
+/* Score bar */
+.score-bar-wrap { padding: 0 24px 16px; }
+.score-bar-bg { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; margin-top: 12px; }
+.score-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.score-bar-fill.pass { background: var(--good); }
+.score-bar-fill.warn { background: var(--warn); }
+.score-bar-fill.fail { background: var(--bad); }
+
+/* Rules breakdown */
+.rules-list { padding: 0 24px 24px; display: flex; flex-direction: column; gap: 8px; }
+.rule-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 8px; }
+.rule-row.pass { background: var(--good-bg); }
+.rule-row.warn { background: var(--warn-bg); }
+.rule-row.fail { background: var(--bad-bg); }
+.rule-row.na { background: var(--surface2); }
+.rule-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.rule-info { flex: 1; }
+.rule-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+.rule-detail { font-size: 12px; line-height: 1.5; }
+.rule-detail.pass { color: var(--good); }
+.rule-detail.warn { color: var(--warn); }
+.rule-detail.fail { color: var(--bad); }
+.rule-detail.na { color: var(--ink3); }
+.rule-pill { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 3px; white-space: nowrap; flex-shrink: 0; font-weight: 500; }
+.pill-pass { background: var(--good-bg); color: var(--good); border: 1px solid rgba(10,110,79,.2); }
+.pill-warn { background: var(--warn-bg); color: var(--warn); border: 1px solid rgba(176,96,0,.2); }
+.pill-fail { background: var(--bad-bg); color: var(--bad); border: 1px solid rgba(158,26,26,.2); }
+.pill-na { background: var(--surface2); color: var(--ink3); border: 1px solid var(--border); }
+
+/* Overall summary */
+.summary-card { background: var(--ink); border-radius: 14px; padding: 28px; }
+.summary-title { font-family: var(--serif); font-size: 22px; color: white; font-weight: 400; margin-bottom: 20px; }
+.summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.summary-cell { background: rgba(255,255,255,.06); border-radius: 8px; padding: 14px 16px; }
+.summary-cell-val { font-family: var(--serif); font-size: 28px; color: white; font-weight: 400; font-style: italic; margin-bottom: 4px; }
+.summary-cell-label { font-size: 11px; color: rgba(255,255,255,.4); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+.summary-disclaimer { font-size: 11px; color: rgba(255,255,255,.25); margin-top: 16px; line-height: 1.5; }
+
+/* Upgrade gate */
+.upgrade-gate { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 12px; padding: 24px; }
+.upgrade-gate-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+.upgrade-gate-body { font-size: 13px; color: var(--ink3); line-height: 1.6; margin-bottom: 16px; }
+.btn-upgrade-gate { background: var(--accent); color: white; border: none; border-radius: 7px; padding: 10px 20px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--sans); text-decoration: none; display: inline-block; transition: background 0.15s; }
+.btn-upgrade-gate:hover { background: #085e43; }
+
+@media (max-width: 900px) {
+  .tracker-layout { grid-template-columns: 1fr; }
+  .inputs-panel { position: static; }
+  .firms-grid, .coming-soon-chips { grid-template-columns: repeat(2, 1fr); }
+  .summary-grid { grid-template-columns: 1fr; }
+  .main { padding: 32px 20px 64px; }
+  nav { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="loading-logo">trax<em>ent</em></div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <a href="/dashboard" class="nav-back">Dashboard</a>
+</nav>
+
+<div class="main" id="main-content" style="display:none">
+
+  <div class="page-header">
+    <div class="page-eyebrow">Challenger feature</div>
+    <h1 class="page-title">Readiness tracker</h1>
+    <p class="page-sub">Select up to 3 firms, log your trading habits, and see exactly where you stand against each firm's published rules.</p>
+  </div>
+
+  <!-- Firm selector -->
+  <div class="firm-selector-wrap">
+    <div class="selector-header">
+      <span class="selector-title">Select firms to track</span>
+      <span class="selector-count"><span id="selected-count">0</span> / 3 selected</span>
+    </div>
+    <div class="firms-grid" id="firms-grid"></div>
+    <div class="selector-note">Select up to 3 firms. Scores are based on publicly available rules — always verify directly with the firm before purchasing a challenge.</div>
+    <div class="coming-soon-chips" id="coming-soon-grid"></div>
+  </div>
+
+  <!-- Two column layout -->
+  <div class="tracker-layout">
+
+    <!-- Inputs -->
+    <div class="inputs-panel">
+
+      <div class="panel-card">
+        <div class="panel-header"><div class="panel-title">Your trading habits</div></div>
+
+        <div class="input-row">
+          <div class="input-label">Trading days per week</div>
+          <div class="input-hint">How many days per week do you typically trade?</div>
+          <div class="input-field-unit">
+            <input type="number" class="input-field" id="input-days" min="1" max="7" value="3" oninput="recalculate()">
+            <span class="unit-label">days</span>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-label">Worst single day loss</div>
+          <div class="input-hint">Your worst day as a % of account size</div>
+          <div class="input-field-unit">
+            <input type="number" class="input-field" id="input-worst-day" min="0" max="100" step="0.1" value="2.5" oninput="recalculate()">
+            <span class="unit-label">%</span>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-label">Best day as % of total profit</div>
+          <div class="input-hint">Your best single day divided by total profit — e.g. if best day = £300 and total profit = £1000, enter 30</div>
+          <div class="input-field-unit">
+            <input type="number" class="input-field" id="input-best-day-pct" min="0" max="100" step="1" value="25" oninput="recalculate()">
+            <span class="unit-label">%</span>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-label">Average risk per trade</div>
+          <div class="input-hint">What % of your account do you typically risk on each trade?</div>
+          <div class="input-field-unit">
+            <input type="number" class="input-field" id="input-risk-per-trade" min="0" max="100" step="0.1" value="1" oninput="recalculate()">
+            <span class="unit-label">%</span>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-label">
+            Always use stop losses
+            <label class="toggle">
+              <input type="checkbox" id="input-stop-loss" checked onchange="recalculate()">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="input-hint">Do you use a hard stop loss on every trade?</div>
+        </div>
+
+      </div>
+
+      <!-- Trade log -->
+      <div class="panel-card">
+        <div class="panel-header"><div class="panel-title">Sim trade log (last 10)</div></div>
+        <div style="padding: 14px 18px">
+          <div class="trade-log-header">
+            <div class="trade-col-label">Result</div>
+            <div class="trade-col-label">Risk %</div>
+            <div class="trade-col-label">R:R</div>
+            <div></div>
+          </div>
+          <div id="trade-log-rows"></div>
+          <button class="btn-add-trade" onclick="addTrade()">+ Add trade</button>
+        </div>
+      </div>
+
+      <button class="btn-calculate" onclick="recalculate()">Recalculate scores</button>
+    </div>
+
+    <!-- Results -->
+    <div class="results-panel" id="results-panel">
+      <div class="no-firms-msg" id="no-firms-msg">
+        <div class="no-firms-msg-title">Select firms above to begin</div>
+        <div class="no-firms-msg-sub">Choose up to 3 firms and your scores will appear here</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="auth.js"></script>
+<script>
+
+// ── FIRM DATABASE ─────────────────────────────────────────────────────────────
+const FIRMS = [
+  {
+    id: 'ftmo',
+    name: 'FTMO',
+    type: 'Forex + Futures · 2-step',
+    region: 'Global (excl. US)',
+    available: true,
+    rules: {
+      maxDailyLoss: 5,          // % of account — hard daily limit
+      maxTotalLoss: 10,         // % of account — static floor
+      minTradingDays: 4,        // per phase
+      consistencyRule: 50,      // best day cannot exceed 50% of total profit (1-step only)
+      stopLossRequired: false,  // recommended but not enforced
+      maxRiskPerTrade: null,    // not explicitly stated
+    },
+    notes: 'No time limit on challenges. Daily loss measured from midnight CET including floating losses. 1-step has a 50% best-day consistency rule; 2-step does not.'
+  },
+  {
+    id: 'apex',
+    name: 'Apex Trader Funding',
+    type: 'Futures only · Trailing DD',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: null,       // no daily loss limit on evaluation
+      maxTotalLoss: 5,          // trailing threshold — approx 5% on 50k plan
+      minTradingDays: 7,        // for legacy evaluation
+      consistencyRule: 30,      // 30% rule on PA/funded accounts
+      stopLossRequired: true,   // required on funded accounts
+      maxRiskPerTrade: null,
+    },
+    notes: 'Trailing drawdown follows your peak equity including unrealised gains. No daily loss limit during evaluation. 30% consistency rule applies on funded accounts only.'
+  },
+  {
+    id: 'mffu',
+    name: 'MyFundedFutures',
+    type: 'Futures only · EOD DD',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: null,       // no daily loss limit — EOD trailing instead
+      maxTotalLoss: 3,          // 3% EOD trailing drawdown (Core plan)
+      minTradingDays: 2,        // minimum 2 days for evaluation
+      consistencyRule: 40,      // 40% rule — Core plan funded phase
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'EOD drawdown — floor recalculates at market close each day, not intraday. No daily loss limit. 40% consistency rule applies on Core funded accounts.'
+  },
+  {
+    id: 'fundednext',
+    name: 'FundedNext',
+    type: 'Forex + Futures · 1-step',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 5,          // 5% daily loss limit (CFDs / Stellar models)
+      maxTotalLoss: 10,         // 10% max loss (Stellar 2-step)
+      minTradingDays: 5,        // minimum 5 trading days
+      consistencyRule: 40,      // 40% consistency rule (Futures funded)
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Futures accounts have no daily loss limit. CFD accounts have 5% DLL. Consistency rule (40%) applies to funded Futures accounts only.'
+  },
+];
+
+const COMING_SOON_FIRMS = [
+  { name: 'Topstep', type: 'Futures · US-focused' },
+  { name: 'The5ers', type: 'Forex · Scaling' },
+  { name: 'FXIFY', type: 'Forex + Futures' },
+  { name: 'E8 Funding', type: 'Forex + Futures' },
+  { name: 'FundingPips', type: 'CFDs · Global' },
+  { name: 'Tradeify', type: 'Futures only' },
+  { name: 'Alpha Capital', type: 'Forex · Global' },
+  { name: 'Goat Funded', type: 'Multi-asset' },
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let selectedFirms = [];
+let trades = [
+  { result: 'win', risk: 1.0, rr: 2.0 },
+  { result: 'loss', risk: 1.0, rr: 0 },
+  { result: 'win', risk: 0.8, rr: 2.5 },
+];
+
+// ── SCORING ENGINE ────────────────────────────────────────────────────────────
+function scoreFirm(firm) {
+  const days = parseFloat(document.getElementById('input-days').value) || 0;
+  const worstDay = parseFloat(document.getElementById('input-worst-day').value) || 0;
+  const bestDayPct = parseFloat(document.getElementById('input-best-day-pct').value) || 0;
+  const riskPerTrade = parseFloat(document.getElementById('input-risk-per-trade').value) || 0;
+  const usesStopLoss = document.getElementById('input-stop-loss').checked;
+
+  const rules = firm.rules;
+  const results = [];
+  let totalWeight = 0;
+  let totalScore = 0;
+
+  // ── Rule 1: Daily loss limit ──────────────────────────────────────────────
+  if (rules.maxDailyLoss !== null) {
+    const weight = 30;
+    totalWeight += weight;
+    let status, detail;
+    if (worstDay <= rules.maxDailyLoss * 0.7) {
+      status = 'pass';
+      detail = `Your worst day (${worstDay}%) is well within the ${rules.maxDailyLoss}% daily limit`;
+      totalScore += weight;
+    } else if (worstDay <= rules.maxDailyLoss) {
+      status = 'warn';
+      detail = `Your worst day (${worstDay}%) is close to the ${rules.maxDailyLoss}% daily limit — aim for ${(rules.maxDailyLoss * 0.7).toFixed(1)}% max`;
+      totalScore += weight * 0.5;
+    } else {
+      status = 'fail';
+      detail = `Your worst day (${worstDay}%) exceeds the ${rules.maxDailyLoss}% daily limit — this would fail the challenge`;
+    }
+    results.push({ name: 'Daily loss limit', weight, status, detail });
+  } else {
+    results.push({ name: 'Daily loss limit', weight: 0, status: 'na', detail: 'No daily loss limit — only trailing drawdown applies' });
+  }
+
+  // ── Rule 2: Overall / trailing drawdown ──────────────────────────────────
+  {
+    const weight = 30;
+    totalWeight += weight;
+    // Estimate total drawdown from worst day + average risk
+    const estimatedWorstStreak = worstDay * 2; // conservative 2-day streak estimate
+    const limit = rules.maxTotalLoss;
+    let status, detail;
+    if (estimatedWorstStreak <= limit * 0.6) {
+      status = 'pass';
+      detail = `Estimated max drawdown (${estimatedWorstStreak.toFixed(1)}%) is safely within the ${limit}% limit`;
+      totalScore += weight;
+    } else if (estimatedWorstStreak <= limit) {
+      status = 'warn';
+      detail = `Estimated max drawdown (${estimatedWorstStreak.toFixed(1)}%) is close to the ${limit}% limit — reduce daily risk to add buffer`;
+      totalScore += weight * 0.5;
+    } else {
+      status = 'fail';
+      detail = `Estimated max drawdown (${estimatedWorstStreak.toFixed(1)}%) likely exceeds the ${limit}% limit`;
+    }
+    results.push({ name: 'Max drawdown / trailing threshold', weight, status, detail });
+  }
+
+  // ── Rule 3: Minimum trading days ─────────────────────────────────────────
+  {
+    const weight = 15;
+    totalWeight += weight;
+    const weeklyDays = days;
+    const limit = rules.minTradingDays;
+    // Project over a 4-week period
+    const projected = weeklyDays * 4;
+    let status, detail;
+    if (projected >= limit * 3) {
+      status = 'pass';
+      detail = `Trading ${weeklyDays} days/week comfortably exceeds the minimum ${limit} day requirement`;
+      totalScore += weight;
+    } else if (weeklyDays >= 1) {
+      status = 'pass';
+      detail = `You'll meet the ${limit}-day minimum — you just need ${limit} days across the whole challenge`;
+      totalScore += weight;
+    } else {
+      status = 'fail';
+      detail = `At ${weeklyDays} days/week you may struggle to meet the ${limit}-day minimum`;
+    }
+    results.push({ name: 'Minimum trading days', weight, status, detail });
+  }
+
+  // ── Rule 4: Consistency rule ──────────────────────────────────────────────
+  if (rules.consistencyRule !== null) {
+    const weight = 15;
+    totalWeight += weight;
+    const limit = rules.consistencyRule;
+    let status, detail;
+    if (bestDayPct <= limit * 0.7) {
+      status = 'pass';
+      detail = `Your best day (${bestDayPct}% of total profit) is well within the ${limit}% consistency limit`;
+      totalScore += weight;
+    } else if (bestDayPct <= limit) {
+      status = 'warn';
+      detail = `Your best day (${bestDayPct}%) is approaching the ${limit}% limit — keep spreading profits across more days`;
+      totalScore += weight * 0.5;
+    } else {
+      status = 'fail';
+      detail = `Your best day (${bestDayPct}%) exceeds the ${limit}% consistency rule — spread profits more evenly`;
+    }
+    results.push({ name: 'Consistency rule', weight, status, detail });
+  } else {
+    results.push({ name: 'Consistency rule', weight: 0, status: 'na', detail: 'No consistency rule for this firm / challenge type' });
+  }
+
+  // ── Rule 5: Stop loss usage ───────────────────────────────────────────────
+  if (rules.stopLossRequired) {
+    const weight = 10;
+    totalWeight += weight;
+    if (usesStopLoss) {
+      totalScore += weight;
+      results.push({ name: 'Stop loss on every trade', weight, status: 'pass', detail: 'You always use stop losses — this firm requires it' });
+    } else {
+      results.push({ name: 'Stop loss on every trade', weight, status: 'fail', detail: 'This firm requires hard stop losses on every trade' });
+    }
+  } else {
+    results.push({ name: 'Stop loss usage', weight: 0, status: usesStopLoss ? 'pass' : 'warn',
+      detail: usesStopLoss ? 'Good habit — stop losses are not mandatory here but strongly recommended' : 'Not required by this firm, but strongly recommended for consistent risk management' });
+  }
+
+  // ── Rule 6: Risk per trade ────────────────────────────────────────────────
+  {
+    const weight = 10;
+    if (rules.maxRiskPerTrade) {
+      totalWeight += weight;
+      if (riskPerTrade <= rules.maxRiskPerTrade) {
+        totalScore += weight;
+        results.push({ name: 'Risk per trade', weight, status: 'pass', detail: `Your average risk (${riskPerTrade}%) is within the ${rules.maxRiskPerTrade}% limit` });
+      } else {
+        results.push({ name: 'Risk per trade', weight, status: 'fail', detail: `Your average risk (${riskPerTrade}%) exceeds the ${rules.maxRiskPerTrade}% limit` });
+      }
+    } else {
+      // No hard rule — assess as good practice
+      if (riskPerTrade <= 1) {
+        results.push({ name: 'Risk per trade', weight: 0, status: 'pass', detail: `${riskPerTrade}% risk per trade — conservative and sustainable` });
+      } else if (riskPerTrade <= 2) {
+        results.push({ name: 'Risk per trade', weight: 0, status: 'warn', detail: `${riskPerTrade}% risk per trade is manageable but leaves little buffer on bad days` });
+      } else {
+        results.push({ name: 'Risk per trade', weight: 0, status: 'fail', detail: `${riskPerTrade}% risk per trade is too high — two consecutive losses would consume ${(riskPerTrade * 2).toFixed(1)}% of your account` });
+      }
+    }
+  }
+
+  // ── Trade log analysis ────────────────────────────────────────────────────
+  if (trades.length >= 3) {
+    const wins = trades.filter(t => t.result === 'win').length;
+    const winRate = Math.round((wins / trades.length) * 100);
+    const avgRR = trades.filter(t => t.result === 'win').reduce((sum, t) => sum + t.rr, 0) / Math.max(wins, 1);
+    results.push({
+      name: 'Trade log analysis',
+      weight: 0,
+      status: winRate >= 40 && avgRR >= 1.5 ? 'pass' : winRate >= 30 ? 'warn' : 'fail',
+      detail: `${wins}/${trades.length} trades profitable (${winRate}% win rate) · Avg R:R on winners: ${avgRR.toFixed(1)}:1`
+    });
+  }
+
+  const pct = totalWeight > 0 ? Math.round((totalScore / totalWeight) * 100) : 0;
+  const grade = pct >= 75 ? 'pass' : pct >= 50 ? 'warn' : 'fail';
+  return { pct, grade, results, firm };
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderResults() {
+  const panel = document.getElementById('results-panel');
+  const noMsg = document.getElementById('no-firms-msg');
+
+  if (selectedFirms.length === 0) {
+    panel.innerHTML = '';
+    panel.appendChild(noMsg);
+    noMsg.style.display = 'block';
+    return;
+  }
+
+  const scores = selectedFirms.map(id => {
+    const firm = FIRMS.find(f => f.id === id);
+    return scoreFirm(firm);
+  });
+
+  const statusIcon = { pass: '✓', warn: '▲', fail: '✗', na: '—' };
+  const statusLabel = { pass: 'Pass', warn: 'Close', fail: 'Fail', na: 'N/A' };
+  const pillClass = { pass: 'pill-pass', warn: 'pill-warn', fail: 'pill-fail', na: 'pill-na' };
+
+  let html = '';
+
+  scores.forEach(s => {
+    html += `
+      <div class="score-card">
+        <div class="score-card-header">
+          <div>
+            <div class="score-firm-name">${s.firm.name}</div>
+            <div class="score-firm-type">${s.firm.type} · ${s.firm.region}</div>
+          </div>
+          <div class="score-big">
+            <div class="score-num ${s.grade}">${s.pct}%</div>
+            <div class="score-label ${s.grade}">${s.grade === 'pass' ? 'Ready' : s.grade === 'warn' ? 'Close' : 'Not ready'}</div>
+          </div>
+        </div>
+        <div class="score-bar-wrap">
+          <div class="score-bar-bg">
+            <div class="score-bar-fill ${s.grade}" style="width:${s.pct}%"></div>
+          </div>
+        </div>
+        <div class="rules-list">
+          ${s.results.map(r => `
+            <div class="rule-row ${r.status}">
+              <div class="rule-icon">${statusIcon[r.status]}</div>
+              <div class="rule-info">
+                <div class="rule-name">${r.name}</div>
+                <div class="rule-detail ${r.status}">${r.detail}</div>
+              </div>
+              <div class="rule-pill ${pillClass[r.status]}">${statusLabel[r.status]}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+
+  // Summary card
+  const avgScore = Math.round(scores.reduce((s, r) => s + r.pct, 0) / scores.length);
+  const bestFirm = scores.reduce((a, b) => a.pct > b.pct ? a : b);
+  const wins = trades.filter(t => t.result === 'win').length;
+  const winRate = trades.length > 0 ? Math.round((wins / trades.length) * 100) : 0;
+
+  html += `
+    <div class="summary-card">
+      <div class="summary-title">Your readiness summary</div>
+      <div class="summary-grid">
+        <div class="summary-cell">
+          <div class="summary-cell-val">${avgScore}%</div>
+          <div class="summary-cell-label">Average score</div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-cell-val">${bestFirm.firm.name.split(' ')[0]}</div>
+          <div class="summary-cell-label">Best match</div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-cell-val">${winRate}%</div>
+          <div class="summary-cell-label">Win rate (logged)</div>
+        </div>
+      </div>
+      <div class="summary-disclaimer">
+        Scores are indicative only, based on publicly available rules. Rules change frequently — always verify requirements directly with each firm before purchasing a challenge. Traxent is not affiliated with any prop firm listed here.
+      </div>
+    </div>
+  `;
+
+  panel.innerHTML = html;
+}
+
+function recalculate() {
+  saveToStorage();
+  renderResults();
+}
+
+// ── FIRM SELECTOR ─────────────────────────────────────────────────────────────
+function renderFirmSelector() {
+  const grid = document.getElementById('firms-grid');
+  grid.innerHTML = FIRMS.map(f => `
+    <div class="firm-chip ${selectedFirms.includes(f.id) ? 'selected' : ''} ${!selectedFirms.includes(f.id) && selectedFirms.length >= 3 ? 'disabled' : ''}"
+         id="chip-${f.id}" onclick="toggleFirm('${f.id}')">
+      <div class="firm-chip-check">${selectedFirms.includes(f.id) ? '✓' : ''}</div>
+      <div class="firm-chip-name">${f.name}</div>
+      <div class="firm-chip-type">${f.type}</div>
+      <div class="firm-chip-region">${f.region}</div>
+    </div>
+  `).join('');
+
+  const comingGrid = document.getElementById('coming-soon-grid');
+  comingGrid.innerHTML = COMING_SOON_FIRMS.map(f => `
+    <div class="coming-chip">
+      <div class="coming-chip-name">${f.name}</div>
+      <div class="coming-chip-label">Coming soon · ${f.type}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('selected-count').textContent = selectedFirms.length;
+}
+
+function toggleFirm(id) {
+  if (selectedFirms.includes(id)) {
+    selectedFirms = selectedFirms.filter(f => f !== id);
+  } else if (selectedFirms.length < 3) {
+    selectedFirms.push(id);
+  }
+  renderFirmSelector();
+  recalculate();
+}
+
+// ── TRADE LOG ─────────────────────────────────────────────────────────────────
+function renderTrades() {
+  const container = document.getElementById('trade-log-rows');
+  container.innerHTML = trades.map((t, i) => `
+    <div class="trade-log-row" id="trade-row-${i}">
+      <div style="display:flex;gap:4px">
+        <button class="trade-result-btn win ${t.result === 'win' ? 'active' : ''}" onclick="setTradeResult(${i},'win')">W</button>
+        <button class="trade-result-btn loss ${t.result === 'loss' ? 'active' : ''}" onclick="setTradeResult(${i},'loss')">L</button>
+      </div>
+      <input type="number" class="input-field" value="${t.risk}" step="0.1" min="0" max="10"
+             onchange="setTradeRisk(${i}, this.value)" style="padding:6px 8px;font-size:12px">
+      <input type="number" class="input-field" value="${t.rr}" step="0.1" min="0" max="20"
+             onchange="setTradeRR(${i}, this.value)" style="padding:6px 8px;font-size:12px">
+      <button class="btn-remove-trade" onclick="removeTrade(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function addTrade() {
+  if (trades.length >= 10) return;
+  trades.push({ result: 'win', risk: 1.0, rr: 2.0 });
+  renderTrades();
+  recalculate();
+}
+
+function removeTrade(i) {
+  trades.splice(i, 1);
+  renderTrades();
+  recalculate();
+}
+
+function setTradeResult(i, result) {
+  trades[i].result = result;
+  renderTrades();
+  recalculate();
+}
+
+function setTradeRisk(i, val) {
+  trades[i].risk = parseFloat(val) || 0;
+  recalculate();
+}
+
+function setTradeRR(i, val) {
+  trades[i].rr = parseFloat(val) || 0;
+  recalculate();
+}
+
+// ── STORAGE ───────────────────────────────────────────────────────────────────
+function saveToStorage() {
+  const data = {
+    selectedFirms,
+    trades,
+    inputs: {
+      days: document.getElementById('input-days').value,
+      worstDay: document.getElementById('input-worst-day').value,
+      bestDayPct: document.getElementById('input-best-day-pct').value,
+      riskPerTrade: document.getElementById('input-risk-per-trade').value,
+      stopLoss: document.getElementById('input-stop-loss').checked,
+    }
+  };
+  localStorage.setItem('traxent_tracker', JSON.stringify(data));
+}
+
+function loadFromStorage() {
+  try {
+    const saved = localStorage.getItem('traxent_tracker');
+    if (!saved) return;
+    const data = JSON.parse(saved);
+    if (data.selectedFirms) selectedFirms = data.selectedFirms;
+    if (data.trades) trades = data.trades;
+    if (data.inputs) {
+      document.getElementById('input-days').value = data.inputs.days;
+      document.getElementById('input-worst-day').value = data.inputs.worstDay;
+      document.getElementById('input-best-day-pct').value = data.inputs.bestDayPct;
+      document.getElementById('input-risk-per-trade').value = data.inputs.riskPerTrade;
+      document.getElementById('input-stop-loss').checked = data.inputs.stopLoss;
+    }
+  } catch(e) { /* ignore */ }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+async function initTracker() {
+  try {
+    await initAuth0();
+
+    if (window.location.search.includes('code=') || window.location.search.includes('state=')) {
+      await auth0Client.handleRedirectCallback();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    const isAuthenticated = await auth0Client.isAuthenticated();
+    if (!isAuthenticated) {
+      await auth0Client.loginWithRedirect({
+        authorizationParams: { redirect_uri: window.location.origin + '/tracker' }
+      });
+      return;
+    }
+
+    const claims = await auth0Client.getIdTokenClaims();
+    const ns = 'https://traxent.io';
+    const plan = (claims && claims[`${ns}/plan`]) || 'free';
+    const PLAN_HIERARCHY = ['free', 'observer', 'challenger', 'funded_ready'];
+
+    if (PLAN_HIERARCHY.indexOf(plan) < PLAN_HIERARCHY.indexOf('challenger')) {
+      // Show upgrade gate instead of tracker
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+      document.querySelector('.firm-selector-wrap').style.display = 'none';
+      document.querySelector('.tracker-layout').innerHTML = `
+        <div class="upgrade-gate" style="grid-column:1/-1">
+          <div class="upgrade-gate-title">Readiness tracker — Challenger feature</div>
+          <div class="upgrade-gate-body">
+            The readiness tracker is available on the Challenger plan at £12.99/mo. Upgrade to select up to 3 prop firms and track your readiness against their published rules in real time.
+          </div>
+          <a href="/dashboard" class="btn-upgrade-gate" onclick="upgradePlan('challenger'); return false;">Upgrade to Challenger →</a>
+        </div>
+      `;
+      return;
+    }
+
+    loadFromStorage();
+    renderFirmSelector();
+    renderTrades();
+
+    // Default: select first two firms
+    if (selectedFirms.length === 0) {
+      selectedFirms = ['ftmo', 'apex'];
+      renderFirmSelector();
+    }
+
+    recalculate();
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+
+  } catch (err) {
+    console.error('Tracker error:', err);
+    window.location.href = '/';
+  }
+}
+
+async function upgradePlan(plan) {
+  try {
+    const user = await auth0Client.getUser();
+    const token = await auth0Client.getTokenSilently();
+    const res = await fetch('https://da579ew81m.execute-api.eu-west-2.amazonaws.com/prod/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ plan, userId: user.sub, userEmail: user.email })
+    });
+    if (!res.ok) throw new Error();
+    const { url } = await res.json();
+    window.location.href = url;
+  } catch { alert('Something went wrong — please try from the dashboard.'); }
+}
+
+initTracker();
+</script>
+</body>
+</html>

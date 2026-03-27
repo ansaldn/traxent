@@ -210,7 +210,7 @@ async function initDashboard() {
     const isAuthenticated = await auth0Client.isAuthenticated();
     if (!isAuthenticated) {
       await auth0Client.loginWithRedirect({
-        authorizationParams: { redirect_uri: window.location.origin + '/dashboard.html' }
+        authorizationParams: { redirect_uri: window.location.origin + '/dashboard' }
       });
       return;
     }

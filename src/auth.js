@@ -30,7 +30,7 @@ async function initAuth0() {
 async function login() {
   await auth0Client.loginWithRedirect({
     authorizationParams: {
-      redirect_uri: window.location.origin + '/dashboard.html',
+      redirect_uri: window.location.origin + '/dashboard',
     }
   });
 }

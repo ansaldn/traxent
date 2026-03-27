@@ -143,9 +143,8 @@ const ALL_FEATURES = [
       observer:     'Learn the 5 core trading patterns with plain-English explainers.',
       challenger:   'All 15 patterns with live chart examples and real-time context.',
       funded_ready: 'All 15 patterns with premium data and advanced entry/exit coaching.',
-      link: '/learn',
     },
-    action: 'Start learning', minPlan: 'free',
+    action: 'Start learning', minPlan: 'free', link: '/learn',
   },
   {
     icon: '🧮', title: 'Position size calculator',
@@ -155,7 +154,7 @@ const ALL_FEATURES = [
       challenger:   'Full risk management suite with prop firm drawdown limits built in.',
       funded_ready: 'Full risk management suite with prop firm drawdown limits built in.',
     },
-    action: 'Open calculator', minPlan: 'free',
+    action: 'Open calculator', minPlan: 'free', link: '/position-calculator',
   },
   {
     icon: '📊', title: 'Live chart',
@@ -165,7 +164,7 @@ const ALL_FEATURES = [
       challenger:   'Real-time price data on all tracked instruments.',
       funded_ready: 'Premium institutional data feed — fully customisable.',
     },
-    action: 'View chart', minPlan: 'observer', requiredLabel: 'Observer+',
+    action: 'View chart', minPlan: 'observer', requiredLabel: 'Observer+', link: '/live-chart',
   },
   {
     icon: '🎯', title: 'Readiness tracker',
@@ -175,7 +174,7 @@ const ALL_FEATURES = [
       challenger:   'Full score breakdown per rule vs all 4 firms — updated with every trade.',
       funded_ready: 'Full score + personalised coaching on exactly what to fix per firm.',
     },
-    action: 'See my score', minPlan: 'challenger', requiredLabel: 'Challenger+',
+    action: 'See my score', minPlan: 'challenger', requiredLabel: 'Challenger+', link: '/readiness-tracker',
   },
   {
     icon: '📓', title: 'Sim trade journal',
@@ -185,7 +184,7 @@ const ALL_FEATURES = [
       challenger:   'Full journal with win rate, R:R, consistency score and pattern tagging.',
       funded_ready: 'Full journal with challenge simulation mode — practice against real firm rules.',
     },
-    action: 'Open journal', minPlan: 'challenger', requiredLabel: 'Challenger+',
+    action: 'Open journal', minPlan: 'challenger', requiredLabel: 'Challenger+', link: '/journal',
   },
   {
     icon: '📰', title: 'News sentiment feed',
@@ -195,7 +194,7 @@ const ALL_FEATURES = [
       challenger:   'AI-tagged market news with bull/bear sentiment scoring.',
       funded_ready: 'Premium news feed with economic calendar integration and event alerts.',
     },
-    action: 'Read feed', minPlan: 'funded_ready', requiredLabel: 'Funded Ready',
+    action: 'Read feed', minPlan: 'funded_ready', requiredLabel: 'Funded Ready', link: '/news',
   },
 ];
 

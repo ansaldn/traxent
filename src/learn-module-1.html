@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1: Trading Fundamentals — Traxent Learn</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f2;
+  --ink: #0e0e0c;
+  --ink2: #3a3a36;
+  --ink3: #7a7a72;
+  --accent: #0a6e4f;
+  --accent-light: rgba(10,110,79,.08);
+  --accent-mid: #1a9e72;
+  --border: rgba(14,14,12,0.1);
+  --border2: rgba(14,14,12,0.06);
+  --surface: #ffffff;
+  --surface2: #f0efe9;
+  --good: #0a6e4f;
+  --warn: #b06000;
+  --bad: #9e1a1a;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', sans-serif;
+  --mono: 'Geist Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+/* ── NAV ── */
+nav { position: sticky; top: 0; z-index: 200; background: rgba(247,246,242,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+.nav-inner { max-width: 1120px; margin: 0 auto; padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: var(--mono); font-size: 15px; color: var(--ink); text-decoration: none; }
+.nav-logo em { font-style: normal; color: var(--accent); }
+.nav-back { font-size: 13px; color: var(--ink3); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
+.nav-back:hover { color: var(--ink); }
+.nav-back::before { content: '←'; }
+
+/* ── LAYOUT ── */
+.learn-wrap { max-width: 1120px; margin: 0 auto; padding: 48px 40px; display: grid; grid-template-columns: 280px 1fr; gap: 48px; align-items: start; }
+
+/* ── SIDEBAR ── */
+.sidebar { position: sticky; top: 80px; }
+.module-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.module-title { font-family: var(--serif); font-size: 20px; font-weight: 400; color: var(--ink); margin-bottom: 4px; }
+.module-meta { font-size: 12px; color: var(--ink3); margin-bottom: 24px; }
+.module-progress { margin-bottom: 24px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink3); margin-bottom: 6px; }
+.progress-bar { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s ease; }
+.lesson-list { display: flex; flex-direction: column; gap: 2px; }
+.lesson-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: background 0.15s; border: 1px solid transparent; }
+.lesson-item:hover { background: var(--surface); border-color: var(--border); }
+.lesson-item.active { background: var(--surface); border-color: var(--accent); }
+.lesson-item.completed .lesson-status { background: var(--accent); color: white; }
+.lesson-status { width: 24px; height: 24px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; font-family: var(--mono); color: var(--ink3); flex-shrink: 0; transition: all 0.2s; }
+.lesson-item.active .lesson-status { background: var(--accent); color: white; border-color: var(--accent); }
+.lesson-info { display: flex; flex-direction: column; gap: 2px; }
+.lesson-name { font-size: 13px; color: var(--ink); font-weight: 400; }
+.lesson-item.active .lesson-name { font-weight: 500; color: var(--accent); }
+.lesson-duration { font-size: 11px; color: var(--ink3); font-family: var(--mono); }
+.quiz-item { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+.quiz-item .lesson-status { background: rgba(10,110,79,.1); color: var(--accent); border-color: rgba(10,110,79,.2); }
+.sidebar-cta { margin-top: 24px; padding: 14px 16px; background: var(--accent-light); border: 1px solid rgba(10,110,79,.15); border-radius: 8px; }
+.sidebar-cta-text { font-size: 12px; color: var(--ink2); line-height: 1.5; margin-bottom: 10px; }
+.sidebar-cta-btn { display: block; text-align: center; background: var(--accent); color: white; font-size: 12px; font-weight: 500; padding: 8px 16px; border-radius: 6px; text-decoration: none; transition: background 0.15s; }
+.sidebar-cta-btn:hover { background: #085e43; }
+
+/* ── LESSON CONTENT ── */
+.lesson-content { min-height: 60vh; }
+.lesson-header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.lesson-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.lesson-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+.lesson-title { font-family: var(--serif); font-size: 40px; font-weight: 400; line-height: 1.1; color: var(--ink); margin-bottom: 16px; }
+.lesson-intro { font-size: 17px; color: var(--ink2); line-height: 1.7; font-weight: 300; max-width: 640px; }
+.lesson-body { max-width: 680px; }
+.lesson-body h2 { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--ink); margin: 40px 0 16px; }
+.lesson-body h3 { font-size: 16px; font-weight: 500; color: var(--ink); margin: 28px 0 12px; }
+.lesson-body p { font-size: 15px; color: var(--ink2); line-height: 1.8; margin-bottom: 18px; font-weight: 300; }
+.lesson-body strong { color: var(--ink); font-weight: 500; }
+.lesson-body em { font-style: italic; color: var(--ink2); }
+
+/* Callout boxes */
+.callout { border-radius: 8px; padding: 18px 22px; margin: 28px 0; }
+.callout-key { background: var(--accent-light); border: 1px solid rgba(10,110,79,.15); border-left: 3px solid var(--accent); }
+.callout-key .callout-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.callout-example { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--ink3); }
+.callout-example .callout-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
+.callout-warn { background: rgba(176,96,0,.06); border: 1px solid rgba(176,96,0,.15); border-left: 3px solid var(--warn); }
+.callout-warn .callout-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warn); margin-bottom: 8px; }
+.callout p { margin-bottom: 0; font-size: 14px; }
+
+/* Stat cards */
+.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 28px 0; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+.stat-val { font-family: var(--serif); font-size: 32px; font-weight: 400; color: var(--ink); font-style: italic; margin-bottom: 4px; }
+.stat-label { font-size: 12px; color: var(--ink3); line-height: 1.4; }
+
+/* Visual explainer */
+.visual-explainer { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 28px 0; }
+.ve-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); margin-bottom: 16px; }
+.ve-row { display: flex; gap: 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 12px; }
+.ve-cell { flex: 1; padding: 12px 16px; border-right: 1px solid var(--border); }
+.ve-cell:last-child { border-right: none; }
+.ve-cell-label { font-size: 10px; font-family: var(--mono); color: var(--ink3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.ve-cell-val { font-size: 14px; color: var(--ink); font-weight: 500; }
+.ve-cell-sub { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+.ve-good { background: rgba(10,110,79,.06); }
+.ve-bad { background: rgba(158,26,26,.06); }
+.ve-cell-val.green { color: var(--good); }
+.ve-cell-val.red { color: var(--bad); }
+
+/* Lesson nav */
+.lesson-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--border); }
+.btn-lesson { display: flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; text-decoration: none; }
+.btn-prev { background: var(--surface); border: 1px solid var(--border); color: var(--ink2); }
+.btn-prev:hover { border-color: var(--ink); color: var(--ink); }
+.btn-prev::before { content: '←'; }
+.btn-next { background: var(--accent); color: white; }
+.btn-next:hover { background: #085e43; }
+.btn-next::after { content: '→'; }
+.btn-next:disabled, .btn-next[disabled] { opacity: 0.4; cursor: not-allowed; }
+.lesson-nav-info { font-size: 12px; color: var(--ink3); font-family: var(--mono); }
+
+/* ── QUIZ ── */
+.quiz-wrap { max-width: 680px; }
+.quiz-header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.quiz-title { font-family: var(--serif); font-size: 40px; font-weight: 400; color: var(--ink); margin-bottom: 12px; }
+.quiz-intro { font-size: 15px; color: var(--ink2); line-height: 1.7; font-weight: 300; }
+.quiz-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; }
+.quiz-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); transition: all 0.2s; }
+.quiz-dot.active { background: var(--accent); border-color: var(--accent); }
+.quiz-dot.done { background: var(--accent); border-color: var(--accent); opacity: 0.4; }
+.question-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; margin-bottom: 24px; }
+.question-num { font-family: var(--mono); font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+.question-text { font-size: 17px; color: var(--ink); line-height: 1.55; margin-bottom: 24px; font-weight: 400; }
+.options { display: flex; flex-direction: column; gap: 10px; }
+.option { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+.option:hover { border-color: var(--accent); background: var(--accent-light); }
+.option.selected { border-color: var(--accent); background: var(--accent-light); }
+.option.correct { border-color: var(--good); background: rgba(10,110,79,.08); }
+.option.incorrect { border-color: var(--bad); background: rgba(158,26,26,.06); }
+.option-letter { width: 24px; height: 24px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; color: var(--ink3); flex-shrink: 0; transition: all 0.15s; }
+.option.selected .option-letter { background: var(--accent); color: white; border-color: var(--accent); }
+.option.correct .option-letter { background: var(--good); color: white; border-color: var(--good); }
+.option.incorrect .option-letter { background: var(--bad); color: white; border-color: var(--bad); }
+.option-text { font-size: 14px; color: var(--ink2); line-height: 1.5; padding-top: 3px; }
+.option.correct .option-text, .option.incorrect .option-text { color: var(--ink); font-weight: 500; }
+.feedback-box { padding: 14px 18px; border-radius: 8px; margin-top: 16px; font-size: 14px; line-height: 1.55; display: none; }
+.feedback-box.show { display: block; }
+.feedback-correct { background: rgba(10,110,79,.08); border: 1px solid rgba(10,110,79,.2); color: var(--good); }
+.feedback-incorrect { background: rgba(158,26,26,.06); border: 1px solid rgba(158,26,26,.15); color: var(--bad); }
+.feedback-box strong { font-weight: 500; }
+.quiz-btn-row { display: flex; justify-content: flex-end; margin-top: 24px; }
+.btn-quiz { padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; }
+.btn-submit { background: var(--accent); color: white; }
+.btn-submit:hover { background: #085e43; }
+.btn-submit:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-next-q { background: var(--ink); color: white; display: none; }
+.btn-next-q:hover { background: var(--accent); }
+
+/* Quiz result */
+.quiz-result { text-align: center; padding: 48px 0; display: none; }
+.result-score { font-family: var(--serif); font-size: 80px; font-weight: 400; font-style: italic; line-height: 1; margin-bottom: 12px; }
+.result-score.pass { color: var(--good); }
+.result-score.fail { color: var(--bad); }
+.result-label { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 24px; }
+.result-message { font-size: 16px; color: var(--ink2); line-height: 1.65; max-width: 480px; margin: 0 auto 32px; font-weight: 300; }
+.result-actions { display: flex; gap: 12px; justify-content: center; }
+.btn-result { padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; text-decoration: none; display: inline-block; }
+.btn-result-primary { background: var(--accent); color: white; }
+.btn-result-primary:hover { background: #085e43; }
+.btn-result-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--ink2); }
+.btn-result-secondary:hover { border-color: var(--ink); color: var(--ink); }
+
+/* Completion banner */
+.completion-banner { background: var(--ink); border-radius: 12px; padding: 28px 32px; margin-top: 40px; display: none; }
+.completion-banner.show { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.cb-left { display: flex; flex-direction: column; gap: 6px; }
+.cb-title { font-family: var(--serif); font-size: 22px; font-weight: 400; color: white; }
+.cb-sub { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 300; }
+.cb-btn { background: var(--accent-mid); color: white; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background 0.15s; }
+.cb-btn:hover { background: var(--accent); }
+
+@media (max-width: 900px) {
+  .learn-wrap { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .stat-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">trax<em>ent</em></a>
+    <a href="/dashboard" class="nav-back">Back to dashboard</a>
+  </div>
+</nav>
+
+<div class="learn-wrap">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="module-label">Module 1 · Free</div>
+    <div class="module-title">Trading Fundamentals</div>
+    <div class="module-meta">3 lessons · 1 quiz · ~25 min</div>
+    <div class="module-progress">
+      <div class="progress-label">
+        <span>Progress</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="lesson-list">
+      <div class="lesson-item active" id="nav-0" onclick="showLesson(0)">
+        <div class="lesson-status" id="status-0">1</div>
+        <div class="lesson-info">
+          <div class="lesson-name">What is a prop firm?</div>
+          <div class="lesson-duration">8 min read</div>
+        </div>
+      </div>
+      <div class="lesson-item" id="nav-1" onclick="showLesson(1)">
+        <div class="lesson-status" id="status-1">2</div>
+        <div class="lesson-info">
+          <div class="lesson-name">How markets move</div>
+          <div class="lesson-duration">9 min read</div>
+        </div>
+      </div>
+      <div class="lesson-item" id="nav-2" onclick="showLesson(2)">
+        <div class="lesson-status" id="status-2">3</div>
+        <div class="lesson-info">
+          <div class="lesson-name">Your first risk calculation</div>
+          <div class="lesson-duration">8 min read</div>
+        </div>
+      </div>
+      <div class="lesson-item quiz-item" id="nav-3" onclick="showLesson(3)">
+        <div class="lesson-status" id="status-3">✦</div>
+        <div class="lesson-info">
+          <div class="lesson-name">Module 1 quiz</div>
+          <div class="lesson-duration">5 questions</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-cta" id="sidebar-cta" style="display:none">
+      <div class="sidebar-cta-text">Complete this module to unlock Module 2 — Chart Patterns.</div>
+      <a href="/pricing" class="sidebar-cta-btn">Upgrade to Observer →</a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main>
+
+    <!-- LESSON 1 -->
+    <div id="lesson-0" class="lesson-content">
+      <div class="lesson-header">
+        <div class="lesson-eyebrow">Module 1 · Lesson 1</div>
+        <h1 class="lesson-title">What is a prop firm?</h1>
+        <p class="lesson-intro">Before you learn how to trade, it helps to understand why you're learning — and what a funded trading account actually means. This lesson explains the prop firm model in plain English.</p>
+      </div>
+      <div class="lesson-body">
+
+        <h2>The problem with trading your own money</h2>
+        <p>Most people who want to trade face the same obstacle: <strong>capital</strong>. To make meaningful returns from trading, you need a meaningful amount of money to trade with. If you have £1,000 and make a 10% return in a month, you've made £100. That's impressive as a percentage but not life-changing as an income.</p>
+        <p>The maths only starts to work at scale. A 5% return on £100,000 is £5,000. The same skill, the same percentage — but a very different outcome.</p>
+        <p>This is where proprietary trading firms, or <strong>prop firms</strong>, come in.</p>
+
+        <div class="callout callout-key">
+          <div class="callout-label">Key concept</div>
+          <p>A prop firm provides capital to traders who can demonstrate disciplined, consistent trading. You trade their money, keep the majority of the profits, and they take a cut for providing the capital and absorbing the risk.</p>
+        </div>
+
+        <h2>How the model works</h2>
+        <p>Prop firms operate on a straightforward principle: they want to find traders who are consistent and disciplined, not lucky. To filter out gamblers from genuine traders, they run evaluation programmes — commonly called "challenges".</p>
+        <p>A typical challenge works like this:</p>
+
+        <div class="visual-explainer">
+          <div class="ve-title">Typical prop firm challenge structure</div>
+          <div class="ve-row">
+            <div class="ve-cell">
+              <div class="ve-cell-label">Phase</div>
+              <div class="ve-cell-val">Challenge</div>
+              <div class="ve-cell-sub">Prove your edge</div>
+            </div>
+            <div class="ve-cell">
+              <div class="ve-cell-label">Profit target</div>
+              <div class="ve-cell-val">8–10%</div>
+              <div class="ve-cell-sub">Of account size</div>
+            </div>
+            <div class="ve-cell">
+              <div class="ve-cell-label">Max drawdown</div>
+              <div class="ve-cell-val">10%</div>
+              <div class="ve-cell-sub">Cannot breach this</div>
+            </div>
+          </div>
+          <div class="ve-row">
+            <div class="ve-cell ve-good">
+              <div class="ve-cell-label">Pass</div>
+              <div class="ve-cell-val green">Funded account</div>
+              <div class="ve-cell-sub">Trade up to £200k</div>
+            </div>
+            <div class="ve-cell ve-bad">
+              <div class="ve-cell-label">Fail</div>
+              <div class="ve-cell-val red">Challenge resets</div>
+              <div class="ve-cell-sub">Pay fee to retry</div>
+            </div>
+            <div class="ve-cell">
+              <div class="ve-cell-label">Profit split</div>
+              <div class="ve-cell-val">80–90%</div>
+              <div class="ve-cell-sub">Yours to keep</div>
+            </div>
+          </div>
+        </div>
+
+        <h2>Why most traders fail challenges</h2>
+        <p>The failure rate on prop firm challenges is high — estimates suggest only 10–20% of traders pass on their first attempt. The reasons are almost never about skill. They are almost always about <strong>behaviour</strong>.</p>
+
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-val">~80%</div>
+            <div class="stat-label">Fail due to overtrading or revenge trading after a loss</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">1 day</div>
+            <div class="stat-label">Is all it takes to blow a challenge — one bad session</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">£100–500</div>
+            <div class="stat-label">Typical challenge fee, paid before you start</div>
+          </div>
+        </div>
+
+        <p>The most common pattern is a trader doing well for two weeks, then having one bad day where they try to recover losses quickly and breach the drawdown limit. The challenge ends. The fee is gone.</p>
+        <p>This is why Traxent exists — to help you build the habits that prevent that pattern before you pay for a real challenge.</p>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Common mistake</div>
+          <p>Many traders buy a challenge before they've practised the specific rules of that firm. Each firm has slightly different requirements around daily loss limits, consistency rules, and minimum trading days. Traxent tracks all of these so you know exactly where you stand before spending money.</p>
+        </div>
+
+        <h2>This applies beyond day trading</h2>
+        <p>The prop firm model is primarily associated with day traders — people making multiple trades per day on indices, forex, or futures. But the underlying principles of disciplined risk management, consistent behaviour, and capital efficiency apply to any form of active trading, including swing trading, options, and longer-term strategies.</p>
+        <p>Whatever your approach, the core lesson is the same: <strong>capital preservation comes first, profit follows</strong>.</p>
+
+      </div>
+      <div class="lesson-nav">
+        <span></span>
+        <span class="lesson-nav-info">Lesson 1 of 3</span>
+        <button class="btn-lesson btn-next" onclick="completeAndNext(0)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- LESSON 2 -->
+    <div id="lesson-1" class="lesson-content" style="display:none">
+      <div class="lesson-header">
+        <div class="lesson-eyebrow">Module 1 · Lesson 2</div>
+        <h1 class="lesson-title">How markets move</h1>
+        <p class="lesson-intro">Markets can look chaotic, but they follow recurring patterns driven by human behaviour. This lesson covers the basics of price action — what's actually happening when a chart moves up or down.</p>
+      </div>
+      <div class="lesson-body">
+
+        <h2>Price reflects decisions, not just data</h2>
+        <p>Every movement in a market price is the result of buyers and sellers agreeing — or disagreeing — on value. When more people want to buy than sell at the current price, price moves up. When more want to sell than buy, price moves down. Simple in theory. The complexity comes from the fact that millions of decisions are happening simultaneously, across different timeframes, driven by different information and motivations.</p>
+        <p>What you see on a chart is not just a line. It is a record of every trade that happened — the collective expression of confidence, fear, greed, and analysis from everyone participating in that market.</p>
+
+        <div class="callout callout-key">
+          <div class="callout-label">Key concept</div>
+          <p>Price action is the study of how price moves, without relying on external indicators. It asks: what is the market telling us right now, based purely on where price has been and where it is going?</p>
+        </div>
+
+        <h2>The two forces: supply and demand</h2>
+        <p>Every price movement comes down to the balance between supply and demand.</p>
+        <p><strong>Demand zones</strong> are price levels where buyers have historically stepped in and pushed price up. When price returns to these levels, buyers tend to reappear — making them significant reference points.</p>
+        <p><strong>Supply zones</strong> are the opposite — levels where sellers have pushed price down. These act as ceilings that price struggles to break through.</p>
+
+        <div class="callout callout-example">
+          <div class="callout-label">Real world analogy</div>
+          <p>Think of a market stall selling apples. At £1 each, demand is high and stock runs out quickly. At £3 each, buyers disappear and the seller is left with unsold stock. The market naturally finds a price where buyers and sellers agree — and that process of finding balance is exactly what you see on a trading chart.</p>
+        </div>
+
+        <h2>Trends, ranges, and reversals</h2>
+        <p>Markets spend most of their time in one of three states:</p>
+
+        <div class="visual-explainer">
+          <div class="ve-title">The three market states</div>
+          <div class="ve-row">
+            <div class="ve-cell ve-good">
+              <div class="ve-cell-label">Trending up</div>
+              <div class="ve-cell-val green">Higher highs</div>
+              <div class="ve-cell-sub">Buyers in control</div>
+            </div>
+            <div class="ve-cell ve-bad">
+              <div class="ve-cell-label">Trending down</div>
+              <div class="ve-cell-val red">Lower lows</div>
+              <div class="ve-cell-sub">Sellers in control</div>
+            </div>
+            <div class="ve-cell">
+              <div class="ve-cell-label">Ranging</div>
+              <div class="ve-cell-val">Sideways</div>
+              <div class="ve-cell-sub">No clear winner</div>
+            </div>
+          </div>
+        </div>
+
+        <p>An uptrend is characterised by a series of <strong>higher highs and higher lows</strong> — each peak is higher than the last, and each pullback doesn't go as low as the previous one. A downtrend is the mirror image. A range is when price bounces between a ceiling and a floor without making progress in either direction.</p>
+        <p>Understanding which state the market is in is the first question any trader should ask before placing a trade. Trading against a strong trend is one of the most common causes of unnecessary losses.</p>
+
+        <h2>What candlesticks tell you</h2>
+        <p>Most trading charts display price using <strong>candlesticks</strong> — each candle represents a specific period of time (one minute, one hour, one day) and shows four pieces of information: the opening price, the closing price, the highest price reached, and the lowest price reached in that period.</p>
+        <p>A green (or white) candle means price closed higher than it opened — buyers won that period. A red (or black) candle means price closed lower — sellers won. The thin lines above and below the candle body are called wicks, and they show how far price moved in each direction before reversing.</p>
+
+        <div class="callout callout-key">
+          <div class="callout-label">Why this matters for prop firms</div>
+          <p>Prop firms evaluate you on consistency — not on whether you can predict the market perfectly, but on whether you understand what the market is doing and make sensible decisions based on that. A trader who understands market structure will avoid trading against strong trends, wait for clear setups, and manage risk appropriately. That is exactly the trader a prop firm wants to fund.</p>
+        </div>
+
+        <h2>Timeframes — the same market, different perspectives</h2>
+        <p>The same instrument looks very different depending on what timeframe you're viewing. A stock might be in a clear downtrend on the daily chart but show a short-term upward move on the 5-minute chart. Neither is wrong — they're just different zoom levels of the same picture.</p>
+        <p>Most professional traders use <strong>multiple timeframes</strong> — a higher timeframe to understand the overall direction and context, and a lower timeframe to find precise entry points. A common approach is to only trade in the direction of the higher timeframe trend, using the lower timeframe to time the entry.</p>
+        <p>For day traders working toward prop firm challenges, the 15-minute and 1-hour charts are commonly used for context, with entries taken on the 1-minute or 5-minute chart.</p>
+
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-lesson btn-prev" onclick="showLesson(0)">Previous</button>
+        <span class="lesson-nav-info">Lesson 2 of 3</span>
+        <button class="btn-lesson btn-next" onclick="completeAndNext(1)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- LESSON 3 -->
+    <div id="lesson-2" class="lesson-content" style="display:none">
+      <div class="lesson-header">
+        <div class="lesson-eyebrow">Module 1 · Lesson 3</div>
+        <h1 class="lesson-title">Your first risk calculation</h1>
+        <p class="lesson-intro">Risk management is not optional — it is the single most important skill in trading. This lesson shows you how to calculate exactly how much to risk on any trade, before you enter it.</p>
+      </div>
+      <div class="lesson-body">
+
+        <h2>The number one reason traders lose money</h2>
+        <p>It is not bad analysis. It is not bad luck. It is <strong>poor risk management</strong>. A trader with a mediocre strategy but excellent risk management will outperform a trader with a brilliant strategy and poor risk management over the long run — every time.</p>
+        <p>The reason is simple: losses compound just as quickly as gains. A 50% loss requires a 100% gain just to get back to where you started. The maths of loss recovery is brutal, which is why preventing large losses is more important than chasing large gains.</p>
+
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-val">−10%</div>
+            <div class="stat-label">Requires +11% to recover</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">−25%</div>
+            <div class="stat-label">Requires +33% to recover</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">−50%</div>
+            <div class="stat-label">Requires +100% to recover</div>
+          </div>
+        </div>
+
+        <h2>The 1% rule</h2>
+        <p>The most widely used starting point in risk management is the <strong>1% rule</strong>: never risk more than 1% of your total account on a single trade. This means if you have a £10,000 account, the maximum you should be willing to lose on any one trade is £100.</p>
+        <p>This might sound overly cautious, but consider the maths. If you follow the 1% rule and have 10 losing trades in a row — an unlikely but possible scenario — you've lost approximately 10% of your account. That is recoverable. If you risk 10% per trade and have 10 losers in a row, you've lost your entire account.</p>
+
+        <div class="callout callout-key">
+          <div class="callout-label">Key concept</div>
+          <p>Risk per trade is not the same as position size. Your risk is defined by your stop loss — the point at which you accept the trade has not worked and exit. Position size is calculated from your risk amount and your stop loss distance.</p>
+        </div>
+
+        <h2>How to calculate position size</h2>
+        <p>The formula is straightforward:</p>
+
+        <div class="visual-explainer">
+          <div class="ve-title">Position size calculation</div>
+          <div class="ve-row">
+            <div class="ve-cell">
+              <div class="ve-cell-label">Step 1</div>
+              <div class="ve-cell-val">Define your risk</div>
+              <div class="ve-cell-sub">Account × risk % = £ at risk</div>
+            </div>
+            <div class="ve-cell">
+              <div class="ve-cell-label">Step 2</div>
+              <div class="ve-cell-val">Set your stop</div>
+              <div class="ve-cell-sub">Price distance to stop loss</div>
+            </div>
+            <div class="ve-cell">
+              <div class="ve-cell-label">Step 3</div>
+              <div class="ve-cell-val">Calculate size</div>
+              <div class="ve-cell-sub">Risk ÷ stop distance = units</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-example">
+          <div class="callout-label">Worked example</div>
+          <p>Account: £10,000 · Risk: 1% = £100 · Entry: 5,200 · Stop loss: 5,190 · Distance: 10 points · Position size: £100 ÷ 10 = £10 per point. If price hits your stop, you lose exactly £100 — your predefined risk.</p>
+        </div>
+
+        <h2>Risk to reward — why win rate is not the whole story</h2>
+        <p>Many new traders focus entirely on their win rate — how often they are right. But a trader who wins 40% of their trades can still be highly profitable if their winners are significantly larger than their losers.</p>
+        <p>This is the concept of <strong>risk to reward ratio (R:R)</strong>. If you risk £100 on a trade but your target is £200 profit, your R:R is 1:2. At a 1:2 R:R, you only need to win 34% of your trades to break even. At 1:3, you only need to win 25%.</p>
+
+        <div class="visual-explainer">
+          <div class="ve-title">Win rate needed to break even at different R:R ratios</div>
+          <div class="ve-row">
+            <div class="ve-cell">
+              <div class="ve-cell-label">R:R ratio</div>
+              <div class="ve-cell-val">1:1</div>
+              <div class="ve-cell-sub">Need 50% win rate</div>
+            </div>
+            <div class="ve-cell ve-good">
+              <div class="ve-cell-label">R:R ratio</div>
+              <div class="ve-cell-val green">1:2</div>
+              <div class="ve-cell-sub">Need 34% win rate</div>
+            </div>
+            <div class="ve-cell ve-good">
+              <div class="ve-cell-label">R:R ratio</div>
+              <div class="ve-cell-val green">1:3</div>
+              <div class="ve-cell-sub">Need 25% win rate</div>
+            </div>
+          </div>
+        </div>
+
+        <h2>How this connects to prop firm rules</h2>
+        <p>Every prop firm sets a maximum daily loss limit — typically 4–5% of the account. This is not arbitrary. It is designed to prevent one bad day from destroying weeks of good work.</p>
+        <p>If you are risking 1% per trade and your daily loss limit is 5%, you can have five losing trades in a row before hitting the limit. If you are risking 3% per trade, two bad trades end your day. The relationship between your risk per trade and the firm's daily limit defines how much room you have to be wrong — which you will be, regularly, even as a skilled trader.</p>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Traxent note</div>
+          <p>The position size calculator in your dashboard does this calculation automatically. Before placing any simulated trade, use it to confirm your position size matches your intended risk level. Building this habit in simulation means it becomes automatic when trading with real capital.</p>
+        </div>
+
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-lesson btn-prev" onclick="showLesson(1)">Previous</button>
+        <span class="lesson-nav-info">Lesson 3 of 3</span>
+        <button class="btn-lesson btn-next" onclick="completeAndNext(2)">Take the quiz</button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="lesson-3" class="lesson-content" style="display:none">
+      <div class="quiz-wrap">
+        <div class="quiz-header">
+          <div class="lesson-eyebrow">Module 1 · Quiz</div>
+          <h1 class="quiz-title">Test your knowledge</h1>
+          <p class="quiz-intro">5 questions covering the fundamentals from this module. You need 80% to pass and unlock Module 2. Take your time — this is about understanding, not speed.</p>
+        </div>
+
+        <div id="quiz-questions">
+          <div class="quiz-progress" id="quiz-progress"></div>
+
+          <div id="q-wrap"></div>
+
+          <div class="quiz-btn-row">
+            <button class="btn-quiz btn-submit" id="btn-submit" onclick="submitAnswer()" disabled>Submit answer</button>
+            <button class="btn-quiz btn-next-q" id="btn-next-q" onclick="nextQuestion()">Next question →</button>
+          </div>
+        </div>
+
+        <div class="quiz-result" id="quiz-result">
+          <div class="result-score" id="result-score"></div>
+          <div class="result-label" id="result-label"></div>
+          <div class="result-message" id="result-message"></div>
+          <div class="result-actions">
+            <button class="btn-result btn-result-secondary" onclick="retryQuiz()">Retry quiz</button>
+            <a href="/dashboard" class="btn-result btn-result-primary" id="result-continue" style="display:none">Continue to Module 2 →</a>
+          </div>
+        </div>
+
+        <div class="completion-banner" id="completion-banner">
+          <div class="cb-left">
+            <div class="cb-title">Module 1 complete</div>
+            <div class="cb-sub">You've unlocked Module 2 — Chart Patterns. Available on the Observer plan.</div>
+          </div>
+          <a href="/pricing" class="cb-btn">Upgrade to Observer →</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    text: "A prop firm provides a trader with capital in exchange for what?",
+    options: [
+      "A fixed monthly fee regardless of performance",
+      "A share of the profits generated from trading their capital",
+      "Ownership of a percentage of the trader's personal assets",
+      "A guarantee that the trader will never lose money"
+    ],
+    correct: 1,
+    feedback: {
+      correct: "Correct. Prop firms take a cut of profits — typically 10–20% — in exchange for providing the capital. The trader keeps the majority, usually 80–90%.",
+      incorrect: "Not quite. Prop firms make money by taking a share of the profits their funded traders generate. The challenge fee covers their costs if you don't pass, but the ongoing model is profit sharing."
+    }
+  },
+  {
+    text: "In an uptrend, which pattern do you expect to see in price movement?",
+    options: [
+      "Lower highs and lower lows",
+      "Higher highs and higher lows",
+      "Price moving sideways between two levels",
+      "Randomly alternating peaks and troughs"
+    ],
+    correct: 1,
+    feedback: {
+      correct: "Correct. An uptrend is defined by higher highs and higher lows — each peak is above the previous peak, and each pullback stops above the previous pullback low.",
+      incorrect: "Not quite. An uptrend is identified by a series of higher highs and higher lows. Lower highs and lower lows describe a downtrend. Sideways movement describes a ranging market."
+    }
+  },
+  {
+    text: "You have a £5,000 account and want to risk 1% on a trade. Your stop loss is 20 points away from your entry. What is your position size in £ per point?",
+    options: [
+      "£5 per point",
+      "£10 per point",
+      "£2.50 per point",
+      "£50 per point"
+    ],
+    correct: 2,
+    feedback: {
+      correct: "Correct. 1% of £5,000 = £50 risk. £50 ÷ 20 points = £2.50 per point. If price hits your stop 20 points away, you lose exactly £50.",
+      incorrect: "Let's check the maths. 1% of £5,000 = £50 (your maximum loss). Your stop is 20 points away. £50 ÷ 20 = £2.50 per point. That way if you're stopped out, you lose exactly £50."
+    }
+  },
+  {
+    text: "A trader has a risk to reward ratio of 1:3. What is the minimum win rate they need to be profitable?",
+    options: [
+      "50% — they need to win more than they lose",
+      "40% — slightly below even",
+      "25% — they only need to win 1 in 4 trades",
+      "75% — high win rate required for this ratio"
+    ],
+    correct: 2,
+    feedback: {
+      correct: "Correct. At 1:3 R:R, each win earns 3x what each loss costs. You only need to win 1 in 4 trades (25%) to break even — making this a very forgiving ratio for traders who are selective.",
+      incorrect: "At a 1:3 risk to reward ratio, each winner earns 3x what each loser costs. So if you win 1 trade and lose 3, you break even (1×3 = 3×1). That means a 25% win rate is the break-even point."
+    }
+  },
+  {
+    text: "What is the most common reason traders fail prop firm challenges?",
+    options: [
+      "Their trading strategy is not profitable enough",
+      "The profit targets are set too high by the firms",
+      "Poor risk management and emotional trading after losses",
+      "Lack of access to quality market data"
+    ],
+    correct: 2,
+    feedback: {
+      correct: "Correct. The majority of challenge failures come down to behaviour — specifically overtrading, revenge trading after a loss, or taking oversized positions to chase a target. The strategy is rarely the issue.",
+      incorrect: "While strategy matters, the primary cause of challenge failures is behavioural. Traders who breach their daily loss limit almost always do so because of emotional decisions — revenge trading or overtrading after a loss — not because their strategy failed."
+    }
+  }
+];
+
+let currentQ = 0;
+let selectedOption = null;
+let answered = false;
+let score = 0;
+let completed = [false, false, false, false];
+
+function showLesson(idx) {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('lesson-' + i).style.display = 'none';
+    document.getElementById('nav-' + i).classList.remove('active');
+  }
+  document.getElementById('lesson-' + idx).style.display = 'block';
+  document.getElementById('nav-' + idx).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function completeAndNext(idx) {
+  completed[idx] = true;
+  const statusEl = document.getElementById('status-' + idx);
+  statusEl.textContent = '✓';
+  document.getElementById('nav-' + idx).classList.add('completed');
+  updateProgress();
+  showLesson(idx + 1);
+  if (idx === 2) initQuiz();
+}
+
+function updateProgress() {
+  const done = completed.filter(Boolean).length;
+  const pct = Math.round((done / 4) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+}
+
+function initQuiz() {
+  currentQ = 0;
+  score = 0;
+  selectedOption = null;
+  answered = false;
+  document.getElementById('quiz-questions').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  renderQuestion();
+  renderProgress();
+}
+
+function renderProgress() {
+  const prog = document.getElementById('quiz-progress');
+  prog.innerHTML = QUESTIONS.map((_, i) => `<div class="quiz-dot ${i < currentQ ? 'done' : i === currentQ ? 'active' : ''}"></div>`).join('');
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('q-wrap').innerHTML = `
+    <div class="question-card">
+      <div class="question-num">Question ${currentQ + 1} of ${QUESTIONS.length}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <div class="option" id="opt-${i}" onclick="selectOption(${i})">
+            <div class="option-letter">${letters[i]}</div>
+            <div class="option-text">${opt}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="feedback-box" id="feedback"></div>
+    </div>
+  `;
+  selectedOption = null;
+  answered = false;
+  document.getElementById('btn-submit').disabled = true;
+  document.getElementById('btn-submit').style.display = 'block';
+  document.getElementById('btn-next-q').style.display = 'none';
+}
+
+function selectOption(idx) {
+  if (answered) return;
+  selectedOption = idx;
+  document.querySelectorAll('.option').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('btn-submit').disabled = false;
+}
+
+function submitAnswer() {
+  if (selectedOption === null || answered) return;
+  answered = true;
+  const q = QUESTIONS[currentQ];
+  const isCorrect = selectedOption === q.correct;
+  if (isCorrect) score++;
+
+  document.querySelectorAll('.option').forEach((el, i) => {
+    el.classList.remove('selected');
+    if (i === q.correct) el.classList.add('correct');
+    else if (i === selectedOption && !isCorrect) el.classList.add('incorrect');
+  });
+
+  const feedback = document.getElementById('feedback');
+  feedback.className = `feedback-box show ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`;
+  feedback.innerHTML = `<strong>${isCorrect ? '✓ Correct' : '✗ Not quite'}</strong> — ${isCorrect ? q.feedback.correct : q.feedback.incorrect}`;
+
+  document.getElementById('btn-submit').style.display = 'none';
+  document.getElementById('btn-next-q').style.display = 'block';
+  document.getElementById('btn-next-q').textContent = currentQ < QUESTIONS.length - 1 ? 'Next question →' : 'See results →';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= QUESTIONS.length) {
+    showResult();
+  } else {
+    renderProgress();
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('quiz-questions').style.display = 'none';
+  const result = document.getElementById('quiz-result');
+  result.style.display = 'block';
+
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  const pass = pct >= 80;
+
+  document.getElementById('result-score').textContent = pct + '%';
+  document.getElementById('result-score').className = 'result-score ' + (pass ? 'pass' : 'fail');
+  document.getElementById('result-label').textContent = pass ? 'Module 1 passed' : 'Not quite — try again';
+  document.getElementById('result-message').textContent = pass
+    ? `You answered ${score} out of ${QUESTIONS.length} questions correctly. You have a solid grasp of trading fundamentals. Module 2 — Chart Patterns — is now unlocked.`
+    : `You answered ${score} out of ${QUESTIONS.length} correctly. Review the lessons and try again — there's no penalty for retrying, and understanding these fundamentals properly will make everything else easier.`;
+
+  if (pass) {
+    document.getElementById('result-continue').style.display = 'inline-block';
+    completed[3] = true;
+    const statusEl = document.getElementById('status-3');
+    statusEl.textContent = '✓';
+    document.getElementById('nav-3').classList.add('completed');
+    updateProgress();
+    setTimeout(() => {
+      document.getElementById('completion-banner').classList.add('show');
+    }, 600);
+  }
+}
+
+function retryQuiz() {
+  document.getElementById('quiz-result').style.display = 'none';
+  initQuiz();
+}
+
+initQuiz();
+</script>
+</body>
+</html>

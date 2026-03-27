@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — Traxent</title>
+<meta name="description" content="Frequently asked questions about Traxent — the trading education platform that tracks your prop firm readiness.">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f2;
+  --ink: #0e0e0c;
+  --ink2: #3a3a36;
+  --ink3: #7a7a72;
+  --accent: #0a6e4f;
+  --accent-light: rgba(10,110,79,.08);
+  --border: rgba(14,14,12,0.1);
+  --surface: #ffffff;
+  --surface2: #f0efe9;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', sans-serif;
+  --mono: 'Geist Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+nav { position: sticky; top: 0; z-index: 100; background: rgba(247,246,242,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+.nav-inner { max-width: 1120px; margin: 0 auto; padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: var(--mono); font-size: 16px; font-weight: 500; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
+.nav-logo em { font-style: normal; color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 24px; }
+.nav-links a { font-size: 13px; color: var(--ink3); text-decoration: none; transition: color 0.15s; }
+.nav-links a:hover { color: var(--ink); }
+.nav-cta { background: var(--ink); color: white !important; padding: 8px 18px; border-radius: 6px; font-size: 13px !important; transition: background 0.15s !important; }
+.nav-cta:hover { background: var(--accent) !important; }
+
+/* Hero */
+.faq-hero { max-width: 1120px; margin: 0 auto; padding: 72px 40px 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; border-bottom: 1px solid var(--border); }
+.faq-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.faq-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--accent); }
+.faq-title { font-family: var(--serif); font-size: 52px; font-weight: 400; line-height: 1.08; color: var(--ink); margin-bottom: 16px; }
+.faq-sub { font-size: 16px; color: var(--ink3); line-height: 1.65; font-weight: 300; }
+.faq-stats { display: flex; flex-direction: column; gap: 16px; padding-bottom: 4px; }
+.faq-stat { display: flex; align-items: baseline; gap: 12px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
+.faq-stat-val { font-family: var(--serif); font-size: 32px; font-weight: 400; color: var(--ink); font-style: italic; flex-shrink: 0; }
+.faq-stat-label { font-size: 13px; color: var(--ink3); line-height: 1.4; font-weight: 300; }
+
+/* Main layout */
+.faq-body { max-width: 1120px; margin: 0 auto; padding: 64px 40px 96px; display: grid; grid-template-columns: 220px 1fr; gap: 64px; align-items: start; }
+
+/* Category nav */
+.cat-nav { position: sticky; top: 84px; }
+.cat-nav-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); margin-bottom: 12px; }
+.cat-list { display: flex; flex-direction: column; gap: 2px; }
+.cat-item { font-size: 13px; color: var(--ink3); padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.15s; text-decoration: none; display: block; border: 1px solid transparent; }
+.cat-item:hover { background: var(--surface); color: var(--ink); border-color: var(--border); }
+.cat-item.active { background: var(--surface); color: var(--accent); border-color: rgba(10,110,79,.2); font-weight: 500; }
+.cat-divider { height: 1px; background: var(--border); margin: 8px 0; }
+.cat-cta { margin-top: 24px; padding: 14px 16px; background: var(--accent-light); border: 1px solid rgba(10,110,79,.15); border-radius: 8px; }
+.cat-cta-text { font-size: 12px; color: var(--ink2); line-height: 1.5; margin-bottom: 10px; }
+.cat-cta-btn { display: block; text-align: center; background: var(--accent); color: white; font-size: 12px; font-weight: 500; padding: 8px 14px; border-radius: 6px; text-decoration: none; transition: background 0.15s; }
+.cat-cta-btn:hover { background: #085e43; }
+
+/* FAQ sections */
+.faq-sections { display: flex; flex-direction: column; gap: 56px; }
+.faq-section-title { font-family: var(--serif); font-size: 28px; font-weight: 400; color: var(--ink); margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+.faq-section-icon { font-size: 20px; }
+.faq-list { display: flex; flex-direction: column; gap: 2px; }
+
+/* Accordion items */
+.faq-item { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color 0.2s; }
+.faq-item.open { border-color: rgba(10,110,79,.25); }
+.faq-item + .faq-item { margin-top: 2px; }
+.faq-question { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; cursor: pointer; background: var(--surface); transition: background 0.15s; gap: 16px; user-select: none; }
+.faq-question:hover { background: var(--surface2); }
+.faq-item.open .faq-question { background: var(--surface); border-bottom: 1px solid var(--border); }
+.faq-q-text { font-size: 15px; color: var(--ink); font-weight: 400; line-height: 1.4; }
+.faq-item.open .faq-q-text { color: var(--accent); font-weight: 500; }
+.faq-chevron { width: 20px; height: 20px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.25s; font-size: 10px; color: var(--ink3); }
+.faq-item.open .faq-chevron { background: var(--accent); border-color: var(--accent); color: white; transform: rotate(180deg); }
+.faq-answer { background: var(--surface); max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 22px; }
+.faq-item.open .faq-answer { max-height: 600px; padding: 20px 22px 24px; }
+.faq-answer p { font-size: 14px; color: var(--ink2); line-height: 1.75; font-weight: 300; margin-bottom: 14px; }
+.faq-answer p:last-child { margin-bottom: 0; }
+.faq-answer strong { color: var(--ink); font-weight: 500; }
+.faq-answer a { color: var(--accent); text-decoration: none; }
+.faq-answer a:hover { text-decoration: underline; }
+.faq-answer .answer-highlight { background: var(--accent-light); border: 1px solid rgba(10,110,79,.15); border-radius: 6px; padding: 12px 16px; margin-top: 14px; }
+.faq-answer .answer-highlight p { font-size: 13px; margin-bottom: 0; }
+.faq-answer ul { margin: 10px 0 14px; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.faq-answer ul li { font-size: 14px; color: var(--ink2); padding-left: 18px; position: relative; font-weight: 300; line-height: 1.5; }
+.faq-answer ul li::before { content: '—'; position: absolute; left: 0; color: var(--accent); font-size: 11px; top: 2px; }
+
+/* Still have questions */
+.faq-contact { background: var(--ink); border-radius: 16px; padding: 40px 48px; margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+.faq-contact-left { display: flex; flex-direction: column; gap: 8px; }
+.faq-contact-title { font-family: var(--serif); font-size: 26px; font-weight: 400; color: white; }
+.faq-contact-sub { font-size: 14px; color: rgba(255,255,255,0.45); font-weight: 300; }
+.faq-contact-btn { background: #1a9e72; color: white; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background 0.15s; }
+.faq-contact-btn:hover { background: var(--accent); }
+
+/* Footer */
+footer { background: var(--ink); padding: 40px; margin-top: 0; }
+.footer-inner { max-width: 1120px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { font-family: var(--mono); font-size: 15px; color: white; }
+.footer-logo em { font-style: normal; color: #1a9e72; }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: white; }
+
+@media (max-width: 900px) {
+  .faq-hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 24px 40px; }
+  .faq-title { font-size: 38px; }
+  .faq-body { grid-template-columns: 1fr; padding: 40px 24px 64px; }
+  .cat-nav { position: static; }
+  .faq-contact { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
+  .nav-inner { padding: 0 24px; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">trax<em>ent</em></a>
+    <div class="nav-links">
+      <a href="/#how">How it works</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/faq">FAQ</a>
+      <a href="/dashboard" class="nav-cta">Dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="faq-hero">
+  <div>
+    <div class="faq-eyebrow">Help centre</div>
+    <h1 class="faq-title">Frequently asked questions</h1>
+    <p class="faq-sub">Everything you need to know about Traxent — how it works, what it tracks, and what it can and can't do for you.</p>
+  </div>
+  <div class="faq-stats">
+    <div class="faq-stat">
+      <div class="faq-stat-val">4</div>
+      <div class="faq-stat-label">Prop firms tracked with real published rules — more being added</div>
+    </div>
+    <div class="faq-stat">
+      <div class="faq-stat-val">0</div>
+      <div class="faq-stat-label">Financial advice given — ever. Traxent is education only</div>
+    </div>
+    <div class="faq-stat">
+      <div class="faq-stat-val">£4.99</div>
+      <div class="faq-stat-label">Starting price per month — cheaper than one bad trade</div>
+    </div>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="faq-body">
+
+  <!-- Category nav -->
+  <aside class="cat-nav">
+    <div class="cat-nav-label">Categories</div>
+    <div class="cat-list">
+      <a href="#about" class="cat-item active" onclick="setActive(this)">About Traxent</a>
+      <a href="#readiness" class="cat-item" onclick="setActive(this)">Readiness scores</a>
+      <a href="#firms" class="cat-item" onclick="setActive(this)">Prop firms</a>
+      <a href="#already-trade" class="cat-item" onclick="setActive(this)">Existing traders</a>
+      <div class="cat-divider"></div>
+      <a href="#vs-youtube" class="cat-item" onclick="setActive(this)">Why not YouTube?</a>
+      <a href="#account" class="cat-item" onclick="setActive(this)">Your account</a>
+      <a href="#data" class="cat-item" onclick="setActive(this)">Data &amp; privacy</a>
+    </div>
+    <div class="cat-cta">
+      <div class="cat-cta-text">Still have a question? Email us directly.</div>
+      <a href="mailto:hello@traxent.io" class="cat-cta-btn">hello@traxent.io</a>
+    </div>
+  </aside>
+
+  <!-- FAQ sections -->
+  <div class="faq-sections">
+
+    <!-- About -->
+    <div id="about">
+      <div class="faq-section-title"><span class="faq-section-icon">◈</span> About Traxent</div>
+      <div class="faq-list">
+
+        <div class="faq-item open">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">What is Traxent and how does it work?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Traxent is a trading education platform designed to help you build the habits and knowledge needed to pass a proprietary trading firm evaluation — without risking real money in the process.</p>
+            <p>It works in three stages. First, you learn through structured modules covering trading fundamentals, chart patterns, and risk management. Second, you practise by logging simulated trades in your journal — no real money involved, just paper trading against live market data. Third, your habits are scored in real time against the actual published rules of the prop firms you want to target.</p>
+            <p>The result is a readiness score that tells you not just <strong>whether</strong> you're ready for a funded challenge, but <strong>exactly what to fix</strong> before you pay for one.</p>
+            <div class="answer-highlight">
+              <p>Traxent is not a brokerage, not a prop firm, and not a financial adviser. It is an educational tool — everything on the platform is simulated and for learning purposes only.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">Will Traxent guarantee I pass a prop firm challenge?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>No — and any platform that makes that claim should be avoided. Traxent cannot guarantee trading results because no one can. Markets are unpredictable, and trading involves genuine risk.</p>
+            <p>What Traxent does is give you the best possible preparation. A high readiness score means your simulated trading habits align with a firm's rules — your drawdown is within limits, your consistency is within the required threshold, your risk per trade is appropriate. That is strong preparation. It is not a guarantee.</p>
+            <p>The traders who pass challenges consistently are not the ones who got lucky. They are the ones who built disciplined habits over time, understood the rules they were being evaluated against, and managed their emotions when trades went wrong. Traxent is designed to help you build exactly those habits.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Readiness scores -->
+    <div id="readiness">
+      <div class="faq-section-title"><span class="faq-section-icon">🎯</span> Readiness scores</div>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">How does the readiness score work?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Your readiness score is calculated by comparing your trading habits — logged through your sim trade journal and self-reported inputs — against the published rules of whichever prop firms you choose to track.</p>
+            <p>Each firm has a set of rules with different weightings based on how critical they are to passing. For example:</p>
+            <ul>
+              <li>Daily drawdown limit — if your worst simulated day exceeds the firm's limit, this rule fails</li>
+              <li>Consistency rule — if your best single day represents more than the allowed percentage of total profit, this flags</li>
+              <li>Activity requirement — if you're not trading enough days per week to meet the minimum, this scores down</li>
+              <li>Stop loss usage — whether you consistently use hard stop losses on every trade</li>
+            </ul>
+            <p>Rules that are close but not quite passing show as amber — giving you a specific target to improve rather than just a failing score.</p>
+            <div class="answer-highlight">
+              <p>All readiness scores are based on publicly available information from each firm's website and documentation. They are indicative only — always verify current rules directly with the firm before purchasing a challenge.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">What inputs feed my readiness score?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Your score is built from a combination of inputs you provide:</p>
+            <ul>
+              <li><strong>Sim trade journal entries</strong> — each trade you log includes whether it was a win or loss, your risk percentage, and your R:R ratio. These feed your consistency and drawdown calculations.</li>
+              <li><strong>Trading days per week</strong> — self-reported, used to check minimum activity requirements</li>
+              <li><strong>Best single day percentage</strong> — the proportion of your total profit made in your best single session, which feeds the consistency rule check</li>
+              <li><strong>Stop loss habits</strong> — whether you always use hard stops, which some firms require explicitly</li>
+            </ul>
+            <p>As you use Traxent more, your score becomes more accurate. A score based on 50 logged trades reflects your habits far better than one based on 5.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Prop firms -->
+    <div id="firms">
+      <div class="faq-section-title"><span class="faq-section-icon">🏢</span> Prop firms</div>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">What prop firms do you track?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Traxent currently tracks four of the most widely used prop firms globally:</p>
+            <ul>
+              <li><strong>FTMO</strong> — one of the most established firms, based in the Czech Republic, available in most countries outside the US</li>
+              <li><strong>Apex Trader Funding</strong> — futures-focused, popular with US and international traders</li>
+              <li><strong>MyFundedFutures</strong> — single-step evaluation, futures, fast payout track record</li>
+              <li><strong>FundedNext</strong> — forex and futures, multiple challenge formats, strong global presence</li>
+            </ul>
+            <p>We are actively adding more firms including Topstep, The5ers, FXIFY, E8 Funding, and FundingPips. Firms are only added once we have verified their rules from official sources — we do not track firms based on unconfirmed information.</p>
+            <p>On the Challenger plan and above, you can choose up to 3 firms to track your readiness against simultaneously.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">Is Traxent affiliated with any prop firms?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>No. Traxent is completely independent. We are not affiliated with, endorsed by, or officially connected to FTMO, Apex Trader Funding, MyFundedFutures, FundedNext, or any other firm we track.</p>
+            <p>All prop firm rules and requirements displayed on Traxent are sourced from each firm's publicly available documentation. Rules change — we do our best to keep information current, but <strong>always verify requirements directly with the firm before purchasing any evaluation.</strong></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Existing traders -->
+    <div id="already-trade">
+      <div class="faq-section-title"><span class="faq-section-icon">📈</span> Existing traders</div>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">Can I use Traxent if I already trade?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Absolutely — Traxent is useful at every stage of a trading journey, not just for beginners.</p>
+            <p>If you already trade but haven't attempted a prop firm challenge, Traxent helps you understand whether your current habits would pass — often revealing gaps you weren't aware of. Many experienced traders are surprised to find they consistently violate consistency rules or hold trades too long, which would fail a challenge even with a profitable overall track record.</p>
+            <p>If you've attempted challenges and failed, Traxent helps you diagnose exactly what went wrong and track your improvement before attempting again.</p>
+            <p>The learning modules are designed to work as refreshers too — you can skip what you know and focus on the areas that are relevant to your specific weaknesses. The content is accessible to beginners but doesn't talk down to experienced traders.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Why not YouTube -->
+    <div id="vs-youtube">
+      <div class="faq-section-title"><span class="faq-section-icon">▶</span> Why not just use YouTube?</div>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">How is Traxent different from watching YouTube videos or reading trading books?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>YouTube and books are excellent for learning concepts — and we'd encourage you to use them alongside Traxent. The limitation of passive learning is that it doesn't tell you whether you've actually internalised the habits that matter.</p>
+            <p>Knowing that you should risk 1% per trade is very different from consistently doing it under pressure. Knowing that a consistency rule exists is different from actually tracking whether your trading behaviour passes it.</p>
+            <p>Traxent bridges that gap. The journal holds you accountable. The readiness score tells you whether your actual behaviour — not your intended behaviour — meets the standard. That feedback loop is what passive learning cannot provide.</p>
+            <p>Think of it this way: YouTube teaches you the rules of chess. Traxent is the chess clock that tells you whether you're actually playing at the speed required to compete.</p>
+            <div class="answer-highlight">
+              <p>Traxent is not a replacement for good educational content. It is the layer that turns knowledge into measurable, tracked habit.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Account -->
+    <div id="account">
+      <div class="faq-section-title"><span class="faq-section-icon">⚙</span> Your account</div>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">How do I cancel my subscription?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>You can cancel at any time — there are no long-term contracts or cancellation fees.</p>
+            <p>To cancel, go to your dashboard and click on your plan badge in the top right corner. This will take you to your subscription settings where you can manage or cancel your plan. Cancellation takes effect at the end of your current billing period — you'll retain full access until then.</p>
+            <p>If you have any trouble cancelling, email us at <a href="mailto:hello@traxent.io">hello@traxent.io</a> and we'll sort it within one business day.</p>
+            <div class="answer-highlight">
+              <p>We don't offer refunds for partial months, but we will never charge you after cancellation.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">Can I switch plans or downgrade?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes — you can upgrade or downgrade at any time. Upgrades take effect immediately. Downgrades take effect at the start of your next billing period so you keep your current access for the remainder of the month you've paid for.</p>
+            <p>If you downgrade from Challenger or Funded Ready to Observer, your journal data and readiness scores are preserved — you just won't be able to access them until you upgrade again. Nothing is deleted.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Data & privacy -->
+    <div id="data">
+      <div class="faq-section-title"><span class="faq-section-icon">🔒</span> Data &amp; privacy</div>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">Is my data safe? What do you do with it?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Your data is stored securely on Amazon Web Services infrastructure in the United Kingdom. All connections to Traxent are encrypted over HTTPS. We use Auth0 for authentication — your password is never stored by Traxent directly.</p>
+            <p>We collect only what's needed to run the service:</p>
+            <ul>
+              <li>Your email address and name — for your account and communications</li>
+              <li>Your sim trade journal entries — to calculate your readiness scores</li>
+              <li>Basic usage data — to improve the platform, always anonymised</li>
+            </ul>
+            <p><strong>We do not sell your data.</strong> We do not share it with any third party except the services needed to operate the platform — Auth0 for authentication, Stripe for payments, and AWS for hosting.</p>
+            <p>For the full details, read our <a href="/privacy">Privacy Policy</a>. If you have a specific question about your data, email <a href="mailto:hello@traxent.io">hello@traxent.io</a>.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">Can I delete my account and data?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes — you have the right to request full deletion of your account and all associated data at any time. This is a right under UK GDPR and we take it seriously.</p>
+            <p>To request deletion, email <a href="mailto:hello@traxent.io">hello@traxent.io</a> with the subject line "Account deletion request". We will confirm deletion within 30 days. Note that some data may be retained for legal or tax purposes as required by law — for example, records of payments — but your personal trading data and account information will be removed.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Still have questions -->
+    <div class="faq-contact">
+      <div class="faq-contact-left">
+        <div class="faq-contact-title">Still have a question?</div>
+        <div class="faq-contact-sub">We typically respond within one business day.</div>
+      </div>
+      <a href="mailto:hello@traxent.io" class="faq-contact-btn">Email hello@traxent.io →</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">trax<em>ent</em></div>
+    <div class="footer-links">
+      <a href="/faq">FAQ</a>
+      <a href="/privacy">Privacy policy</a>
+      <a href="/terms">Terms of service</a>
+      <a href="mailto:hello@traxent.io">hello@traxent.io</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggle(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+function setActive(el) {
+  document.querySelectorAll('.cat-item').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Highlight active category on scroll
+const sections = document.querySelectorAll('.faq-sections > div[id]');
+const catItems = document.querySelectorAll('.cat-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  catItems.forEach(item => {
+    item.classList.toggle('active', item.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+</body>
+</html>

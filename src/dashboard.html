@@ -210,7 +210,7 @@ async function initDashboard() {
     const isAuthenticated = await auth0Client.isAuthenticated();
     if (!isAuthenticated) {
       await auth0Client.loginWithRedirect({
-        authorizationParams: { redirect_uri: window.location.origin + '/dashboard' }
+        authorizationParams: { redirect_uri: window.location.origin + '/dashboard.html' }
       });
       return;
     }
@@ -261,7 +261,7 @@ async function initDashboard() {
           <div class="card-title">${f.title}</div>
           <div class="card-desc">${desc}</div>
           ${isUnlocked
-            ? `<button class="card-action">${f.action} →</button>`
+            ? `<a href="${f.link || '#'}" class="card-action">${f.action} →</a>`
             : `<span class="card-required-plan">Requires ${f.requiredLabel}</span>`}
         </div>
       `;

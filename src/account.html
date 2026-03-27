@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account — Traxent</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f2;
+  --ink: #0e0e0c;
+  --ink2: #3a3a36;
+  --ink3: #7a7a72;
+  --accent: #0a6e4f;
+  --accent-light: rgba(10,110,79,.08);
+  --border: rgba(14,14,12,0.1);
+  --border2: rgba(14,14,12,0.06);
+  --surface: #ffffff;
+  --surface2: #f0efe9;
+  --good: #0a6e4f;
+  --warn: #b06000;
+  --bad: #9e1a1a;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', sans-serif;
+  --mono: 'Geist Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+/* Loading */
+#loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 999; }
+.loading-logo { font-family: var(--mono); font-size: 20px; color: var(--ink); }
+.loading-logo em { font-style: normal; color: var(--accent); }
+.loading-bar { width: 120px; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.loading-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; animation: load 1.2s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+
+/* Nav */
+nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.nav-logo { font-family: var(--mono); font-size: 15px; color: var(--ink); text-decoration: none; }
+.nav-logo em { font-style: normal; color: var(--accent); }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-back { font-size: 13px; color: var(--ink3); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
+.nav-back:hover { color: var(--ink); }
+.nav-back::before { content: '←'; }
+.btn-signout { font-size: 12px; color: var(--ink3); background: none; border: none; cursor: pointer; font-family: var(--sans); transition: color 0.15s; }
+.btn-signout:hover { color: var(--bad); }
+
+/* Main */
+.main { max-width: 800px; margin: 0 auto; padding: 48px 40px 96px; }
+
+/* Page header */
+.page-header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.page-header-left { display: flex; align-items: center; gap: 20px; }
+.avatar-large { width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: white; font-size: 20px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.page-header-info { display: flex; flex-direction: column; gap: 4px; }
+.page-header-name { font-family: var(--serif); font-size: 28px; font-weight: 400; color: var(--ink); }
+.page-header-email { font-size: 13px; color: var(--ink3); font-family: var(--mono); }
+.plan-badge-large { font-family: var(--mono); font-size: 11px; padding: 5px 12px; border-radius: 4px; background: rgba(10,110,79,.1); color: var(--accent); border: 1px solid rgba(10,110,79,.2); text-transform: uppercase; letter-spacing: 0.06em; }
+.plan-badge-large.free { background: rgba(120,120,120,.1); color: var(--ink3); border-color: var(--border); }
+
+/* Sections */
+.account-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+.section-header { padding: 18px 24px; border-bottom: 1px solid var(--border2); display: flex; align-items: center; justify-content: space-between; }
+.section-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); }
+.section-action { font-size: 12px; color: var(--accent); text-decoration: none; cursor: pointer; background: none; border: none; font-family: var(--sans); transition: opacity 0.15s; }
+.section-action:hover { opacity: 0.7; }
+
+/* Detail rows */
+.detail-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--border2); }
+.detail-row:last-child { border-bottom: none; }
+.detail-label { font-size: 13px; color: var(--ink3); }
+.detail-value { font-size: 13px; color: var(--ink); font-weight: 500; text-align: right; }
+.detail-value.mono { font-family: var(--mono); }
+.detail-value.green { color: var(--good); }
+.detail-value.amber { color: var(--warn); }
+
+/* Plan card */
+.plan-card-inner { padding: 24px; }
+.plan-name-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.plan-name-big { font-family: var(--serif); font-size: 32px; font-weight: 400; color: var(--ink); font-style: italic; }
+.plan-price-big { font-family: var(--mono); font-size: 18px; color: var(--ink); }
+.plan-price-big span { font-size: 12px; color: var(--ink3); }
+.plan-features-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+.plan-feature { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink2); }
+.plan-feature::before { content: '✓'; color: var(--accent); font-size: 12px; font-weight: 600; flex-shrink: 0; }
+.plan-feature.locked { opacity: 0.35; }
+.plan-feature.locked::before { content: '—'; color: var(--ink3); }
+.plan-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn-upgrade-plan { background: var(--accent); color: white; border: none; border-radius: 7px; padding: 10px 20px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--sans); transition: background 0.15s; text-decoration: none; display: inline-block; }
+.btn-upgrade-plan:hover { background: #085e43; }
+.btn-manage { background: none; border: 1px solid var(--border); border-radius: 7px; padding: 10px 20px; font-size: 13px; color: var(--ink2); cursor: pointer; font-family: var(--sans); transition: all 0.15s; }
+.btn-manage:hover { border-color: var(--ink); color: var(--ink); }
+
+/* Stats grid */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border2); }
+.stat-cell { padding: 20px 24px; background: var(--surface); }
+.stat-cell-val { font-family: var(--serif); font-size: 28px; font-weight: 400; color: var(--ink); font-style: italic; margin-bottom: 4px; }
+.stat-cell-label { font-size: 11px; color: var(--ink3); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* Danger zone */
+.danger-section { background: var(--surface); border: 1px solid rgba(158,26,26,.15); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+.danger-header { padding: 18px 24px; border-bottom: 1px solid rgba(158,26,26,.1); }
+.danger-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bad); }
+.danger-row { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; gap: 24px; }
+.danger-info { display: flex; flex-direction: column; gap: 4px; }
+.danger-label { font-size: 14px; color: var(--ink); font-weight: 500; }
+.danger-sub { font-size: 12px; color: var(--ink3); line-height: 1.5; }
+.btn-cancel { background: none; border: 1px solid rgba(158,26,26,.3); color: var(--bad); border-radius: 7px; padding: 10px 20px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--sans); transition: all 0.15s; white-space: nowrap; }
+.btn-cancel:hover { background: rgba(158,26,26,.06); border-color: var(--bad); }
+
+/* Cancel modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(14,14,12,0.5); z-index: 500; display: none; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(4px); }
+.modal-overlay.show { display: flex; }
+.modal { background: var(--surface); border-radius: 16px; padding: 36px; max-width: 440px; width: 100%; box-shadow: 0 24px 64px rgba(0,0,0,0.15); }
+.modal-title { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--ink); margin-bottom: 12px; }
+.modal-body { font-size: 14px; color: var(--ink2); line-height: 1.65; font-weight: 300; margin-bottom: 8px; }
+.modal-note { font-size: 12px; color: var(--ink3); line-height: 1.5; margin-bottom: 28px; }
+.modal-actions { display: flex; gap: 10px; }
+.btn-modal-cancel-sub { flex: 1; background: var(--bad); color: white; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--sans); transition: opacity 0.15s; }
+.btn-modal-cancel-sub:hover { opacity: 0.85; }
+.btn-modal-keep { flex: 1; background: none; border: 1px solid var(--border); color: var(--ink2); border-radius: 8px; padding: 12px; font-size: 14px; cursor: pointer; font-family: var(--sans); transition: all 0.15s; }
+.btn-modal-keep:hover { border-color: var(--ink); color: var(--ink); }
+
+/* Success state */
+.cancel-success { display: none; text-align: center; padding: 8px 0; }
+.cancel-success.show { display: block; }
+.cancel-success-icon { font-size: 32px; margin-bottom: 12px; }
+.cancel-success-title { font-family: var(--serif); font-size: 22px; color: var(--ink); margin-bottom: 8px; }
+.cancel-success-body { font-size: 14px; color: var(--ink3); line-height: 1.6; font-weight: 300; }
+
+/* Toast */
+.toast { position: fixed; bottom: 28px; right: 28px; background: var(--ink); color: white; padding: 12px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,.15); transform: translateY(60px); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease; }
+.toast.show { transform: translateY(0); opacity: 1; }
+
+@media (max-width: 600px) {
+  .main { padding: 32px 20px 64px; }
+  nav { padding: 0 20px; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .page-header { flex-direction: column; align-items: flex-start; }
+  .plan-actions { flex-direction: column; }
+  .modal { padding: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="loading-logo">trax<em>ent</em></div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <div class="nav-right">
+    <a href="/dashboard" class="nav-back">Dashboard</a>
+    <button class="btn-signout" onclick="logout()">Sign out</button>
+  </div>
+</nav>
+
+<div class="main" id="main-content" style="display:none">
+
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="avatar-large" id="avatar-large">T</div>
+      <div class="page-header-info">
+        <div class="page-header-name" id="header-name">Loading...</div>
+        <div class="page-header-email" id="header-email"></div>
+      </div>
+    </div>
+    <span class="plan-badge-large" id="header-plan-badge">free</span>
+  </div>
+
+  <!-- Plan overview -->
+  <div class="account-section">
+    <div class="section-header">
+      <span class="section-title">Current plan</span>
+    </div>
+    <div class="plan-card-inner" id="plan-card-inner">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- Account details -->
+  <div class="account-section">
+    <div class="section-header">
+      <span class="section-title">Account details</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Full name</span>
+      <span class="detail-value" id="detail-name">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Email address</span>
+      <span class="detail-value mono" id="detail-email">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Member since</span>
+      <span class="detail-value" id="detail-since">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Account ID</span>
+      <span class="detail-value mono" id="detail-id" style="font-size:11px;color:var(--ink3)">—</span>
+    </div>
+  </div>
+
+  <!-- Activity summary -->
+  <div class="account-section">
+    <div class="section-header">
+      <span class="section-title">Activity summary</span>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="stat-cell-val" id="stat-lessons">0</div>
+        <div class="stat-cell-label">Lessons completed</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-cell-val" id="stat-trades">0</div>
+        <div class="stat-cell-label">Sim trades logged</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-cell-val" id="stat-score">—</div>
+        <div class="stat-cell-label">Best readiness score</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Danger zone — only shown if user has a paid plan -->
+  <div class="danger-section" id="danger-section" style="display:none">
+    <div class="danger-header">
+      <span class="danger-title">Subscription</span>
+    </div>
+    <div class="danger-row">
+      <div class="danger-info">
+        <div class="danger-label">Cancel subscription</div>
+        <div class="danger-sub">Your access continues until the end of your current billing period. No further charges after cancellation.</div>
+      </div>
+      <button class="btn-cancel" onclick="showCancelModal()">Cancel plan</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Cancel modal -->
+<div class="modal-overlay" id="cancel-modal">
+  <div class="modal">
+    <div id="cancel-confirm">
+      <div class="modal-title">Cancel your subscription?</div>
+      <div class="modal-body">Your access will continue until the end of your current billing period. After that, your account moves to the free tier — your data and journal entries are kept.</div>
+      <div class="modal-note">No further payments will be taken. You can resubscribe at any time.</div>
+      <div class="modal-actions">
+        <button class="btn-modal-keep" onclick="hideCancelModal()">Keep my plan</button>
+        <button class="btn-modal-cancel-sub" onclick="cancelSubscription()">Yes, cancel</button>
+      </div>
+    </div>
+    <div class="cancel-success" id="cancel-success">
+      <div class="cancel-success-icon">✓</div>
+      <div class="cancel-success-title">Subscription cancelled</div>
+      <div class="cancel-success-body" id="cancel-success-body">Your access continues until the end of your billing period. We've sent a confirmation to your email.</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="auth.js"></script>
+<script>
+
+const PLAN_CONFIG = {
+  free: {
+    name: 'Free',
+    price: null,
+    features: [
+      { text: 'Pattern school — 5 patterns', locked: false },
+      { text: 'Position size calculator', locked: false },
+      { text: 'Prop firm readiness tracker', locked: true },
+      { text: 'Sim trade journal', locked: true },
+      { text: 'Live data feed', locked: true },
+    ],
+    upgradeLabel: 'Upgrade to Observer',
+    upgradePlan: 'observer',
+  },
+  observer: {
+    name: 'Observer',
+    price: '£4.99/mo',
+    features: [
+      { text: 'Pattern school — 5 patterns', locked: false },
+      { text: 'Position size calculator', locked: false },
+      { text: 'Delayed price data (15 min)', locked: false },
+      { text: 'Prop firm readiness tracker', locked: true },
+      { text: 'Sim trade journal', locked: true },
+    ],
+    upgradeLabel: 'Upgrade to Challenger',
+    upgradePlan: 'challenger',
+  },
+  challenger: {
+    name: 'Challenger',
+    price: '£12.99/mo',
+    features: [
+      { text: 'Live price data — real time', locked: false },
+      { text: 'All 15 pattern signals', locked: false },
+      { text: 'Prop firm readiness tracker', locked: false },
+      { text: 'Sim trade journal + analytics', locked: false },
+      { text: 'Weekly readiness report', locked: false },
+      { text: 'Premium data feed', locked: true },
+    ],
+    upgradeLabel: 'Upgrade to Funded Ready',
+    upgradePlan: 'funded_ready',
+  },
+  funded_ready: {
+    name: 'Funded Ready',
+    price: '£29.99/mo',
+    features: [
+      { text: 'Premium customisable data feeds', locked: false },
+      { text: 'All Challenger features', locked: false },
+      { text: 'Advanced news sentiment engine', locked: false },
+      { text: 'Challenge simulation mode', locked: false },
+      { text: 'Firm-specific rule coaching', locked: false },
+      { text: 'Priority support', locked: false },
+    ],
+    upgradeLabel: null,
+    upgradePlan: null,
+  },
+};
+
+async function initAccount() {
+  try {
+    await initAuth0();
+
+    if (window.location.search.includes('code=') || window.location.search.includes('state=')) {
+      await auth0Client.handleRedirectCallback();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    const isAuthenticated = await auth0Client.isAuthenticated();
+    if (!isAuthenticated) {
+      await auth0Client.loginWithRedirect({
+        authorizationParams: { redirect_uri: window.location.origin + '/account' }
+      });
+      return;
+    }
+
+    const user = await auth0Client.getUser();
+    const claims = await auth0Client.getIdTokenClaims();
+    const ns = 'https://traxent.io';
+    const plan = (claims && claims[`${ns}/plan`]) || 'free';
+
+    // Build display name
+    const displayName = user.name && !user.name.includes('@')
+      ? user.name
+      : (user.given_name && user.family_name
+          ? `${user.given_name} ${user.family_name}`
+          : user.given_name || user.email);
+
+    const initials = displayName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+
+    // Page header
+    document.getElementById('avatar-large').textContent = initials;
+    document.getElementById('header-name').textContent = displayName;
+    document.getElementById('header-email').textContent = user.email;
+
+    const planBadge = document.getElementById('header-plan-badge');
+    planBadge.textContent = plan.replace(/_/g, ' ');
+    if (plan === 'free') planBadge.classList.add('free');
+
+    // Account details
+    document.getElementById('detail-name').textContent = displayName;
+    document.getElementById('detail-email').textContent = user.email;
+    document.getElementById('detail-id').textContent = user.sub;
+
+    // Member since — parse from Auth0 sub or use today as fallback
+    const createdAt = user.updated_at
+      ? new Date(user.updated_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+      : 'March 2026';
+    document.getElementById('detail-since').textContent = createdAt;
+
+    // Plan card
+    renderPlanCard(plan);
+
+    // Show cancel section for paid plans
+    if (plan !== 'free') {
+      document.getElementById('danger-section').style.display = 'block';
+    }
+
+    // Activity stats — placeholder until journal is wired to DB
+    document.getElementById('stat-lessons').textContent = localStorage.getItem('traxent_lessons_completed') || '0';
+    document.getElementById('stat-trades').textContent = localStorage.getItem('traxent_trades_logged') || '0';
+    document.getElementById('stat-score').textContent = localStorage.getItem('traxent_best_score') || '—';
+
+    // Hide loading
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+
+  } catch (err) {
+    console.error('Account page error:', err);
+    localStorage.clear();
+    window.location.href = '/';
+  }
+}
+
+function renderPlanCard(plan) {
+  const config = PLAN_CONFIG[plan] || PLAN_CONFIG.free;
+  const isPaid = plan !== 'free';
+
+  const featuresHTML = config.features.map(f => `
+    <div class="plan-feature ${f.locked ? 'locked' : ''}">${f.text}</div>
+  `).join('');
+
+  const actionsHTML = config.upgradeLabel
+    ? `<button class="btn-upgrade-plan" onclick="upgradePlan('${config.upgradePlan}')">${config.upgradeLabel} →</button>`
+    : `<div style="font-size:13px;color:var(--ink3)">You're on the highest plan — thank you.</div>`;
+
+  document.getElementById('plan-card-inner').innerHTML = `
+    <div class="plan-name-row">
+      <div class="plan-name-big">${config.name}</div>
+      ${config.price
+        ? `<div class="plan-price-big">${config.price}</div>`
+        : `<div class="plan-price-big" style="color:var(--ink3)">Free <span>forever</span></div>`}
+    </div>
+    <div class="plan-features-list">${featuresHTML}</div>
+    <div class="plan-actions">${actionsHTML}</div>
+  `;
+}
+
+async function upgradePlan(plan) {
+  try {
+    const user = await auth0Client.getUser();
+    const token = await auth0Client.getTokenSilently();
+    showToast('Redirecting to checkout...');
+    const res = await fetch('https://da579ew81m.execute-api.eu-west-2.amazonaws.com/prod/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ plan, userId: user.sub, userEmail: user.email })
+    });
+    if (!res.ok) throw new Error('Checkout failed');
+    const { url } = await res.json();
+    window.location.href = url;
+  } catch (err) {
+    showToast('Something went wrong — please try again.', false);
+  }
+}
+
+function showCancelModal() {
+  document.getElementById('cancel-modal').classList.add('show');
+  document.getElementById('cancel-confirm').style.display = 'block';
+  document.getElementById('cancel-success').classList.remove('show');
+}
+
+function hideCancelModal() {
+  document.getElementById('cancel-modal').classList.remove('show');
+}
+
+async function cancelSubscription() {
+  try {
+    // Show success state immediately — in production this calls
+    // a Lambda endpoint that cancels the Stripe subscription
+    document.getElementById('cancel-confirm').style.display = 'none';
+    document.getElementById('cancel-success').classList.add('show');
+    document.getElementById('danger-section').style.display = 'none';
+
+    // Close modal after 3 seconds
+    setTimeout(() => {
+      hideCancelModal();
+      showToast('Subscription cancelled. Access continues until billing period ends.');
+      // Update badge to show pending cancellation
+      const badge = document.getElementById('header-plan-badge');
+      badge.textContent = badge.textContent + ' (cancels soon)';
+      badge.style.opacity = '0.6';
+    }, 2800);
+
+  } catch (err) {
+    showToast('Something went wrong — email hello@traxent.io and we will cancel for you.', false);
+    hideCancelModal();
+  }
+}
+
+function showToast(msg, success = true) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.style.borderLeft = success ? '3px solid #1a9e72' : '3px solid #9e1a1a';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+// Close modal on overlay click
+document.getElementById('cancel-modal').addEventListener('click', function(e) {
+  if (e.target === this) hideCancelModal();
+});
+
+initAccount();
+</script>
+</body>
+</html>

@@ -1317,7 +1317,6 @@ function joinWaitlist() {
     showToast('Please enter a valid email address', false);
     return;
   }
-  // Replace this URL with your Formspree or backend endpoint
   const ENDPOINT = 'https://formspree.io/f/mlgogjdq';
   fetch(ENDPOINT, {
     method: 'POST',

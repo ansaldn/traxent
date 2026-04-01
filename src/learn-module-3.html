@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3: Risk Management — Traxent Learn</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;--accent-light:rgba(10,110,79,.08);--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);--border2:rgba(14,14,12,0.06);--surface:#ffffff;--surface2:#f0efe9;--good:#0a6e4f;--warn:#b06000;--bad:#9e1a1a;--serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{font-size:16px}body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased}
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.nav-logo{font-family:var(--mono);font-size:15px;color:var(--ink);text-decoration:none}.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-back{font-size:13px;color:var(--ink3);text-decoration:none;display:flex;align-items:center;gap:6px}.nav-back::before{content:'←'}
+.learn-wrap{max-width:1160px;margin:0 auto;padding:40px 32px;display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:start}
+.sidebar{position:sticky;top:76px}
+.module-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.module-title{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink);margin-bottom:4px}
+.module-meta{font-size:12px;color:var(--ink3);margin-bottom:20px}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);margin-bottom:6px}
+.progress-bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:20px}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .5s ease}
+.lesson-list{display:flex;flex-direction:column;gap:2px}
+.lesson-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:all .15s;border:1px solid transparent}
+.lesson-item:hover{background:var(--surface);border-color:var(--border)}.lesson-item.active{background:var(--surface);border-color:var(--accent)}
+.lesson-item.completed .lesson-dot{background:var(--accent);color:white;border-color:var(--accent)}
+.lesson-dot{width:22px;height:22px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:var(--mono);color:var(--ink3);flex-shrink:0;transition:all .2s}
+.lesson-item.active .lesson-dot{background:var(--accent);color:white;border-color:var(--accent)}
+.lesson-name{font-size:13px;color:var(--ink)}.lesson-item.active .lesson-name{font-weight:500;color:var(--accent)}
+.lesson-dur{font-size:10px;color:var(--ink3);font-family:var(--mono);margin-top:1px}
+.quiz-sep{height:1px;background:var(--border);margin:8px 0}
+.sidebar-note{margin-top:20px;padding:14px 16px;background:var(--accent-light);border:1px solid rgba(10,110,79,.15);border-radius:8px;font-size:12px;color:var(--ink2);line-height:1.5}
+.lesson-main{min-height:60vh}
+.lesson-hd{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.lesson-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.lesson-eyebrow::before{content:'';width:16px;height:1px;background:var(--accent)}
+.lesson-title{font-family:var(--serif);font-size:38px;font-weight:400;line-height:1.1;color:var(--ink);margin-bottom:14px}
+.lesson-intro{font-size:16px;color:var(--ink2);line-height:1.7;font-weight:300;max-width:640px}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-family:var(--serif);font-size:24px;font-weight:400;color:var(--ink);margin:36px 0 14px}
+.lesson-body p{font-size:15px;color:var(--ink2);line-height:1.8;margin-bottom:16px;font-weight:300}
+.lesson-body strong{color:var(--ink);font-weight:500}
+.callout{border-radius:8px;padding:16px 20px;margin:24px 0}
+.callout-key{background:var(--accent-light);border:1px solid rgba(10,110,79,.15);border-left:3px solid var(--accent)}
+.callout-key .cl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.callout-warn{background:rgba(176,96,0,.06);border:1px solid rgba(176,96,0,.15);border-left:3px solid var(--warn)}
+.callout-warn .cl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--warn);margin-bottom:8px}
+.callout p{margin-bottom:0;font-size:14px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.stat-val{font-family:var(--serif);font-size:30px;font-weight:400;color:var(--ink);font-style:italic;margin-bottom:4px}
+.stat-label{font-size:12px;color:var(--ink3);line-height:1.4}
+.vis-exp{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0}
+.vis-exp-title{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px}
+.vis-row{display:flex;border-radius:6px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px}
+.vis-row:last-child{margin-bottom:0}
+.vis-cell{flex:1;padding:10px 14px;border-right:1px solid var(--border)}
+.vis-cell:last-child{border-right:none}
+.vis-cell-label{font-size:10px;font-family:var(--mono);color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.vis-cell-val{font-size:13px;color:var(--ink);font-weight:500}
+.vis-cell-sub{font-size:11px;color:var(--ink3);margin-top:2px}
+.vis-good{background:rgba(10,110,79,.06)}.vis-bad{background:rgba(158,26,26,.06)}.vis-warn{background:rgba(176,96,0,.05)}
+.vis-cell-val.green{color:var(--good)}.vis-cell-val.red{color:var(--bad)}.vis-cell-val.amber{color:var(--warn)}
+.inline-calc{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:22px;margin:24px 0}
+.ic-title{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px}
+.ic-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.ic-field{display:flex;flex-direction:column;gap:5px}
+.ic-field label{font-size:12px;color:var(--ink3)}
+.ic-row{display:flex}
+.ic-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px 0 0 6px;padding:8px 12px;font-family:var(--sans);font-size:14px;color:var(--ink);outline:none;transition:border-color .15s}
+.ic-input:focus{border-color:var(--accent)}
+.ic-unit{background:var(--surface);border:1px solid var(--border);border-left:none;border-radius:0 6px 6px 0;padding:8px 10px;font-size:12px;color:var(--ink3);font-family:var(--mono);display:flex;align-items:center}
+.ic-result{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.ic-result-label{font-size:13px;color:var(--ink3)}
+.ic-result-val{font-family:var(--serif);font-size:28px;font-style:italic;color:var(--ink)}
+.ic-working{margin-top:12px;font-size:13px;color:var(--ink3);line-height:1.7;display:none}
+.chart-component{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:28px 0}
+.chart-header{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.chart-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.chart-subtitle{font-size:12px;color:var(--ink3)}
+.inst-switcher{display:flex;gap:6px;flex-wrap:wrap}
+.inst-btn{font-family:var(--mono);font-size:11px;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:var(--bg);color:var(--ink3);cursor:pointer;transition:all .15s}
+.inst-btn:hover{border-color:var(--accent);color:var(--accent)}.inst-btn.active{background:var(--accent);border-color:var(--accent);color:white}
+.chart-frame{width:100%;height:380px;background:#131722;border:none;display:block}
+.exercise{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:28px 0}
+.exercise-hd{padding:14px 20px;border-bottom:1px solid var(--border2);background:var(--surface2);display:flex;align-items:center;gap:10px}
+.ex-badge{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.2);padding:3px 8px;border-radius:3px}
+.ex-title{font-size:14px;font-weight:500;color:var(--ink)}
+.exercise-body{padding:20px}
+.ex-question{font-size:15px;color:var(--ink2);line-height:1.6;margin-bottom:18px;font-weight:300}
+.ex-question strong{color:var(--ink);font-weight:500}
+.ex-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.ex-opt{padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:14px;color:var(--ink2);cursor:pointer;transition:all .15s;font-family:var(--sans);text-align:left}
+.ex-opt:hover:not(:disabled){border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+.ex-opt.correct{border-color:var(--good);background:rgba(10,110,79,.08);color:var(--good);font-weight:500}
+.ex-opt.incorrect{border-color:var(--bad);background:rgba(158,26,26,.06);color:var(--bad)}
+.ex-opt.show-correct{border-color:var(--good);background:rgba(10,110,79,.06);color:var(--good)}
+.ex-feedback{padding:14px 16px;border-radius:8px;font-size:14px;line-height:1.6;display:none}
+.ex-feedback.show{display:block}
+.ex-feedback.correct{background:rgba(10,110,79,.08);border:1px solid rgba(10,110,79,.2);color:var(--good)}
+.ex-feedback.incorrect{background:rgba(158,26,26,.06);border:1px solid rgba(158,26,26,.15);color:var(--bad)}
+.ex-next-btn{margin-top:14px;background:var(--accent);color:white;border:none;border-radius:7px;padding:10px 20px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:background .15s;display:none}
+.ex-next-btn.show{display:inline-block}.ex-next-btn:hover{background:#085e43}
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:48px;padding-top:28px;border-top:1px solid var(--border)}
+.btn-nav{display:flex;align-items:center;gap:8px;padding:11px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s}
+.btn-prev{background:var(--surface);border:1px solid var(--border);color:var(--ink2)}.btn-prev::before{content:'←'}
+.btn-next{background:var(--accent);color:white}.btn-next:hover{background:#085e43}.btn-next::after{content:'→'}
+.nav-info{font-size:12px;color:var(--ink3);font-family:var(--mono)}
+.quiz-wrap{max-width:700px}
+.quiz-hd{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.quiz-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.quiz-eyebrow::before{content:'';width:16px;height:1px;background:var(--accent)}
+.quiz-title{font-family:var(--serif);font-size:38px;font-weight:400;color:var(--ink);margin-bottom:10px}
+.quiz-sub{font-size:15px;color:var(--ink2);line-height:1.65;font-weight:300}
+.q-dots{display:flex;gap:8px;margin-bottom:32px}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);transition:all .2s}
+.q-dot.active{background:var(--accent);border-color:var(--accent)}.q-dot.done{background:var(--accent);border-color:var(--accent);opacity:.4}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:26px;margin-bottom:20px}
+.q-num{font-family:var(--mono);font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.q-text{font-size:16px;color:var(--ink);line-height:1.55;margin-bottom:22px}
+.q-options{display:flex;flex-direction:column;gap:10px}
+.q-opt{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s}
+.q-opt:hover{border-color:var(--accent);background:var(--accent-light)}.q-opt.selected{border-color:var(--accent);background:var(--accent-light)}
+.q-opt.correct{border-color:var(--good);background:rgba(10,110,79,.08)}.q-opt.incorrect{border-color:var(--bad);background:rgba(158,26,26,.06)}
+.q-letter{width:22px;height:22px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--ink3);flex-shrink:0;transition:all .15s}
+.q-opt.selected .q-letter{background:var(--accent);color:white;border-color:var(--accent)}.q-opt.correct .q-letter{background:var(--good);color:white;border-color:var(--good)}.q-opt.incorrect .q-letter{background:var(--bad);color:white;border-color:var(--bad)}
+.q-opt-text{font-size:14px;color:var(--ink2);line-height:1.5;padding-top:2px}
+.q-feedback{padding:12px 16px;border-radius:8px;margin-top:14px;font-size:14px;line-height:1.55;display:none}
+.q-feedback.show{display:block}
+.q-feedback.correct{background:rgba(10,110,79,.08);border:1px solid rgba(10,110,79,.2);color:var(--good)}.q-feedback.incorrect{background:rgba(158,26,26,.06);border:1px solid rgba(158,26,26,.15);color:var(--bad)}
+.q-btn-row{display:flex;justify-content:flex-end;margin-top:20px;gap:10px}
+.q-btn{padding:11px 24px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s}
+.q-submit{background:var(--accent);color:white}.q-submit:hover{background:#085e43}.q-submit:disabled{opacity:.35;cursor:not-allowed}
+.q-next-btn{background:var(--ink);color:white;display:none}.q-next-btn:hover{background:var(--accent)}
+.quiz-result{text-align:center;padding:48px 0;display:none}
+.result-pct{font-family:var(--serif);font-size:80px;font-weight:400;font-style:italic;line-height:1;margin-bottom:10px}
+.result-pct.pass{color:var(--good)}.result-pct.fail{color:var(--bad)}
+.result-lbl{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:20px}
+.result-msg{font-size:15px;color:var(--ink2);line-height:1.65;max-width:480px;margin:0 auto 28px;font-weight:300}
+.result-actions{display:flex;gap:12px;justify-content:center}
+.btn-result{padding:11px 22px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s;text-decoration:none;display:inline-block}
+.btn-result-primary{background:var(--accent);color:white}.btn-result-secondary{background:var(--surface);border:1px solid var(--border);color:var(--ink2)}
+.completion-banner{background:var(--ink);border-radius:12px;padding:24px 28px;margin-top:32px;display:none}
+.completion-banner.show{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.cb-title{font-family:var(--serif);font-size:20px;color:white}.cb-sub{font-size:13px;color:rgba(255,255,255,.45);margin-top:4px}
+.cb-btn{background:var(--accent-mid);color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap}
+@media(max-width:900px){.learn-wrap{grid-template-columns:1fr;padding:24px 20px}.sidebar{position:static}.stat-row,.ic-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><a href="/" class="nav-logo">trax<em>ent</em></a><a href="/learn" class="nav-back">All modules</a></nav>
+<div class="learn-wrap">
+  <aside class="sidebar">
+    <div class="module-label">Module 3 · Observer+</div>
+    <div class="module-title">Risk Management</div>
+    <div class="module-meta">4 lessons · 1 quiz · ~35 min</div>
+    <div class="progress-label"><span>Progress</span><span id="prog-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="lesson-list">
+      <div class="lesson-item active" id="nav-0" onclick="showLesson(0)"><div class="lesson-dot" id="dot-0">1</div><div><div class="lesson-name">Position sizing in depth</div><div class="lesson-dur">9 min · Calculator</div></div></div>
+      <div class="lesson-item" id="nav-1" onclick="showLesson(1)"><div class="lesson-dot" id="dot-1">2</div><div><div class="lesson-name">Stop loss placement</div><div class="lesson-dur">8 min · Chart exercise</div></div></div>
+      <div class="lesson-item" id="nav-2" onclick="showLesson(2)"><div class="lesson-dot" id="dot-2">3</div><div><div class="lesson-name">Risk to reward — the long game</div><div class="lesson-dur">8 min · Calculator</div></div></div>
+      <div class="lesson-item" id="nav-3" onclick="showLesson(3)"><div class="lesson-dot" id="dot-3">4</div><div><div class="lesson-name">How accounts blow up</div><div class="lesson-dur">7 min · Exercise</div></div></div>
+      <div class="quiz-sep"></div>
+      <div class="lesson-item" id="nav-4" onclick="showLesson(4)"><div class="lesson-dot" id="dot-4">✦</div><div><div class="lesson-name">Module 3 quiz</div><div class="lesson-dur">5 questions · Pass 80%</div></div></div>
+    </div>
+    <div class="sidebar-note">Complete all lessons and pass the quiz to unlock Module 4 — Prop Firm Mastery.</div>
+  </aside>
+  <main>
+
+    <!-- L1: Position sizing -->
+    <div id="lesson-0" class="lesson-main">
+      <div class="lesson-hd"><div class="lesson-eyebrow">Module 3 · Lesson 1</div><h1 class="lesson-title">Position sizing in depth</h1><p class="lesson-intro">You were introduced to position sizing in Module 1. This lesson goes deeper — showing you how to apply it across different account sizes, instruments, and risk tolerances using real current prices from a live chart.</p></div>
+      <div class="lesson-body">
+        <h2>The formula revisited</h2>
+        <p>The position sizing formula from Module 1: <strong>Position size = Risk amount ÷ Stop distance</strong>. Simple in principle. The complexity comes from applying it correctly across different instruments where the price of a "point" or "pip" varies significantly.</p>
+        <p>For forex: a pip on EUR/USD at standard lot size equals approximately $10. For futures: a point on ES1! equals $50 per contract. For CFDs: varies by instrument and broker. The formula is the same — the units differ.</p>
+        <div class="vis-exp"><div class="vis-exp-title">Position sizing across instruments</div>
+          <div class="vis-row"><div class="vis-cell"><div class="vis-cell-label">Forex (EUR/USD)</div><div class="vis-cell-val">Lots / mini lots</div><div class="vis-cell-sub">1 pip ≈ $10 standard · $1 mini lot</div></div><div class="vis-cell"><div class="vis-cell-label">Futures (ES1!)</div><div class="vis-cell-val">Contracts</div><div class="vis-cell-sub">1 point = $50 per contract</div></div><div class="vis-cell"><div class="vis-cell-label">CFDs / indices</div><div class="vis-cell-val">Units / £ per point</div><div class="vis-cell-sub">Varies by broker · check instrument specs</div></div></div>
+        </div>
+        <h2>Scaling risk with account size</h2>
+        <p>The 1% rule is a starting point, not a rigid rule. As your account grows and your consistency improves, some traders scale to 1.5% or 2% per trade. The key is that your risk per trade relative to the daily loss limit should leave you with enough buffer to weather a bad day.</p>
+        <div class="vis-exp"><div class="vis-exp-title">Risk per trade vs daily loss limit — number of losses before hitting the limit</div>
+          <div class="vis-row"><div class="vis-cell vis-good"><div class="vis-cell-label">Risk 0.5% per trade</div><div class="vis-cell-val green">10 losses</div><div class="vis-cell-sub">Before hitting 5% daily limit · lots of room</div></div><div class="vis-cell vis-good"><div class="vis-cell-label">Risk 1% per trade</div><div class="vis-cell-val green">5 losses</div><div class="vis-cell-sub">Before hitting limit · comfortable buffer</div></div><div class="vis-cell vis-warn"><div class="vis-cell-label">Risk 2% per trade</div><div class="vis-cell-val amber">2-3 losses</div><div class="vis-cell-sub">One bad session ends your day</div></div></div>
+        </div>
+        <h2>Live position sizing exercise</h2>
+        <p>Use the chart below to find a current setup on any instrument. Note the current price and where you would place a stop loss, then use the calculator to find your position size at different risk levels.</p>
+        <div class="chart-component">
+          <div class="chart-header"><div><div class="chart-title">Live chart — find a setup and calculate your size</div><div class="chart-subtitle">Note the current price and stop loss distance · use the calculator below</div></div>
+            <div class="inst-switcher" id="sw1"><button class="inst-btn active" onclick="sw('f1','EURUSD','60',this,'sw1')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f1','GBPUSD','60',this,'sw1')">GBP/USD 1H</button><button class="inst-btn" onclick="sw('f1','ES1!','60',this,'sw1')">ES1! 1H</button><button class="inst-btn" onclick="sw('f1','NQ1!','60',this,'sw1')">NQ1! 1H</button><button class="inst-btn" onclick="sw('f1','XAUUSD','60',this,'sw1')">Gold 1H</button></div>
+          </div>
+          <iframe id="f1" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=EURUSD&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+        </div>
+        <div class="inline-calc">
+          <div class="ic-title">Position size calculator — try different risk levels</div>
+          <div class="ic-grid">
+            <div class="ic-field"><label>Account size</label><div class="ic-row"><input type="number" class="ic-input" id="ic1-account" value="10000" oninput="calcIC1()"><span class="ic-unit">£</span></div></div>
+            <div class="ic-field"><label>Risk per trade</label><div class="ic-row"><input type="number" class="ic-input" id="ic1-risk" value="1" min="0.1" max="10" step="0.1" oninput="calcIC1()"><span class="ic-unit">%</span></div></div>
+            <div class="ic-field"><label>Entry price</label><div class="ic-row"><input type="number" class="ic-input" id="ic1-entry" placeholder="from chart" step="any" oninput="calcIC1()"><span class="ic-unit">price</span></div></div>
+            <div class="ic-field"><label>Stop loss price</label><div class="ic-row"><input type="number" class="ic-input" id="ic1-stop" placeholder="your stop" step="any" oninput="calcIC1()"><span class="ic-unit">price</span></div></div>
+          </div>
+          <div class="ic-result"><span class="ic-result-label">Position size</span><span class="ic-result-val" id="ic1-result">Enter prices above</span></div>
+          <div class="ic-working" id="ic1-working"></div>
+        </div>
+        <div class="callout callout-key"><div class="cl">Key principle</div><p>Always calculate your position size before you enter a trade — never after. The calculation should confirm your size, not justify it. If the correct size feels too small, the trade might not be worth taking.</p></div>
+      </div>
+      <div class="lesson-nav"><span></span><span class="nav-info">Lesson 1 of 4</span><button class="btn-nav btn-next" onclick="completeLesson(0)">Next lesson</button></div>
+    </div>
+
+    <!-- L2: Stop loss placement -->
+    <div id="lesson-1" class="lesson-main" style="display:none">
+      <div class="lesson-hd"><div class="lesson-eyebrow">Module 3 · Lesson 2</div><h1 class="lesson-title">Stop loss placement</h1><p class="lesson-intro">Where you place your stop loss is as important as where you enter. A stop placed too tight gets hit by normal market noise. A stop placed too wide means you're risking too much. This lesson covers the principles of logical stop placement.</p></div>
+      <div class="lesson-body">
+        <h2>The purpose of a stop loss</h2>
+        <p>A stop loss has one job: to exit the trade at a predetermined price when the reason you entered is no longer valid. It is not there to prevent losses — losses are part of trading. It is there to ensure that any single loss is <strong>controlled and predictable</strong>.</p>
+        <p>The worst type of stop loss is one placed at a round number or at a fixed point distance from entry without any relationship to the market structure. A good stop loss is placed at a level where, if price reaches it, the original trade idea is clearly wrong.</p>
+        <div class="callout callout-key"><div class="cl">Key concept</div><p>Your stop loss should be placed at the point where the market tells you your trade idea is wrong — not at the point where your pain tolerance runs out.</p></div>
+        <h2>Three logical stop loss placements</h2>
+        <div class="vis-exp"><div class="vis-exp-title">Logical stop loss locations</div>
+          <div class="vis-row"><div class="vis-cell"><div class="vis-cell-label">Below swing low</div><div class="vis-cell-val">Structure based</div><div class="vis-cell-sub">Below the low that defined the pattern entry</div></div><div class="vis-cell"><div class="vis-cell-label">Below mother bar</div><div class="vis-cell-val">Pattern based</div><div class="vis-cell-sub">For inside bars — below the mother bar low</div></div><div class="vis-cell"><div class="vis-cell-label">Below VWAP</div><div class="vis-cell-val">Level based</div><div class="vis-cell-sub">For VWAP reclaim entries — below the reclaim candle</div></div></div>
+        </div>
+        <h2>The buffer principle</h2>
+        <p>Markets are not precise. Price often moves a few points beyond a level before reversing — this is called a <strong>wick</strong> or a <strong>liquidity sweep</strong>. Placing your stop exactly at a swing low means a single wick can stop you out even if your trade direction is correct. A small buffer — 1-3 points or pips beyond the level — helps avoid being stopped out by noise while still exiting if the level is genuinely broken.</p>
+        <div class="callout callout-warn"><div class="cl">Prop firm specific</div><p>On futures accounts with trailing drawdown (Apex, MFFU), be especially careful about stop placement. A wide stop combined with multiple positions can consume your trailing drawdown quickly on a volatile day. Tight, logical stops protect both your trade and your drawdown buffer.</p></div>
+        <div class="chart-component">
+          <div class="chart-header"><div><div class="chart-title">Live chart — practise identifying stop levels</div><div class="chart-subtitle">Find a pattern · identify where the logical stop loss would sit · not at a round number</div></div>
+            <div class="inst-switcher" id="sw2"><button class="inst-btn active" onclick="sw('f2','ES1!','60',this,'sw2')">ES1! 1H</button><button class="inst-btn" onclick="sw('f2','EURUSD','60',this,'sw2')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f2','GBPUSD','60',this,'sw2')">GBP/USD 1H</button><button class="inst-btn" onclick="sw('f2','ES1!','D',this,'sw2')">ES1! Daily</button></div>
+          </div>
+          <iframe id="f2" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+        </div>
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">Stop loss logic</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">You enter a long trade after a bull flag breakout. The flag consolidation low sits at 5,200. Current price is 5,215 at entry. Where is the most logical stop loss placement?</p>
+            <div class="ex-opts" id="ex1-opts">
+              <button class="ex-opt" onclick="chk('ex1','A',this,'C')">Exactly 10 points below entry — at 5,205</button>
+              <button class="ex-opt" onclick="chk('ex1','B',this,'C')">At 5,000 — a major round number well below current price</button>
+              <button class="ex-opt" onclick="chk('ex1','C',this,'C')">Just below 5,200 — below the flag consolidation low with a small buffer</button>
+              <button class="ex-opt" onclick="chk('ex1','D',this,'C')">No stop loss — let the trade run and close manually if needed</button>
+            </div>
+            <div class="ex-feedback" id="ex1-fb"></div>
+            <button class="ex-next-btn" id="ex1-next" onclick="completeLesson(1)">Continue to Lesson 3 →</button>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(0)">Previous</button><span class="nav-info">Lesson 2 of 4</span><button class="btn-nav btn-next" onclick="completeLesson(1)">Next lesson</button></div>
+    </div>
+
+    <!-- L3: R:R -->
+    <div id="lesson-2" class="lesson-main" style="display:none">
+      <div class="lesson-hd"><div class="lesson-eyebrow">Module 3 · Lesson 3</div><h1 class="lesson-title">Risk to reward — the long game</h1><p class="lesson-intro">Understanding risk to reward is what separates traders who think about each individual trade from traders who think about their edge over hundreds of trades. This lesson shows you why a 40% win rate can be more profitable than a 70% win rate.</p></div>
+      <div class="lesson-body">
+        <h2>Expectancy — what matters over time</h2>
+        <p>Every trader has a <strong>win rate</strong> (how often they are right) and an <strong>average risk to reward ratio</strong> (how much they make per winner relative to how much they lose per loser). These two numbers together determine whether a trading approach is profitable over time — regardless of any individual trade result.</p>
+        <p>The formula: <strong>Expectancy = (Win rate × Average win) − (Loss rate × Average loss)</strong>. If this number is positive, the approach is profitable over time. If it's negative, no amount of good luck makes it sustainable.</p>
+        <div class="vis-exp"><div class="vis-exp-title">Expectancy examples — which approach is actually better?</div>
+          <div class="vis-row"><div class="vis-cell"><div class="vis-cell-label">Trader A</div><div class="vis-cell-val">70% win rate</div><div class="vis-cell-sub">But average R:R is 0.5:1 · loses more than they win</div></div><div class="vis-cell vis-bad"><div class="vis-cell-label">Trader A result</div><div class="vis-cell-val red">Losing money</div><div class="vis-cell-sub">0.7×0.5 − 0.3×1 = 0.35 − 0.30 = +0.05 barely</div></div><div class="vis-cell vis-good"><div class="vis-cell-label">Trader B</div><div class="vis-cell-val green">40% win rate</div><div class="vis-cell-sub">But average R:R is 2:1 · winners are larger</div></div></div>
+          <div class="vis-row"><div class="vis-cell vis-good"><div class="vis-cell-label">Trader B result</div><div class="vis-cell-val green">Profitable</div><div class="vis-cell-sub">0.4×2 − 0.6×1 = 0.8 − 0.6 = +0.2 per trade</div></div><div class="vis-cell"><div class="vis-cell-label">The lesson</div><div class="vis-cell-val">R:R matters more</div><div class="vis-cell-sub">High win rate with bad R:R loses · low win rate with good R:R wins</div></div><div class="vis-cell"><div class="vis-cell-label">Sweet spot</div><div class="vis-cell-val">1:2 minimum</div><div class="vis-cell-sub">Target at least 2× your risk on every trade</div></div></div>
+        </div>
+        <h2>Setting realistic profit targets</h2>
+        <p>Profit targets should be set at <strong>the next logical level of resistance</strong> — not at an arbitrary 2:1 or 3:1 ratio. If the next resistance level is only 1.2× your risk, the trade has a poor R:R and should be skipped or have the stop tightened. If the next resistance is 4× your risk, you have an excellent setup.</p>
+        <div class="chart-component">
+          <div class="chart-header"><div><div class="chart-title">Live chart — find an R:R setup</div><div class="chart-subtitle">Find a potential setup · measure stop distance · identify the next logical resistance for target</div></div>
+            <div class="inst-switcher" id="sw3"><button class="inst-btn active" onclick="sw('f3','EURUSD','60',this,'sw3')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f3','ES1!','60',this,'sw3')">ES1! 1H</button><button class="inst-btn" onclick="sw('f3','NQ1!','60',this,'sw3')">NQ1! 1H</button><button class="inst-btn" onclick="sw('f3','XAUUSD','60',this,'sw3')">Gold 1H</button></div>
+          </div>
+          <iframe id="f3" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=EURUSD&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+        </div>
+        <div class="inline-calc">
+          <div class="ic-title">R:R calculator — measure your setup</div>
+          <div class="ic-grid">
+            <div class="ic-field"><label>Entry price</label><div class="ic-row"><input type="number" class="ic-input" id="ic2-entry" placeholder="from chart" step="any" oninput="calcIC2()"><span class="ic-unit">price</span></div></div>
+            <div class="ic-field"><label>Stop loss price</label><div class="ic-row"><input type="number" class="ic-input" id="ic2-stop" placeholder="your stop" step="any" oninput="calcIC2()"><span class="ic-unit">price</span></div></div>
+            <div class="ic-field"><label>Target price</label><div class="ic-row"><input type="number" class="ic-input" id="ic2-target" placeholder="next resistance" step="any" oninput="calcIC2()"><span class="ic-unit">price</span></div></div>
+            <div class="ic-field"><label>Account risk £</label><div class="ic-row"><input type="number" class="ic-input" id="ic2-risk" value="100" oninput="calcIC2()"><span class="ic-unit">£</span></div></div>
+          </div>
+          <div class="ic-result"><span class="ic-result-label">Risk to reward</span><span class="ic-result-val" id="ic2-result">Enter prices above</span></div>
+          <div class="ic-working" id="ic2-working"></div>
+        </div>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(1)">Previous</button><span class="nav-info">Lesson 3 of 4</span><button class="btn-nav btn-next" onclick="completeLesson(2)">Next lesson</button></div>
+    </div>
+
+    <!-- L4: How accounts blow up -->
+    <div id="lesson-3" class="lesson-main" style="display:none">
+      <div class="lesson-hd"><div class="lesson-eyebrow">Module 3 · Lesson 4</div><h1 class="lesson-title">How accounts blow up</h1><p class="lesson-intro">Understanding the specific ways trading accounts get destroyed is just as important as knowing how to build them. This lesson covers the four most common account killers — all of which are preventable.</p></div>
+      <div class="lesson-body">
+        <h2>The four account killers</h2>
+        <p>In almost every prop firm challenge failure, one of these four patterns is present. They're not about strategy — they're about psychology and discipline.</p>
+        <div class="vis-exp"><div class="vis-exp-title">The four account killers</div>
+          <div class="vis-row"><div class="vis-cell vis-bad"><div class="vis-cell-label">1. Revenge trading</div><div class="vis-cell-val red">Emotional response</div><div class="vis-cell-sub">Taking bigger trades after a loss to "get it back"</div></div><div class="vis-cell vis-bad"><div class="vis-cell-label">2. Overtrading</div><div class="vis-cell-val red">Too many trades</div><div class="vis-cell-sub">Taking setups that don't meet your criteria</div></div></div>
+          <div class="vis-row"><div class="vis-cell vis-bad"><div class="vis-cell-label">3. Moving stops</div><div class="vis-cell-val red">Breaking the rules</div><div class="vis-cell-sub">Moving stop loss further away when trade goes wrong</div></div><div class="vis-cell vis-bad"><div class="vis-cell-label">4. No daily loss limit</div><div class="vis-cell-val red">No self-control</div><div class="vis-cell-sub">No personal rule to stop trading after losing X%</div></div></div>
+        </div>
+
+        <h2>The revenge trading spiral</h2>
+        <p>Revenge trading is the single biggest cause of prop firm challenge failures. The pattern is consistent: trader loses a trade, feels frustrated, increases position size on the next trade to recover quickly, loses again, increases further, blows the daily loss limit. The entire sequence can happen in under an hour.</p>
+        <p>The solution is simple but hard to implement under pressure: <strong>set a personal daily loss limit below the firm's limit</strong>. If you lose 3% in a day, stop trading. Walk away. Come back tomorrow. The challenge has no time limit. The account does not care that you had a bad morning. Tomorrow is always a fresh start.</p>
+
+        <h2>How professionals handle losses</h2>
+        <p>Professional prop firm traders treat a losing day the same way a professional golfer treats a bad hole: they don't try to make it back on the next hole with a reckless shot. They play the next hole as they would any other — with the same process, the same criteria, the same discipline.</p>
+        <p>This is the mental model that separates traders who consistently pass challenges from those who pass once, then fail repeatedly.</p>
+
+        <div class="callout callout-key"><div class="cl">The rule that saves most challenges</div><p>Set your personal daily stop-loss at 2.5–3% — well below the firm's 4–5% limit. If you hit it, stop for the day. This one rule prevents revenge trading from ending your challenge, and leaves you with enough buffer that a bad morning can't cost you everything.</p></div>
+
+        <div class="stat-row">
+          <div class="stat-card"><div class="stat-val">3%</div><div class="stat-label">Recommended personal daily stop — below the firm's 5% limit</div></div>
+          <div class="stat-card"><div class="stat-val">2%</div><div class="stat-label">Buffer remaining to breathe if you hit your personal limit</div></div>
+          <div class="stat-card"><div class="stat-val">0</div><div class="stat-label">Trades you should take after hitting your personal daily limit</div></div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">Exercise</span><span class="ex-title">Understanding account killers</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">A trader is on a prop firm challenge. They've had three losing trades today and are down 3%. They feel the urge to take another trade with double their normal position size to recover the losses. What is the correct action?</p>
+            <div class="ex-opts" id="ex2-opts">
+              <button class="ex-opt" onclick="chk('ex2','A',this,'D')">Take the trade — a larger position means they can recover faster</button>
+              <button class="ex-opt" onclick="chk('ex2','B',this,'D')">Take the trade but reduce to 1.5x their normal size instead of double</button>
+              <button class="ex-opt" onclick="chk('ex2','C',this,'D')">Only take the trade if the setup aligns with their normal criteria</button>
+              <button class="ex-opt" onclick="chk('ex2','D',this,'D')">Stop trading for the day — they have hit their personal daily loss limit</button>
+            </div>
+            <div class="ex-feedback" id="ex2-fb"></div>
+            <button class="ex-next-btn" id="ex2-next" onclick="completeLesson(3)">Take the quiz →</button>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(2)">Previous</button><span class="nav-info">Lesson 4 of 4</span><button class="btn-nav btn-next" onclick="completeLesson(3)">Take the quiz</button></div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="lesson-4" class="lesson-main" style="display:none">
+      <div class="quiz-wrap">
+        <div class="quiz-hd"><div class="quiz-eyebrow">Module 3 · Quiz</div><h1 class="quiz-title">Test your knowledge</h1><p class="quiz-sub">5 questions on risk management. You need 80% to pass and unlock Module 4 — Prop Firm Mastery.</p></div>
+        <div id="quiz-questions"><div class="q-dots" id="q-dots"></div><div id="q-wrap"></div>
+          <div class="q-btn-row"><button class="q-btn q-submit" id="q-submit" onclick="submitQ()" disabled>Submit answer</button><button class="q-btn q-next-btn" id="q-next" onclick="nextQ()">Next →</button></div>
+        </div>
+        <div class="quiz-result" id="quiz-result">
+          <div class="result-pct" id="result-pct"></div><div class="result-lbl" id="result-lbl"></div><div class="result-msg" id="result-msg"></div>
+          <div class="result-actions"><button class="btn-result btn-result-secondary" onclick="retryQuiz()">Retry quiz</button><a href="/learn" class="btn-result btn-result-primary" id="result-cta" style="display:none">Back to modules →</a></div>
+          <div class="completion-banner" id="completion-banner"><div><div class="cb-title">Module 3 complete</div><div class="cb-sub">Module 4 — Prop Firm Mastery — is now unlocked.</div></div><a href="/learn" class="cb-btn">Continue →</a></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+const completed=[false,false,false,false,false];
+function showLesson(i){for(let j=0;j<5;j++){document.getElementById('lesson-'+j).style.display='none';document.getElementById('nav-'+j).classList.remove('active');}document.getElementById('lesson-'+i).style.display='block';document.getElementById('nav-'+i).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function completeLesson(i){completed[i]=true;document.getElementById('dot-'+i).textContent='✓';document.getElementById('nav-'+i).classList.add('completed');updateProgress();showLesson(i+1);if(i===3)initQuiz();}
+function updateProgress(){const done=completed.filter(Boolean).length;const pct=Math.round((done/5)*100);document.getElementById('prog-fill').style.width=pct+'%';document.getElementById('prog-pct').textContent=pct+'%';}
+function sw(fid,sym,interval,btn,swid){document.querySelectorAll('#'+swid+' .inst-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById(fid).src=`https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=${sym}&interval=${interval}&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com`;}
+function calcIC1(){const a=parseFloat(document.getElementById('ic1-account').value)||0;const r=parseFloat(document.getElementById('ic1-risk').value)||0;const e=parseFloat(document.getElementById('ic1-entry').value)||0;const s=parseFloat(document.getElementById('ic1-stop').value)||0;const re=document.getElementById('ic1-result');const w=document.getElementById('ic1-working');if(!e||!s){re.textContent='Enter prices above';w.style.display='none';return;}const ra=a*(r/100);const d=Math.abs(e-s);const sz=d>0?ra/d:0;re.textContent=sz.toFixed(2)+' units';w.style.display='block';w.innerHTML=`<strong>Risk:</strong> £${a.toLocaleString()} × ${r}% = <strong>£${ra.toFixed(2)}</strong> · <strong>Stop dist:</strong> ${d.toFixed(5)} · <strong>Size:</strong> ${sz.toFixed(2)} units`;}
+function calcIC2(){const e=parseFloat(document.getElementById('ic2-entry').value)||0;const s=parseFloat(document.getElementById('ic2-stop').value)||0;const t=parseFloat(document.getElementById('ic2-target').value)||0;const risk=parseFloat(document.getElementById('ic2-risk').value)||0;const re=document.getElementById('ic2-result');const w=document.getElementById('ic2-working');if(!e||!s||!t){re.textContent='Enter all prices';w.style.display='none';return;}const stopD=Math.abs(e-s);const targD=Math.abs(t-e);const rr=targD/stopD;const pot=risk*rr;re.textContent=`1 : ${rr.toFixed(2)}`;re.style.color=rr>=2?'var(--good)':rr>=1?'var(--warn)':'var(--bad)';w.style.display='block';w.innerHTML=`<strong>Stop distance:</strong> ${stopD.toFixed(5)} · <strong>Target distance:</strong> ${targD.toFixed(5)} · <strong>R:R:</strong> 1:${rr.toFixed(2)} · <strong>Potential profit:</strong> £${pot.toFixed(2)}`;}
+const EX={ex1:{C:{c:'✓ Correct. The stop loss should go just below the flag consolidation low — the structural level that defines the pattern. If price breaks that level, the bull flag is invalidated.',w:'Not quite. The logical stop is just below the flag consolidation low (5,200 with a small buffer). This is the structural level that defines the trade — if price breaks it, the trade idea is wrong.'}},ex2:{D:{c:'✓ Correct. After hitting 3% down and having three losing trades, the correct action is to stop trading for the day. Revenge trading with larger size is the fastest way to blow a challenge.',w:'Not quite. After three losses and 3% down, stopping for the day is the right call. Any trade taken with emotional intent to recover losses — regardless of size — is revenge trading.'}}};
+function chk(exId,chosen,btn,correct){const opts=document.querySelectorAll('#'+exId+'-opts .ex-opt');opts.forEach(o=>{o.disabled=true;o.onclick=null;});const ok=chosen===correct;btn.classList.add(ok?'correct':'incorrect');if(!ok){const idx=['A','B','C','D'].indexOf(correct);if(idx>=0)opts[idx].classList.add('show-correct');}const fb=document.getElementById(exId+'-fb');fb.className=`ex-feedback show ${ok?'correct':'incorrect'}`;const m=EX[exId][correct];fb.innerHTML=`<strong>${ok?'✓ Correct':'Not quite'}</strong> — ${ok?m.c:m.w}`;document.getElementById(exId+'-next').classList.add('show');}
+const QS=[
+  {t:'What is the recommended maximum risk per trade for a prop firm challenge account?',o:['5% — matching the daily loss limit','0.1% — as small as possible','1% — leaving enough buffer for multiple losses','10% — maximise potential gains'],c:2,fb:{c:'Correct. 1% per trade means five consecutive losses before hitting the 5% daily limit — enough buffer to survive a bad day without ending your challenge.',w:'Not quite. 1% per trade is the standard recommendation. It leaves enough buffer (five losses before the 5% daily limit) to survive a bad session.'}},
+  {t:'Where should a stop loss be placed on a bull flag breakout trade?',o:['At a fixed 10-point distance below entry regardless of structure','At a major round number below current price','Just below the low of the flag consolidation, with a small buffer','At the exact point where the flag started forming'],c:2,fb:{c:'Correct. The stop goes below the flag consolidation low — the structural level that defines the trade. If price breaks it, the bull flag is invalidated.',w:'Not quite. The logical stop is just below the flag consolidation low. This is the structural level — if price breaks it, the trade idea is clearly wrong.'}},
+  {t:'A trader has a 40% win rate but an average risk to reward ratio of 1:3. Are they profitable?',o:['No — they lose more trades than they win so they must be losing money','Yes — at 1:3 R:R, a 40% win rate produces positive expectancy','Only if they trade at least 100 times to let the statistics play out','It depends on whether the markets are trending or ranging'],c:1,fb:{c:'Correct. 0.4×3 − 0.6×1 = 1.2 − 0.6 = +0.6 positive expectancy per trade. A 40% win rate with 1:3 R:R is a profitable system.',w:'Not quite. The maths: 0.4×3 − 0.6×1 = 1.2 − 0.6 = +0.6 positive expectancy per trade. A 40% win rate with 1:3 R:R produces positive expectancy.'}},
+  {t:'What is revenge trading?',o:['Trading the same instrument multiple times in one day','Taking trades designed to recover a previous loss, often with increased position size','Trading against the trend to capture a reversal','Copying another trader\'s positions without understanding them'],c:1,fb:{c:'Correct. Revenge trading is taking positions with the emotional goal of recovering a loss — often with larger size. It is the leading cause of prop firm challenge failures.',w:'Not quite. Revenge trading means taking a trade specifically to try to recover a loss, typically with increased position size. It is driven by emotion rather than strategy.'}},
+  {t:'What is the recommended personal daily loss limit relative to the firm\'s official limit?',o:['Equal to the firm\'s limit — use every point of buffer available','Higher than the firm\'s limit — take more risk for more reward','Well below the firm\'s limit — stop trading before reaching the official maximum','It does not matter — professional traders do not use personal limits'],c:2,fb:{c:'Correct. Setting a personal daily limit well below the official one (e.g. 3% personal vs 5% official) creates a buffer and prevents a bad day from ending your challenge.',w:'Not quite. Setting your personal daily limit below the firm\'s limit (e.g. 3% vs 5%) creates a buffer. Hitting your personal limit means you stop — there\'s still 2% of room before the official breach.'}}
+];
+let curQ=0,selOpt=null,answered=false,score=0;
+function initQuiz(){curQ=0;score=0;selOpt=null;answered=false;document.getElementById('quiz-questions').style.display='block';document.getElementById('quiz-result').style.display='none';renderQ();renderDots();}
+function renderDots(){document.getElementById('q-dots').innerHTML=QS.map((_,i)=>`<div class="q-dot ${i<curQ?'done':i===curQ?'active':''}"></div>`).join('');}
+function renderQ(){const q=QS[curQ];const L=['A','B','C','D'];document.getElementById('q-wrap').innerHTML=`<div class="q-card"><div class="q-num">Question ${curQ+1} of ${QS.length}</div><div class="q-text">${q.t}</div><div class="q-options">${q.o.map((o,i)=>`<div class="q-opt" onclick="selQ(${i})"><div class="q-letter">${L[i]}</div><div class="q-opt-text">${o}</div></div>`).join('')}</div><div class="q-feedback" id="q-fb"></div></div>`;selOpt=null;answered=false;document.getElementById('q-submit').disabled=true;document.getElementById('q-submit').style.display='block';document.getElementById('q-next').style.display='none';}
+function selQ(i){if(answered)return;selOpt=i;document.querySelectorAll('.q-opt').forEach((o,j)=>o.classList.toggle('selected',j===i));document.getElementById('q-submit').disabled=false;}
+function submitQ(){if(selOpt===null||answered)return;answered=true;const q=QS[curQ];const ok=selOpt===q.c;if(ok)score++;document.querySelectorAll('.q-opt').forEach((o,i)=>{o.classList.remove('selected');if(i===q.c)o.classList.add('correct');else if(i===selOpt&&!ok)o.classList.add('incorrect');});const fb=document.getElementById('q-fb');fb.className=`q-feedback show ${ok?'correct':'incorrect'}`;fb.innerHTML=`<strong>${ok?'✓ Correct':'✗ Not quite'}</strong> — ${ok?q.fb.c:q.fb.w}`;document.getElementById('q-submit').style.display='none';document.getElementById('q-next').style.display='block';document.getElementById('q-next').textContent=curQ<QS.length-1?'Next →':'See results →';}
+function nextQ(){curQ++;if(curQ>=QS.length){showResult();return;}renderDots();renderQ();}
+function showResult(){document.getElementById('quiz-questions').style.display='none';document.getElementById('quiz-result').style.display='block';const pct=Math.round((score/QS.length)*100);const pass=pct>=80;document.getElementById('result-pct').textContent=pct+'%';document.getElementById('result-pct').className=`result-pct ${pass?'pass':'fail'}`;document.getElementById('result-lbl').textContent=pass?'Module 3 passed':'Not quite — try again';document.getElementById('result-msg').textContent=pass?`You answered ${score} of ${QS.length} correctly. Strong risk management understanding. Module 4 — Prop Firm Mastery — is now unlocked.`:`You answered ${score} of ${QS.length} correctly. Review the lessons and try again.`;if(pass){document.getElementById('result-cta').style.display='inline-block';completed[4]=true;document.getElementById('dot-4').textContent='✓';document.getElementById('nav-4').classList.add('completed');updateProgress();setTimeout(()=>document.getElementById('completion-banner').classList.add('show'),500);localStorage.setItem('traxent_m3_complete','true');}}
+function retryQuiz(){document.getElementById('quiz-result').style.display='none';initQuiz();}
+initQuiz();
+</script>
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 2: Chart Patterns — Traxent Learn</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;--accent-light:rgba(10,110,79,.08);--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);--border2:rgba(14,14,12,0.06);--surface:#ffffff;--surface2:#f0efe9;--good:#0a6e4f;--warn:#b06000;--bad:#9e1a1a;--serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px}body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased}
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.nav-logo{font-family:var(--mono);font-size:15px;color:var(--ink);text-decoration:none}.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-back{font-size:13px;color:var(--ink3);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .15s}.nav-back:hover{color:var(--ink)}.nav-back::before{content:'←'}
+.learn-wrap{max-width:1160px;margin:0 auto;padding:40px 32px;display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:start}
+.sidebar{position:sticky;top:76px}
+.module-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.module-title{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink);margin-bottom:4px}
+.module-meta{font-size:12px;color:var(--ink3);margin-bottom:20px}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);margin-bottom:6px}
+.progress-bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:20px}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .5s ease}
+.lesson-list{display:flex;flex-direction:column;gap:2px}
+.lesson-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:all .15s;border:1px solid transparent}
+.lesson-item:hover{background:var(--surface);border-color:var(--border)}
+.lesson-item.active{background:var(--surface);border-color:var(--accent)}
+.lesson-item.completed .lesson-dot{background:var(--accent);color:white;border-color:var(--accent)}
+.lesson-dot{width:22px;height:22px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:var(--mono);color:var(--ink3);flex-shrink:0;transition:all .2s}
+.lesson-item.active .lesson-dot{background:var(--accent);color:white;border-color:var(--accent)}
+.lesson-name{font-size:13px;color:var(--ink)}.lesson-item.active .lesson-name{font-weight:500;color:var(--accent)}
+.lesson-dur{font-size:10px;color:var(--ink3);font-family:var(--mono);margin-top:1px}
+.quiz-sep{height:1px;background:var(--border);margin:8px 0}
+.sidebar-note{margin-top:20px;padding:14px 16px;background:var(--accent-light);border:1px solid rgba(10,110,79,.15);border-radius:8px;font-size:12px;color:var(--ink2);line-height:1.5}
+.lesson-main{min-height:60vh}
+.lesson-hd{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.lesson-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.lesson-eyebrow::before{content:'';width:16px;height:1px;background:var(--accent)}
+.lesson-title{font-family:var(--serif);font-size:38px;font-weight:400;line-height:1.1;color:var(--ink);margin-bottom:14px}
+.lesson-intro{font-size:16px;color:var(--ink2);line-height:1.7;font-weight:300;max-width:640px}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-family:var(--serif);font-size:24px;font-weight:400;color:var(--ink);margin:36px 0 14px}
+.lesson-body p{font-size:15px;color:var(--ink2);line-height:1.8;margin-bottom:16px;font-weight:300}
+.lesson-body strong{color:var(--ink);font-weight:500}
+.callout{border-radius:8px;padding:16px 20px;margin:24px 0}
+.callout-key{background:var(--accent-light);border:1px solid rgba(10,110,79,.15);border-left:3px solid var(--accent)}
+.callout-key .cl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.callout-warn{background:rgba(176,96,0,.06);border:1px solid rgba(176,96,0,.15);border-left:3px solid var(--warn)}
+.callout-warn .cl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--warn);margin-bottom:8px}
+.callout-example{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--ink3)}
+.callout-example .cl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
+.callout p{margin-bottom:0;font-size:14px}
+.vis-exp{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0}
+.vis-exp-title{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px}
+.vis-row{display:flex;border-radius:6px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px}
+.vis-row:last-child{margin-bottom:0}
+.vis-cell{flex:1;padding:10px 14px;border-right:1px solid var(--border)}
+.vis-cell:last-child{border-right:none}
+.vis-cell-label{font-size:10px;font-family:var(--mono);color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.vis-cell-val{font-size:13px;color:var(--ink);font-weight:500}
+.vis-cell-sub{font-size:11px;color:var(--ink3);margin-top:2px}
+.vis-good{background:rgba(10,110,79,.06)}.vis-bad{background:rgba(158,26,26,.06)}.vis-warn{background:rgba(176,96,0,.05)}
+.vis-cell-val.green{color:var(--good)}.vis-cell-val.red{color:var(--bad)}.vis-cell-val.amber{color:var(--warn)}
+.pattern-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;margin:20px 0}
+.pattern-card-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.pattern-icon{width:40px;height:40px;border-radius:8px;background:var(--accent-light);border:1px solid rgba(10,110,79,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.pattern-name{font-size:16px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.pattern-type{font-family:var(--mono);font-size:10px;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.2);padding:2px 8px;border-radius:3px;letter-spacing:.06em}
+.pattern-body{font-size:14px;color:var(--ink2);line-height:1.7;font-weight:300}
+.pattern-body strong{color:var(--ink);font-weight:500}
+.pattern-body p{margin-bottom:10px}
+.pattern-rules{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.pattern-rule{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink2)}
+.pattern-rule::before{content:'—';color:var(--accent);flex-shrink:0;font-size:11px;margin-top:2px}
+.chart-component{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:28px 0}
+.chart-header{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.chart-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.chart-subtitle{font-size:12px;color:var(--ink3)}
+.inst-switcher{display:flex;gap:6px;flex-wrap:wrap}
+.inst-btn{font-family:var(--mono);font-size:11px;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:var(--bg);color:var(--ink3);cursor:pointer;transition:all .15s}
+.inst-btn:hover{border-color:var(--accent);color:var(--accent)}
+.inst-btn.active{background:var(--accent);border-color:var(--accent);color:white}
+.chart-frame{width:100%;height:380px;background:#131722;border:none;display:block}
+.exercise{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:28px 0}
+.exercise-hd{padding:14px 20px;border-bottom:1px solid var(--border2);background:var(--surface2);display:flex;align-items:center;gap:10px}
+.ex-badge{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.2);padding:3px 8px;border-radius:3px}
+.ex-title{font-size:14px;font-weight:500;color:var(--ink)}
+.exercise-body{padding:20px}
+.ex-question{font-size:15px;color:var(--ink2);line-height:1.6;margin-bottom:18px;font-weight:300}
+.ex-question strong{color:var(--ink);font-weight:500}
+.ex-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.ex-opt{padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:14px;color:var(--ink2);cursor:pointer;transition:all .15s;font-family:var(--sans);text-align:left}
+.ex-opt:hover:not(:disabled){border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+.ex-opt.correct{border-color:var(--good);background:rgba(10,110,79,.08);color:var(--good);font-weight:500}
+.ex-opt.incorrect{border-color:var(--bad);background:rgba(158,26,26,.06);color:var(--bad)}
+.ex-opt.show-correct{border-color:var(--good);background:rgba(10,110,79,.06);color:var(--good)}
+.ex-feedback{padding:14px 16px;border-radius:8px;font-size:14px;line-height:1.6;display:none}
+.ex-feedback.show{display:block}
+.ex-feedback.correct{background:rgba(10,110,79,.08);border:1px solid rgba(10,110,79,.2);color:var(--good)}
+.ex-feedback.incorrect{background:rgba(158,26,26,.06);border:1px solid rgba(158,26,26,.15);color:var(--bad)}
+.ex-next-btn{margin-top:14px;background:var(--accent);color:white;border:none;border-radius:7px;padding:10px 20px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:background .15s;display:none}
+.ex-next-btn.show{display:inline-block}.ex-next-btn:hover{background:#085e43}
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:48px;padding-top:28px;border-top:1px solid var(--border)}
+.btn-nav{display:flex;align-items:center;gap:8px;padding:11px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s}
+.btn-prev{background:var(--surface);border:1px solid var(--border);color:var(--ink2)}.btn-prev:hover{border-color:var(--ink)}.btn-prev::before{content:'←'}
+.btn-next{background:var(--accent);color:white}.btn-next:hover{background:#085e43}.btn-next::after{content:'→'}
+.nav-info{font-size:12px;color:var(--ink3);font-family:var(--mono)}
+.quiz-wrap{max-width:700px}
+.quiz-hd{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.quiz-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.quiz-eyebrow::before{content:'';width:16px;height:1px;background:var(--accent)}
+.quiz-title{font-family:var(--serif);font-size:38px;font-weight:400;color:var(--ink);margin-bottom:10px}
+.quiz-sub{font-size:15px;color:var(--ink2);line-height:1.65;font-weight:300}
+.q-dots{display:flex;gap:8px;margin-bottom:32px}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);transition:all .2s}
+.q-dot.active{background:var(--accent);border-color:var(--accent)}
+.q-dot.done{background:var(--accent);border-color:var(--accent);opacity:.4}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:26px;margin-bottom:20px}
+.q-num{font-family:var(--mono);font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.q-text{font-size:16px;color:var(--ink);line-height:1.55;margin-bottom:22px}
+.q-options{display:flex;flex-direction:column;gap:10px}
+.q-opt{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s}
+.q-opt:hover{border-color:var(--accent);background:var(--accent-light)}
+.q-opt.selected{border-color:var(--accent);background:var(--accent-light)}
+.q-opt.correct{border-color:var(--good);background:rgba(10,110,79,.08)}
+.q-opt.incorrect{border-color:var(--bad);background:rgba(158,26,26,.06)}
+.q-letter{width:22px;height:22px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--ink3);flex-shrink:0;transition:all .15s}
+.q-opt.selected .q-letter{background:var(--accent);color:white;border-color:var(--accent)}
+.q-opt.correct .q-letter{background:var(--good);color:white;border-color:var(--good)}
+.q-opt.incorrect .q-letter{background:var(--bad);color:white;border-color:var(--bad)}
+.q-opt-text{font-size:14px;color:var(--ink2);line-height:1.5;padding-top:2px}
+.q-feedback{padding:12px 16px;border-radius:8px;margin-top:14px;font-size:14px;line-height:1.55;display:none}
+.q-feedback.show{display:block}
+.q-feedback.correct{background:rgba(10,110,79,.08);border:1px solid rgba(10,110,79,.2);color:var(--good)}
+.q-feedback.incorrect{background:rgba(158,26,26,.06);border:1px solid rgba(158,26,26,.15);color:var(--bad)}
+.q-btn-row{display:flex;justify-content:flex-end;margin-top:20px;gap:10px}
+.q-btn{padding:11px 24px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s}
+.q-submit{background:var(--accent);color:white}.q-submit:hover{background:#085e43}.q-submit:disabled{opacity:.35;cursor:not-allowed}
+.q-next-btn{background:var(--ink);color:white;display:none}.q-next-btn:hover{background:var(--accent)}
+.quiz-result{text-align:center;padding:48px 0;display:none}
+.result-pct{font-family:var(--serif);font-size:80px;font-weight:400;font-style:italic;line-height:1;margin-bottom:10px}
+.result-pct.pass{color:var(--good)}.result-pct.fail{color:var(--bad)}
+.result-lbl{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:20px}
+.result-msg{font-size:15px;color:var(--ink2);line-height:1.65;max-width:480px;margin:0 auto 28px;font-weight:300}
+.result-actions{display:flex;gap:12px;justify-content:center}
+.btn-result{padding:11px 22px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s;text-decoration:none;display:inline-block}
+.btn-result-primary{background:var(--accent);color:white}.btn-result-secondary{background:var(--surface);border:1px solid var(--border);color:var(--ink2)}
+.completion-banner{background:var(--ink);border-radius:12px;padding:24px 28px;margin-top:32px;display:none}
+.completion-banner.show{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.cb-title{font-family:var(--serif);font-size:20px;color:white}
+.cb-sub{font-size:13px;color:rgba(255,255,255,.45);margin-top:4px}
+.cb-btn{background:var(--accent-mid);color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap}
+@media(max-width:900px){.learn-wrap{grid-template-columns:1fr;padding:24px 20px}.sidebar{position:static}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <a href="/learn" class="nav-back">All modules</a>
+</nav>
+<div class="learn-wrap">
+  <aside class="sidebar">
+    <div class="module-label">Module 2 · Observer+</div>
+    <div class="module-title">Chart Patterns</div>
+    <div class="module-meta">5 lessons · 1 quiz · ~40 min</div>
+    <div class="progress-label"><span>Progress</span><span id="prog-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="lesson-list">
+      <div class="lesson-item active" id="nav-0" onclick="showLesson(0)"><div class="lesson-dot" id="dot-0">1</div><div><div class="lesson-name">Why patterns work</div><div class="lesson-dur">6 min</div></div></div>
+      <div class="lesson-item" id="nav-1" onclick="showLesson(1)"><div class="lesson-dot" id="dot-1">2</div><div><div class="lesson-name">Bull flag &amp; bear flag</div><div class="lesson-dur">8 min · Exercise</div></div></div>
+      <div class="lesson-item" id="nav-2" onclick="showLesson(2)"><div class="lesson-dot" id="dot-2">3</div><div><div class="lesson-name">Inside bar</div><div class="lesson-dur">7 min · Exercise</div></div></div>
+      <div class="lesson-item" id="nav-3" onclick="showLesson(3)"><div class="lesson-dot" id="dot-3">4</div><div><div class="lesson-name">BOS &amp; VWAP reclaim</div><div class="lesson-dur">9 min · Exercise</div></div></div>
+      <div class="lesson-item" id="nav-4" onclick="showLesson(4)"><div class="lesson-dot" id="dot-4">5</div><div><div class="lesson-name">Combining patterns</div><div class="lesson-dur">8 min · Exercise</div></div></div>
+      <div class="quiz-sep"></div>
+      <div class="lesson-item" id="nav-5" onclick="showLesson(5)"><div class="lesson-dot" id="dot-5">✦</div><div><div class="lesson-name">Module 2 quiz</div><div class="lesson-dur">5 questions · Pass 80%</div></div></div>
+    </div>
+    <div class="sidebar-note">Complete all lessons and pass the quiz to unlock Module 3 — Risk Management.</div>
+  </aside>
+  <main>
+
+    <!-- L1 -->
+    <div id="lesson-0" class="lesson-main">
+      <div class="lesson-hd"><div class="lesson-eyebrow">Module 2 · Lesson 1</div><h1 class="lesson-title">Why patterns work</h1><p class="lesson-intro">Chart patterns are not magic. They work because markets are made of humans — and humans react to price levels in predictable, repeatable ways. Understanding the psychology behind patterns separates traders who use them well from those who chase every candle.</p></div>
+      <div class="lesson-body">
+        <h2>Markets are driven by human psychology</h2>
+        <p>Every chart pattern is a visual representation of a battle between buyers and sellers. When you see a flag pattern, you're seeing a market that surged in one direction, paused while participants caught their breath, then continued. The pattern works not because of the shape, but because of what the shape tells you about who is in control and what they're likely to do next.</p>
+        <p>This is why the same patterns appear repeatedly across different instruments, timeframes, and decades. Human psychology doesn't change. Fear and greed look the same in 1990 as they do today.</p>
+        <div class="callout callout-key"><div class="cl">Key concept</div><p>A chart pattern is a shortcut for reading market psychology. The shape tells you the story of the battle between buyers and sellers — and gives you a probabilistic idea of what happens next.</p></div>
+        <h2>Patterns only work in context</h2>
+        <p>The biggest mistake beginners make is trading patterns in isolation. A bull flag in a downtrend is a much weaker signal than a bull flag in an established uptrend. Context — the broader market structure from Module 1 — always takes priority over the pattern itself. Before you look for patterns, ask: what is the trend?</p>
+        <div class="vis-exp"><div class="vis-exp-title">Pattern validity depends on context</div>
+          <div class="vis-row"><div class="vis-cell vis-good"><div class="vis-cell-label">High probability</div><div class="vis-cell-val green">With the trend</div><div class="vis-cell-sub">Bull flag in uptrend · continuation likely</div></div><div class="vis-cell vis-warn"><div class="vis-cell-label">Lower probability</div><div class="vis-cell-val amber">Against the trend</div><div class="vis-cell-sub">Bull flag in downtrend · fighting the flow</div></div><div class="vis-cell"><div class="vis-cell-label">Neutral</div><div class="vis-cell-val">In a range</div><div class="vis-cell-sub">Either direction valid until breakout</div></div></div>
+        </div>
+        <h2>Three things every valid pattern needs</h2>
+        <div class="vis-exp"><div class="vis-exp-title">Pattern validity checklist</div>
+          <div class="vis-row"><div class="vis-cell"><div class="vis-cell-label">1. Structure</div><div class="vis-cell-val">Clear formation</div><div class="vis-cell-sub">Obvious, not forced</div></div><div class="vis-cell"><div class="vis-cell-label">2. Context</div><div class="vis-cell-val">Trend alignment</div><div class="vis-cell-sub">Aligns with higher timeframe</div></div><div class="vis-cell"><div class="vis-cell-label">3. Confirmation</div><div class="vis-cell-val">Trigger event</div><div class="vis-cell-sub">Price breaks boundary with conviction</div></div></div>
+        </div>
+        <div class="callout callout-warn"><div class="cl">For prop firm challenges</div><p>Pattern trading works well in challenges because it gives you defined entry and exit points — which means defined risk. You always know where your stop loss goes before you enter.</p></div>
+      </div>
+      <div class="lesson-nav"><span></span><span class="nav-info">Lesson 1 of 5</span><button class="btn-nav btn-next" onclick="completeLesson(0)">Next lesson</button></div>
+    </div>
+
+    <!-- L2 -->
+    <div id="lesson-1" class="lesson-main" style="display:none">
+      <div class="lesson-hd"><div class="lesson-eyebrow">Module 2 · Lesson 2</div><h1 class="lesson-title">Bull flag &amp; bear flag</h1><p class="lesson-intro">The flag pattern is one of the most reliable continuation patterns in trading. It appears across every market and every timeframe — and once you can identify it, you'll see it everywhere.</p></div>
+      <div class="lesson-body">
+        <h2>What a flag looks like</h2>
+        <p>A flag has two parts: the <strong>pole</strong> and the <strong>flag</strong>. The pole is a sharp, strong move in one direction — driven by buyers (bull flag) or sellers (bear flag). The flag is the consolidation that follows — a slow, orderly pullback against the direction of the pole.</p>
+        <p>The key insight: the pullback is <strong>not a reversal</strong>. It's the market pausing before continuing in the original direction. Weak participants are shaken out. Strong participants use the pullback to enter at a better price.</p>
+        <div class="vis-exp"><div class="vis-exp-title">Bull flag anatomy</div>
+          <div class="vis-row"><div class="vis-cell vis-good"><div class="vis-cell-label">The pole</div><div class="vis-cell-val green">Sharp surge up</div><div class="vis-cell-sub">Strong momentum · large candles</div></div><div class="vis-cell"><div class="vis-cell-label">The flag</div><div class="vis-cell-val">Slow pullback</div><div class="vis-cell-sub">Orderly decline · small candles</div></div><div class="vis-cell vis-good"><div class="vis-cell-label">The breakout</div><div class="vis-cell-val green">Continuation</div><div class="vis-cell-sub">Breaks flag high with momentum</div></div></div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-header"><div class="pattern-icon">📈</div><div><div class="pattern-name">Bull flag</div><div class="pattern-type">CONTINUATION · BULLISH</div></div></div>
+          <div class="pattern-body"><p>Forms after a strong upward move. Price consolidates in a slight downward channel, then breaks out to the upside.</p>
+            <div class="pattern-rules"><div class="pattern-rule"><strong>Entry:</strong> Break above the upper trendline of the flag with a strong candle close</div><div class="pattern-rule"><strong>Stop loss:</strong> Below the low of the flag consolidation</div><div class="pattern-rule"><strong>Target:</strong> Measure the pole height and project from the breakout point</div><div class="pattern-rule"><strong>Avoid:</strong> Flags where the pullback retraces more than 50% of the pole</div></div>
+          </div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-header"><div class="pattern-icon">📉</div><div><div class="pattern-name">Bear flag</div><div class="pattern-type">CONTINUATION · BEARISH</div></div></div>
+          <div class="pattern-body"><p>The exact mirror of the bull flag. After a strong downward move, price consolidates in a slight upward channel before breaking down.</p>
+            <div class="pattern-rules"><div class="pattern-rule"><strong>Entry:</strong> Break below the lower trendline of the flag</div><div class="pattern-rule"><strong>Stop loss:</strong> Above the high of the flag consolidation</div><div class="pattern-rule"><strong>Target:</strong> Pole height projected downward from the breakout</div><div class="pattern-rule"><strong>Avoid:</strong> Flags that drift sideways rather than slightly against the trend</div></div>
+          </div>
+        </div>
+        <div class="chart-component">
+          <div class="chart-header"><div><div class="chart-title">Live chart — look for flag patterns</div><div class="chart-subtitle">Try 1H and 4H timeframes · strong moves followed by slow pullbacks</div></div>
+            <div class="inst-switcher" id="sw1"><button class="inst-btn active" onclick="sw('f1','ES1!','60',this,'sw1')">ES1! 1H</button><button class="inst-btn" onclick="sw('f1','NQ1!','60',this,'sw1')">NQ1! 1H</button><button class="inst-btn" onclick="sw('f1','EURUSD','60',this,'sw1')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f1','GBPUSD','60',this,'sw1')">GBP/USD 1H</button><button class="inst-btn" onclick="sw('f1','XAUUSD','60',this,'sw1')">Gold 1H</button></div>
+          </div>
+          <iframe id="f1" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+        </div>
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">Flag pattern recognition</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">A flag pattern has two parts. Which of the following best describes the <strong>flag portion</strong> of a valid bull flag?</p>
+            <div class="ex-opts" id="ex1-opts">
+              <button class="ex-opt" onclick="chk('ex1','A',this,'B')">A sharp move downward, reversing the pole completely</button>
+              <button class="ex-opt" onclick="chk('ex1','B',this,'B')">A slow, orderly pullback in a slight downward channel</button>
+              <button class="ex-opt" onclick="chk('ex1','C',this,'B')">A sideways range with no directional bias</button>
+              <button class="ex-opt" onclick="chk('ex1','D',this,'B')">A second surge upward continuing the pole direction</button>
+            </div>
+            <div class="ex-feedback" id="ex1-fb"></div>
+            <button class="ex-next-btn" id="ex1-next" onclick="completeLesson(1)">Continue to Lesson 3 →</button>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(0)">Previous</button><span class="nav-info">Lesson 2 of 5</span><button class="btn-nav btn-next" onclick="completeLesson(1)">Next lesson</button></div>
+    </div>
+
+    <!-- L3 -->
+    <div id="lesson-2" class="lesson-main" style="display:none">
+      <div class="lesson-hd"><div class="lesson-eyebrow">Module 2 · Lesson 3</div><h1 class="lesson-title">Inside bar</h1><p class="lesson-intro">The inside bar is a compression pattern — price is coiling before its next move. One of the cleanest patterns to trade because the rules are simple and risk is clearly defined.</p></div>
+      <div class="lesson-body">
+        <h2>What an inside bar is</h2>
+        <p>An inside bar is any candle whose <strong>high and low are completely contained within the range of the previous candle</strong>. The previous candle — the mother bar — represents a period of price discovery. The inside bar represents a pause, a compression of energy before the next move.</p>
+        <div class="vis-exp"><div class="vis-exp-title">Inside bar structure</div>
+          <div class="vis-row"><div class="vis-cell"><div class="vis-cell-label">Mother bar</div><div class="vis-cell-val">Larger candle</div><div class="vis-cell-sub">Sets the range · defines high and low</div></div><div class="vis-cell"><div class="vis-cell-label">Inside bar</div><div class="vis-cell-val">Contained candle</div><div class="vis-cell-sub">Both high and low inside mother bar</div></div><div class="vis-cell vis-good"><div class="vis-cell-label">Breakout</div><div class="vis-cell-val green">Direction signal</div><div class="vis-cell-sub">Break above = bullish · break below = bearish</div></div></div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-header"><div class="pattern-icon">🕯️</div><div><div class="pattern-name">Inside bar breakout</div><div class="pattern-type">CONTINUATION OR REVERSAL</div></div></div>
+          <div class="pattern-body"><p>The inside bar is direction-neutral — it signals compression, not direction. The direction comes from context and from which side it breaks.</p>
+            <div class="pattern-rules"><div class="pattern-rule"><strong>Entry:</strong> Break of the mother bar high (bullish) or low (bearish) with a candle close outside</div><div class="pattern-rule"><strong>Stop loss:</strong> Opposite side of the mother bar</div><div class="pattern-rule"><strong>Best context:</strong> After a trend, at a key support or resistance level</div><div class="pattern-rule"><strong>Avoid:</strong> Inside bars in choppy, ranging markets with no clear directional bias</div></div>
+          </div>
+        </div>
+        <div class="callout callout-key"><div class="cl">Why this works for prop firm challenges</div><p>Inside bars give you an extremely tight stop loss — you're risking the range of the mother bar, often just a few points or pips. This means very precise risk per trade, directly supporting daily loss limits.</p></div>
+        <div class="chart-component">
+          <div class="chart-header"><div><div class="chart-title">Live chart — look for inside bars</div><div class="chart-subtitle">Daily and 4H timeframes show the clearest inside bars · look for candles fully contained within the previous one</div></div>
+            <div class="inst-switcher" id="sw2"><button class="inst-btn active" onclick="sw('f2','EURUSD','D',this,'sw2')">EUR/USD Daily</button><button class="inst-btn" onclick="sw('f2','GBPUSD','D',this,'sw2')">GBP/USD Daily</button><button class="inst-btn" onclick="sw('f2','ES1!','D',this,'sw2')">ES1! Daily</button><button class="inst-btn" onclick="sw('f2','XAUUSD','D',this,'sw2')">Gold Daily</button></div>
+          </div>
+          <iframe id="f2" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=EURUSD&interval=D&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+        </div>
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">Inside bar identification</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">For an inside bar to be valid, what must be true about its relationship to the mother bar?</p>
+            <div class="ex-opts" id="ex2-opts">
+              <button class="ex-opt" onclick="chk('ex2','A',this,'A')">Both the high AND the low must be inside the mother bar's range</button>
+              <button class="ex-opt" onclick="chk('ex2','B',this,'A')">Only the close needs to be inside the mother bar's range</button>
+              <button class="ex-opt" onclick="chk('ex2','C',this,'A')">The inside bar must be a different colour to the mother bar</button>
+              <button class="ex-opt" onclick="chk('ex2','D',this,'A')">The inside bar must close at least 50% down from the mother bar high</button>
+            </div>
+            <div class="ex-feedback" id="ex2-fb"></div>
+            <button class="ex-next-btn" id="ex2-next" onclick="completeLesson(2)">Continue to Lesson 4 →</button>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(1)">Previous</button><span class="nav-info">Lesson 3 of 5</span><button class="btn-nav btn-next" onclick="completeLesson(2)">Next lesson</button></div>
+    </div>
+
+    <!-- L4 -->
+    <div id="lesson-3" class="lesson-main" style="display:none">
+      <div class="lesson-hd"><div class="lesson-eyebrow">Module 2 · Lesson 4</div><h1 class="lesson-title">Break of structure &amp; VWAP reclaim</h1><p class="lesson-intro">Two of the most widely used concepts by professional and prop firm traders. Break of structure tells you when a trend has genuinely changed. VWAP tells you who is in control of the session.</p></div>
+      <div class="lesson-body">
+        <h2>Break of structure (BOS)</h2>
+        <p>From Module 1 we know an uptrend is defined by higher highs and higher lows. A <strong>break of structure</strong> occurs when that sequence breaks — when price makes a lower low in an uptrend, or a higher high in a downtrend. This marks the moment when the balance of power shifts.</p>
+        <div class="vis-exp"><div class="vis-exp-title">Break of structure — bullish and bearish</div>
+          <div class="vis-row"><div class="vis-cell vis-good"><div class="vis-cell-label">Bullish BOS</div><div class="vis-cell-val green">Higher high broken</div><div class="vis-cell-sub">Price closes above previous swing high</div></div><div class="vis-cell vis-bad"><div class="vis-cell-label">Bearish BOS</div><div class="vis-cell-val red">Lower low broken</div><div class="vis-cell-sub">Price closes below previous swing low</div></div><div class="vis-cell"><div class="vis-cell-label">Key rule</div><div class="vis-cell-val">Candle close</div><div class="vis-cell-sub">Close beyond the level — wicks don't count</div></div></div>
+        </div>
+        <div class="callout callout-example"><div class="cl">Real world example</div><p>EUR/USD has been making lower highs and lower lows for two months — a clear downtrend. Then price makes a higher high, closing above the previous swing high. That is a bullish BOS. The trader does not immediately go long, but they stop looking for short entries and start watching for confirmation of the new direction.</p></div>
+        <h2>VWAP — Volume Weighted Average Price</h2>
+        <p>VWAP is the average price at which a security has traded throughout the day, weighted by volume. It is the most widely watched intraday level by institutional traders — banks, hedge funds, and prop firms all use it as a reference point.</p>
+        <p><strong>Price above VWAP means buyers have been in control for the session. Price below means sellers have.</strong> A VWAP reclaim — where price dips below it then closes back above — is a strong signal that buyers have reasserted control.</p>
+        <div class="pattern-card">
+          <div class="pattern-card-header"><div class="pattern-icon">📊</div><div><div class="pattern-name">VWAP reclaim</div><div class="pattern-type">INTRADAY · MOMENTUM SIGNAL</div></div></div>
+          <div class="pattern-body"><p>When price dips below VWAP but then closes back above it, buyers are stepping in at the average institutional price — a bullish signal.</p>
+            <div class="pattern-rules"><div class="pattern-rule"><strong>Setup:</strong> Price above VWAP, dips below briefly, then reclaims with a strong close above</div><div class="pattern-rule"><strong>Entry:</strong> On the candle close back above VWAP, or a small pullback after the reclaim</div><div class="pattern-rule"><strong>Stop loss:</strong> Below the low of the VWAP reclaim candle</div><div class="pattern-rule"><strong>Best context:</strong> During trending sessions, not in choppy pre-market periods</div></div>
+          </div>
+        </div>
+        <div class="chart-component">
+          <div class="chart-header"><div><div class="chart-title">Live chart — BOS and VWAP</div><div class="chart-subtitle">Switch to intraday to see VWAP in action · daily for structure breaks</div></div>
+            <div class="inst-switcher" id="sw3"><button class="inst-btn active" onclick="sw('f3','ES1!','15',this,'sw3')">ES1! 15M</button><button class="inst-btn" onclick="sw('f3','NQ1!','15',this,'sw3')">NQ1! 15M</button><button class="inst-btn" onclick="sw('f3','ES1!','D',this,'sw3')">ES1! Daily</button><button class="inst-btn" onclick="sw('f3','EURUSD','60',this,'sw3')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f3','GBPUSD','60',this,'sw3')">GBP/USD 1H</button></div>
+          </div>
+          <iframe id="f3" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=15&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+        </div>
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">BOS identification</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">In a confirmed downtrend with lower highs and lower lows, what event constitutes a <strong>bullish break of structure</strong>?</p>
+            <div class="ex-opts" id="ex3-opts">
+              <button class="ex-opt" onclick="chk('ex3','A',this,'B')">Price makes another lower low, continuing the pattern</button>
+              <button class="ex-opt" onclick="chk('ex3','B',this,'B')">Price makes a higher high — closing above the previous swing high</button>
+              <button class="ex-opt" onclick="chk('ex3','C',this,'B')">Price consolidates sideways for several candles</button>
+              <button class="ex-opt" onclick="chk('ex3','D',this,'B')">A large green candle appears without closing above any previous high</button>
+            </div>
+            <div class="ex-feedback" id="ex3-fb"></div>
+            <button class="ex-next-btn" id="ex3-next" onclick="completeLesson(3)">Continue to Lesson 5 →</button>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(2)">Previous</button><span class="nav-info">Lesson 4 of 5</span><button class="btn-nav btn-next" onclick="completeLesson(3)">Next lesson</button></div>
+    </div>
+
+    <!-- L5 -->
+    <div id="lesson-4" class="lesson-main" style="display:none">
+      <div class="lesson-hd"><div class="lesson-eyebrow">Module 2 · Lesson 5</div><h1 class="lesson-title">Combining patterns</h1><p class="lesson-intro">Single patterns are useful. Multiple patterns aligning at the same level are significantly more powerful. This lesson shows you how to combine what you've learned to find high-probability setups with tightly defined risk.</p></div>
+      <div class="lesson-body">
+        <h2>The concept of confluence</h2>
+        <p><strong>Confluence</strong> means the coming together of multiple signals at the same price level. When a bull flag forms at a key support level, and that level also happens to be VWAP, and the daily chart shows an uptrend — every signal points the same way. That is high confluence, representing a significantly higher probability trade than any single signal alone.</p>
+        <div class="vis-exp"><div class="vis-exp-title">Confluence stacking — an example long setup</div>
+          <div class="vis-row"><div class="vis-cell vis-good"><div class="vis-cell-label">Signal 1</div><div class="vis-cell-val green">Daily uptrend</div><div class="vis-cell-sub">Higher highs and higher lows</div></div><div class="vis-cell vis-good"><div class="vis-cell-label">Signal 2</div><div class="vis-cell-val green">Bull flag on 1H</div><div class="vis-cell-sub">Tight consolidation after strong move up</div></div><div class="vis-cell vis-good"><div class="vis-cell-label">Signal 3</div><div class="vis-cell-val green">At VWAP support</div><div class="vis-cell-sub">Flag base sitting on intraday VWAP</div></div></div>
+        </div>
+        <h2>A simple setup checklist</h2>
+        <div class="vis-exp"><div class="vis-exp-title">Four questions before every trade</div>
+          <div class="vis-row"><div class="vis-cell"><div class="vis-cell-label">Step 1</div><div class="vis-cell-val">What is the daily trend?</div><div class="vis-cell-sub">Only trade patterns that align with it</div></div><div class="vis-cell"><div class="vis-cell-label">Step 2</div><div class="vis-cell-val">Is a pattern forming?</div><div class="vis-cell-sub">Flag, inside bar, BOS, VWAP</div></div><div class="vis-cell"><div class="vis-cell-label">Step 3</div><div class="vis-cell-val">Any additional confluence?</div><div class="vis-cell-sub">Key level, VWAP, previous structure</div></div><div class="vis-cell"><div class="vis-cell-label">Step 4</div><div class="vis-cell-val">Where is my stop loss?</div><div class="vis-cell-sub">Must be clear before entry — never after</div></div></div>
+        </div>
+        <h2>What separates traders who pass from those who don't</h2>
+        <p>Traders who pass prop firm challenges consistently have one thing in common: <strong>selectivity</strong>. They do not take every pattern. They wait for confluence. They pass on trades that look okay and wait for trades that look excellent. This is harder than it sounds — but selectivity is what keeps your drawdown within prop firm limits.</p>
+        <div class="callout callout-key"><div class="cl">The core principle</div><p>You do not need many trades to pass a prop firm challenge. You need a handful of excellent trades. Quality over quantity is not a preference — for prop firm evaluation, it is the only viable strategy.</p></div>
+        <div class="chart-component">
+          <div class="chart-header"><div><div class="chart-title">Live chart — find a confluence setup</div><div class="chart-subtitle">Use multiple timeframes · look for two or more signals aligning at the same level</div></div>
+            <div class="inst-switcher" id="sw4"><button class="inst-btn active" onclick="sw('f4','ES1!','60',this,'sw4')">ES1! 1H</button><button class="inst-btn" onclick="sw('f4','ES1!','D',this,'sw4')">ES1! Daily</button><button class="inst-btn" onclick="sw('f4','EURUSD','60',this,'sw4')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f4','EURUSD','D',this,'sw4')">EUR/USD Daily</button><button class="inst-btn" onclick="sw('f4','NQ1!','60',this,'sw4')">NQ1! 1H</button></div>
+          </div>
+          <iframe id="f4" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+        </div>
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">Confluence thinking</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">You spot a bull flag forming on the 1-hour EUR/USD chart. The daily chart shows an uptrend. VWAP for the day sits exactly at the bottom of the flag. What does this combination represent?</p>
+            <div class="ex-opts" id="ex4-opts">
+              <button class="ex-opt" onclick="chk('ex4','A',this,'A')">High confluence — multiple signals align, increasing trade probability</button>
+              <button class="ex-opt" onclick="chk('ex4','B',this,'A')">A warning sign — too many signals means the trade is likely to fail</button>
+              <button class="ex-opt" onclick="chk('ex4','C',this,'A')">No significance — each signal should be evaluated independently</button>
+              <button class="ex-opt" onclick="chk('ex4','D',this,'A')">A guaranteed win — all signals pointing the same way means it must go up</button>
+            </div>
+            <div class="ex-feedback" id="ex4-fb"></div>
+            <button class="ex-next-btn" id="ex4-next" onclick="completeLesson(4)">Take the quiz →</button>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(3)">Previous</button><span class="nav-info">Lesson 5 of 5</span><button class="btn-nav btn-next" onclick="completeLesson(4)">Take the quiz</button></div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="lesson-5" class="lesson-main" style="display:none">
+      <div class="quiz-wrap">
+        <div class="quiz-hd"><div class="quiz-eyebrow">Module 2 · Quiz</div><h1 class="quiz-title">Test your knowledge</h1><p class="quiz-sub">5 questions on chart patterns. You need 80% to pass and unlock Module 3.</p></div>
+        <div id="quiz-questions"><div class="q-dots" id="q-dots"></div><div id="q-wrap"></div>
+          <div class="q-btn-row"><button class="q-btn q-submit" id="q-submit" onclick="submitQ()" disabled>Submit answer</button><button class="q-btn q-next-btn" id="q-next" onclick="nextQ()">Next →</button></div>
+        </div>
+        <div class="quiz-result" id="quiz-result">
+          <div class="result-pct" id="result-pct"></div><div class="result-lbl" id="result-lbl"></div><div class="result-msg" id="result-msg"></div>
+          <div class="result-actions"><button class="btn-result btn-result-secondary" onclick="retryQuiz()">Retry quiz</button><a href="/learn" class="btn-result btn-result-primary" id="result-cta" style="display:none">Back to modules →</a></div>
+          <div class="completion-banner" id="completion-banner"><div><div class="cb-title">Module 2 complete</div><div class="cb-sub">Module 3 — Risk Management — is now unlocked.</div></div><a href="/learn" class="cb-btn">Continue →</a></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+const completed=[false,false,false,false,false,false];
+function showLesson(i){for(let j=0;j<6;j++){document.getElementById('lesson-'+j).style.display='none';document.getElementById('nav-'+j).classList.remove('active');}document.getElementById('lesson-'+i).style.display='block';document.getElementById('nav-'+i).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function completeLesson(i){completed[i]=true;document.getElementById('dot-'+i).textContent='✓';document.getElementById('nav-'+i).classList.add('completed');updateProgress();showLesson(i+1);if(i===4)initQuiz();}
+function updateProgress(){const done=completed.filter(Boolean).length;const pct=Math.round((done/6)*100);document.getElementById('prog-fill').style.width=pct+'%';document.getElementById('prog-pct').textContent=pct+'%';}
+function sw(fid,sym,interval,btn,swid){document.querySelectorAll('#'+swid+' .inst-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById(fid).src=`https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=${sym}&interval=${interval}&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com`;}
+const EX={ex1:{B:{c:'✓ Correct. The flag is a slow, orderly pullback — small candles, slight drift against the trend. It is not a reversal, just a pause before continuation.',w:'Not quite. The flag portion is a slow, orderly pullback in a slight channel against the trend. It should not reverse the pole or surge further in the same direction.'}},ex2:{A:{c:'✓ Correct. An inside bar requires BOTH the high AND the low to be within the mother bar\'s range. If either extreme breaks outside, it is not an inside bar.',w:'Not quite. An inside bar requires both the high AND the low to be contained. The entire range must fit inside — not just the close.'}},ex3:{B:{c:'✓ Correct. A bullish BOS occurs when price closes above the previous swing high — breaking the sequence of lower highs that defined the downtrend.',w:'Not quite. A bullish BOS is a candle close above the previous swing high. This breaks the downtrend structure and signals buyers are gaining control.'}},ex4:{A:{c:'✓ Correct. Multiple signals aligning — daily uptrend, 1H bull flag, VWAP support — is high confluence. Each signal increases probability. Together they represent a significantly higher quality setup.',w:'Not quite. Multiple signals aligning is positive — more evidence pointing the same way. Confluence means higher probability, not a guaranteed win.'}}};
+function chk(exId,chosen,btn,correct){const opts=document.querySelectorAll('#'+exId+'-opts .ex-opt');opts.forEach(o=>{o.disabled=true;o.onclick=null;});const ok=chosen===correct;btn.classList.add(ok?'correct':'incorrect');if(!ok){const idx=['A','B','C','D'].indexOf(correct);if(idx>=0)opts[idx].classList.add('show-correct');}const fb=document.getElementById(exId+'-fb');fb.className=`ex-feedback show ${ok?'correct':'incorrect'}`;const m=EX[exId][correct];fb.innerHTML=`<strong>${ok?'✓ Correct':'Not quite'}</strong> — ${ok?m.c:m.w}`;document.getElementById(exId+'-next').classList.add('show');}
+const QS=[
+  {t:'What is the most important factor to check before trading any chart pattern?',o:['The pattern must appear on a daily timeframe or higher','The pattern must align with the higher timeframe trend direction','The pattern must have occurred at least three times before','Volume must be higher than average when the pattern forms'],c:1,fb:{c:'Correct. Context — the trend direction — is everything. A pattern with the trend has much higher probability than the same pattern against it.',w:'Not quite. The higher timeframe trend direction is the most important factor. A bull flag in a downtrend is far weaker than one in an uptrend.'}},
+  {t:'What are the two components of a flag pattern?',o:['The head and the shoulders','The pole and the flag','The base and the breakout','The consolidation and the reversal'],c:1,fb:{c:'Correct. A flag has a pole (the sharp directional move) and a flag (the orderly consolidation that follows).',w:'Not quite. A flag consists of the pole (the sharp initial move) and the flag (the subsequent consolidation before the breakout).'}},
+  {t:'What makes an inside bar valid?',o:['The inside bar must be green to signal a bullish breakout','Both the high and low must be within the previous candle\'s range','The inside bar must close above the midpoint of the mother bar','Volume must decrease on the inside bar'],c:1,fb:{c:'Correct. Both the high and low must be contained within the mother bar. That is the sole defining requirement.',w:'Not quite. The only requirement for a valid inside bar is that both the high and low are within the mother bar\'s range.'}},
+  {t:'When price is above VWAP intraday, what does this indicate?',o:['The market is about to reverse downward','Buyers have been in control of the session at average prices','Sellers are dominating and price will fall','The instrument is overvalued and should not be traded'],c:1,fb:{c:'Correct. Price above VWAP means the average transaction for the day has been profitable for buyers — the bullish bias is supported.',w:'Not quite. Price above VWAP means buyers have been in control of the session — a bullish indication.'}},
+  {t:'What is confluence in trading?',o:['When two moving averages cross each other','When multiple independent signals align at the same price level','When a pattern appears on multiple instruments simultaneously','When trading volume confirms a price move'],c:1,fb:{c:'Correct. Confluence is the coming together of multiple independent signals at the same level — increasing the probability that the trade works.',w:'Not quite. Confluence means multiple independent signals pointing in the same direction at the same price level.'}}
+];
+let curQ=0,selOpt=null,answered=false,score=0;
+function initQuiz(){curQ=0;score=0;selOpt=null;answered=false;document.getElementById('quiz-questions').style.display='block';document.getElementById('quiz-result').style.display='none';renderQ();renderDots();}
+function renderDots(){document.getElementById('q-dots').innerHTML=QS.map((_,i)=>`<div class="q-dot ${i<curQ?'done':i===curQ?'active':''}"></div>`).join('');}
+function renderQ(){const q=QS[curQ];const L=['A','B','C','D'];document.getElementById('q-wrap').innerHTML=`<div class="q-card"><div class="q-num">Question ${curQ+1} of ${QS.length}</div><div class="q-text">${q.t}</div><div class="q-options">${q.o.map((o,i)=>`<div class="q-opt" onclick="selQ(${i})"><div class="q-letter">${L[i]}</div><div class="q-opt-text">${o}</div></div>`).join('')}</div><div class="q-feedback" id="q-fb"></div></div>`;selOpt=null;answered=false;document.getElementById('q-submit').disabled=true;document.getElementById('q-submit').style.display='block';document.getElementById('q-next').style.display='none';}
+function selQ(i){if(answered)return;selOpt=i;document.querySelectorAll('.q-opt').forEach((o,j)=>o.classList.toggle('selected',j===i));document.getElementById('q-submit').disabled=false;}
+function submitQ(){if(selOpt===null||answered)return;answered=true;const q=QS[curQ];const ok=selOpt===q.c;if(ok)score++;document.querySelectorAll('.q-opt').forEach((o,i)=>{o.classList.remove('selected');if(i===q.c)o.classList.add('correct');else if(i===selOpt&&!ok)o.classList.add('incorrect');});const fb=document.getElementById('q-fb');fb.className=`q-feedback show ${ok?'correct':'incorrect'}`;fb.innerHTML=`<strong>${ok?'✓ Correct':'✗ Not quite'}</strong> — ${ok?q.fb.c:q.fb.w}`;document.getElementById('q-submit').style.display='none';document.getElementById('q-next').style.display='block';document.getElementById('q-next').textContent=curQ<QS.length-1?'Next →':'See results →';}
+function nextQ(){curQ++;if(curQ>=QS.length){showResult();return;}renderDots();renderQ();}
+function showResult(){document.getElementById('quiz-questions').style.display='none';document.getElementById('quiz-result').style.display='block';const pct=Math.round((score/QS.length)*100);const pass=pct>=80;document.getElementById('result-pct').textContent=pct+'%';document.getElementById('result-pct').className=`result-pct ${pass?'pass':'fail'}`;document.getElementById('result-lbl').textContent=pass?'Module 2 passed':'Not quite — try again';document.getElementById('result-msg').textContent=pass?`You answered ${score} of ${QS.length} correctly. Solid pattern recognition. Module 3 — Risk Management — is now unlocked.`:`You answered ${score} of ${QS.length} correctly. Review the lessons and try again.`;if(pass){document.getElementById('result-cta').style.display='inline-block';completed[5]=true;document.getElementById('dot-5').textContent='✓';document.getElementById('nav-5').classList.add('completed');updateProgress();setTimeout(()=>document.getElementById('completion-banner').classList.add('show'),500);localStorage.setItem('traxent_m2_complete','true');}}
+function retryQuiz(){document.getElementById('quiz-result').style.display='none';initQuiz();}
+initQuiz();
+</script>
+</body>
+</html>

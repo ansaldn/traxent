@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Chart — Traxent</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;
+  --accent:#0a6e4f;--accent-light:rgba(10,110,79,.08);--accent-mid:#1a9e72;
+  --border:rgba(14,14,12,0.1);--border2:rgba(14,14,12,0.06);
+  --surface:#ffffff;--surface2:#f0efe9;
+  --good:#0a6e4f;--warn:#b06000;--bad:#9e1a1a;
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;font-size:16px;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;}
+
+/* ── NAV ── */
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:100;}
+.nav-logo{font-family:var(--mono);font-size:15px;color:var(--ink);text-decoration:none;}
+.nav-logo em{font-style:normal;color:var(--accent);}
+.nav-centre{display:flex;align-items:center;gap:6px;}
+.inst-btn{font-family:var(--mono);font-size:11px;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:var(--bg);color:var(--ink3);cursor:pointer;transition:all 0.15s;}
+.inst-btn:hover{border-color:var(--accent);color:var(--accent);}
+.inst-btn.active{background:var(--accent);border-color:var(--accent);color:white;}
+.inst-sep{width:1px;height:20px;background:var(--border);margin:0 4px;}
+.tf-btn{font-family:var(--mono);font-size:11px;padding:5px 8px;border-radius:5px;border:1px solid transparent;background:none;color:var(--ink3);cursor:pointer;transition:all 0.15s;}
+.tf-btn:hover{color:var(--ink);}
+.tf-btn.active{background:var(--surface2);border-color:var(--border);color:var(--ink);font-weight:500;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.plan-pill{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;padding:3px 9px;border-radius:3px;}
+.plan-pill.free{background:var(--surface2);color:var(--ink3);border:1px solid var(--border);}
+.plan-pill.delayed{background:rgba(176,96,0,.08);color:var(--warn);border:1px solid rgba(176,96,0,.2);}
+.plan-pill.live{background:rgba(10,110,79,.1);color:var(--accent);border:1px solid rgba(10,110,79,.2);}
+.session-btn{display:flex;align-items:center;gap:6px;background:var(--ink);color:white;border:none;border-radius:7px;padding:7px 14px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:background 0.15s;}
+.session-btn:hover{background:#1a1a18;}
+.session-btn.active{background:var(--accent);}
+.session-indicator{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.btn-dash{font-size:12px;color:var(--ink3);text-decoration:none;padding:6px 12px;border-radius:6px;border:1px solid var(--border);transition:all 0.15s;}
+.btn-dash:hover{border-color:var(--ink);color:var(--ink);}
+
+/* ── MAIN LAYOUT ── */
+.chart-layout{display:flex;flex:1;overflow:hidden;}
+
+/* ── CHART AREA ── */
+.chart-area{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
+.chart-frame{flex:1;border:none;display:block;background:#131722;}
+
+/* ── DELAYED OVERLAY ── */
+.delayed-overlay{position:absolute;top:12px;left:12px;background:rgba(176,96,0,.9);color:white;font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:4px;letter-spacing:0.06em;text-transform:uppercase;pointer-events:none;z-index:10;}
+
+/* ── UPGRADE BANNER ── */
+.upgrade-bar{background:var(--surface);border-top:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-shrink:0;}
+.ub-text{font-size:13px;color:var(--ink2);}
+.ub-text strong{color:var(--ink);}
+.ub-actions{display:flex;gap:8px;flex-shrink:0;}
+.ub-btn{font-size:12px;font-weight:500;padding:7px 14px;border-radius:6px;cursor:pointer;border:none;font-family:var(--sans);transition:all 0.15s;text-decoration:none;display:inline-block;}
+.ub-btn-primary{background:var(--accent);color:white;}
+.ub-btn-primary:hover{background:#085e43;}
+.ub-btn-secondary{background:none;border:1px solid var(--border);color:var(--ink2);}
+.ub-btn-secondary:hover{border-color:var(--ink);}
+
+/* ── SESSION PANEL ── */
+.session-panel{width:320px;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transform:translateX(100%);transition:transform 0.25s ease;flex-shrink:0;}
+.session-panel.open{transform:translateX(0);}
+.sp-hd{padding:14px 16px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;}
+.sp-hd-title{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);}
+.sp-close{background:none;border:none;color:var(--ink3);font-size:18px;cursor:pointer;line-height:1;padding:0 2px;transition:color 0.15s;}
+.sp-close:hover{color:var(--ink);}
+.sp-body{flex:1;overflow-y:auto;padding:16px;}
+
+/* Session balance pill */
+.session-balance{background:var(--ink);border-radius:8px;padding:14px 16px;margin-bottom:16px;}
+.sb-label{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px;}
+.sb-val{font-family:var(--serif);font-size:28px;font-style:italic;color:white;line-height:1;}
+.sb-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px;}
+
+/* Session calculator */
+.sp-section{margin-bottom:20px;}
+.sp-section-title{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;}
+.sp-field{margin-bottom:10px;}
+.sp-field label{font-size:11px;color:var(--ink3);display:block;margin-bottom:4px;}
+.sp-row{display:flex;}
+.sp-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:5px 0 0 5px;padding:7px 10px;font-family:var(--sans);font-size:13px;color:var(--ink);outline:none;transition:border-color 0.15s;}
+.sp-input:focus{border-color:var(--accent);}
+.sp-input.no-unit{border-radius:5px;}
+.sp-unit{background:var(--surface2);border:1px solid var(--border);border-left:none;border-radius:0 5px 5px 0;padding:7px 8px;font-size:11px;color:var(--ink3);font-family:var(--mono);display:flex;align-items:center;}
+.sp-toggle{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:5px;overflow:hidden;}
+.sp-tog-opt{flex:1;padding:7px 0;font-size:11px;font-family:var(--mono);color:var(--ink3);background:none;border:none;cursor:pointer;transition:all 0.15s;text-align:center;}
+.sp-tog-opt.active{background:var(--accent);color:white;}
+.sp-result{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+.sp-result-label{font-size:12px;color:var(--ink3);}
+.sp-result-val{font-family:var(--serif);font-size:22px;font-style:italic;color:var(--ink);}
+.sp-result-val.pos{color:var(--good);}
+.sp-result-val.neg{color:var(--bad);}
+.sp-working{font-size:11px;color:var(--ink3);line-height:1.6;margin-top:8px;display:none;}
+
+/* Session journal quick log */
+.sp-divider{height:1px;background:var(--border);margin:16px 0;}
+.sp-log-btn{width:100%;background:var(--accent);color:white;border:none;border-radius:7px;padding:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:background 0.15s;margin-bottom:10px;}
+.sp-log-btn:hover{background:#085e43;}
+.quick-log-form{display:none;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;}
+.quick-log-form.open{display:block;}
+.qlf-title{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;}
+.qlf-row{display:flex;gap:8px;margin-bottom:8px;}
+.qlf-field{flex:1;display:flex;flex-direction:column;gap:4px;}
+.qlf-label{font-size:11px;color:var(--ink3);}
+.qlf-input{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:6px 9px;font-family:var(--sans);font-size:12px;color:var(--ink);outline:none;}
+.qlf-input:focus{border-color:var(--accent);}
+.qlf-select{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:6px 9px;font-family:var(--sans);font-size:12px;color:var(--ink);outline:none;width:100%;}
+.qlf-direction{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:5px;overflow:hidden;}
+.qlf-dir-opt{flex:1;padding:6px 0;font-size:11px;font-family:var(--mono);color:var(--ink3);background:none;border:none;cursor:pointer;transition:all 0.15s;text-align:center;}
+.qlf-dir-opt.active{background:var(--accent);color:white;}
+.qlf-compliance{display:flex;align-items:center;gap:8px;margin:10px 0 12px;}
+.qlf-compliance input[type=checkbox]{accent-color:var(--accent);width:14px;height:14px;cursor:pointer;}
+.qlf-compliance label{font-size:12px;color:var(--ink2);cursor:pointer;}
+.qlf-submit{width:100%;background:var(--ink);color:white;border:none;border-radius:6px;padding:9px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:background 0.15s;}
+.qlf-submit:hover{background:var(--accent);}
+.qlf-cancel{display:block;text-align:center;font-size:11px;color:var(--ink3);cursor:pointer;margin-top:8px;background:none;border:none;font-family:var(--sans);}
+
+/* Recent trades in session */
+.sp-recent{margin-top:4px;}
+.sp-recent-empty{font-size:12px;color:var(--ink3);text-align:center;padding:12px 0;}
+.sp-trade-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border2);font-size:12px;}
+.sp-trade-row:last-child{border-bottom:none;}
+.sp-tr-inst{font-weight:500;color:var(--ink);font-size:12px;flex:1;}
+.sp-tr-dir{font-family:var(--mono);font-size:10px;}
+.sp-tr-dir.long{color:var(--good);}
+.sp-tr-dir.short{color:var(--bad);}
+.sp-tr-pnl{font-family:var(--mono);font-size:12px;font-weight:500;}
+.sp-tr-pnl.pos{color:var(--good);}
+.sp-tr-pnl.neg{color:var(--bad);}
+
+/* Journal setup modal */
+.journal-modal-overlay{position:fixed;inset:0;background:rgba(14,14,12,.6);display:flex;align-items:center;justify-content:center;z-index:500;backdrop-filter:blur(4px);display:none;}
+.journal-modal-overlay.open{display:flex;}
+.journal-modal{background:var(--surface);border-radius:14px;padding:32px;max-width:440px;width:90%;border:1px solid var(--border);}
+.jm-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.jm-title{font-family:var(--serif);font-size:26px;font-weight:400;color:var(--ink);margin-bottom:8px;}
+.jm-sub{font-size:14px;color:var(--ink2);line-height:1.6;font-weight:300;margin-bottom:24px;}
+.jm-options{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.jm-option{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s;}
+.jm-option:hover{border-color:var(--accent);}
+.jm-option.selected{border-color:var(--accent);background:var(--accent-light);}
+.jm-opt-icon{font-size:20px;flex-shrink:0;}
+.jm-opt-name{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px;}
+.jm-option.selected .jm-opt-name{color:var(--accent);}
+.jm-opt-desc{font-size:12px;color:var(--ink3);line-height:1.4;}
+.jm-confirm{width:100%;background:var(--accent);color:white;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:background 0.15s;}
+.jm-confirm:hover{background:#085e43;}
+.jm-confirm:disabled{opacity:0.35;cursor:not-allowed;}
+
+/* Session mode body override */
+body.session-mode nav .nav-centre{display:flex;}
+body.session-mode .upgrade-bar{display:none;}
+
+/* Locked overlay */
+.locked-overlay{position:absolute;inset:0;background:rgba(247,246,242,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:20;backdrop-filter:blur(2px);}
+.lo-icon{font-size:40px;opacity:0.4;}
+.lo-title{font-family:var(--serif);font-size:26px;font-weight:400;color:var(--ink);}
+.lo-sub{font-size:14px;color:var(--ink3);text-align:center;max-width:320px;line-height:1.6;font-weight:300;}
+.lo-btn{background:var(--accent);color:white;border:none;border-radius:8px;padding:11px 24px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--sans);text-decoration:none;transition:background 0.15s;}
+.lo-btn:hover{background:#085e43;}
+
+@media(max-width:900px){
+  .nav-centre{display:none!important;}
+  .session-panel{position:fixed;right:0;top:56px;bottom:0;z-index:150;box-shadow:-4px 0 24px rgba(14,14,12,.08);}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+
+  <div class="nav-centre" id="nav-centre">
+    <!-- Instruments -->
+    <button class="inst-btn active" onclick="switchInst('ES1!',this)">ES1!</button>
+    <button class="inst-btn" onclick="switchInst('NQ1!',this)">NQ1!</button>
+    <button class="inst-btn" onclick="switchInst('EURUSD',this)">EUR/USD</button>
+    <button class="inst-btn" onclick="switchInst('GBPUSD',this)">GBP/USD</button>
+    <button class="inst-btn" onclick="switchInst('GBPJPY',this)">GBP/JPY</button>
+    <button class="inst-btn" onclick="switchInst('XAUUSD',this)">Gold</button>
+    <button class="inst-btn" onclick="switchInst('USOIL',this)">Crude</button>
+    <div class="inst-sep"></div>
+    <!-- Timeframes -->
+    <button class="tf-btn" onclick="switchTF('1',this)">1M</button>
+    <button class="tf-btn" onclick="switchTF('5',this)">5M</button>
+    <button class="tf-btn active" onclick="switchTF('15',this)">15M</button>
+    <button class="tf-btn" onclick="switchTF('60',this)">1H</button>
+    <button class="tf-btn" onclick="switchTF('240',this)">4H</button>
+    <button class="tf-btn" onclick="switchTF('D',this)">D</button>
+  </div>
+
+  <div class="nav-right">
+    <span class="plan-pill delayed" id="plan-pill">Delayed · 15min</span>
+    <button class="session-btn" id="session-toggle-btn" onclick="toggleSession()" style="display:none">
+      <div class="session-indicator" id="sess-indicator" style="display:none"></div>
+      <span id="sess-btn-label">Session mode</span>
+    </button>
+    <a href="/dashboard" class="btn-dash">Dashboard</a>
+  </div>
+</nav>
+
+<!-- Main layout -->
+<div class="chart-layout">
+
+  <!-- Chart area -->
+  <div class="chart-area" id="chart-area">
+    <iframe
+      id="chart-frame"
+      class="chart-frame"
+      src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=15&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&studies=[]&support_host=https%3A%2F%2Fwww.tradingview.com"
+    ></iframe>
+
+    <!-- Delayed badge -->
+    <div class="delayed-overlay" id="delayed-badge">15-MIN DELAY</div>
+
+    <!-- Locked overlay for free users without session -->
+    <div class="locked-overlay" id="locked-overlay" style="display:none">
+      <div class="lo-icon">📊</div>
+      <div class="lo-title">Live chart</div>
+      <div class="lo-sub">Real-time data requires the Observer plan. You're currently viewing a 15-minute delayed chart.</div>
+      <a href="/dashboard" class="lo-btn">Upgrade to Observer →</a>
+    </div>
+  </div>
+
+  <!-- Session panel -->
+  <div class="session-panel" id="session-panel">
+    <div class="sp-hd">
+      <span class="sp-hd-title">Session mode</span>
+      <button class="sp-close" onclick="closeSession()">×</button>
+    </div>
+    <div class="sp-body">
+
+      <!-- Sim balance (shown if journal connected) -->
+      <div class="session-balance" id="session-balance" style="display:none">
+        <div class="sb-label">Sim balance</div>
+        <div class="sb-val" id="sb-val">—</div>
+        <div class="sb-sub" id="sb-sub">—</div>
+      </div>
+
+      <!-- Position size calculator -->
+      <div class="sp-section">
+        <div class="sp-section-title">Position size</div>
+        <div class="sp-field">
+          <label>Account size</label>
+          <div class="sp-row">
+            <input type="number" class="sp-input" id="sp-account" value="10000" oninput="calcSession()">
+            <span class="sp-unit">£</span>
+          </div>
+        </div>
+        <div class="sp-field">
+          <label>Risk %</label>
+          <div class="sp-row">
+            <input type="number" class="sp-input" id="sp-risk" value="1" min="0.1" max="5" step="0.1" oninput="calcSession()">
+            <span class="sp-unit">%</span>
+          </div>
+        </div>
+        <div class="sp-field">
+          <label>Entry price</label>
+          <input type="number" class="sp-input no-unit" id="sp-entry" placeholder="from chart" step="any" oninput="calcSession()">
+        </div>
+        <div class="sp-field">
+          <label>Stop loss price</label>
+          <input type="number" class="sp-input no-unit" id="sp-stop" placeholder="invalidation level" step="any" oninput="calcSession()">
+        </div>
+        <div class="sp-field">
+          <label>Direction</label>
+          <div class="sp-toggle">
+            <button class="sp-tog-opt active" id="sp-long" onclick="setSpDir('long')">▲ Long</button>
+            <button class="sp-tog-opt" id="sp-short" onclick="setSpDir('short')">▼ Short</button>
+          </div>
+        </div>
+        <div class="sp-result">
+          <span class="sp-result-label">Position size</span>
+          <span class="sp-result-val" id="sp-result">—</span>
+        </div>
+        <div class="sp-working" id="sp-working"></div>
+      </div>
+
+      <div class="sp-divider"></div>
+
+      <!-- Quick journal log -->
+      <div class="sp-section">
+        <div class="sp-section-title">Log trade <span style="font-family:var(--sans);text-transform:none;letter-spacing:0;font-size:11px;color:var(--ink3)" id="journal-mode-label"></span></div>
+        <button class="sp-log-btn" onclick="toggleQuickLog()">+ Log this trade →</button>
+        <div class="quick-log-form" id="quick-log-form">
+          <div class="qlf-title">Quick trade entry</div>
+          <div class="qlf-row">
+            <div class="qlf-field">
+              <div class="qlf-label">Exit price</div>
+              <input type="number" class="qlf-input" id="qlf-exit" placeholder="where you closed" step="any">
+            </div>
+            <div class="qlf-field">
+              <div class="qlf-label">Pattern</div>
+              <select class="qlf-select" id="qlf-pattern">
+                <option value="">Select</option>
+                <option>Bull flag</option>
+                <option>Bear flag</option>
+                <option>Inside bar</option>
+                <option>BOS retest</option>
+                <option>VWAP reclaim</option>
+                <option>Support / resistance</option>
+                <option>News play</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="qlf-field">
+            <div class="qlf-label">One-line note</div>
+            <input type="text" class="qlf-input" id="qlf-note" placeholder="What did you observe?" style="width:100%">
+          </div>
+          <div class="qlf-compliance">
+            <input type="checkbox" id="qlf-compliance" checked>
+            <label for="qlf-compliance">Matched my plan criteria</label>
+          </div>
+          <button class="qlf-submit" onclick="submitQuickLog()">Save trade →</button>
+          <button class="qlf-cancel" onclick="toggleQuickLog()">Cancel</button>
+        </div>
+      </div>
+
+      <div class="sp-divider"></div>
+
+      <!-- Recent session trades -->
+      <div class="sp-section">
+        <div class="sp-section-title">This session</div>
+        <div class="sp-recent" id="sp-recent">
+          <div class="sp-recent-empty">No trades logged this session yet.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Upgrade bar (shown for free/observer upgrading to session) -->
+<div class="upgrade-bar" id="upgrade-bar" style="display:none">
+  <div class="ub-text" id="ub-text"></div>
+  <div class="ub-actions" id="ub-actions"></div>
+</div>
+
+<!-- Journal setup modal -->
+<div class="journal-modal-overlay" id="journal-modal">
+  <div class="journal-modal">
+    <div class="jm-eyebrow">Session mode setup</div>
+    <h2 class="jm-title">Connect your sim journal?</h2>
+    <p class="jm-sub">Trades logged during session mode can save to your main sim journal — or stay private to this session only. You can change this any time.</p>
+    <div class="jm-options">
+      <div class="jm-option" id="jm-opt-yes" onclick="selectJournalOpt('yes')">
+        <div class="jm-opt-icon">📓</div>
+        <div>
+          <div class="jm-opt-name">Yes — save to sim journal</div>
+          <div class="jm-opt-desc">Trades appear in /journal, count toward your readiness score, and update your sim balance.</div>
+        </div>
+      </div>
+      <div class="jm-option" id="jm-opt-no" onclick="selectJournalOpt('no')">
+        <div class="jm-opt-icon">🔒</div>
+        <div>
+          <div class="jm-opt-name">No — session only</div>
+          <div class="jm-opt-desc">Trades are tracked for this session only. Nothing saved to the journal. Useful if you're trading live alongside Traxent.</div>
+        </div>
+      </div>
+    </div>
+    <button class="jm-confirm" id="jm-confirm" onclick="confirmJournalSetup()" disabled>Confirm →</button>
+  </div>
+</div>
+
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="/auth.js"></script>
+<script>
+// ── STATE ──────────────────────────────────────────────────────────────────────
+let currentInst = 'ES1!';
+let currentTF = '15';
+let spDir = 'long';
+let sessionActive = false;
+let journalMode = null; // 'yes' | 'no' | null (not set)
+let sessionTrades = [];
+let userPlan = 'free';
+
+const PLAN_HIERARCHY = ['free','observer','challenger','funded_ready'];
+
+// ── AUTH & INIT ────────────────────────────────────────────────────────────────
+async function initChart() {
+  try {
+    await initAuth0();
+    if (window.location.search.includes('code=') || window.location.search.includes('state=')) {
+      await auth0Client.handleRedirectCallback();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    const isAuthenticated = await auth0Client.isAuthenticated();
+    if (!isAuthenticated) {
+      await auth0Client.loginWithRedirect({ authorizationParams: { redirect_uri: window.location.origin + '/chart' } });
+      return;
+    }
+    const claims = await auth0Client.getIdTokenClaims();
+    const ns = 'https://traxent.io';
+    userPlan = (claims && claims[`${ns}/plan`]) || 'free';
+
+    applyPlanUI();
+
+    // Restore saved account size
+    const saved = localStorage.getItem('traxent_account_size');
+    if (saved) document.getElementById('sp-account').value = saved;
+
+    // Restore journal mode preference
+    const savedJournalMode = localStorage.getItem('traxent_session_journal_mode');
+    if (savedJournalMode) journalMode = savedJournalMode;
+
+  } catch (err) {
+    console.error('Chart init error:', err);
+  }
+}
+
+function applyPlanUI() {
+  const planLevel = PLAN_HIERARCHY.indexOf(userPlan);
+  const pill = document.getElementById('plan-pill');
+  const delayedBadge = document.getElementById('delayed-badge');
+  const sessionBtn = document.getElementById('session-toggle-btn');
+  const upgradeBar = document.getElementById('upgrade-bar');
+  const ubText = document.getElementById('ub-text');
+  const ubActions = document.getElementById('ub-actions');
+
+  if (planLevel >= 1) {
+    // Observer+ — live chart
+    pill.textContent = 'Live';
+    pill.className = 'plan-pill live';
+    delayedBadge.style.display = 'none';
+    // Update chart to live (no delay param)
+    updateChart();
+  } else {
+    // Free — delayed chart
+    pill.textContent = 'Delayed · 15min';
+    pill.className = 'plan-pill delayed';
+    upgradeBar.style.display = 'flex';
+    ubText.innerHTML = 'You\'re viewing a <strong>15-minute delayed</strong> chart. Upgrade to Observer for real-time data.';
+    ubActions.innerHTML = `<a href="/dashboard" class="ub-btn ub-btn-primary">Upgrade to Observer →</a>`;
+  }
+
+  if (planLevel >= 2) {
+    // Challenger+ — session mode button
+    sessionBtn.style.display = 'flex';
+  } else if (planLevel >= 1) {
+    // Observer — show session upgrade nudge
+    upgradeBar.style.display = 'flex';
+    ubText.innerHTML = '<strong>Session mode</strong> is available on the Challenger plan — compact chart, calculator, and quick journal entry in one focused view.';
+    ubActions.innerHTML = `<a href="/dashboard" class="ub-btn ub-btn-primary">Upgrade to Challenger →</a><a href="#" class="ub-btn ub-btn-secondary" onclick="dismissUpgradeBar()">Dismiss</a>`;
+  }
+}
+
+function dismissUpgradeBar() {
+  document.getElementById('upgrade-bar').style.display = 'none';
+}
+
+// ── CHART CONTROLS ─────────────────────────────────────────────────────────────
+function switchInst(inst, btn) {
+  currentInst = inst;
+  document.querySelectorAll('.inst-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Update quick log instrument
+  updateChart();
+}
+
+function switchTF(tf, btn) {
+  currentTF = tf;
+  document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateChart();
+}
+
+function updateChart() {
+  const planLevel = PLAN_HIERARCHY.indexOf(userPlan);
+  // All plans get the same chart widget — TradingView handles the data delay
+  // For delayed, we note it in the badge; the widget itself shows current prices
+  // (TradingView free embed is already real-time for indices/forex)
+  const url = `https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=${currentInst}&interval=${currentTF}&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com`;
+  document.getElementById('chart-frame').src = url;
+}
+
+// ── SESSION MODE ────────────────────────────────────────────────────────────────
+function toggleSession() {
+  if (sessionActive) {
+    closeSession();
+  } else {
+    openSession();
+  }
+}
+
+function openSession() {
+  // Show journal setup modal if not yet configured
+  if (journalMode === null) {
+    document.getElementById('journal-modal').classList.add('open');
+    return;
+  }
+  activateSession();
+}
+
+function selectJournalOpt(opt) {
+  journalMode = opt;
+  document.getElementById('jm-opt-yes').classList.toggle('selected', opt === 'yes');
+  document.getElementById('jm-opt-no').classList.toggle('selected', opt === 'no');
+  document.getElementById('jm-confirm').disabled = false;
+}
+
+function confirmJournalSetup() {
+  localStorage.setItem('traxent_session_journal_mode', journalMode);
+  document.getElementById('journal-modal').classList.remove('open');
+  activateSession();
+}
+
+function activateSession() {
+  sessionActive = true;
+  document.getElementById('session-panel').classList.add('open');
+  document.getElementById('session-toggle-btn').classList.add('active');
+  document.getElementById('sess-indicator').style.display = 'block';
+  document.getElementById('sess-btn-label').textContent = 'In session';
+  document.body.classList.add('session-mode');
+
+  // Update journal mode label
+  const label = journalMode === 'yes' ? '· saving to journal' : '· session only';
+  document.getElementById('journal-mode-label').textContent = label;
+
+  // Show sim balance if connected
+  if (journalMode === 'yes') {
+    const cfg = JSON.parse(localStorage.getItem('traxent_journal_cfg') || 'null');
+    if (cfg) {
+      const profit = cfg.currentBalance - cfg.startBalance;
+      const profitPct = ((profit / cfg.startBalance) * 100).toFixed(1);
+      document.getElementById('session-balance').style.display = 'block';
+      document.getElementById('sb-val').textContent = '£' + cfg.currentBalance.toLocaleString('en-GB', {minimumFractionDigits:2, maximumFractionDigits:2});
+      document.getElementById('sb-sub').textContent = `${profit >= 0 ? '+' : ''}£${Math.abs(profit).toFixed(0)} (${profit >= 0 ? '+' : ''}${profitPct}%) · ${cfg.firmName}`;
+    }
+  }
+
+  renderSessionTrades();
+}
+
+function closeSession() {
+  sessionActive = false;
+  document.getElementById('session-panel').classList.remove('open');
+  document.getElementById('session-toggle-btn').classList.remove('active');
+  document.getElementById('sess-indicator').style.display = 'none';
+  document.getElementById('sess-btn-label').textContent = 'Session mode';
+  document.body.classList.remove('session-mode');
+}
+
+// ── SESSION CALCULATOR ─────────────────────────────────────────────────────────
+function setSpDir(d) {
+  spDir = d;
+  document.getElementById('sp-long').classList.toggle('active', d === 'long');
+  document.getElementById('sp-short').classList.toggle('active', d === 'short');
+  calcSession();
+}
+
+function calcSession() {
+  const account = parseFloat(document.getElementById('sp-account').value) || 0;
+  const risk = parseFloat(document.getElementById('sp-risk').value) || 0;
+  const entry = parseFloat(document.getElementById('sp-entry').value) || 0;
+  const stop = parseFloat(document.getElementById('sp-stop').value) || 0;
+  const resultEl = document.getElementById('sp-result');
+  const workingEl = document.getElementById('sp-working');
+
+  if (account > 0) localStorage.setItem('traxent_account_size', account);
+
+  if (!entry || !stop) {
+    resultEl.textContent = '—';
+    resultEl.className = 'sp-result-val';
+    workingEl.style.display = 'none';
+    return;
+  }
+
+  const riskAmt = account * (risk / 100);
+  const dist = Math.abs(entry - stop);
+  const size = dist > 0 ? riskAmt / dist : 0;
+
+  resultEl.textContent = size.toFixed(2) + ' units';
+  resultEl.className = 'sp-result-val';
+  workingEl.style.display = 'block';
+  workingEl.innerHTML = `£${account.toLocaleString()} × ${risk}% = <strong>£${riskAmt.toFixed(2)} risk</strong><br>Stop: ${dist.toFixed(5)} → <strong>${size.toFixed(2)} units</strong>`;
+}
+
+// ── QUICK LOG ──────────────────────────────────────────────────────────────────
+function toggleQuickLog() {
+  const form = document.getElementById('quick-log-form');
+  form.classList.toggle('open');
+  if (form.classList.contains('open')) {
+    // Pre-fill exit with current entry as placeholder
+    const entry = document.getElementById('sp-entry').value;
+    if (entry) document.getElementById('qlf-exit').placeholder = 'e.g. ' + entry;
+  }
+}
+
+function submitQuickLog() {
+  const account = parseFloat(document.getElementById('sp-account').value) || 0;
+  const risk = parseFloat(document.getElementById('sp-risk').value) || 0;
+  const entry = parseFloat(document.getElementById('sp-entry').value) || 0;
+  const stop = parseFloat(document.getElementById('sp-stop').value) || 0;
+  const exit = parseFloat(document.getElementById('qlf-exit').value) || 0;
+  const pattern = document.getElementById('qlf-pattern').value;
+  const note = document.getElementById('qlf-note').value.trim();
+  const compliance = document.getElementById('qlf-compliance').checked;
+
+  if (!entry || !stop || !exit) {
+    alert('Please fill in exit price to log the trade. Entry and stop should already be set in the calculator above.');
+    return;
+  }
+
+  const riskAmt = account * (risk / 100);
+  const stopDist = Math.abs(entry - stop);
+  const rr = stopDist > 0 ? (exit - entry) / stopDist : 0;
+  const pnl = riskAmt * rr;
+
+  const trade = {
+    id: Date.now(),
+    date: new Date().toISOString().split('T')[0],
+    instrument: currentInst,
+    direction: spDir,
+    pattern,
+    entry,
+    stop,
+    exit,
+    riskPct: risk,
+    rr: parseFloat(rr.toFixed(3)),
+    pnl: parseFloat(pnl.toFixed(2)),
+    riskAmt: parseFloat(riskAmt.toFixed(2)),
+    note,
+    compliance,
+    balanceBefore: account,
+    balanceAfter: account + pnl,
+    sessionOnly: journalMode !== 'yes'
+  };
+
+  sessionTrades.unshift(trade);
+
+  // Save to main journal if connected
+  if (journalMode === 'yes') {
+    const cfg = JSON.parse(localStorage.getItem('traxent_journal_cfg') || 'null');
+    const trades = JSON.parse(localStorage.getItem('traxent_journal_trades') || '[]');
+    if (cfg) {
+      cfg.currentBalance = parseFloat((cfg.currentBalance + pnl).toFixed(2));
+      if (cfg.currentBalance > cfg.peakBalance) cfg.peakBalance = cfg.currentBalance;
+      trades.unshift(trade);
+      localStorage.setItem('traxent_journal_trades', JSON.stringify(trades));
+      localStorage.setItem('traxent_journal_cfg', JSON.stringify(cfg));
+
+      // Update balance display
+      const profit = cfg.currentBalance - cfg.startBalance;
+      document.getElementById('sb-val').textContent = '£' + cfg.currentBalance.toLocaleString('en-GB', {minimumFractionDigits:2, maximumFractionDigits:2});
+      document.getElementById('sb-sub').textContent = `${profit >= 0 ? '+' : ''}£${Math.abs(profit).toFixed(0)} (${((profit/cfg.startBalance)*100).toFixed(1)}%) · ${cfg.firmName}`;
+    }
+  }
+
+  // Reset quick log form
+  document.getElementById('qlf-exit').value = '';
+  document.getElementById('qlf-note').value = '';
+  document.getElementById('qlf-pattern').value = '';
+  document.getElementById('qlf-compliance').checked = true;
+  toggleQuickLog();
+
+  renderSessionTrades();
+}
+
+function renderSessionTrades() {
+  const container = document.getElementById('sp-recent');
+  if (sessionTrades.length === 0) {
+    container.innerHTML = '<div class="sp-recent-empty">No trades logged this session yet.</div>';
+    return;
+  }
+  container.innerHTML = sessionTrades.slice(0, 5).map(t => {
+    const pnlStr = (t.pnl >= 0 ? '+' : '') + '£' + Math.abs(t.pnl).toFixed(2);
+    return `
+      <div class="sp-trade-row">
+        <span class="sp-tr-inst">${t.instrument}</span>
+        <span class="sp-tr-dir ${t.direction}">${t.direction === 'long' ? '▲' : '▼'}</span>
+        <span class="sp-tr-pnl ${t.pnl >= 0 ? 'pos' : 'neg'}">${pnlStr}</span>
+      </div>`;
+  }).join('');
+}
+
+initChart();
+</script>
+</body>
+</html>

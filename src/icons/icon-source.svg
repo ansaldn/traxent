@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="102" fill="#0e0e0c"/>
+  <!-- T lettermark in accent green -->
+  <!-- Horizontal bar -->
+  <rect x="102" y="102" width="308" height="52" rx="8" fill="#1a9e72"/>
+  <!-- Vertical stem -->
+  <rect x="230" y="102" width="52" height="308" rx="8" fill="#1a9e72"/>
+</svg>

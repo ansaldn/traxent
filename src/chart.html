@@ -219,7 +219,7 @@ body.session-mode .upgrade-bar{display:none;}
     <iframe
       id="chart-frame"
       class="chart-frame"
-      src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=15&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&studies=[]&support_host=https%3A%2F%2Fwww.tradingview.com"
+      src="https://s.tradingview.com/widgetsnext/embed/#locale=en&symbol=ES1!&interval=15&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_side_toolbar=0&allow_symbol_change=0&save_image=0&support_host=https%3A%2F%2Fwww.tradingview.com"
     ></iframe>
 
     <!-- Delayed badge -->
@@ -479,11 +479,7 @@ function switchTF(tf, btn) {
 }
 
 function updateChart() {
-  const planLevel = PLAN_HIERARCHY.indexOf(userPlan);
-  // All plans get the same chart widget — TradingView handles the data delay
-  // For delayed, we note it in the badge; the widget itself shows current prices
-  // (TradingView free embed is already real-time for indices/forex)
-  const url = `https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=${currentInst}&interval=${currentTF}&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com`;
+  const url = `https://s.tradingview.com/widgetsnext/embed/#locale=en&symbol=${currentInst}&interval=${currentTF}&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_side_toolbar=0&allow_symbol_change=0&save_image=0&support_host=https%3A%2F%2Fwww.tradingview.com`;
   document.getElementById('chart-frame').src = url;
 }
 

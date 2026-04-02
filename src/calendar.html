@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economic Calendar — Traxent</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;
+  --accent:#0a6e4f;--accent-light:rgba(10,110,79,.08);--accent-mid:#1a9e72;
+  --border:rgba(14,14,12,0.1);--border2:rgba(14,14,12,0.06);
+  --surface:#ffffff;--surface2:#f0efe9;
+  --good:#0a6e4f;--warn:#b06000;--bad:#9e1a1a;
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:16px;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.nav-logo{font-family:var(--mono);font-size:15px;color:var(--ink);text-decoration:none;}
+.nav-logo em{font-style:normal;color:var(--accent);}
+.nav-links{display:flex;align-items:center;gap:20px;}
+.nav-links a{font-size:13px;color:var(--ink3);text-decoration:none;transition:color 0.15s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-dash{background:var(--ink);color:white!important;padding:7px 14px;border-radius:6px;font-size:12px!important;}
+
+.main{max-width:1200px;margin:0 auto;padding:40px 32px 80px;}
+
+.page-hd{margin-bottom:32px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.page-hd-left{}
+.page-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.page-eyebrow::before{content:'';width:16px;height:1px;background:var(--accent);}
+.page-title{font-family:var(--serif);font-size:40px;font-weight:400;color:var(--ink);line-height:1.1;margin-bottom:8px;}
+.page-sub{font-size:15px;color:var(--ink3);line-height:1.6;font-weight:300;max-width:520px;}
+
+/* Tier legend */
+.tier-legend{display:flex;gap:10px;flex-wrap:wrap;}
+.tier-pill{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);font-size:12px;color:var(--ink2);}
+.tier-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.tier-dot.t1{background:var(--bad);}
+.tier-dot.t2{background:var(--warn);}
+.tier-dot.t3{background:var(--ink3);}
+
+/* Prop firm context strip */
+.context-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;}
+.cs-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.cs-firm{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:6px;}
+.cs-rule{font-size:11px;color:var(--ink3);font-family:var(--mono);margin-bottom:4px;}
+.cs-action{font-size:11px;font-weight:500;margin-top:6px;}
+.cs-action.close{color:var(--bad);}
+.cs-action.reduce{color:var(--warn);}
+.cs-action.normal{color:var(--good);}
+
+/* Calendar wrapper */
+.calendar-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px;}
+.calendar-hd{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.cal-hd-title{font-size:14px;font-weight:500;color:var(--ink);}
+.cal-hd-sub{font-size:12px;color:var(--ink3);}
+.cal-hd-badge{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.2);padding:3px 8px;border-radius:3px;}
+.calendar-embed{width:100%;height:600px;border:none;display:block;background:#fff;}
+
+/* Quick reference */
+.quick-ref{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px;}
+.qr-hd{padding:14px 20px;border-bottom:1px solid var(--border2);}
+.qr-hd-title{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);}
+.qr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border2);}
+.qr-col{padding:16px 20px;border-right:1px solid var(--border2);}
+.qr-col:last-child{border-right:none;}
+.qr-col-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.tier-tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;}
+.t1-tag{background:rgba(158,26,26,.08);color:var(--bad);border:1px solid rgba(158,26,26,.2);}
+.t2-tag{background:rgba(176,96,0,.06);color:var(--warn);border:1px solid rgba(176,96,0,.2);}
+.t3-tag{background:var(--surface2);color:var(--ink3);border:1px solid var(--border);}
+.qr-events{display:flex;flex-direction:column;gap:6px;}
+.qr-event{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--ink2);}
+.qr-event::before{content:'→';color:var(--accent);flex-shrink:0;font-size:11px;margin-top:1px;}
+.qr-action-row{padding:16px 20px;background:var(--surface2);}
+.qr-action-label{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;}
+.qr-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.qr-action-pill{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:6px;font-size:12px;font-weight:500;}
+.qa-close{background:rgba(158,26,26,.08);color:var(--bad);border:1px solid rgba(158,26,26,.2);}
+.qa-reduce{background:rgba(176,96,0,.06);color:var(--warn);border:1px solid rgba(176,96,0,.2);}
+.qa-normal{background:rgba(10,110,79,.06);color:var(--good);border:1px solid rgba(10,110,79,.2);}
+
+/* Challenge Lab CTA */
+.lab-cta{background:var(--ink);border-radius:14px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.lab-cta-left{}
+.lab-cta-title{font-family:var(--serif);font-size:22px;color:white;margin-bottom:6px;}
+.lab-cta-sub{font-size:13px;color:rgba(255,255,255,.45);font-weight:300;max-width:440px;line-height:1.5;}
+.lab-cta-btn{background:var(--accent-mid);color:white;padding:11px 22px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap;transition:background 0.15s;flex-shrink:0;}
+.lab-cta-btn:hover{background:var(--accent);}
+
+/* Disclaimer */
+.disclaimer{font-size:11px;color:var(--ink3);line-height:1.6;padding:20px 0;border-top:1px solid var(--border);margin-top:28px;}
+
+@media(max-width:900px){
+  .main{padding:24px 16px 60px;}
+  nav{padding:0 16px;}
+  .context-strip{grid-template-columns:1fr 1fr;}
+  .qr-grid{grid-template-columns:1fr;}
+  .qr-col{border-right:none;border-bottom:1px solid var(--border2);}
+  .qr-col:last-child{border-bottom:none;}
+  .page-hd{flex-direction:column;align-items:flex-start;}
+  .lab-cta{flex-direction:column;align-items:flex-start;}
+  .nav-links .hide-mobile{display:none;}
+  .calendar-embed{height:480px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <div class="nav-links">
+    <a href="/learn" class="hide-mobile">Learn</a>
+    <a href="/challenge-lab" class="hide-mobile">Challenge Lab</a>
+    <a href="/calculator" class="hide-mobile">Calculator</a>
+    <a href="/dashboard" class="nav-dash">Dashboard</a>
+  </div>
+</nav>
+
+<div class="main">
+
+  <div class="page-hd">
+    <div class="page-hd-left">
+      <div class="page-eyebrow">Live tool</div>
+      <h1 class="page-title">Economic calendar</h1>
+      <p class="page-sub">Know what's moving markets before the session opens. High-impact events can spike price 30–50 points in seconds — close positions before Tier 1 events, always.</p>
+    </div>
+    <div class="tier-legend">
+      <div class="tier-pill"><div class="tier-dot t1"></div>Tier 1 — Close all positions</div>
+      <div class="tier-pill"><div class="tier-dot t2"></div>Tier 2 — Reduce size</div>
+      <div class="tier-pill"><div class="tier-dot t3"></div>Tier 3 — Trade normally</div>
+    </div>
+  </div>
+
+  <!-- Prop firm context -->
+  <div class="context-strip">
+    <div class="cs-card">
+      <div class="cs-firm">FTMO</div>
+      <div class="cs-rule">No news ban on standard</div>
+      <div class="cs-rule">Daily limit applies in real time</div>
+      <div class="cs-action close">Close before Tier 1 events</div>
+    </div>
+    <div class="cs-card">
+      <div class="cs-firm">Apex Trader Funding</div>
+      <div class="cs-rule">No news ban on evaluation</div>
+      <div class="cs-rule">Trailing DD follows peak equity</div>
+      <div class="cs-action close">Close before Tier 1 — floor rises on spikes</div>
+    </div>
+    <div class="cs-card">
+      <div class="cs-firm">MyFundedFutures</div>
+      <div class="cs-rule">No news ban</div>
+      <div class="cs-rule">EOD trailing — intraday spike safe</div>
+      <div class="cs-action reduce">Reduce size on Tier 1 events</div>
+    </div>
+    <div class="cs-card">
+      <div class="cs-firm">FundedNext</div>
+      <div class="cs-rule">No news ban (Futures)</div>
+      <div class="cs-rule">EOD trailing drawdown</div>
+      <div class="cs-action reduce">Reduce size on Tier 1 events</div>
+    </div>
+  </div>
+
+  <!-- Calendar embed -->
+  <div class="calendar-wrap">
+    <div class="calendar-hd">
+      <div>
+        <div class="cal-hd-title">This week's economic events</div>
+        <div class="cal-hd-sub">Powered by TradingView · Times shown in your local timezone · Filter by impact using the calendar controls</div>
+      </div>
+      <div class="cal-hd-badge">Live data</div>
+    </div>
+    <iframe
+      class="calendar-embed"
+      src="https://www.tradingview.com/embed-widget/events/?locale=en#%7B%22colorTheme%22%3A%22light%22%2C%22isTransparent%22%3Afalse%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22600%22%2C%22importanceFilter%22%3A%22-1%2C0%2C1%22%2C%22countryFilter%22%3A%22us%2Cgb%2Ceu%2Cjp%2Cca%2Cau%22%7D"
+      allowtransparency="true"
+      scrolling="no"
+    ></iframe>
+  </div>
+
+  <!-- Quick reference -->
+  <div class="quick-ref">
+    <div class="qr-hd"><div class="qr-hd-title">Event quick reference — what each event means for your trades</div></div>
+    <div class="qr-grid">
+      <div class="qr-col">
+        <div class="qr-col-title"><span>Tier 1 events</span><span class="tier-tag t1-tag">Close positions</span></div>
+        <div class="qr-events">
+          <div class="qr-event">NFP — Non-Farm Payrolls (1st Friday monthly, 13:30 UTC)</div>
+          <div class="qr-event">FOMC rate decision (8× per year, Wed 19:00 UTC)</div>
+          <div class="qr-event">CPI — Consumer Price Index (monthly, 13:30 UTC)</div>
+          <div class="qr-event">Fed Chair press conference (follows FOMC)</div>
+          <div class="qr-event">US Core PCE (monthly)</div>
+        </div>
+      </div>
+      <div class="qr-col">
+        <div class="qr-col-title"><span>Tier 2 events</span><span class="tier-tag t2-tag">Reduce size</span></div>
+        <div class="qr-events">
+          <div class="qr-event">GDP quarterly release</div>
+          <div class="qr-event">Retail sales data</div>
+          <div class="qr-event">PPI — Producer Price Index</div>
+          <div class="qr-event">ISM manufacturing / services</div>
+          <div class="qr-event">UK CPI and employment data</div>
+          <div class="qr-event">ECB rate decisions</div>
+        </div>
+      </div>
+      <div class="qr-col">
+        <div class="qr-col-title"><span>Tier 3 events</span><span class="tier-tag t3-tag">Trade normally</span></div>
+        <div class="qr-events">
+          <div class="qr-event">Building permits, housing starts</div>
+          <div class="qr-event">Weekly jobless claims</div>
+          <div class="qr-event">Consumer confidence</div>
+          <div class="qr-event">Fed member speeches (non-chair)</div>
+          <div class="qr-event">Trade balance data</div>
+        </div>
+      </div>
+    </div>
+    <div class="qr-action-row">
+      <div class="qr-action-label">Your action by tier</div>
+      <div class="qr-actions">
+        <div class="qr-action-pill qa-close">Tier 1 — Close all positions 15 min before · No new trades for 15 min after</div>
+        <div class="qr-action-pill qa-reduce">Tier 2 — Halve position size · Widen stops slightly</div>
+        <div class="qr-action-pill qa-normal">Tier 3 — Trade normally · Standard plan applies</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Challenge Lab CTA -->
+  <div class="lab-cta">
+    <div class="lab-cta-left">
+      <div class="lab-cta-title">Learn how to trade around news events</div>
+      <div class="lab-cta-sub">The Challenge Lab Week 2 covers NFP, FOMC, and CPI in depth — what each event measures, how markets typically react, and how to build a news filter for your trading plan.</div>
+    </div>
+    <a href="/challenge-lab" class="lab-cta-btn">Open Challenge Lab →</a>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This calendar is provided for educational purposes only via the TradingView widget. Event times and data are sourced from TradingView and may vary. Always verify event times against a dedicated economic calendar before trading. Traxent is not responsible for any losses arising from trading decisions made in connection with this calendar. This page does not constitute financial advice.
+  </div>
+
+</div>
+
+</body>
+</html>

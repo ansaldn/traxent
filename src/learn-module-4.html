@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4: Prop Firm Mastery — Traxent Learn</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;
+  --accent:#0a6e4f;--accent-light:rgba(10,110,79,.08);--accent-mid:#1a9e72;
+  --border:rgba(14,14,12,0.1);--border2:rgba(14,14,12,0.06);
+  --surface:#ffffff;--surface2:#f0efe9;
+  --good:#0a6e4f;--warn:#b06000;--bad:#9e1a1a;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:16px;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;}
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.nav-logo{font-family:var(--mono);font-size:15px;color:var(--ink);text-decoration:none;}
+.nav-logo em{font-style:normal;color:var(--accent);}
+.nav-back{font-size:13px;color:var(--ink3);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color 0.15s;}
+.nav-back:hover{color:var(--ink);}
+.nav-back::before{content:'←';}
+.learn-wrap{max-width:1160px;margin:0 auto;padding:40px 32px;display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:start;}
+.sidebar{position:sticky;top:76px;}
+.module-label{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.module-title{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink);margin-bottom:4px;}
+.module-meta{font-size:12px;color:var(--ink3);margin-bottom:20px;}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);margin-bottom:6px;}
+.progress-bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:20px;}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.5s ease;}
+.lesson-list{display:flex;flex-direction:column;gap:2px;}
+.lesson-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:all 0.15s;border:1px solid transparent;}
+.lesson-item:hover{background:var(--surface);border-color:var(--border);}
+.lesson-item.active{background:var(--surface);border-color:var(--accent);}
+.lesson-item.completed .lesson-dot{background:var(--accent);color:white;border-color:var(--accent);}
+.lesson-dot{width:22px;height:22px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:var(--mono);color:var(--ink3);flex-shrink:0;transition:all 0.2s;}
+.lesson-item.active .lesson-dot{background:var(--accent);color:white;border-color:var(--accent);}
+.lesson-name{font-size:13px;color:var(--ink);}
+.lesson-item.active .lesson-name{font-weight:500;color:var(--accent);}
+.lesson-dur{font-size:10px;color:var(--ink3);font-family:var(--mono);margin-top:1px;}
+.quiz-sep{height:1px;background:var(--border);margin:8px 0;}
+.sidebar-note{margin-top:20px;padding:14px 16px;background:var(--accent-light);border:1px solid rgba(10,110,79,.15);border-radius:8px;font-size:12px;color:var(--ink2);line-height:1.5;}
+.lesson-main{min-height:60vh;}
+.lesson-hd{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border);}
+.lesson-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.lesson-eyebrow::before{content:'';width:16px;height:1px;background:var(--accent);}
+.lesson-title{font-family:var(--serif);font-size:38px;font-weight:400;line-height:1.1;color:var(--ink);margin-bottom:14px;}
+.lesson-intro{font-size:16px;color:var(--ink2);line-height:1.7;font-weight:300;max-width:640px;}
+.lesson-body{max-width:720px;}
+.lesson-body h2{font-family:var(--serif);font-size:24px;font-weight:400;color:var(--ink);margin:36px 0 14px;}
+.lesson-body p{font-size:15px;color:var(--ink2);line-height:1.8;margin-bottom:16px;font-weight:300;}
+.lesson-body strong{color:var(--ink);font-weight:500;}
+.callout{border-radius:8px;padding:16px 20px;margin:24px 0;}
+.callout-key{background:var(--accent-light);border:1px solid rgba(10,110,79,.15);border-left:3px solid var(--accent);}
+.callout-key .cl{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.callout-warn{background:rgba(176,96,0,.06);border:1px solid rgba(176,96,0,.15);border-left:3px solid var(--warn);}
+.callout-warn .cl{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--warn);margin-bottom:8px;}
+.callout p{margin-bottom:0;font-size:14px;}
+.vis-exp{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin:24px 0;}
+.vis-exp-title{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;}
+.vis-row{display:flex;border-radius:6px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px;}
+.vis-row:last-child{margin-bottom:0;}
+.vis-cell{flex:1;padding:10px 14px;border-right:1px solid var(--border);}
+.vis-cell:last-child{border-right:none;}
+.vis-cell-label{font-size:10px;font-family:var(--mono);color:var(--ink3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;}
+.vis-cell-val{font-size:13px;color:var(--ink);font-weight:500;}
+.vis-cell-sub{font-size:11px;color:var(--ink3);margin-top:2px;}
+.vis-good{background:rgba(10,110,79,.06);}
+.vis-bad{background:rgba(158,26,26,.06);}
+.vis-cell-val.green{color:var(--good);}
+.vis-cell-val.red{color:var(--bad);}
+.firm-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:13px;background:var(--surface);border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.firm-table th{background:var(--surface2);padding:10px 14px;text-align:left;font-weight:500;color:var(--ink);font-size:12px;border-bottom:1px solid var(--border);}
+.firm-table td{padding:10px 14px;border-bottom:1px solid var(--border2);color:var(--ink2);}
+.firm-table tr:last-child td{border-bottom:none;}
+.firm-table .fn{font-weight:500;color:var(--ink);}
+.firm-table .good{color:var(--good);font-weight:500;}
+.firm-table .warn{color:var(--warn);font-weight:500;}
+.firm-table .bad{color:var(--bad);font-weight:500;}
+.sim-week{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:24px 0;}
+.sim-week-hd{padding:14px 18px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.sim-week-label{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);}
+.sim-week-balance{font-family:var(--mono);font-size:13px;color:var(--ink);}
+.sim-trade{display:grid;grid-template-columns:60px 1fr 110px 60px 100px;gap:10px;align-items:center;padding:11px 18px;border-bottom:1px solid var(--border2);font-size:13px;}
+.sim-trade:last-child{border-bottom:none;}
+.sim-day{font-family:var(--mono);font-size:11px;color:var(--ink3);}
+.sim-desc{color:var(--ink2);}
+.sim-result{font-weight:500;font-family:var(--mono);font-size:12px;}
+.sim-result.win{color:var(--good);}
+.sim-result.loss{color:var(--bad);}
+.sim-risk{font-family:var(--mono);font-size:11px;color:var(--ink3);}
+.sim-bal{font-family:var(--mono);font-size:12px;color:var(--ink);}
+.sim-trade-header{background:var(--surface2);border-bottom:1px solid var(--border);}
+.sim-summary{padding:16px 18px;background:var(--surface2);border-top:1px solid var(--border);}
+.sim-summary-title{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:10px;}
+.sim-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.sim-cell{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 12px;}
+.sim-cell-label{font-size:10px;font-family:var(--mono);color:var(--ink3);text-transform:uppercase;margin-bottom:3px;}
+.sim-cell-val{font-size:14px;font-weight:500;color:var(--ink);}
+.sim-cell-val.good{color:var(--good);}
+.sim-cell-val.warn{color:var(--warn);}
+.chart-component{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:28px 0;}
+.chart-header{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.chart-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px;}
+.chart-subtitle{font-size:12px;color:var(--ink3);}
+.inst-switcher{display:flex;gap:6px;flex-wrap:wrap;}
+.inst-btn{font-family:var(--mono);font-size:11px;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:var(--bg);color:var(--ink3);cursor:pointer;transition:all 0.15s;}
+.inst-btn:hover{border-color:var(--accent);color:var(--accent);}
+.inst-btn.active{background:var(--accent);border-color:var(--accent);color:white;}
+.chart-frame{width:100%;height:380px;background:#131722;border:none;display:block;}
+.exercise{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:28px 0;}
+.exercise-hd{padding:14px 20px;border-bottom:1px solid var(--border2);background:var(--surface2);display:flex;align-items:center;gap:10px;}
+.ex-badge{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.2);padding:3px 8px;border-radius:3px;}
+.ex-title{font-size:14px;font-weight:500;color:var(--ink);}
+.exercise-body{padding:20px;}
+.ex-question{font-size:15px;color:var(--ink2);line-height:1.6;margin-bottom:18px;font-weight:300;}
+.ex-question strong{color:var(--ink);font-weight:500;}
+.ex-opts{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.ex-opt{padding:10px 20px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:14px;color:var(--ink2);cursor:pointer;transition:all 0.15s;font-family:var(--sans);}
+.ex-opt:hover:not(:disabled){border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
+.ex-opt.correct{border-color:var(--good);background:rgba(10,110,79,.08);color:var(--good);font-weight:500;}
+.ex-opt.incorrect{border-color:var(--bad);background:rgba(158,26,26,.06);color:var(--bad);}
+.ex-feedback{padding:14px 16px;border-radius:8px;font-size:14px;line-height:1.6;display:none;}
+.ex-feedback.show{display:block;}
+.ex-feedback.correct{background:rgba(10,110,79,.08);border:1px solid rgba(10,110,79,.2);color:var(--good);}
+.ex-feedback.incorrect{background:rgba(158,26,26,.06);border:1px solid rgba(158,26,26,.15);color:var(--bad);}
+.ex-next-btn{margin-top:14px;background:var(--accent);color:white;border:none;border-radius:7px;padding:10px 20px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:background 0.15s;display:none;}
+.ex-next-btn.show{display:inline-block;}
+.ex-next-btn:hover{background:#085e43;}
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:48px;padding-top:28px;border-top:1px solid var(--border);}
+.btn-nav{display:flex;align-items:center;gap:8px;padding:11px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all 0.15s;}
+.btn-prev{background:var(--surface);border:1px solid var(--border);color:var(--ink2);}
+.btn-prev:hover{border-color:var(--ink);}
+.btn-prev::before{content:'←';}
+.btn-next{background:var(--accent);color:white;}
+.btn-next:hover{background:#085e43;}
+.btn-next::after{content:'→';}
+.nav-info{font-size:12px;color:var(--ink3);font-family:var(--mono);}
+.quiz-wrap{max-width:700px;}
+.quiz-hd{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border);}
+.quiz-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.quiz-eyebrow::before{content:'';width:16px;height:1px;background:var(--accent);}
+.quiz-title{font-family:var(--serif);font-size:38px;font-weight:400;color:var(--ink);margin-bottom:10px;}
+.quiz-sub{font-size:15px;color:var(--ink2);line-height:1.65;font-weight:300;}
+.q-dots{display:flex;gap:8px;margin-bottom:32px;}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);transition:all 0.2s;}
+.q-dot.active{background:var(--accent);border-color:var(--accent);}
+.q-dot.done{background:var(--accent);border-color:var(--accent);opacity:0.4;}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:26px;margin-bottom:20px;}
+.q-num{font-family:var(--mono);font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;}
+.q-text{font-size:16px;color:var(--ink);line-height:1.55;margin-bottom:22px;}
+.q-options{display:flex;flex-direction:column;gap:10px;}
+.q-opt{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s;}
+.q-opt:hover{border-color:var(--accent);background:var(--accent-light);}
+.q-opt.selected{border-color:var(--accent);background:var(--accent-light);}
+.q-opt.correct{border-color:var(--good);background:rgba(10,110,79,.08);}
+.q-opt.incorrect{border-color:var(--bad);background:rgba(158,26,26,.06);}
+.q-letter{width:22px;height:22px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--ink3);flex-shrink:0;transition:all 0.15s;}
+.q-opt.selected .q-letter{background:var(--accent);color:white;border-color:var(--accent);}
+.q-opt.correct .q-letter{background:var(--good);color:white;border-color:var(--good);}
+.q-opt.incorrect .q-letter{background:var(--bad);color:white;border-color:var(--bad);}
+.q-opt-text{font-size:14px;color:var(--ink2);line-height:1.5;padding-top:2px;}
+.q-feedback{padding:12px 16px;border-radius:8px;margin-top:14px;font-size:14px;line-height:1.55;display:none;}
+.q-feedback.show{display:block;}
+.q-feedback.correct{background:rgba(10,110,79,.08);border:1px solid rgba(10,110,79,.2);color:var(--good);}
+.q-feedback.incorrect{background:rgba(158,26,26,.06);border:1px solid rgba(158,26,26,.15);color:var(--bad);}
+.q-btn-row{display:flex;justify-content:flex-end;margin-top:20px;gap:10px;}
+.q-btn{padding:11px 24px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all 0.15s;}
+.q-submit{background:var(--accent);color:white;}
+.q-submit:hover{background:#085e43;}
+.q-submit:disabled{opacity:0.35;cursor:not-allowed;}
+.q-next-btn{background:var(--ink);color:white;display:none;}
+.q-next-btn:hover{background:var(--accent);}
+.quiz-result{text-align:center;padding:48px 0;display:none;}
+.result-pct{font-family:var(--serif);font-size:80px;font-weight:400;font-style:italic;line-height:1;margin-bottom:10px;}
+.result-pct.pass{color:var(--good);}
+.result-pct.fail{color:var(--bad);}
+.result-lbl{font-family:var(--mono);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:20px;}
+.result-msg{font-size:15px;color:var(--ink2);line-height:1.65;max-width:480px;margin:0 auto 28px;font-weight:300;}
+.result-actions{display:flex;gap:12px;justify-content:center;}
+.btn-result{padding:11px 22px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all 0.15s;text-decoration:none;display:inline-block;}
+.btn-result-primary{background:var(--accent);color:white;}
+.btn-result-primary:hover{background:#085e43;}
+.btn-result-secondary{background:var(--surface);border:1px solid var(--border);color:var(--ink2);}
+.completion-banner{background:var(--ink);border-radius:12px;padding:32px;margin-top:32px;display:none;}
+.completion-banner.show{display:block;}
+.cb-title{font-family:var(--serif);font-size:28px;color:white;margin-bottom:8px;}
+.cb-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:24px;line-height:1.6;max-width:520px;}
+.cb-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.cb-btn-primary{background:var(--accent-mid);color:white;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;transition:background 0.15s;}
+.cb-btn-primary:hover{background:var(--accent);}
+.cb-btn-secondary{background:rgba(255,255,255,.1);color:white;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;}
+@media(max-width:900px){.learn-wrap{grid-template-columns:1fr;padding:24px 20px;}.sidebar{position:static;}.sim-trade{grid-template-columns:1fr 1fr;gap:8px;}.sim-summary-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <a href="/learn" class="nav-back">All modules</a>
+</nav>
+
+<div class="learn-wrap">
+  <aside class="sidebar">
+    <div class="module-label">Module 4 · Observer+</div>
+    <div class="module-title">Prop Firm Mastery</div>
+    <div class="module-meta">3 lessons · 1 final assessment · ~45 min</div>
+    <div class="progress-label"><span>Progress</span><span id="prog-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="lesson-list">
+      <div class="lesson-item active" id="nav-0" onclick="showLesson(0)">
+        <div class="lesson-dot" id="dot-0">1</div>
+        <div><div class="lesson-name">FTMO decoded</div><div class="lesson-dur">12 min · Rule analysis</div></div>
+      </div>
+      <div class="lesson-item" id="nav-1" onclick="showLesson(1)">
+        <div class="lesson-dot" id="dot-1">2</div>
+        <div><div class="lesson-name">Apex, MFFU & FundedNext</div><div class="lesson-dur">12 min · Firm comparison</div></div>
+      </div>
+      <div class="lesson-item" id="nav-2" onclick="showLesson(2)">
+        <div class="lesson-dot" id="dot-2">3</div>
+        <div><div class="lesson-name">Building your trading plan</div><div class="lesson-dur">10 min · Chart + scenario</div></div>
+      </div>
+      <div class="quiz-sep"></div>
+      <div class="lesson-item" id="nav-3" onclick="showLesson(3)">
+        <div class="lesson-dot" id="dot-3">★</div>
+        <div><div class="lesson-name">Final assessment</div><div class="lesson-dur">5 questions · Pass 80%</div></div>
+      </div>
+    </div>
+    <div class="sidebar-note">This is the final module. Pass the assessment to complete the Traxent learning programme and unlock your readiness tracker.</div>
+  </aside>
+
+  <main>
+
+    <!-- LESSON 1: FTMO decoded -->
+    <div id="lesson-0" class="lesson-main">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 4 · Lesson 1</div>
+        <h1 class="lesson-title">FTMO decoded</h1>
+        <p class="lesson-intro">FTMO is one of the most established prop firms in the world. This lesson breaks down every rule in practical detail — not just what the rules are, but where traders consistently trip up and how to structure your challenge so you don't need to rely on luck.</p>
+      </div>
+      <div class="lesson-body">
+
+        <h2>The FTMO evaluation structure</h2>
+        <p>FTMO uses a two-step evaluation. Phase 1 — the Challenge — requires a 10% profit target. Phase 2 — Verification — requires 5%. Both phases share the same loss limits. Importantly, there is <strong>no time limit</strong> on either phase. You can take as long as you need, which removes one of the biggest failure triggers: forcing trades near an artificial deadline.</p>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">FTMO 2-step challenge — key numbers on a £100k account</div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Phase 1 profit target</div><div class="vis-cell-val">£10,000 (10%)</div><div class="vis-cell-sub">All positions must be closed before counting</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Phase 2 profit target</div><div class="vis-cell-val">£5,000 (5%)</div><div class="vis-cell-sub">Same loss rules apply throughout</div></div>
+            <div class="vis-cell vis-good"><div class="vis-cell-label">Time limit</div><div class="vis-cell-val green">None</div><div class="vis-cell-sub">Take as long as you need — no deadline pressure</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">Daily loss limit</div><div class="vis-cell-val red">£5,000 (5%)</div><div class="vis-cell-sub">Including floating losses on open trades</div></div>
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">Max total loss</div><div class="vis-cell-val red">£10,000 (10%)</div><div class="vis-cell-sub">Static floor — never resets upward</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Min trading days</div><div class="vis-cell-val">4 days</div><div class="vis-cell-sub">Per phase — can be non-consecutive</div></div>
+          </div>
+        </div>
+
+        <h2>The floating loss rule — most misunderstood</h2>
+        <p>Most traders understand the 5% daily limit in concept. What catches people is how it's calculated: FTMO measures your <strong>equity including unrealised floating losses on open positions</strong>, from your account balance at midnight Prague time (CET/CEST).</p>
+        <p>This means: if you start the day at £100,000 and open a position that goes −£5,100 floating — even though you haven't closed the trade — you've breached the daily limit. The trade is still live. The challenge is over. Even if it later recovers.</p>
+
+        <div class="callout callout-warn">
+          <div class="cl">The floating loss trap</div>
+          <p>If your stop loss is correctly placed and sized at 1% risk, a single trade can never breach the daily limit on its own. The trap only catches traders who trade too large, move stops wider, or don't use stops at all. Proper position sizing from Module 3 is your protection.</p>
+        </div>
+
+        <h2>Static drawdown — why it gets easier over time</h2>
+        <p>FTMO's maximum loss limit is <strong>static</strong>: on a £100,000 account, the floor is always £90,000. No matter how much profit you make, the floor never moves up. This is a significant advantage — as your account grows from trading profits, the buffer between your current balance and the floor gets larger, not smaller. Once you're at £105,000, you have £15,000 of buffer above the £90,000 floor.</p>
+
+        <h2>The 1-step FTMO — the Best Day rule</h2>
+        <p>FTMO also offers a 1-step challenge. It is faster but adds an additional constraint: your single most profitable day cannot exceed <strong>50% of your total Positive Days' Profit</strong>. This prevents traders passing via one lucky news event. For traders with consistent day-to-day performance, the 1-step can be faster. For traders with variable daily results, the 2-step is more forgiving.</p>
+
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">FTMO exercise</span><span class="ex-title">Floating loss scenario</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">You're on a £100,000 FTMO Challenge. At midnight, your account balance was £100,000. You open a trade at 9 AM. By 11 AM the trade has a floating loss of £5,100 — it's still open. What has happened?</p>
+            <div class="ex-opts" id="ex1-opts">
+              <button class="ex-opt" onclick="checkEx('ex1','breached',this,'breached')">The daily loss limit has been breached — the challenge is over</button>
+              <button class="ex-opt" onclick="checkEx('ex1','fine',this,'breached')">Nothing — floating losses don't count until the trade closes</button>
+              <button class="ex-opt" onclick="checkEx('ex1','warning',this,'breached')">I've received a warning but can continue if I close the trade</button>
+              <button class="ex-opt" onclick="checkEx('ex1','close',this,'breached')">I should close the trade immediately to limit further damage</button>
+            </div>
+            <div class="ex-feedback" id="ex1-fb"></div>
+            <button class="ex-next-btn" id="ex1-next" onclick="completeLesson(0)">Next lesson →</button>
+          </div>
+        </div>
+
+      </div>
+      <div class="lesson-nav">
+        <span></span>
+        <span class="nav-info">Lesson 1 of 3</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(0)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- LESSON 2: Apex, MFFU, FundedNext -->
+    <div id="lesson-1" class="lesson-main" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 4 · Lesson 2</div>
+        <h1 class="lesson-title">Apex, MFFU & FundedNext</h1>
+        <p class="lesson-intro">Each prop firm has a different philosophy about how to evaluate traders. Understanding the key differences lets you choose the right firm for your trading style — and avoid being caught out by a rule you didn't know existed.</p>
+      </div>
+      <div class="lesson-body">
+
+        <h2>Side-by-side comparison</h2>
+
+        <table class="firm-table">
+          <thead>
+            <tr>
+              <th>Firm</th>
+              <th>Daily loss limit</th>
+              <th>Max drawdown</th>
+              <th>Drawdown type</th>
+              <th>Min days</th>
+              <th>Consistency rule</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fn">FTMO (2-step)</td>
+              <td class="warn">5% — static</td>
+              <td class="warn">10% — static</td>
+              <td>Static floor</td>
+              <td>4 per phase</td>
+              <td>None on 2-step</td>
+            </tr>
+            <tr>
+              <td class="fn">Apex Trader Funding</td>
+              <td class="good">None on eval</td>
+              <td class="good">~5% trailing</td>
+              <td>Intraday trailing</td>
+              <td>7 (legacy)</td>
+              <td>30–50% (funded PA)</td>
+            </tr>
+            <tr>
+              <td class="fn">MyFundedFutures (Core)</td>
+              <td class="good">None</td>
+              <td class="warn">3% EOD trailing</td>
+              <td>End-of-day</td>
+              <td>2</td>
+              <td>40% (funded phase)</td>
+            </tr>
+            <tr>
+              <td class="fn">FundedNext (Futures)</td>
+              <td class="good">None (Futures)</td>
+              <td class="warn">Varies by size</td>
+              <td>EOD trailing</td>
+              <td>5</td>
+              <td>40% (funded phase)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>The critical difference — static vs trailing drawdown</h2>
+        <p>FTMO's drawdown is <strong>static</strong>: the floor is set at the start and never moves. This means the buffer between your current balance and the floor grows as you profit. The risk of breaching actually decreases over time.</p>
+        <p>Apex uses an <strong>intraday trailing drawdown</strong>: the floor follows your peak equity in real time, including unrealised gains on open trades. If your account grows to £107,000 intraday on a trade that hasn't closed, the floor may have moved up. If the trade then pulls back, you're closer to the floor than you expected — even though your closed balance is still higher than when you started.</p>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">Static vs trailing — practical example (£50k account, £2,500 DD)</div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Start</div><div class="vis-cell-val">£50,000</div><div class="vis-cell-sub">Floor: £47,500 (both firms)</div></div>
+            <div class="vis-cell vis-good"><div class="vis-cell-label">FTMO after +£5k profit</div><div class="vis-cell-val green">Floor: £47,500</div><div class="vis-cell-sub">Static — floor never moves. Buffer grows.</div></div>
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">Apex after +£5k profit</div><div class="vis-cell-val red">Floor: £52,500</div><div class="vis-cell-sub">Trailing — floor followed peak. Same buffer.</div></div>
+          </div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="cl">Apex trailing drawdown — the key implication</div>
+          <p>Never let a profitable trade run back to breakeven on an Apex account. The moment a trade shows £1,000 profit floating, the floor may have moved up by £1,000. Giving it back means moving £1,000 closer to a breach — even though your account balance hasn't changed from when you entered. Take profits consistently.</p>
+        </div>
+
+        <h2>Which firm suits which trader?</h2>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">Firm matching guide</div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Forex trader</div><div class="vis-cell-val">FTMO or FundedNext</div><div class="vis-cell-sub">Best instrument coverage for forex pairs</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Futures day trader</div><div class="vis-cell-val">Apex or MFFU</div><div class="vis-cell-sub">No daily limit on eval — more intraday freedom</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Swing trader</div><div class="vis-cell-val">FTMO Swing</div><div class="vis-cell-sub">Weekend holds allowed, news trading permitted</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Want more time</div><div class="vis-cell-val">FTMO 2-step</div><div class="vis-cell-sub">No time limit removes all deadline pressure</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Consistent daily trader</div><div class="vis-cell-val">MFFU Core</div><div class="vis-cell-sub">Only 2 minimum trading days required</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Looking to scale fast</div><div class="vis-cell-val">FundedNext</div><div class="vis-cell-sub">Scale to £4 million — fastest growth path</div></div>
+          </div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="cl">Always verify before purchasing</div>
+          <p>Prop firm rules change frequently. The information in this module is based on publicly available documentation but may not reflect current terms. Always read the firm's website directly before purchasing any challenge. Traxent is not affiliated with any prop firm listed here.</p>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">Firm comparison exercise</span><span class="ex-title">Trailing drawdown in practice</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">You're trading an Apex account. Starting balance £50,000, trailing drawdown £2,500. After 3 days your account grew to £54,000. The trailing floor moved to £51,500. You then have a bad session and lose £2,000, bringing you to £52,000. Are you in breach?</p>
+            <div class="ex-opts" id="ex2-opts">
+              <button class="ex-opt" onclick="checkEx('ex2','no',this,'no')">No — £52,000 is above the £51,500 floor</button>
+              <button class="ex-opt" onclick="checkEx('ex2','yes-pct',this,'no')">Yes — I've lost more than 5% from starting balance</button>
+              <button class="ex-opt" onclick="checkEx('ex2','yes-original',this,'no')">Yes — the floor is still at the original £47,500</button>
+              <button class="ex-opt" onclick="checkEx('ex2','close',this,'no')">Not breached, but only £500 from the floor — reduce size</button>
+            </div>
+            <div class="ex-feedback" id="ex2-fb"></div>
+            <button class="ex-next-btn" id="ex2-next" onclick="completeLesson(1)">Next lesson →</button>
+          </div>
+        </div>
+
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-nav btn-prev" onclick="showLesson(0)">Previous</button>
+        <span class="nav-info">Lesson 2 of 3</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(1)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- LESSON 3: Building your trading plan -->
+    <div id="lesson-2" class="lesson-main" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 4 · Lesson 3</div>
+        <h1 class="lesson-title">Building your trading plan</h1>
+        <p class="lesson-intro">Everything in this course leads here. A trading plan is not a strategy — it is the framework within which your strategy operates. Without one, even a profitable strategy fails under the emotional pressure of a real challenge.</p>
+      </div>
+      <div class="lesson-body">
+
+        <h2>What a trading plan actually is</h2>
+        <p>A trading plan is a set of pre-committed decisions made when you're calm and thinking clearly — so you don't have to make them in the moment when emotions are high. It covers what you trade, when you trade, how much you risk, when you stop for the day, and how you review your performance.</p>
+
+        <div class="callout callout-key">
+          <div class="cl">The key insight</div>
+          <p>The purpose of a trading plan is to remove decisions from the heat of the moment. If your plan says "stop after two losses in a day", you don't need to decide whether today's third setup is "different enough" to override the rule. The decision is already made. Discipline is easier when the rules are pre-set.</p>
+        </div>
+
+        <h2>The six components of a challenge-ready plan</h2>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">Your trading plan — six components</div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">1. Instrument</div><div class="vis-cell-val">What you trade</div><div class="vis-cell-sub">1–2 instruments you know well — not new ones</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">2. Session</div><div class="vis-cell-val">When you trade</div><div class="vis-cell-sub">London open, NY open — your best window only</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">3. Setup criteria</div><div class="vis-cell-val">What triggers entry</div><div class="vis-cell-sub">Specific pattern + minimum confluence count</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">4. Risk rules</div><div class="vis-cell-val">How much per trade</div><div class="vis-cell-sub">Max risk % · stop method · minimum R:R</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">5. Daily stops</div><div class="vis-cell-val">When you quit</div><div class="vis-cell-sub">Personal daily loss limit · max trades per day</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">6. Review process</div><div class="vis-cell-val">How you improve</div><div class="vis-cell-sub">Journal every trade · weekly review · patterns</div></div>
+          </div>
+        </div>
+
+        <h2>Analyse this simulated trading week</h2>
+        <p>Below is a simulated week on a £100,000 FTMO Challenge at 1% risk per trade with a minimum 1:2 R:R. Study each day — especially Wednesday — and identify the trading plan violations before answering the exercise.</p>
+
+        <div class="sim-week">
+          <div class="sim-week-hd">
+            <div class="sim-week-label">Simulated FTMO challenge week · £100,000 account · 1% risk</div>
+            <div class="sim-week-balance">Start: £100,000</div>
+          </div>
+          <div class="sim-trade sim-trade-header" style="font-family:var(--mono);font-size:11px;color:var(--ink3);background:var(--surface2);border-bottom:1px solid var(--border);">
+            <div>Day</div><div>Trade</div><div>Result</div><div>Risk</div><div>Balance</div>
+          </div>
+          <div class="sim-trade">
+            <div class="sim-day">Mon</div>
+            <div class="sim-desc">EUR/USD long · Bull flag breakout · 1H</div>
+            <div class="sim-result win">+£200 (1:2)</div>
+            <div class="sim-risk">1%</div>
+            <div class="sim-bal">£100,200</div>
+          </div>
+          <div class="sim-trade">
+            <div class="sim-day">Mon</div>
+            <div class="sim-desc">GBP/USD short · VWAP rejection · 15M</div>
+            <div class="sim-result win">+£300 (1:3)</div>
+            <div class="sim-risk">1%</div>
+            <div class="sim-bal">£100,500</div>
+          </div>
+          <div class="sim-trade">
+            <div class="sim-day">Tue</div>
+            <div class="sim-desc">ES1! long · Inside bar at support · 1H</div>
+            <div class="sim-result loss">−£100</div>
+            <div class="sim-risk">1%</div>
+            <div class="sim-bal">£100,400</div>
+          </div>
+          <div class="sim-trade">
+            <div class="sim-day">Tue</div>
+            <div class="sim-desc">ES1! long again · BOS retest · 15M</div>
+            <div class="sim-result loss">−£100</div>
+            <div class="sim-risk">1%</div>
+            <div class="sim-bal">£100,300</div>
+          </div>
+          <div class="sim-trade" style="background:rgba(176,96,0,.04);">
+            <div class="sim-day">Wed</div>
+            <div class="sim-desc">EUR/USD short · No clear setup — forced trade</div>
+            <div class="sim-result loss">−£150</div>
+            <div class="sim-risk" style="color:var(--warn);font-weight:500;">1.5%</div>
+            <div class="sim-bal">£100,150</div>
+          </div>
+          <div class="sim-trade" style="background:rgba(176,96,0,.06);">
+            <div class="sim-day">Wed</div>
+            <div class="sim-desc">EUR/USD short again · Revenge trade · oversized</div>
+            <div class="sim-result loss">−£300</div>
+            <div class="sim-risk" style="color:var(--bad);font-weight:500;">3% !</div>
+            <div class="sim-bal">£99,850</div>
+          </div>
+          <div class="sim-trade">
+            <div class="sim-day">Thu</div>
+            <div class="sim-desc">Took day off · reviewed Wednesday trades</div>
+            <div class="sim-result" style="color:var(--ink3);">No trades</div>
+            <div class="sim-risk">—</div>
+            <div class="sim-bal">£99,850</div>
+          </div>
+          <div class="sim-trade">
+            <div class="sim-day">Fri</div>
+            <div class="sim-desc">GBP/USD long · Bull flag + VWAP reclaim</div>
+            <div class="sim-result win">+£200 (1:2)</div>
+            <div class="sim-risk">1%</div>
+            <div class="sim-bal">£100,050</div>
+          </div>
+          <div class="sim-summary">
+            <div class="sim-summary-title">Week summary</div>
+            <div class="sim-summary-grid">
+              <div class="sim-cell"><div class="sim-cell-label">Net P&L</div><div class="sim-cell-val good">+£50</div></div>
+              <div class="sim-cell"><div class="sim-cell-label">Win rate</div><div class="sim-cell-val">3 / 7 (43%)</div></div>
+              <div class="sim-cell"><div class="sim-cell-label">Worst day</div><div class="sim-cell-val warn">Wed: −£450</div></div>
+              <div class="sim-cell"><div class="sim-cell-label">Daily limit breached?</div><div class="sim-cell-val good">No (max 4.5%)</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">Trading plan exercise</span><span class="ex-title">Identify the Wednesday violations</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">Looking at the simulated week — Wednesday was clearly the worst day. The trader made <strong>two specific trading plan violations</strong> on Wednesday. What were they?</p>
+            <div class="ex-opts" id="ex3-opts">
+              <button class="ex-opt" onclick="checkEx('ex3','forced-revenge',this,'forced-revenge')">Forced a trade with no clear setup, then revenge traded at 3× normal risk</button>
+              <button class="ex-opt" onclick="checkEx('ex3','too-many',this,'forced-revenge')">Took too many trades — two is already one too many</button>
+              <button class="ex-opt" onclick="checkEx('ex3','instrument',this,'forced-revenge')">Wrong instrument — should have switched away from EUR/USD</button>
+              <button class="ex-opt" onclick="checkEx('ex3','timing',this,'forced-revenge')">Wrong session — should have only traded the London open</button>
+            </div>
+            <div class="ex-feedback" id="ex3-fb"></div>
+            <button class="ex-next-btn" id="ex3-next" onclick="completeLesson(2)">Take the final assessment →</button>
+          </div>
+        </div>
+
+        <h2>Choose your instrument — build your plan on the chart</h2>
+        <p>Use the chart below to identify which instrument you'd focus on during your first challenge. Look for the patterns from Module 2 that appear most clearly. This is the foundation of your personal trading plan — the instrument you know best is the one to trade.</p>
+
+        <div class="chart-component">
+          <div class="chart-header">
+            <div><div class="chart-title">Choose your challenge instrument</div><div class="chart-subtitle">Which shows the clearest patterns for your setup? Pick one and stick to it.</div></div>
+            <div class="inst-switcher" id="sw3">
+              <button class="inst-btn active" onclick="swC('f3','ES1!','60',this,'sw3')">ES1! 1H</button>
+              <button class="inst-btn" onclick="swC('f3','NQ1!','60',this,'sw3')">NQ1! 1H</button>
+              <button class="inst-btn" onclick="swC('f3','EURUSD','60',this,'sw3')">EUR/USD 1H</button>
+              <button class="inst-btn" onclick="swC('f3','GBPUSD','60',this,'sw3')">GBP/USD 1H</button>
+              <button class="inst-btn" onclick="swC('f3','XAUUSD','60',this,'sw3')">Gold 1H</button>
+              <button class="inst-btn" onclick="swC('f3','ES1!','D',this,'sw3')">ES1! Daily</button>
+            </div>
+          </div>
+          <iframe id="f3" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+        </div>
+
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-nav btn-prev" onclick="showLesson(1)">Previous</button>
+        <span class="nav-info">Lesson 3 of 3</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(2)">Final assessment</button>
+      </div>
+    </div>
+
+    <!-- FINAL ASSESSMENT -->
+    <div id="lesson-3" class="lesson-main" style="display:none">
+      <div class="quiz-wrap">
+        <div class="quiz-hd">
+          <div class="quiz-eyebrow">Module 4 · Final assessment</div>
+          <h1 class="quiz-title">Readiness check</h1>
+          <p class="quiz-sub">5 questions covering all four modules. Pass 80% to complete the Traxent learning programme. These test practical application — not definitions.</p>
+        </div>
+        <div id="quiz-questions">
+          <div class="q-dots" id="q-dots"></div>
+          <div id="q-wrap"></div>
+          <div class="q-btn-row">
+            <button class="q-btn q-submit" id="q-submit" onclick="submitQ()" disabled>Submit answer</button>
+            <button class="q-btn q-next-btn" id="q-next" onclick="nextQ()">Next →</button>
+          </div>
+        </div>
+        <div class="quiz-result" id="quiz-result">
+          <div class="result-pct" id="result-pct"></div>
+          <div class="result-lbl" id="result-lbl"></div>
+          <div class="result-msg" id="result-msg"></div>
+          <div class="result-actions">
+            <button class="btn-result btn-result-secondary" onclick="retryQuiz()">Retry assessment</button>
+            <a href="/tracker" class="btn-result btn-result-primary" id="result-cta" style="display:none">Open readiness tracker →</a>
+          </div>
+          <div class="completion-banner" id="completion-banner">
+            <div class="cb-title">All four modules complete.</div>
+            <div class="cb-sub">You have a solid foundation in trading fundamentals, chart patterns, risk management, and prop firm rules. The next step is applying this knowledge — use the readiness tracker to score your sim trading habits against real prop firm criteria before purchasing your first challenge.</div>
+            <div class="cb-actions">
+              <a href="/tracker" class="cb-btn-primary">Open readiness tracker →</a>
+              <a href="/calculator" class="cb-btn-secondary">Position size calculator →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const completed = [false,false,false,false];
+
+function showLesson(i) {
+  for (let j = 0; j < 4; j++) {
+    document.getElementById('lesson-'+j).style.display = 'none';
+    document.getElementById('nav-'+j).classList.remove('active');
+  }
+  document.getElementById('lesson-'+i).style.display = 'block';
+  document.getElementById('nav-'+i).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function completeLesson(i) {
+  completed[i] = true;
+  document.getElementById('dot-'+i).textContent = '✓';
+  document.getElementById('nav-'+i).classList.add('completed');
+  updateProgress();
+  showLesson(i + 1);
+  if (i === 2) initQuiz();
+}
+
+function updateProgress() {
+  const done = completed.filter(Boolean).length;
+  const pct = Math.round((done / 4) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+}
+
+function swC(fId, sym, iv, btn, swId) {
+  document.querySelectorAll('#'+swId+' .inst-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(fId).src = `https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=${sym}&interval=${iv}&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com`;
+}
+
+const EX = {
+  ex1: {
+    correct: 'breached',
+    fb: {
+      correct: "✓ Correct. FTMO measures daily loss including floating (unrealised) losses on open positions. A £5,100 floating loss on a £100,000 account is 5.1% — above the 5% daily limit. The challenge is breached immediately, even though the trade hasn't closed. This is the floating loss trap.",
+      incorrect: "FTMO explicitly includes floating losses in the daily limit calculation. A £5,100 open loss on a £100,000 account is 5.1% — 0.1% above the limit. The challenge is over as soon as equity drops below the limit, regardless of whether positions are open or closed."
+    }
+  },
+  ex2: {
+    correct: 'no',
+    fb: {
+      correct: "✓ Correct. Your account is at £52,000. The trailing floor moved to £51,500. You are £500 above the floor — not in breach. You are safe but the buffer is much tighter than when you started (£2,500 initial buffer vs £500 now). This is exactly why trailing drawdowns require conservative profit management.",
+      incorrect: "The trailing floor is currently at £51,500 (where it moved when the account peaked at £54,000). Your account is at £52,000. £52,000 > £51,500 — not in breach. However, the buffer has shrunk from £2,500 to just £500, which is an important warning to reduce position sizing."
+    }
+  },
+  ex3: {
+    correct: 'forced-revenge',
+    fb: {
+      correct: "✓ Correct. Two clear violations: (1) the first trade was forced — 'no clear setup' means it didn't meet the setup criteria in the trading plan. (2) The second trade was a revenge trade at 3× the normal risk, violating the risk management rules. Together these turned Wednesday from flat into the worst day of the week.",
+      incorrect: "Look at Wednesday specifically. The two orange-highlighted trades show: first, a trade with 'no clear setup' (setup criteria violation), and second, a revenge trade at 3% risk instead of 1% (risk management violation). These are the two specific plan violations that caused the damage."
+    }
+  }
+};
+
+function checkEx(exId, chosen, btn, correct) {
+  const opts = document.querySelectorAll('#'+exId+'-opts .ex-opt');
+  opts.forEach(o => { o.disabled = true; o.onclick = null; });
+  const ok = chosen === correct;
+  btn.classList.add(ok ? 'correct' : 'incorrect');
+  const fb = document.getElementById(exId+'-fb');
+  fb.className = `ex-feedback show ${ok ? 'correct' : 'incorrect'}`;
+  fb.innerHTML = `<strong>${ok ? '✓ Correct' : '✗ Not quite'}</strong> — ${ok ? EX[exId].fb.correct : EX[exId].fb.incorrect}`;
+  document.getElementById(exId+'-next').classList.add('show');
+}
+
+const QUESTIONS = [
+  {
+    text: "You're on a £100,000 FTMO account. Your account balance at midnight was £103,000 (from previous profits). What is your maximum loss allowed today?",
+    options: ["£5,000 — always 5% of the original starting capital","£5,150 — 5% of yesterday's closing balance","£10,300 — 10% of yesterday's balance","£3,000 — the remaining buffer to the static floor"],
+    correct: 1,
+    fb: {
+      c: "Correct. FTMO calculates the daily loss limit from your balance at midnight CET — not the original starting capital. At £103,000 closing balance, 5% = £5,150. Your daily limit grows slightly as your account grows.",
+      w: "FTMO recalculates the daily loss limit from your balance at midnight each day. If your account closed at £103,000, your daily limit is 5% of that = £5,150. Not 5% of the original £100,000 starting capital."
+    }
+  },
+  {
+    text: "Which firm uses an intraday trailing drawdown — meaning the floor follows your peak equity in real time, including unrealised gains on open trades?",
+    options: ["FTMO (static drawdown)","MyFundedFutures Core (EOD trailing)","Apex Trader Funding (intraday trailing)","FundedNext Futures (EOD trailing)"],
+    correct: 2,
+    fb: {
+      c: "Correct. Apex uses an intraday trailing drawdown that follows peak equity including floating gains in real time. FTMO uses a static floor. MFFU and FundedNext use end-of-day trailing — the floor only updates once per day at market close.",
+      w: "Apex Trader Funding uses intraday trailing drawdown. It follows your peak equity in real time, including unrealised profits. This is distinct from FTMO (static), MFFU (EOD trailing), and FundedNext (EOD trailing)."
+    }
+  },
+  {
+    text: "During a prop firm challenge, you've hit your personal daily loss limit of 2.5% by midday. A very high-probability setup then appears. What do you do?",
+    options: ["Take the setup — it's too good to miss","Take half size — 0.5% risk instead of 1%","Close the platform — the rule applies even to good setups","Check the firm's official limit first — 2.5% might not be the real limit"],
+    correct: 2,
+    fb: {
+      c: "Correct. Personal daily rules are only meaningful if they're absolute. The moment you make exceptions for 'good setups', the rule stops functioning. Every trader who broke their rules did so because the setup looked too good to skip. Stop when you hit the limit.",
+      w: "Personal daily loss limits exist precisely to prevent this situation. If you allow exceptions for 'good setups', the rule becomes meaningless. The answer is always: stop trading when you hit your personal limit, regardless of what the next setup looks like."
+    }
+  },
+  {
+    text: "A simulated trading week shows a trader with a 43% win rate but a net positive result. What does this tell you about their trading approach?",
+    options: ["Nothing — a 43% win rate is always unprofitable","They must be using very high risk per trade to compensate","They are using a risk to reward ratio greater than 1:1, so losing more often than winning is still profitable","This is impossible — you need 50%+ win rate to make money"],
+    correct: 2,
+    fb: {
+      c: "Correct. A 43% win rate is profitable at 1:2 R:R (break-even is 34%). Winning less than half your trades while still making money is the expected outcome when targeting rewards that are larger than your risks. This is why R:R matters more than win rate.",
+      w: "At 1:2 R:R, break-even win rate is 34%. A 43% win rate is above the break-even point — profitable. You don't need a 50%+ win rate when your winners are larger than your losers. Win rate alone tells you very little without the R:R context."
+    }
+  },
+  {
+    text: "What are the two trading plan violations that caused the most damage in the simulated challenge week?",
+    options: ["Trading too many instruments and using the wrong timeframe","Forcing a trade with no clear setup, then revenge trading at 3× normal risk","Holding trades overnight and trading during news events","Taking too many trades on Monday and not enough on Thursday"],
+    correct: 1,
+    fb: {
+      c: "Correct. The two Wednesday violations were: (1) entering a trade with 'no clear setup' — a setup criteria violation, and (2) revenge trading at 3% risk instead of 1% — a risk management violation. These two decisions turned a manageable bad day into the worst session of the week.",
+      w: "The Wednesday violations were specifically: first, entering a forced trade with no clear setup (setup criteria violation), and second, a revenge trade at 3× normal risk (risk management violation). These are the most common and most damaging trading plan failures in prop firm challenges."
+    }
+  }
+];
+
+let curQ = 0, selOpt = null, answered = false, score = 0;
+
+function initQuiz() {
+  curQ = 0; score = 0; selOpt = null; answered = false;
+  document.getElementById('quiz-questions').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  renderQ(); renderDots();
+}
+
+function renderDots() {
+  document.getElementById('q-dots').innerHTML = QUESTIONS.map((_,i) =>
+    `<div class="q-dot ${i<curQ?'done':i===curQ?'active':''}"></div>`).join('');
+}
+
+function renderQ() {
+  const q = QUESTIONS[curQ];
+  const L = ['A','B','C','D'];
+  document.getElementById('q-wrap').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Question ${curQ+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-options">
+        ${q.options.map((o,i) => `
+          <div class="q-opt" id="qo${i}" onclick="selQ(${i})">
+            <div class="q-letter">${L[i]}</div>
+            <div class="q-opt-text">${o}</div>
+          </div>`).join('')}
+      </div>
+      <div class="q-feedback" id="q-fb"></div>
+    </div>`;
+  selOpt = null; answered = false;
+  document.getElementById('q-submit').disabled = true;
+  document.getElementById('q-submit').style.display = 'block';
+  document.getElementById('q-next').style.display = 'none';
+}
+
+function selQ(i) {
+  if (answered) return;
+  selOpt = i;
+  document.querySelectorAll('.q-opt').forEach((o,j) => o.classList.toggle('selected', j===i));
+  document.getElementById('q-submit').disabled = false;
+}
+
+function submitQ() {
+  if (selOpt === null || answered) return;
+  answered = true;
+  const q = QUESTIONS[curQ];
+  const ok = selOpt === q.correct;
+  if (ok) score++;
+  document.querySelectorAll('.q-opt').forEach((o,i) => {
+    o.classList.remove('selected');
+    if (i === q.correct) o.classList.add('correct');
+    else if (i === selOpt && !ok) o.classList.add('incorrect');
+  });
+  const fb = document.getElementById('q-fb');
+  fb.className = `q-feedback show ${ok ? 'correct' : 'incorrect'}`;
+  fb.innerHTML = `<strong>${ok ? '✓ Correct' : '✗ Not quite'}</strong> — ${ok ? q.fb.c : q.fb.w}`;
+  document.getElementById('q-submit').style.display = 'none';
+  document.getElementById('q-next').style.display = 'block';
+  document.getElementById('q-next').textContent = curQ < QUESTIONS.length - 1 ? 'Next →' : 'See results →';
+}
+
+function nextQ() {
+  curQ++;
+  if (curQ >= QUESTIONS.length) { showResult(); return; }
+  renderDots(); renderQ();
+}
+
+function showResult() {
+  document.getElementById('quiz-questions').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  const pass = pct >= 80;
+  document.getElementById('result-pct').textContent = pct + '%';
+  document.getElementById('result-pct').className = `result-pct ${pass ? 'pass' : 'fail'}`;
+  document.getElementById('result-lbl').textContent = pass ? 'Final assessment passed' : 'Not quite — review and retry';
+  document.getElementById('result-msg').textContent = pass
+    ? `You answered ${score} of ${QUESTIONS.length} correctly. You've completed the full Traxent learning programme. Time to apply what you've learned — open the readiness tracker and start scoring your trading habits.`
+    : `You answered ${score} of ${QUESTIONS.length} correctly. Review the lessons from the modules that caught you out, then retry. These concepts matter when real money is on the line.`;
+  if (pass) {
+    document.getElementById('result-cta').style.display = 'inline-block';
+    completed[3] = true;
+    document.getElementById('dot-3').textContent = '✓';
+    document.getElementById('nav-3').classList.add('completed');
+    updateProgress();
+    setTimeout(() => document.getElementById('completion-banner').classList.add('show'), 500);
+    localStorage.setItem('traxent_m4_complete', 'true');
+    localStorage.setItem('traxent_course_complete', 'true');
+  }
+}
+
+function retryQuiz() {
+  document.getElementById('quiz-result').style.display = 'none';
+  initQuiz();
+}
+
+initQuiz();
+</script>
+</body>
+</html>

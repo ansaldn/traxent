@@ -1,5 +1,5 @@
 // Traxent Auth0 configuration
-const AUTH0_DOMAIN = 'dev-djbalapbvi8f3av2.us.auth0.com';
+const AUTH0_DOMAIN = 'auth.traxent.io';
 const AUTH0_CLIENT_ID = 'ilvfACgF2sCmLWaugCn11qTB04aTvWxz';
 const AUTH0_NAMESPACE = 'https://traxent.io';
 

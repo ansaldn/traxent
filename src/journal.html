@@ -714,6 +714,64 @@ window.addEventListener('load', () => {
   }
 });
 
+// ── WEEK 4 LAB PROMPT ─────────────────────────────────────────────────────────
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('lab') !== 'week4') return;
+
+  const PROMPTS = [
+    "What is your primary motivation for wanting a funded account?",
+    "Which of the five emotional states felt most present today?",
+    "Did every trade today match your plan criteria? If not, which one didn't?",
+    "What was your emotional state before your first trade of the session?",
+    "Did you check the economic calendar before trading today?",
+    "What would you do differently about today's session?",
+    "Week 1 review: What is your dominant failure pattern so far?",
+    "How is your average R:R comparing to your target? What's pulling it down?",
+    "Did you take any trades today out of boredom rather than conviction?",
+    "How did you handle your losing trade(s) today emotionally?",
+    "Did you run the pre-trade checklist before every entry today?",
+    "What is your plan compliance rate so far this week?",
+    "How close have you come to your daily loss limit? What happened?",
+    "Week 2 review: Is your readiness score improving? What's the primary gap?",
+    "Which pattern from Module 2 is performing best in your sim journal?",
+    "Have you moved any stops to breakeven this week? Was the timing correct?",
+    "Did any news event affect your trades this week? How did you handle it?",
+    "Which trades from this week would you not take again? Why?",
+    "Are you taking enough trades to meet the minimum trading days requirement?",
+    "How is your relationship with losing trades changing compared to week 1?",
+    "Week 3 review: If you started a real challenge today, what would be your biggest risk?",
+    "Imagine this is a real challenge. How does that change how you feel right now?",
+    "Are you trading your plan or your P&L?",
+    "What single habit, if you kept it consistently, would most improve your readiness score?",
+    "Mid-week check: Are you on track for the profit target? Same approach or adjust?",
+    "What does your compliance rate tell you about your discipline this week?",
+    "How many trading days have you logged? On track for the minimum requirement?",
+    "Three days left: What emotional state is most present right now?",
+    "Final day: Review your readiness score. Are you ready for a real challenge?",
+    "30-day complete. What is the one thing you'd change if you started again?"
+  ];
+
+  const tradingDays = new Set(trades.map(t => t.date)).size;
+  const promptIndex = Math.min(tradingDays, PROMPTS.length - 1);
+  const prompt = PROMPTS[promptIndex];
+
+  const banner = document.createElement('div');
+  banner.style.cssText = `
+    background: var(--ink); color: white; border-radius: 10px;
+    padding: 16px 20px; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 16px;
+  `;
+  banner.innerHTML = `
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,.4);white-space:nowrap;">Day ${tradingDays + 1} prompt</div>
+    <div style="font-size:14px;color:rgba(255,255,255,.85);line-height:1.5;flex:1;">${prompt}</div>
+    <a href="/challenge-lab" style="font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;white-space:nowrap;font-family:var(--mono);">← Lab</a>
+  `;
+
+  const main = document.getElementById('main-content');
+  if (main) main.insertBefore(banner, main.firstChild);
+})();
+
 function setDefaultDate() {
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('lf-date').value = today;

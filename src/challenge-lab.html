@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Challenge Lab — Traxent</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;
+  --accent:#0a6e4f;--accent-light:rgba(10,110,79,.08);--accent-mid:#1a9e72;
+  --border:rgba(14,14,12,0.1);--border2:rgba(14,14,12,0.06);
+  --surface:#ffffff;--surface2:#f0efe9;
+  --good:#0a6e4f;--warn:#b06000;--bad:#9e1a1a;
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:16px;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;}
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.nav-logo{font-family:var(--mono);font-size:15px;color:var(--ink);text-decoration:none;}
+.nav-logo em{font-style:normal;color:var(--accent);}
+.nav-links{display:flex;align-items:center;gap:20px;}
+.nav-links a{font-size:13px;color:var(--ink3);text-decoration:none;transition:color 0.15s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-dash{background:var(--ink);color:white!important;padding:7px 14px;border-radius:6px;font-size:12px!important;}
+
+.wrap{max-width:1100px;margin:0 auto;padding:48px 32px 96px;}
+
+/* Page header */
+.page-hd{margin-bottom:48px;}
+.page-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.page-eyebrow::before{content:'';width:20px;height:1px;background:var(--accent);}
+.page-title{font-family:var(--serif);font-size:52px;font-weight:400;color:var(--ink);line-height:1.05;margin-bottom:14px;}
+.page-sub{font-size:16px;color:var(--ink2);line-height:1.7;font-weight:300;max-width:600px;margin-bottom:28px;}
+.page-hd-meta{display:flex;gap:20px;flex-wrap:wrap;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);font-family:var(--mono);}
+.meta-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+
+/* Overall progress bar */
+.overall-progress{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:36px;display:flex;align-items:center;gap:20px;}
+.op-label{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;}
+.op-bar{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;}
+.op-fill{height:100%;background:var(--accent);border-radius:3px;transition:width 0.5s ease;}
+.op-pct{font-family:var(--mono);font-size:13px;color:var(--ink);font-weight:500;white-space:nowrap;}
+
+/* Week selector tabs */
+.week-tabs{display:flex;gap:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:36px;}
+.week-tab{flex:1;padding:16px 12px;cursor:pointer;border:none;background:none;font-family:var(--sans);transition:all 0.15s;border-right:1px solid var(--border);text-align:left;position:relative;}
+.week-tab:last-child{border-right:none;}
+.week-tab:hover{background:var(--surface2);}
+.week-tab.active{background:var(--accent-light);}
+.week-tab.completed::after{content:'✓';position:absolute;top:12px;right:12px;font-size:12px;color:var(--accent);font-family:var(--mono);}
+.wt-num{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px;}
+.week-tab.active .wt-num{color:var(--accent);}
+.wt-name{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px;}
+.wt-meta{font-size:11px;color:var(--ink3);}
+.wt-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--accent);transition:width 0.4s ease;border-radius:0;}
+
+/* Week content */
+.week-content{display:none;}
+.week-content.active{display:block;}
+
+/* Lesson sidebar layout */
+.lesson-layout{display:grid;grid-template-columns:220px 1fr;gap:32px;align-items:start;}
+.lesson-sidebar{position:sticky;top:76px;}
+.ls-week-label{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.ls-week-title{font-family:var(--serif);font-size:16px;font-weight:400;color:var(--ink);margin-bottom:16px;}
+.ls-progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-bottom:5px;}
+.ls-progress-bar{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:16px;}
+.ls-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.5s ease;}
+.ls-list{display:flex;flex-direction:column;gap:2px;}
+.ls-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;transition:all 0.15s;border:1px solid transparent;}
+.ls-item:hover{background:var(--surface);border-color:var(--border);}
+.ls-item.active{background:var(--surface);border-color:var(--accent);}
+.ls-item.completed .ls-dot{background:var(--accent);color:white;border-color:var(--accent);}
+.ls-dot{width:20px;height:20px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:8px;font-family:var(--mono);color:var(--ink3);flex-shrink:0;transition:all 0.2s;}
+.ls-item.active .ls-dot{background:var(--accent);color:white;border-color:var(--accent);}
+.ls-item-name{font-size:12px;color:var(--ink);}
+.ls-item.active .ls-item-name{font-weight:500;color:var(--accent);}
+.ls-item-dur{font-size:10px;color:var(--ink3);font-family:var(--mono);}
+.ls-quiz-sep{height:1px;background:var(--border);margin:6px 0;}
+
+/* Lesson content */
+.lesson-main{}
+.lesson-hd{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.lesson-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.lesson-eyebrow::before{content:'';width:16px;height:1px;background:var(--accent);}
+.lesson-title{font-family:var(--serif);font-size:34px;font-weight:400;line-height:1.1;color:var(--ink);margin-bottom:12px;}
+.lesson-intro{font-size:15px;color:var(--ink2);line-height:1.7;font-weight:300;max-width:600px;}
+.lesson-body{max-width:680px;}
+.lesson-body h2{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--ink);margin:32px 0 12px;}
+.lesson-body p{font-size:15px;color:var(--ink2);line-height:1.8;margin-bottom:14px;font-weight:300;}
+.lesson-body strong{color:var(--ink);font-weight:500;}
+.callout{border-radius:8px;padding:14px 18px;margin:20px 0;}
+.callout-key{background:var(--accent-light);border:1px solid rgba(10,110,79,.15);border-left:3px solid var(--accent);}
+.callout-key .cl{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.callout-warn{background:rgba(176,96,0,.06);border:1px solid rgba(176,96,0,.15);border-left:3px solid var(--warn);}
+.callout-warn .cl{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--warn);margin-bottom:6px;}
+.callout p{margin-bottom:0;font-size:14px;}
+.vis-exp{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;margin:20px 0;}
+.vis-exp-title{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;}
+.vis-row{display:flex;border-radius:6px;overflow:hidden;border:1px solid var(--border);margin-bottom:8px;}
+.vis-row:last-child{margin-bottom:0;}
+.vis-cell{flex:1;padding:9px 12px;border-right:1px solid var(--border);}
+.vis-cell:last-child{border-right:none;}
+.vis-cell-label{font-size:10px;font-family:var(--mono);color:var(--ink3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;}
+.vis-cell-val{font-size:13px;color:var(--ink);font-weight:500;}
+.vis-cell-sub{font-size:11px;color:var(--ink3);margin-top:1px;}
+.vis-good{background:rgba(10,110,79,.06);}
+.vis-bad{background:rgba(158,26,26,.06);}
+.vis-cell-val.green{color:var(--good);}
+.vis-cell-val.red{color:var(--bad);}
+.scenario-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;}
+.scenario-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all 0.15s;}
+.scenario-card:hover{border-color:var(--accent);}
+.scenario-card.expanded{border-color:var(--accent);background:var(--accent-light);}
+.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.sc-name{font-size:13px;font-weight:500;color:var(--ink);}
+.scenario-card.expanded .sc-name{color:var(--accent);}
+.sc-tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;}
+.tag-bad{background:rgba(158,26,26,.08);color:var(--bad);border:1px solid rgba(158,26,26,.2);}
+.tag-good{background:rgba(10,110,79,.08);color:var(--good);border:1px solid rgba(10,110,79,.2);}
+.sc-arrow{color:var(--ink3);font-size:14px;transition:transform 0.2s;}
+.scenario-card.expanded .sc-arrow{transform:rotate(90deg);color:var(--accent);}
+.sc-summary{font-size:12px;color:var(--ink3);}
+.sc-detail{font-size:13px;color:var(--ink2);line-height:1.6;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:none;font-weight:300;}
+.scenario-card.expanded .sc-detail{display:block;}
+.chart-component{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:24px 0;}
+.chart-header{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.chart-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px;}
+.chart-subtitle{font-size:12px;color:var(--ink3);}
+.inst-switcher{display:flex;gap:6px;flex-wrap:wrap;}
+.inst-btn{font-family:var(--mono);font-size:11px;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:var(--bg);color:var(--ink3);cursor:pointer;transition:all 0.15s;}
+.inst-btn:hover{border-color:var(--accent);color:var(--accent);}
+.inst-btn.active{background:var(--accent);border-color:var(--accent);color:white;}
+.chart-frame{width:100%;height:360px;background:#131722;border:none;display:block;}
+.exercise{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:24px 0;}
+.exercise-hd{padding:12px 18px;border-bottom:1px solid var(--border2);background:var(--surface2);display:flex;align-items:center;gap:10px;}
+.ex-badge{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.2);padding:3px 8px;border-radius:3px;}
+.ex-title{font-size:13px;font-weight:500;color:var(--ink);}
+.exercise-body{padding:18px;}
+.ex-question{font-size:14px;color:var(--ink2);line-height:1.6;margin-bottom:16px;font-weight:300;}
+.ex-question strong{color:var(--ink);font-weight:500;}
+.ex-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.ex-opt{padding:9px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:13px;color:var(--ink2);cursor:pointer;transition:all 0.15s;font-family:var(--sans);}
+.ex-opt:hover:not(:disabled){border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
+.ex-opt.correct{border-color:var(--good);background:rgba(10,110,79,.08);color:var(--good);font-weight:500;}
+.ex-opt.incorrect{border-color:var(--bad);background:rgba(158,26,26,.06);color:var(--bad);}
+.ex-feedback{padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.6;display:none;}
+.ex-feedback.show{display:block;}
+.ex-feedback.correct{background:rgba(10,110,79,.08);border:1px solid rgba(10,110,79,.2);color:var(--good);}
+.ex-feedback.incorrect{background:rgba(158,26,26,.06);border:1px solid rgba(158,26,26,.15);color:var(--bad);}
+.ex-next-btn{margin-top:12px;background:var(--accent);color:white;border:none;border-radius:7px;padding:9px 18px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:background 0.15s;display:none;}
+.ex-next-btn.show{display:inline-block;}
+.ex-next-btn:hover{background:#085e43;}
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:40px;padding-top:24px;border-top:1px solid var(--border);}
+.btn-nav{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all 0.15s;}
+.btn-prev{background:var(--surface);border:1px solid var(--border);color:var(--ink2);}
+.btn-prev:hover{border-color:var(--ink);}
+.btn-prev::before{content:'←';}
+.btn-next{background:var(--accent);color:white;}
+.btn-next:hover{background:#085e43;}
+.btn-next::after{content:'→';}
+.nav-info{font-size:11px;color:var(--ink3);font-family:var(--mono);}
+
+/* Quiz */
+.quiz-wrap{max-width:640px;}
+.quiz-hd{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+.quiz-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.quiz-eyebrow::before{content:'';width:16px;height:1px;background:var(--accent);}
+.quiz-title{font-family:var(--serif);font-size:32px;font-weight:400;color:var(--ink);margin-bottom:8px;}
+.quiz-sub{font-size:14px;color:var(--ink2);line-height:1.6;font-weight:300;}
+.q-dots{display:flex;gap:7px;margin-bottom:24px;}
+.q-dot{width:7px;height:7px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);transition:all 0.2s;}
+.q-dot.active{background:var(--accent);border-color:var(--accent);}
+.q-dot.done{background:var(--accent);border-color:var(--accent);opacity:0.4;}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px;}
+.q-num{font-family:var(--mono);font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;}
+.q-text{font-size:15px;color:var(--ink);line-height:1.5;margin-bottom:18px;}
+.q-options{display:flex;flex-direction:column;gap:8px;}
+.q-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s;}
+.q-opt:hover{border-color:var(--accent);background:var(--accent-light);}
+.q-opt.selected{border-color:var(--accent);background:var(--accent-light);}
+.q-opt.correct{border-color:var(--good);background:rgba(10,110,79,.08);}
+.q-opt.incorrect{border-color:var(--bad);background:rgba(158,26,26,.06);}
+.q-letter{width:20px;height:20px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--ink3);flex-shrink:0;transition:all 0.15s;}
+.q-opt.selected .q-letter{background:var(--accent);color:white;border-color:var(--accent);}
+.q-opt.correct .q-letter{background:var(--good);color:white;border-color:var(--good);}
+.q-opt.incorrect .q-letter{background:var(--bad);color:white;border-color:var(--bad);}
+.q-opt-text{font-size:13px;color:var(--ink2);line-height:1.5;padding-top:1px;}
+.q-feedback{padding:10px 14px;border-radius:8px;margin-top:12px;font-size:13px;line-height:1.5;display:none;}
+.q-feedback.show{display:block;}
+.q-feedback.correct{background:rgba(10,110,79,.08);border:1px solid rgba(10,110,79,.2);color:var(--good);}
+.q-feedback.incorrect{background:rgba(158,26,26,.06);border:1px solid rgba(158,26,16,.15);color:var(--bad);}
+.q-btn-row{display:flex;justify-content:flex-end;margin-top:16px;gap:8px;}
+.q-btn{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all 0.15s;}
+.q-submit{background:var(--accent);color:white;}
+.q-submit:hover{background:#085e43;}
+.q-submit:disabled{opacity:0.35;cursor:not-allowed;}
+.q-next-btn{background:var(--ink);color:white;display:none;}
+.q-next-btn:hover{background:var(--accent);}
+.quiz-result{text-align:center;padding:40px 0;display:none;}
+.result-pct{font-family:var(--serif);font-size:72px;font-weight:400;font-style:italic;line-height:1;margin-bottom:8px;}
+.result-pct.pass{color:var(--good);}
+.result-pct.fail{color:var(--bad);}
+.result-lbl{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;}
+.result-msg{font-size:14px;color:var(--ink2);line-height:1.6;max-width:440px;margin:0 auto 24px;font-weight:300;}
+.result-actions{display:flex;gap:10px;justify-content:center;}
+.btn-result{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all 0.15s;text-decoration:none;display:inline-block;}
+.btn-result-primary{background:var(--accent);color:white;}
+.btn-result-primary:hover{background:#085e43;}
+.btn-result-secondary{background:var(--surface);border:1px solid var(--border);color:var(--ink2);}
+
+/* Week 4 - 30 day programme */
+.w4-hero{background:var(--ink);border-radius:14px;padding:32px;margin-bottom:28px;}
+.w4-hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px;}
+.w4-hero-title{font-family:var(--serif);font-size:36px;font-weight:400;color:white;margin-bottom:10px;}
+.w4-hero-sub{font-size:14px;color:rgba(255,255,255,.5);line-height:1.6;max-width:520px;margin-bottom:24px;font-weight:300;}
+.w4-hero-btn{display:inline-block;background:var(--accent-mid);color:white;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;transition:background 0.15s;}
+.w4-hero-btn:hover{background:var(--accent);}
+.w4-phases{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;}
+.w4-phase{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.w4-phase-num{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.w4-phase-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px;}
+.w4-phase-desc{font-size:12px;color:var(--ink3);line-height:1.4;}
+.w4-prompts{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px;}
+.w4-prompts-hd{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;}
+.w4-prompts-title{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);}
+.w4-prompt-group{padding:16px 20px;border-bottom:1px solid var(--border2);}
+.w4-prompt-group:last-child{border-bottom:none;}
+.w4-pg-label{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:10px;}
+.w4-pg-prompts{display:flex;flex-direction:column;gap:6px;}
+.w4-prompt-item{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--surface2);border-radius:6px;font-size:13px;color:var(--ink2);}
+.w4-prompt-num{font-family:var(--mono);font-size:11px;color:var(--accent);flex-shrink:0;margin-top:1px;}
+.w4-milestones{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.w4-milestones-hd{padding:14px 20px;border-bottom:1px solid var(--border2);}
+.w4-milestones-title{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);}
+.w4-milestone{display:flex;align-items:flex-start;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border2);}
+.w4-milestone:last-child{border-bottom:none;}
+.w4-ms-day{font-family:var(--mono);font-size:11px;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.2);padding:4px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;}
+.w4-ms-content{}
+.w4-ms-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px;}
+.w4-ms-desc{font-size:12px;color:var(--ink3);line-height:1.5;}
+.w4-ms-checklist{margin-top:8px;display:flex;flex-direction:column;gap:4px;}
+.w4-ms-check{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--ink2);}
+.w4-ms-check::before{content:'□';color:var(--accent);flex-shrink:0;font-family:var(--mono);}
+
+@media(max-width:900px){
+  .wrap{padding:24px 16px 60px;}
+  nav{padding:0 16px;}
+  .lesson-layout{grid-template-columns:1fr;}
+  .lesson-sidebar{position:static;}
+  .week-tabs{flex-direction:column;}
+  .week-tab{border-right:none;border-bottom:1px solid var(--border);}
+  .week-tab:last-child{border-bottom:none;}
+  .scenario-cards{grid-template-columns:1fr;}
+  .w4-phases{grid-template-columns:1fr 1fr;}
+  .page-title{font-size:36px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <div class="nav-links">
+    <a href="/learn">Learn</a>
+    <a href="/journal">Sim journal</a>
+    <a href="/tracker">Tracker</a>
+    <a href="/dashboard" class="nav-dash">Dashboard</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-hd">
+    <div class="page-eyebrow">Challenger feature</div>
+    <h1 class="page-title">The Challenge Lab</h1>
+    <p class="page-sub">Four weeks of advanced content designed to take you from knowing the theory to being genuinely ready to purchase and pass a prop firm challenge. This is where the real preparation happens.</p>
+    <div class="page-hd-meta">
+      <div class="meta-pill"><div class="meta-pill-dot"></div>4 weeks of content</div>
+      <div class="meta-pill"><div class="meta-pill-dot"></div>12 advanced lessons</div>
+      <div class="meta-pill"><div class="meta-pill-dot"></div>4 quizzes</div>
+      <div class="meta-pill"><div class="meta-pill-dot"></div>30-day sim programme</div>
+    </div>
+  </div>
+
+  <div class="overall-progress">
+    <span class="op-label">Overall progress</span>
+    <div class="op-bar"><div class="op-fill" id="overall-fill" style="width:0%"></div></div>
+    <span class="op-pct" id="overall-pct">0%</span>
+  </div>
+
+  <!-- Week tabs -->
+  <div class="week-tabs">
+    <button class="week-tab active" id="wt-0" onclick="switchWeek(0)">
+      <div class="wt-num">Week 1</div>
+      <div class="wt-name">Trading Psychology</div>
+      <div class="wt-meta">3 lessons · quiz</div>
+      <div class="wt-progress" id="wp-0" style="width:0%"></div>
+    </button>
+    <button class="week-tab" id="wt-1" onclick="switchWeek(1)">
+      <div class="wt-num">Week 2</div>
+      <div class="wt-name">News & Calendar</div>
+      <div class="wt-meta">3 lessons · quiz</div>
+      <div class="wt-progress" id="wp-1" style="width:0%"></div>
+    </button>
+    <button class="week-tab" id="wt-2" onclick="switchWeek(2)">
+      <div class="wt-num">Week 3</div>
+      <div class="wt-name">Trade Management</div>
+      <div class="wt-meta">3 lessons · quiz</div>
+      <div class="wt-progress" id="wp-2" style="width:0%"></div>
+    </button>
+    <button class="week-tab" id="wt-3" onclick="switchWeek(3)">
+      <div class="wt-num">Week 4</div>
+      <div class="wt-name">The 30-Day Challenge</div>
+      <div class="wt-meta">Structured programme</div>
+      <div class="wt-progress" id="wp-3" style="width:0%"></div>
+    </button>
+  </div>
+
+  <!-- ── WEEK 1: Psychology ── -->
+  <div class="week-content active" id="week-0">
+    <div class="lesson-layout">
+      <aside class="lesson-sidebar">
+        <div class="ls-week-label">Week 1</div>
+        <div class="ls-week-title">Trading Psychology</div>
+        <div class="ls-progress-label"><span>Progress</span><span id="w1-prog-pct">0%</span></div>
+        <div class="ls-progress-bar"><div class="ls-progress-fill" id="w1-prog-fill" style="width:0%"></div></div>
+        <div class="ls-list">
+          <div class="ls-item active" id="w1-nav-0" onclick="showLesson(0,0)">
+            <div class="ls-dot" id="w1-dot-0">1</div>
+            <div><div class="ls-item-name">The emotional map</div><div class="ls-item-dur">10 min · Scenarios</div></div>
+          </div>
+          <div class="ls-item" id="w1-nav-1" onclick="showLesson(0,1)">
+            <div class="ls-dot" id="w1-dot-1">2</div>
+            <div><div class="ls-item-name">Your failure pattern</div><div class="ls-item-dur">10 min · Self-assessment</div></div>
+          </div>
+          <div class="ls-item" id="w1-nav-2" onclick="showLesson(0,2)">
+            <div class="ls-dot" id="w1-dot-2">3</div>
+            <div><div class="ls-item-name">Pre & post trade routines</div><div class="ls-item-dur">8 min · Checklists</div></div>
+          </div>
+          <div class="ls-quiz-sep"></div>
+          <div class="ls-item" id="w1-nav-3" onclick="showLesson(0,3)">
+            <div class="ls-dot" id="w1-dot-3">✦</div>
+            <div><div class="ls-item-name">Week 1 quiz</div><div class="ls-item-dur">5 questions · Pass 80%</div></div>
+          </div>
+        </div>
+      </aside>
+      <main id="w1-lessons">
+
+        <!-- W1 L1: Emotional map -->
+        <div id="w1-l0">
+          <div class="lesson-hd">
+            <div class="lesson-eyebrow">Week 1 · Lesson 1</div>
+            <h1 class="lesson-title">The emotional map</h1>
+            <p class="lesson-intro">Every blown challenge has an emotional signature. This lesson maps the five states that destroy disciplined trading — so you can recognise them in yourself before they cost you a challenge fee.</p>
+          </div>
+          <div class="lesson-body">
+            <h2>Why psychology matters more than strategy</h2>
+            <p>You can have a profitable strategy, know the rules of your chosen firm, and understand risk management perfectly — and still fail a challenge. The reason is almost always psychological. <strong>The rules are easier to know than to follow</strong> when real money, even a challenge fee, is on the line.</p>
+            <p>The five emotional states below are responsible for the vast majority of prop firm challenge failures. They don't announce themselves clearly — they disguise themselves as rational decisions.</p>
+
+            <h2>The five states — click each to understand it</h2>
+            <div class="scenario-cards">
+              <div class="scenario-card" onclick="toggleScenario(this)">
+                <div class="sc-top"><div class="sc-name">Overconfidence</div><div style="display:flex;gap:6px;align-items:center"><div class="sc-tag tag-bad">Dangerous</div><div class="sc-arrow">›</div></div></div>
+                <div class="sc-summary">After a winning streak, risk management loosens</div>
+                <div class="sc-detail">A trader has three winning days in a row. They feel invincible. They start taking trades that don't quite meet their criteria. They increase position size — "I'm on a roll." The fourth day wipes out all three days of gains. Overconfidence is most dangerous precisely when it feels most justified.</div>
+              </div>
+              <div class="scenario-card" onclick="toggleScenario(this)">
+                <div class="sc-top"><div class="sc-name">Fear</div><div style="display:flex;gap:6px;align-items:center"><div class="sc-tag tag-bad">Dangerous</div><div class="sc-arrow">›</div></div></div>
+                <div class="sc-summary">After losses, good setups are avoided entirely</div>
+                <div class="sc-detail">After a series of losses, fear causes a different problem — a trader stops taking valid setups. They watch a perfect bull flag form and don't enter, convinced it will fail like the last three trades. The trade runs 3R without them. Fear creates a cycle where the trader's theoretical edge never gets expressed in practice.</div>
+              </div>
+              <div class="scenario-card" onclick="toggleScenario(this)">
+                <div class="sc-top"><div class="sc-name">FOMO</div><div style="display:flex;gap:6px;align-items:center"><div class="sc-tag tag-bad">Dangerous</div><div class="sc-arrow">›</div></div></div>
+                <div class="sc-summary">Chasing moves that have already happened</div>
+                <div class="sc-detail">Price moves sharply without the trader. Instead of waiting for the next setup, they jump in late — buying near the top of the move, far from any structural stop level. Their stop has to be wide to make sense, increasing risk. Or they place a tight stop that gets hit immediately by retracement. FOMO trades almost never work because the entry is defined by emotion, not structure.</div>
+              </div>
+              <div class="scenario-card" onclick="toggleScenario(this)">
+                <div class="sc-top"><div class="sc-name">Revenge trading</div><div style="display:flex;gap:6px;align-items:center"><div class="sc-tag tag-bad">Most dangerous</div><div class="sc-arrow">›</div></div></div>
+                <div class="sc-summary">Increasing size after losses to recover quickly</div>
+                <div class="sc-detail">The most common cause of blown challenges. A losing trade triggers the desire to recover immediately. The next trade is taken larger than usual — not because of a better setup, but to make back the loss faster. This trade also loses, and now the loss is compounded. The spiral accelerates. Within a session, a week of careful progress is erased.</div>
+              </div>
+              <div class="scenario-card" onclick="toggleScenario(this)">
+                <div class="sc-top"><div class="sc-name">Despair</div><div style="display:flex;gap:6px;align-items:center"><div class="sc-tag tag-bad">Subtle</div><div class="sc-arrow">›</div></div></div>
+                <div class="sc-summary">Giving up discipline when the challenge feels lost</div>
+                <div class="sc-detail">When a challenge looks unreachable with time running out, some traders give up on their plan entirely — taking reckless trades to either "save" the challenge with a big win or simply stop caring. Despair is subtle because it can look like rational analysis: "I can't reach 10% in 5 days at 1% risk, so I need to take more risk." This logic is exactly wrong. One reckless trade can fail a challenge that was still technically recoverable.</div>
+              </div>
+              <div class="scenario-card" onclick="toggleScenario(this)">
+                <div class="sc-top"><div class="sc-name">Discipline</div><div style="display:flex;gap:6px;align-items:center"><div class="sc-tag tag-good">The goal</div><div class="sc-arrow">›</div></div></div>
+                <div class="sc-summary">Process-focused regardless of recent results</div>
+                <div class="sc-detail">A disciplined trader evaluates each trade on its own merits — not in the context of the last trade or this week's P&L. They follow their plan exactly, including stopping when personal limits are hit. They feel the emotions (everyone does) but don't act on them. Discipline isn't the absence of emotion — it's the ability to act correctly despite it.</div>
+              </div>
+            </div>
+
+            <div class="callout callout-key">
+              <div class="cl">The recognition exercise</div>
+              <p>After every trading session, ask yourself: which of the five states was present today? Being able to name the emotional state is the first step to managing it. Keep a one-line note in your sim journal each day identifying the dominant emotional state during that session.</p>
+            </div>
+
+            <h2>What triggers each state</h2>
+            <div class="vis-exp">
+              <div class="vis-exp-title">Emotional triggers and warning signs</div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">State</div><div class="vis-cell-val">Overconfidence</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Trigger</div><div class="vis-cell-val">Winning streak</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Warning sign</div><div class="vis-cell-val" style="font-size:12px">"This setup isn't perfect but I'll take it"</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">State</div><div class="vis-cell-val">Fear</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Trigger</div><div class="vis-cell-val">Losing streak</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Warning sign</div><div class="vis-cell-val" style="font-size:12px">"I'll just watch this one, not trade it"</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">State</div><div class="vis-cell-val">FOMO</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Trigger</div><div class="vis-cell-val">Missed move</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Warning sign</div><div class="vis-cell-val" style="font-size:12px">"It's still going — I should get in"</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">State</div><div class="vis-cell-val">Revenge</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Trigger</div><div class="vis-cell-val">Single large loss</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Warning sign</div><div class="vis-cell-val" style="font-size:12px">"I need to make this back today"</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">State</div><div class="vis-cell-val">Despair</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Trigger</div><div class="vis-cell-val">Challenge looking unlikely</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Warning sign</div><div class="vis-cell-val" style="font-size:12px">"What's the point of my stop anyway"</div></div>
+              </div>
+            </div>
+
+            <div class="exercise">
+              <div class="exercise-hd"><span class="ex-badge">Psychology exercise</span><span class="ex-title">Identify the emotional state</span></div>
+              <div class="exercise-body">
+                <p class="ex-question">A trader is on day 18 of a 30-day FTMO challenge. They've had three consecutive losing days and are now at −6% profit (started at 0%). The profit target is 10%. They're not in breach of any firm rules but feel the challenge is slipping away. They decide to risk 3% on the next trade — three times their normal size. What emotional state is driving this?</p>
+                <div class="ex-opts" id="w1-ex1-opts">
+                  <button class="ex-opt" onclick="checkEx('w1-ex1','overconfidence',this,'despair')">Overconfidence</button>
+                  <button class="ex-opt" onclick="checkEx('w1-ex1','fomo',this,'despair')">FOMO</button>
+                  <button class="ex-opt" onclick="checkEx('w1-ex1','despair',this,'despair')">Despair</button>
+                  <button class="ex-opt" onclick="checkEx('w1-ex1','fear',this,'despair')">Fear</button>
+                </div>
+                <div class="ex-feedback" id="w1-ex1-fb"></div>
+                <button class="ex-next-btn" id="w1-ex1-next" onclick="completeLesson(0,0)">Next lesson →</button>
+              </div>
+            </div>
+          </div>
+          <div class="lesson-nav">
+            <span></span>
+            <span class="nav-info">Lesson 1 of 3</span>
+            <button class="btn-nav btn-next" onclick="completeLesson(0,0)">Next lesson</button>
+          </div>
+        </div>
+
+        <!-- W1 L2: Failure pattern -->
+        <div id="w1-l1" style="display:none">
+          <div class="lesson-hd">
+            <div class="lesson-eyebrow">Week 1 · Lesson 2</div>
+            <h1 class="lesson-title">Your personal failure pattern</h1>
+            <p class="lesson-intro">Every trader has a dominant failure pattern — the emotional state they're most vulnerable to. This lesson helps you identify yours so you can build specific defences against it.</p>
+          </div>
+          <div class="lesson-body">
+            <h2>Why one pattern dominates</h2>
+            <p>Most traders don't suffer equally from all five emotional states. One tends to dominate based on personality, past experiences, and the specific way they relate to risk and loss. Identifying your dominant pattern lets you build targeted defences rather than generic "be disciplined" advice.</p>
+
+            <div class="callout callout-key">
+              <div class="cl">Self-assessment</div>
+              <p>Answer these four scenario questions honestly. Your pattern will emerge from the answers — not from what you think you should answer, but from what you actually notice in your trading.</p>
+            </div>
+
+            <h2>Four scenario questions</h2>
+            <div id="assessment-container">
+              <div class="scenario-card" style="margin-bottom:12px;cursor:default">
+                <div class="sc-top"><div class="sc-name">Scenario 1</div></div>
+                <div class="sc-detail" style="display:block;border:none;padding-top:0;margin-top:8px;">You've just had your best trading week ever — 4 wins, 0 losses, up 3%. How does this make you feel about next week?</div>
+                <div class="ex-opts" style="margin-top:12px;" id="q-s1">
+                  <button class="ex-opt" onclick="assessQ('s1','overconfidence',this)">Excited — I've figured it out</button>
+                  <button class="ex-opt" onclick="assessQ('s1','fear',this)">Nervous — this can't last</button>
+                  <button class="ex-opt" onclick="assessQ('s1','neutral',this)">Neutral — one week proves nothing</button>
+                </div>
+              </div>
+              <div class="scenario-card" style="margin-bottom:12px;cursor:default">
+                <div class="sc-top"><div class="sc-name">Scenario 2</div></div>
+                <div class="sc-detail" style="display:block;border:none;padding-top:0;margin-top:8px;">You see a big move happen on ES1! that you didn't trade. It would have been 3R. What's your immediate reaction?</div>
+                <div class="ex-opts" style="margin-top:12px;" id="q-s2">
+                  <button class="ex-opt" onclick="assessQ('s2','fomo',this)">I look for the next entry — I don't want to miss the continuation</button>
+                  <button class="ex-opt" onclick="assessQ('s2','neutral',this)">I note it in my journal and move on</button>
+                  <button class="ex-opt" onclick="assessQ('s2','fear',this)">I question whether I should trade at all today</button>
+                </div>
+              </div>
+              <div class="scenario-card" style="margin-bottom:12px;cursor:default">
+                <div class="sc-top"><div class="sc-name">Scenario 3</div></div>
+                <div class="sc-detail" style="display:block;border:none;padding-top:0;margin-top:8px;">You have two consecutive losing trades. How do you respond?</div>
+                <div class="ex-opts" style="margin-top:12px;" id="q-s3">
+                  <button class="ex-opt" onclick="assessQ('s3','revenge',this)">I look for the next trade immediately — I want to get back to flat</button>
+                  <button class="ex-opt" onclick="assessQ('s3','fear',this)">I stop for the day — I can't trust my judgment now</button>
+                  <button class="ex-opt" onclick="assessQ('s3','neutral',this)">I review both trades, then continue if setups appear</button>
+                </div>
+              </div>
+              <div class="scenario-card" style="margin-bottom:12px;cursor:default">
+                <div class="sc-top"><div class="sc-name">Scenario 4</div></div>
+                <div class="sc-detail" style="display:block;border:none;padding-top:0;margin-top:8px;">It's day 25 of a 30-day challenge. You're at +4% but the target is 10%. Mathematically difficult at 1% risk. What do you do?</div>
+                <div class="ex-opts" style="margin-top:12px;" id="q-s4">
+                  <button class="ex-opt" onclick="assessQ('s4','despair',this)">Increase position size — it's the only way</button>
+                  <button class="ex-opt" onclick="assessQ('s4','neutral',this)">Keep the same approach — challenges have no time limit on FTMO</button>
+                  <button class="ex-opt" onclick="assessQ('s4','fear',this)">Stop trading to protect my +4%</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="callout callout-key" id="assessment-result" style="display:none">
+              <div class="cl">Your pattern</div>
+              <p id="assessment-result-text"></p>
+            </div>
+
+            <h2>Building your personal defences</h2>
+            <div class="vis-exp">
+              <div class="vis-exp-title">Defence strategies by pattern</div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Pattern</div><div class="vis-cell-val">Overconfidence</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Defence</div><div class="vis-cell-val" style="font-size:12px">Reduce size after a winning streak, not increase it</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Pattern</div><div class="vis-cell-val">Fear</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Defence</div><div class="vis-cell-val" style="font-size:12px">Pre-commit to taking every plan-matching setup regardless of recent results</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Pattern</div><div class="vis-cell-val">FOMO</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Defence</div><div class="vis-cell-val" style="font-size:12px">Write "there will be another setup" after every missed move</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Pattern</div><div class="vis-cell-val">Revenge</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Defence</div><div class="vis-cell-val" style="font-size:12px">Mandatory 30-minute break after any loss before next entry</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Pattern</div><div class="vis-cell-val">Despair</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Defence</div><div class="vis-cell-val" style="font-size:12px">Remember: challenges rarely expire. Process over outcome, always.</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="lesson-nav">
+            <button class="btn-nav btn-prev" onclick="showLesson(0,0)">Previous</button>
+            <span class="nav-info">Lesson 2 of 3</span>
+            <button class="btn-nav btn-next" onclick="completeLesson(0,1)">Next lesson</button>
+          </div>
+        </div>
+
+        <!-- W1 L3: Routines -->
+        <div id="w1-l2" style="display:none">
+          <div class="lesson-hd">
+            <div class="lesson-eyebrow">Week 1 · Lesson 3</div>
+            <h1 class="lesson-title">Pre & post trade routines</h1>
+            <p class="lesson-intro">Professional traders don't rely on willpower to stay disciplined. They build routines that make the right behaviour automatic. This lesson gives you two checklists — one to run before you enter any trade, one to run after any session.</p>
+          </div>
+          <div class="lesson-body">
+            <h2>Why routines work</h2>
+            <p>Willpower depletes. A trader who relies on willpower to follow their plan will eventually fail — especially later in a session when fatigue and accumulated decisions have eroded their capacity for clear thinking. Routines bypass this by converting decisions into habits.</p>
+            <p>The pre-trade checklist is not about slowing you down — it takes less than 30 seconds once memorised. Its purpose is to insert a moment of deliberate evaluation between the emotional impulse to trade and the actual entry.</p>
+
+            <h2>The pre-trade checklist</h2>
+            <div class="vis-exp">
+              <div class="vis-exp-title">Pre-trade checklist — run this before every entry</div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Check 1</div><div class="vis-cell-val">Structure</div><div class="vis-cell-sub">Is the daily structure aligned with this trade direction?</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Check 2</div><div class="vis-cell-val">Pattern</div><div class="vis-cell-sub">Is there a specific pattern I can name from my plan?</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Check 3</div><div class="vis-cell-val">Confluence</div><div class="vis-cell-sub">Do I have at least 3 independent reasons for this trade?</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Check 4</div><div class="vis-cell-val">Risk</div><div class="vis-cell-sub">Is my position size at or below my plan's maximum?</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Check 5</div><div class="vis-cell-val">Daily limit</div><div class="vis-cell-sub">If this trade loses, will I still be within today's personal limit?</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Check 6</div><div class="vis-cell-val">Emotional state</div><div class="vis-cell-sub">Am I entering this trade for the right reasons or to recover a loss?</div></div>
+              </div>
+            </div>
+            <p>If any check produces a "no" — do not enter. Wait for the next setup.</p>
+
+            <h2>The post-session review</h2>
+            <div class="vis-exp">
+              <div class="vis-exp-title">Post-session review — run this after closing the platform</div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Review 1</div><div class="vis-cell-val">Did I follow my plan?</div><div class="vis-cell-sub">Yes for every trade, or identify which trade broke the rules</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Review 2</div><div class="vis-cell-val">What emotional state was present?</div><div class="vis-cell-sub">Name one of the five states from Lesson 1</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Review 3</div><div class="vis-cell-val">What would I do differently?</div><div class="vis-cell-sub">One specific change for next session — not a vague resolution</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Review 4</div><div class="vis-cell-val">Am I ready to trade tomorrow?</div><div class="vis-cell-sub">If the answer is "I need to recover losses", the answer is no</div></div>
+              </div>
+            </div>
+
+            <div class="callout callout-warn">
+              <div class="cl">The one-sentence journal entry</div>
+              <p>The Traxent sim journal has a post-trade note field. Use it as your micro-review — one sentence per trade that answers "what did I observe about my behaviour on this trade?" Over 30 days, patterns emerge that would be invisible without written records.</p>
+            </div>
+          </div>
+          <div class="lesson-nav">
+            <button class="btn-nav btn-prev" onclick="showLesson(0,1)">Previous</button>
+            <span class="nav-info">Lesson 3 of 3</span>
+            <button class="btn-nav btn-next" onclick="completeLesson(0,2)">Take the quiz</button>
+          </div>
+        </div>
+
+        <!-- W1 Quiz -->
+        <div id="w1-l3" style="display:none">
+          <div class="quiz-wrap">
+            <div class="quiz-hd">
+              <div class="quiz-eyebrow">Week 1 · Quiz</div>
+              <h1 class="quiz-title">Psychology check</h1>
+              <p class="quiz-sub">5 scenario-based questions. Pass 80% to complete Week 1 and unlock Week 2.</p>
+            </div>
+            <div id="w1-quiz-questions">
+              <div class="q-dots" id="w1-q-dots"></div>
+              <div id="w1-q-wrap"></div>
+              <div class="q-btn-row">
+                <button class="q-btn q-submit" id="w1-q-submit" onclick="submitQ('w1')" disabled>Submit answer</button>
+                <button class="q-btn q-next-btn" id="w1-q-next" onclick="nextQ('w1')">Next →</button>
+              </div>
+            </div>
+            <div class="quiz-result" id="w1-quiz-result">
+              <div class="result-pct" id="w1-result-pct"></div>
+              <div class="result-lbl" id="w1-result-lbl"></div>
+              <div class="result-msg" id="w1-result-msg"></div>
+              <div class="result-actions">
+                <button class="btn-result btn-result-secondary" onclick="retryQuiz('w1')">Retry</button>
+                <button class="btn-result btn-result-primary" id="w1-result-cta" onclick="switchWeek(1)" style="display:none">Week 2 →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ── WEEK 2: News ── -->
+  <div class="week-content" id="week-1">
+    <div class="lesson-layout">
+      <aside class="lesson-sidebar">
+        <div class="ls-week-label">Week 2</div>
+        <div class="ls-week-title">News & the Economic Calendar</div>
+        <div class="ls-progress-label"><span>Progress</span><span id="w2-prog-pct">0%</span></div>
+        <div class="ls-progress-bar"><div class="ls-progress-fill" id="w2-prog-fill" style="width:0%"></div></div>
+        <div class="ls-list">
+          <div class="ls-item active" id="w2-nav-0" onclick="showLesson(1,0)">
+            <div class="ls-dot" id="w2-dot-0">1</div>
+            <div><div class="ls-item-name">High-impact events decoded</div><div class="ls-item-dur">10 min · Chart examples</div></div>
+          </div>
+          <div class="ls-item" id="w2-nav-1" onclick="showLesson(1,1)">
+            <div class="ls-dot" id="w2-dot-1">2</div>
+            <div><div class="ls-item-name">Prop firm news rules</div><div class="ls-item-dur">8 min · Firm-specific</div></div>
+          </div>
+          <div class="ls-item" id="w2-nav-2" onclick="showLesson(1,2)">
+            <div class="ls-dot" id="w2-dot-2">3</div>
+            <div><div class="ls-item-name">Your news filter</div><div class="ls-item-dur">8 min · Framework</div></div>
+          </div>
+          <div class="ls-quiz-sep"></div>
+          <div class="ls-item" id="w2-nav-3" onclick="showLesson(1,3)">
+            <div class="ls-dot" id="w2-dot-3">✦</div>
+            <div><div class="ls-item-name">Week 2 quiz</div><div class="ls-item-dur">5 questions · Pass 80%</div></div>
+          </div>
+        </div>
+      </aside>
+      <main id="w2-lessons">
+
+        <div id="w2-l0">
+          <div class="lesson-hd">
+            <div class="lesson-eyebrow">Week 2 · Lesson 1</div>
+            <h1 class="lesson-title">High-impact events decoded</h1>
+            <p class="lesson-intro">NFP, FOMC, CPI — these acronyms drive the biggest market moves of the month. This lesson explains what each event measures, why markets react the way they do, and what the typical price behaviour looks like on a chart.</p>
+          </div>
+          <div class="lesson-body">
+            <h2>Why news events matter for prop traders</h2>
+            <p>News events create the largest and fastest price moves of the trading month. For prop firm traders this cuts both ways — they're opportunities for significant gains, but they can also cause the fastest drawdown you'll ever experience. A single NFP release can move ES1! 30–50 points in seconds.</p>
+            <p>Most prop firm challenges allow news trading. A few ban it or restrict it. Understanding both the market behaviour and your specific firm's rules is essential.</p>
+
+            <h2>The big three events</h2>
+            <div class="vis-exp">
+              <div class="vis-exp-title">High-impact events — what they measure and why they move markets</div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">NFP — Non-Farm Payrolls</div><div class="vis-cell-val">Monthly job creation</div><div class="vis-cell-sub">Released first Friday of each month at 13:30 UTC</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Why it moves markets</div><div class="vis-cell-val" style="font-size:12px">Employment = economic health = Fed policy expectations</div><div class="vis-cell-sub">Strong NFP → risk on, equities higher. Weak NFP → risk off.</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">FOMC — Fed Decision</div><div class="vis-cell-val">Interest rate decision</div><div class="vis-cell-sub">8 times per year, Wednesday 19:00 UTC</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Why it moves markets</div><div class="vis-cell-val" style="font-size:12px">Rate changes affect cost of capital for every asset class</div><div class="vis-cell-sub">Often more volatile than expected even when outcome is known.</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">CPI — Inflation</div><div class="vis-cell-val">Consumer price index</div><div class="vis-cell-sub">Monthly, typically second week, 13:30 UTC</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Why it moves markets</div><div class="vis-cell-val" style="font-size:12px">Inflation data drives Fed rate expectations</div><div class="vis-cell-sub">Hot CPI → rate hike fears → equities fall. Cool CPI → rally.</div></div>
+              </div>
+            </div>
+
+            <h2>Typical news price behaviour</h2>
+            <p>News events almost always produce a predictable sequence: <strong>spike → retrace → continuation (or reversal)</strong>. The initial spike is driven by algorithmic reactions to the headline number. The retrace happens as traders evaluate the full report context. The subsequent move reflects the genuine market consensus.</p>
+            <p>For most traders, <strong>the safest approach is to avoid trading the initial spike</strong> and wait for the retrace to form a structural setup. The move after the retrace is cleaner, more predictable, and has a definable stop loss — unlike trading the spike itself where slippage and spread widen dramatically.</p>
+
+            <div class="chart-component">
+              <div class="chart-header">
+                <div><div class="chart-title">ES1! — watch how it reacts to news events</div><div class="chart-subtitle">1H or 15M · Look for sharp spikes followed by consolidation</div></div>
+                <div class="inst-switcher" id="sw-w2">
+                  <button class="inst-btn active" onclick="swC('f-w2','ES1!','60',this,'sw-w2')">ES1! 1H</button>
+                  <button class="inst-btn" onclick="swC('f-w2','ES1!','15',this,'sw-w2')">ES1! 15M</button>
+                  <button class="inst-btn" onclick="swC('f-w2','EURUSD','60',this,'sw-w2')">EUR/USD 1H</button>
+                  <button class="inst-btn" onclick="swC('f-w2','GBPUSD','60',this,'sw-w2')">GBP/USD 1H</button>
+                </div>
+              </div>
+              <iframe id="f-w2" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+            </div>
+
+            <div class="exercise">
+              <div class="exercise-hd"><span class="ex-badge">News exercise</span><span class="ex-title">NFP reaction pattern</span></div>
+              <div class="exercise-body">
+                <p class="ex-question">NFP comes in much stronger than expected. ES1! spikes up 35 points in 30 seconds. What typically happens next, and what should a disciplined prop trader do?</p>
+                <div class="ex-opts" id="w2-ex1-opts">
+                  <button class="ex-opt" onclick="checkEx('w2-ex1','chase',this,'wait-retrace')">Buy immediately — strong NFP means the rally continues</button>
+                  <button class="ex-opt" onclick="checkEx('w2-ex1','wait-retrace',this,'wait-retrace')">Wait for the spike to retrace and form a setup with a defined stop</button>
+                  <button class="ex-opt" onclick="checkEx('w2-ex1','short',this,'wait-retrace')">Short the spike — it always reverses after NFP</button>
+                  <button class="ex-opt" onclick="checkEx('w2-ex1','avoid',this,'wait-retrace')">Avoid entirely — never trade on NFP day</button>
+                </div>
+                <div class="ex-feedback" id="w2-ex1-fb"></div>
+                <button class="ex-next-btn" id="w2-ex1-next" onclick="completeLesson(1,0)">Next lesson →</button>
+              </div>
+            </div>
+          </div>
+          <div class="lesson-nav">
+            <span></span>
+            <span class="nav-info">Lesson 1 of 3</span>
+            <button class="btn-nav btn-next" onclick="completeLesson(1,0)">Next lesson</button>
+          </div>
+        </div>
+
+        <div id="w2-l1" style="display:none">
+          <div class="lesson-hd">
+            <div class="lesson-eyebrow">Week 2 · Lesson 2</div>
+            <h1 class="lesson-title">Prop firm news rules</h1>
+            <p class="lesson-intro">Different firms have different rules around news trading. Getting this wrong can invalidate trades or breach rules you didn't know existed. This lesson covers what each major firm actually requires.</p>
+          </div>
+          <div class="lesson-body">
+            <h2>FTMO — no news restrictions on standard account</h2>
+            <p>FTMO's standard challenge account has no explicit news trading ban. You can hold positions through NFP, FOMC, and CPI without restriction. However, the <strong>daily loss limit still applies in real time</strong> — a position held through a high-impact event that moves 40 points against you while your position size is too large can breach the daily limit in seconds.</p>
+            <p>The FTMO Swing account additionally allows overnight and weekend positions, making it more compatible with trading around weekly and monthly events.</p>
+
+            <h2>Apex — no news ban, but trailing drawdown risk</h2>
+            <p>Apex has no news trading ban. However, the intraday trailing drawdown creates a specific risk during news events. If a trade runs strongly in your favour during a news spike, the trailing floor rises with it. If the news reversal then takes it back, you may find yourself closer to the floor than you were before the event — even if you end up with a smaller profit than the peak.</p>
+
+            <h2>MFFU — no news ban</h2>
+            <p>MyFundedFutures has no news trading ban on its standard accounts. The end-of-day trailing drawdown means intraday spikes don't affect the floor until the session closes — giving slightly more tolerance for intraday news volatility.</p>
+
+            <div class="callout callout-warn">
+              <div class="cl">Always verify current rules</div>
+              <p>Prop firm rules change. Some firms introduce news windows (periods where trading is suspended around high-impact events) without much notice. Check your firm's FAQ or terms before any major news event. Traxent is not affiliated with any firm listed here.</p>
+            </div>
+
+            <h2>The universal news rule for prop traders</h2>
+            <div class="vis-exp">
+              <div class="vis-exp-title">Universal approach regardless of firm</div>
+              <div class="vis-row">
+                <div class="vis-cell vis-good"><div class="vis-cell-label">Before the event</div><div class="vis-cell-val green">Close open positions</div><div class="vis-cell-sub">Eliminate exposure to the uncontrollable spike</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">During the event</div><div class="vis-cell-val">Do not trade</div><div class="vis-cell-sub">Wait for the initial spike and retrace to complete</div></div>
+                <div class="vis-cell vis-good"><div class="vis-cell-label">After the event</div><div class="vis-cell-val green">Wait for structure</div><div class="vis-cell-sub">Trade the post-news setup once a clear level forms</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="lesson-nav">
+            <button class="btn-nav btn-prev" onclick="showLesson(1,0)">Previous</button>
+            <span class="nav-info">Lesson 2 of 3</span>
+            <button class="btn-nav btn-next" onclick="completeLesson(1,1)">Next lesson</button>
+          </div>
+        </div>
+
+        <div id="w2-l2" style="display:none">
+          <div class="lesson-hd">
+            <div class="lesson-eyebrow">Week 2 · Lesson 3</div>
+            <h1 class="lesson-title">Building your news filter</h1>
+            <p class="lesson-intro">A news filter is a simple decision framework that tells you what to do before, during, and after each type of economic event. Once built, it removes the need to make judgment calls in real time.</p>
+          </div>
+          <div class="lesson-body">
+            <h2>The three-tier filter</h2>
+            <div class="vis-exp">
+              <div class="vis-exp-title">News filter framework</div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Tier 1 — Red folder (NFP, FOMC, CPI)</div><div class="vis-cell-val red">No open positions</div><div class="vis-cell-sub">Close all positions 15 min before · Do not trade for 15 min after</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Tier 2 — Orange (GDP, retail sales, PPI)</div><div class="vis-cell-val" style="color:var(--warn)">Reduce size</div><div class="vis-cell-sub">Halve position size if holding through · Widen stops slightly</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell vis-good"><div class="vis-cell-label">Tier 3 — Low impact</div><div class="vis-cell-val green">Trade normally</div><div class="vis-cell-sub">Minor events unlikely to cause significant moves — normal approach applies</div></div>
+              </div>
+            </div>
+            <p>Mark your calendar at the start of each week with all Tier 1 and Tier 2 events. This takes 5 minutes and eliminates the possibility of being caught in a news event you didn't know was happening.</p>
+
+            <div class="exercise">
+              <div class="exercise-hd"><span class="ex-badge">News filter exercise</span><span class="ex-title">What's your action?</span></div>
+              <div class="exercise-body">
+                <p class="ex-question">It's Wednesday. You have an open long position on ES1! from yesterday that is +£200 in profit. In 20 minutes, FOMC releases its rate decision — the most watched event of the month. What should you do?</p>
+                <div class="ex-opts" id="w2-ex2-opts">
+                  <button class="ex-opt" onclick="checkEx('w2-ex2','hold',this,'close')">Hold — I'm in profit and expect rates to stay flat</button>
+                  <button class="ex-opt" onclick="checkEx('w2-ex2','close',this,'close')">Close the position — FOMC is Tier 1, no open positions rule applies</button>
+                  <button class="ex-opt" onclick="checkEx('w2-ex2','reduce',this,'close')">Reduce to half size — take some profit and leave the rest running</button>
+                  <button class="ex-opt" onclick="checkEx('w2-ex2','move-sl',this,'close')">Move stop to breakeven and let it run — worst case I break even</button>
+                </div>
+                <div class="ex-feedback" id="w2-ex2-fb"></div>
+                <button class="ex-next-btn" id="w2-ex2-next" onclick="completeLesson(1,2)">Take the quiz →</button>
+              </div>
+            </div>
+          </div>
+          <div class="lesson-nav">
+            <button class="btn-nav btn-prev" onclick="showLesson(1,1)">Previous</button>
+            <span class="nav-info">Lesson 3 of 3</span>
+            <button class="btn-nav btn-next" onclick="completeLesson(1,2)">Take the quiz</button>
+          </div>
+        </div>
+
+        <div id="w2-l3" style="display:none">
+          <div class="quiz-wrap">
+            <div class="quiz-hd">
+              <div class="quiz-eyebrow">Week 2 · Quiz</div>
+              <h1 class="quiz-title">News & calendar check</h1>
+              <p class="quiz-sub">5 questions on news events and prop firm rules. Pass 80% to unlock Week 3.</p>
+            </div>
+            <div id="w2-quiz-questions">
+              <div class="q-dots" id="w2-q-dots"></div>
+              <div id="w2-q-wrap"></div>
+              <div class="q-btn-row">
+                <button class="q-btn q-submit" id="w2-q-submit" onclick="submitQ('w2')" disabled>Submit answer</button>
+                <button class="q-btn q-next-btn" id="w2-q-next" onclick="nextQ('w2')">Next →</button>
+              </div>
+            </div>
+            <div class="quiz-result" id="w2-quiz-result">
+              <div class="result-pct" id="w2-result-pct"></div>
+              <div class="result-lbl" id="w2-result-lbl"></div>
+              <div class="result-msg" id="w2-result-msg"></div>
+              <div class="result-actions">
+                <button class="btn-result btn-result-secondary" onclick="retryQuiz('w2')">Retry</button>
+                <button class="btn-result btn-result-primary" id="w2-result-cta" onclick="switchWeek(2)" style="display:none">Week 3 →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ── WEEK 3: Trade Management ── -->
+  <div class="week-content" id="week-2">
+    <div class="lesson-layout">
+      <aside class="lesson-sidebar">
+        <div class="ls-week-label">Week 3</div>
+        <div class="ls-week-title">Advanced Trade Management</div>
+        <div class="ls-progress-label"><span>Progress</span><span id="w3-prog-pct">0%</span></div>
+        <div class="ls-progress-bar"><div class="ls-progress-fill" id="w3-prog-fill" style="width:0%"></div></div>
+        <div class="ls-list">
+          <div class="ls-item active" id="w3-nav-0" onclick="showLesson(2,0)">
+            <div class="ls-dot" id="w3-dot-0">1</div>
+            <div><div class="ls-item-name">Moving to breakeven</div><div class="ls-item-dur">9 min · Chart exercise</div></div>
+          </div>
+          <div class="ls-item" id="w3-nav-1" onclick="showLesson(2,1)">
+            <div class="ls-dot" id="w3-dot-1">2</div>
+            <div><div class="ls-item-name">Partial profits & scaling out</div><div class="ls-item-dur">9 min · Calculator</div></div>
+          </div>
+          <div class="ls-item" id="w3-nav-2" onclick="showLesson(2,2)">
+            <div class="ls-dot" id="w3-dot-2">3</div>
+            <div><div class="ls-item-name">When trades go wrong mid-session</div><div class="ls-item-dur">9 min · Decision framework</div></div>
+          </div>
+          <div class="ls-quiz-sep"></div>
+          <div class="ls-item" id="w3-nav-3" onclick="showLesson(2,3)">
+            <div class="ls-dot" id="w3-dot-3">✦</div>
+            <div><div class="ls-item-name">Week 3 quiz</div><div class="ls-item-dur">5 questions · Pass 80%</div></div>
+          </div>
+        </div>
+      </aside>
+      <main id="w3-lessons">
+
+        <div id="w3-l0">
+          <div class="lesson-hd">
+            <div class="lesson-eyebrow">Week 3 · Lesson 1</div>
+            <h1 class="lesson-title">Moving to breakeven</h1>
+            <p class="lesson-intro">Moving your stop to breakeven after a trade moves in your favour sounds like pure upside — a free trade. But done wrong, it kills more good trades than it saves. This lesson gives you the specific conditions that justify moving a stop.</p>
+          </div>
+          <div class="lesson-body">
+            <h2>The problem with moving to breakeven too early</h2>
+            <p>The most common mistake: a trade moves 0.5R in profit and the trader immediately moves the stop to breakeven. Price retraces slightly — as it almost always does — and stops out at breakeven. The trade then runs to the original 2R target without them.</p>
+            <p>Moving to breakeven too early converts a good trade into a scratch trade. Done repeatedly, it destroys the R:R of your overall approach — you're taking 1:2 trades on paper but actually achieving 1:0.3 in practice because most runners get scratched before hitting target.</p>
+
+            <h2>The right conditions to move to breakeven</h2>
+            <div class="vis-exp">
+              <div class="vis-exp-title">When moving to breakeven is justified</div>
+              <div class="vis-row">
+                <div class="vis-cell vis-good"><div class="vis-cell-label">Condition 1</div><div class="vis-cell-val green">Price has reached 1R</div><div class="vis-cell-sub">At minimum 1:1 achieved before moving stop — not before</div></div>
+                <div class="vis-cell vis-good"><div class="vis-cell-label">Condition 2</div><div class="vis-cell-val green">Key level broken</div><div class="vis-cell-sub">A significant structural level has been taken out — momentum confirmed</div></div>
+                <div class="vis-cell vis-good"><div class="vis-cell-label">Condition 3</div><div class="vis-cell-val green">News approaching</div><div class="vis-cell-sub">A Tier 1 event is imminent — protect profit, close risk</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell vis-bad"><div class="vis-cell-label">Not a condition</div><div class="vis-cell-val red">Price is up £50</div><div class="vis-cell-sub">Arbitrary profit amounts are not a reason to move a stop</div></div>
+                <div class="vis-cell vis-bad"><div class="vis-cell-label">Not a condition</div><div class="vis-cell-val red">You feel nervous</div><div class="vis-cell-sub">Emotion is not a structural reason — let the plan dictate</div></div>
+                <div class="vis-cell vis-bad"><div class="vis-cell-label">Not a condition</div><div class="vis-cell-val red">It's been 2 hours</div><div class="vis-cell-sub">Time in trade is irrelevant — price action is the signal</div></div>
+              </div>
+            </div>
+
+            <div class="chart-component">
+              <div class="chart-header">
+                <div><div class="chart-title">Watch for 1R moves — identify where a stop could move</div><div class="chart-subtitle">1H · Find a setup · Identify where 1R profit would have been reached</div></div>
+                <div class="inst-switcher" id="sw-w3">
+                  <button class="inst-btn active" onclick="swC('f-w3','ES1!','60',this,'sw-w3')">ES1! 1H</button>
+                  <button class="inst-btn" onclick="swC('f-w3','EURUSD','60',this,'sw-w3')">EUR/USD 1H</button>
+                  <button class="inst-btn" onclick="swC('f-w3','GBPUSD','60',this,'sw-w3')">GBP/USD 1H</button>
+                </div>
+              </div>
+              <iframe id="f-w3" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+            </div>
+
+            <div class="exercise">
+              <div class="exercise-hd"><span class="ex-badge">Trade management exercise</span><span class="ex-title">When to move the stop</span></div>
+              <div class="exercise-body">
+                <p class="ex-question">You enter a long on GBP/USD at 1.2650. Stop at 1.2620 (30 pips risk). Target 1.2710 (60 pips, 1:2 R:R). Price moves to 1.2680 — 1R in profit. Price then consolidates for 3 candles just below 1.2685. Should you move to breakeven?</p>
+                <div class="ex-opts" id="w3-ex1-opts">
+                  <button class="ex-opt" onclick="checkEx('w3-ex1','yes-now',this,'yes-justified')">Yes — I've hit 1R, conditions are met</button>
+                  <button class="ex-opt" onclick="checkEx('w3-ex1','yes-justified',this,'yes-justified')">Yes — 1R hit and the consolidation suggests buyers are holding the level</button>
+                  <button class="ex-opt" onclick="checkEx('w3-ex1','no-wait',this,'yes-justified')">No — wait for a structural break before moving the stop</button>
+                  <button class="ex-opt" onclick="checkEx('w3-ex1','no-target',this,'yes-justified')">No — never move to breakeven, let the original stop work</button>
+                </div>
+                <div class="ex-feedback" id="w3-ex1-fb"></div>
+                <button class="ex-next-btn" id="w3-ex1-next" onclick="completeLesson(2,0)">Next lesson →</button>
+              </div>
+            </div>
+          </div>
+          <div class="lesson-nav">
+            <span></span>
+            <span class="nav-info">Lesson 1 of 3</span>
+            <button class="btn-nav btn-next" onclick="completeLesson(2,0)">Next lesson</button>
+          </div>
+        </div>
+
+        <div id="w3-l1" style="display:none">
+          <div class="lesson-hd">
+            <div class="lesson-eyebrow">Week 3 · Lesson 2</div>
+            <h1 class="lesson-title">Partial profits & scaling out</h1>
+            <p class="lesson-intro">Taking partial profits at key levels is one of the most practical trade management techniques for prop firm challenges. It locks in real gains, reduces psychological pressure, and lets part of the position run to a larger target.</p>
+          </div>
+          <div class="lesson-body">
+            <h2>How scaling out works</h2>
+            <p>Instead of closing your entire position at one target, you close portions at multiple targets. The most common approach: close 50% at 1R, move stop to breakeven on the remainder, and let the remaining 50% run to 2R or 3R.</p>
+
+            <div class="vis-exp">
+              <div class="vis-exp-title">Scale-out example — £100 risk, 1:2 target</div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Full position exit at 2R</div><div class="vis-cell-val">+£200 if wins</div><div class="vis-cell-sub">−£100 if stops out · All or nothing</div></div>
+                <div class="vis-cell vis-good"><div class="vis-cell-label">Scale out: 50% at 1R, 50% at 2R</div><div class="vis-cell-val green">+£150 if both hit</div><div class="vis-cell-sub">+£50 if only first target hit then stopped · Smoother</div></div>
+              </div>
+            </div>
+
+            <p>The scale-out approach delivers a lower maximum gain (£150 vs £200) but a much better worst-case scenario if the trade reaches 1R then reverses. In prop firm challenges — where protecting what you've built matters — this smoothing effect is valuable.</p>
+
+            <div class="callout callout-key">
+              <div class="cl">The challenge-specific benefit</div>
+              <p>In a challenge, you're managing two numbers simultaneously — profit toward target and loss away from the floor. Scaling out locks in partial profit that counts toward the target and simultaneously reduces exposure. It's not just about psychology — it's mathematically better for challenge-style trading.</p>
+            </div>
+
+            <h2>When scaling out hurts</h2>
+            <p>If your win rate is low and you rely on large runners to compensate, scaling out reduces those runners. A trader with 30% win rate targeting 1:4 R:R should not scale out — they need the full 4R on every winner to make their system work. Scale-out suits traders with moderate win rates (40–55%) who want smoother equity curves.</p>
+          </div>
+          <div class="lesson-nav">
+            <button class="btn-nav btn-prev" onclick="showLesson(2,0)">Previous</button>
+            <span class="nav-info">Lesson 2 of 3</span>
+            <button class="btn-nav btn-next" onclick="completeLesson(2,1)">Next lesson</button>
+          </div>
+        </div>
+
+        <div id="w3-l2" style="display:none">
+          <div class="lesson-hd">
+            <div class="lesson-eyebrow">Week 3 · Lesson 3</div>
+            <h1 class="lesson-title">When trades go wrong mid-session</h1>
+            <p class="lesson-intro">Not every trade goes cleanly to stop or target. Conditions change mid-trade — news drops, the pattern fails before your stop is hit, session close approaches with an open position. This lesson gives you a decision framework for each scenario.</p>
+          </div>
+          <div class="lesson-body">
+            <h2>The three mid-trade scenarios</h2>
+
+            <div class="vis-exp">
+              <div class="vis-exp-title">Mid-trade decision framework</div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Scenario</div><div class="vis-cell-val">Pattern fails early</div><div class="vis-cell-sub">Price moves against you but stop not yet hit</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Decision</div><div class="vis-cell-val" style="font-size:12px">If the setup reason is gone, exit early at a smaller loss</div><div class="vis-cell-sub">Don't hold hoping for recovery — the logic is invalidated</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Scenario</div><div class="vis-cell-val">News drops unexpectedly</div><div class="vis-cell-sub">Unscheduled event causes spike against position</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Decision</div><div class="vis-cell-val" style="font-size:12px">Close immediately if daily limit is at risk</div><div class="vis-cell-sub">Protect the challenge over any individual trade</div></div>
+              </div>
+              <div class="vis-row">
+                <div class="vis-cell"><div class="vis-cell-label">Scenario</div><div class="vis-cell-val">Session close approaching</div><div class="vis-cell-sub">Open losing position with 30 minutes to session end</div></div>
+                <div class="vis-cell"><div class="vis-cell-label">Decision</div><div class="vis-cell-val" style="font-size:12px">Close before the session ends — don't carry overnight</div><div class="vis-cell-sub">Unless your plan explicitly allows overnight holds</div></div>
+              </div>
+            </div>
+
+            <div class="callout callout-warn">
+              <div class="cl">The hardest scenario</div>
+              <p>A trade moves against you but the stop hasn't been hit. The pattern is clearly broken — price has reclaimed a level it shouldn't have. The temptation is to hold and hope the stop holds. The disciplined action is to exit early at a smaller loss, freeing capital and mental energy for the next setup. Accepting a 0.5R loss voluntarily is far better than waiting for a full 1R loss on a trade whose logic no longer holds.</p>
+            </div>
+          </div>
+          <div class="lesson-nav">
+            <button class="btn-nav btn-prev" onclick="showLesson(2,1)">Previous</button>
+            <span class="nav-info">Lesson 3 of 3</span>
+            <button class="btn-nav btn-next" onclick="completeLesson(2,2)">Take the quiz</button>
+          </div>
+        </div>
+
+        <div id="w3-l3" style="display:none">
+          <div class="quiz-wrap">
+            <div class="quiz-hd">
+              <div class="quiz-eyebrow">Week 3 · Quiz</div>
+              <h1 class="quiz-title">Trade management check</h1>
+              <p class="quiz-sub">5 questions on advanced trade management. Pass 80% to unlock Week 4.</p>
+            </div>
+            <div id="w3-quiz-questions">
+              <div class="q-dots" id="w3-q-dots"></div>
+              <div id="w3-q-wrap"></div>
+              <div class="q-btn-row">
+                <button class="q-btn q-submit" id="w3-q-submit" onclick="submitQ('w3')" disabled>Submit answer</button>
+                <button class="q-btn q-next-btn" id="w3-q-next" onclick="nextQ('w3')">Next →</button>
+              </div>
+            </div>
+            <div class="quiz-result" id="w3-quiz-result">
+              <div class="result-pct" id="w3-result-pct"></div>
+              <div class="result-lbl" id="w3-result-lbl"></div>
+              <div class="result-msg" id="w3-result-msg"></div>
+              <div class="result-actions">
+                <button class="btn-result btn-result-secondary" onclick="retryQuiz('w3')">Retry</button>
+                <button class="btn-result btn-result-primary" id="w3-result-cta" onclick="switchWeek(3)" style="display:none">Week 4 →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ── WEEK 4: 30-Day Programme ── -->
+  <div class="week-content" id="week-3">
+    <div class="w4-hero">
+      <div class="w4-hero-eyebrow">Week 4 · The centrepiece</div>
+      <h2 class="w4-hero-title">The 30-Day Sim Challenge</h2>
+      <p class="w4-hero-sub">This is where everything comes together. Over 30 days you'll trade your chosen firm's challenge in simulation — with daily prompts, weekly reviews, and a final readiness report that tells you whether you're ready to spend real money.</p>
+      <a href="/journal?lab=week4" class="w4-hero-btn">Open sim journal with daily prompt →</a>
+    </div>
+
+    <div class="w4-phases">
+      <div class="w4-phase">
+        <div class="w4-phase-num">Days 1–7</div>
+        <div class="w4-phase-title">Foundation week</div>
+        <div class="w4-phase-desc">Establish your routine. Trade every qualifying day. Focus on plan compliance over profit.</div>
+      </div>
+      <div class="w4-phase">
+        <div class="w4-phase-num">Days 8–14</div>
+        <div class="w4-phase-title">Consistency week</div>
+        <div class="w4-phase-desc">Identify patterns from week 1. Tighten your entry criteria. Review your emotional state daily.</div>
+      </div>
+      <div class="w4-phase">
+        <div class="w4-phase-num">Days 15–21</div>
+        <div class="w4-phase-title">Refinement week</div>
+        <div class="w4-phase-desc">Apply the improvements from week 2. Focus on R:R quality over win rate.</div>
+      </div>
+      <div class="w4-phase">
+        <div class="w4-phase-num">Days 22–30</div>
+        <div class="w4-phase-title">Readiness assessment</div>
+        <div class="w4-phase-desc">Final week mirrors real challenge pressure. Generate your readiness score at day 30.</div>
+      </div>
+    </div>
+
+    <div class="w4-prompts">
+      <div class="w4-prompts-hd">
+        <div class="w4-prompts-title">Daily journal prompts — shown automatically in the sim journal</div>
+      </div>
+      <div class="w4-prompt-group">
+        <div class="w4-pg-label">Week 1 prompts (Days 1–7) — Building awareness</div>
+        <div class="w4-pg-prompts">
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D1</span>What is your primary motivation for wanting a funded account?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D2</span>Which of the five emotional states felt most present today?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D3</span>Did every trade today match your plan criteria? If not, which one didn't?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D4</span>What was the emotional state before your first trade of the session?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D5</span>Did you check the economic calendar before trading today?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D6</span>What would you do differently about today's session?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D7</span>Week 1 review: What is your dominant failure pattern so far?</div>
+        </div>
+      </div>
+      <div class="w4-prompt-group">
+        <div class="w4-pg-label">Week 2 prompts (Days 8–14) — Building consistency</div>
+        <div class="w4-pg-prompts">
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D8</span>How is your average R:R comparing to your target? What's pulling it down?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D9</span>Did you take any trades today out of boredom rather than conviction?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D10</span>How did you handle your losing trade(s) today emotionally?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D11</span>Did you run the pre-trade checklist before every entry today?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D12</span>What is your plan compliance rate so far this week?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D13</span>How close have you come to your daily loss limit? What happened?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D14</span>Week 2 review: Is your readiness score improving? What's the primary gap?</div>
+        </div>
+      </div>
+      <div class="w4-prompt-group">
+        <div class="w4-pg-label">Week 3 prompts (Days 15–21) — Refining the edge</div>
+        <div class="w4-pg-prompts">
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D15</span>Which pattern from Module 2 is performing best in your sim journal?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D16</span>Have you moved any stops to breakeven this week? Was the timing correct?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D17</span>Did any news event affect your trades this week? How did you handle it?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D18</span>Which trades from this week would you not take again? Why?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D19</span>Are you taking enough trades to meet the minimum trading days requirement?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D20</span>How is your relationship with losing trades changing compared to week 1?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D21</span>Week 3 review: If you started a real challenge today, what would be your biggest risk?</div>
+        </div>
+      </div>
+      <div class="w4-prompt-group">
+        <div class="w4-pg-label">Week 4 prompts (Days 22–30) — Final assessment</div>
+        <div class="w4-pg-prompts">
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D22</span>Imagine this is a real challenge. How does that change how you feel right now?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D25</span>Mid-week check: Are you on track for the profit target? If not, what's the plan — same approach or adjust?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D28</span>Three days left: What emotional state is most present right now?</div>
+          <div class="w4-prompt-item"><span class="w4-prompt-num">D30</span>Final day: Review your readiness score. What does it say about your current habits?</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="w4-milestones">
+      <div class="w4-milestones-hd">
+        <div class="w4-milestones-title">Weekly milestone reviews — complete these in your sim journal</div>
+      </div>
+      <div class="w4-milestone">
+        <div class="w4-ms-day">Day 7</div>
+        <div class="w4-ms-content">
+          <div class="w4-ms-title">Week 1 milestone — Foundation check</div>
+          <div class="w4-ms-desc">Review your first 7 days of trading before continuing to Week 2.</div>
+          <div class="w4-ms-checklist">
+            <div class="w4-ms-check">Have you traded on at least 5 of the 7 days?</div>
+            <div class="w4-ms-check">Is your plan compliance rate above 70%?</div>
+            <div class="w4-ms-check">Have you identified your dominant emotional pattern?</div>
+            <div class="w4-ms-check">Have you hit or come close to the daily loss limit on any day?</div>
+          </div>
+        </div>
+      </div>
+      <div class="w4-milestone">
+        <div class="w4-ms-day">Day 14</div>
+        <div class="w4-ms-content">
+          <div class="w4-ms-title">Week 2 milestone — Consistency check</div>
+          <div class="w4-ms-desc">Mid-point review. Your stats should be starting to stabilise.</div>
+          <div class="w4-ms-checklist">
+            <div class="w4-ms-check">Is your average R:R above 1.5 over the last 14 trades?</div>
+            <div class="w4-ms-check">Has your compliance rate improved from Week 1?</div>
+            <div class="w4-ms-check">Have you had any daily limit breaches?</div>
+            <div class="w4-ms-check">Is your readiness score 50 or above?</div>
+          </div>
+        </div>
+      </div>
+      <div class="w4-milestone">
+        <div class="w4-ms-day">Day 21</div>
+        <div class="w4-ms-content">
+          <div class="w4-ms-title">Week 3 milestone — Readiness check</div>
+          <div class="w4-ms-desc">Three weeks in. This is the point where most traders have a clear picture of their readiness.</div>
+          <div class="w4-ms-checklist">
+            <div class="w4-ms-check">Is your readiness score 65 or above?</div>
+            <div class="w4-ms-check">Would you have passed the challenge criteria by now if this were real?</div>
+            <div class="w4-ms-check">Can you name your single biggest weakness with a specific solution?</div>
+            <div class="w4-ms-check">Are you emotionally ready to spend money on a real challenge?</div>
+          </div>
+        </div>
+      </div>
+      <div class="w4-milestone">
+        <div class="w4-ms-day">Day 30</div>
+        <div class="w4-ms-content">
+          <div class="w4-ms-title">Final readiness report</div>
+          <div class="w4-ms-desc">The 30-day sim challenge is complete. Open the sim journal to see your final readiness score and breakdown.</div>
+          <div class="w4-ms-checklist">
+            <div class="w4-ms-check">Readiness score 70+ → Consider purchasing your target challenge</div>
+            <div class="w4-ms-check">Readiness score 50–69 → Extend sim trading for another 2 weeks on the specific gaps identified</div>
+            <div class="w4-ms-check">Readiness score below 50 → Review the modules on your weakest areas and restart the 30-day programme</div>
+            <div class="w4-ms-check">Zero daily limit breaches over 30 days → Strong indicator of real challenge readiness</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── PROGRESS STATE ─────────────────────────────────────────────────────────────
+const TOTAL_ITEMS = 16; // 4 lessons × 4 weeks
+let progress = JSON.parse(localStorage.getItem('traxent_lab_progress') || '{}');
+
+function saveProgress() {
+  localStorage.setItem('traxent_lab_progress', JSON.stringify(progress));
+  updateOverallProgress();
+}
+
+function updateOverallProgress() {
+  const done = Object.keys(progress).filter(k => progress[k]).length;
+  const pct = Math.round((done / TOTAL_ITEMS) * 100);
+  document.getElementById('overall-fill').style.width = pct + '%';
+  document.getElementById('overall-pct').textContent = pct + '%';
+  [0,1,2,3].forEach(w => updateWeekProgress(w));
+}
+
+function updateWeekProgress(w) {
+  const keys = [`w${w+1}-l0`,`w${w+1}-l1`,`w${w+1}-l2`,`w${w+1}-quiz`];
+  const done = keys.filter(k => progress[k]).length;
+  const pct = Math.round((done / 4) * 100);
+  document.getElementById(`wp-${w}`).style.width = pct + '%';
+  if (done === 4) document.getElementById(`wt-${w}`).classList.add('completed');
+  const wNum = w + 1;
+  if (document.getElementById(`w${wNum}-prog-fill`)) {
+    document.getElementById(`w${wNum}-prog-fill`).style.width = pct + '%';
+    document.getElementById(`w${wNum}-prog-pct`).textContent = pct + '%';
+  }
+}
+
+// ── WEEK SWITCHING ─────────────────────────────────────────────────────────────
+function switchWeek(w) {
+  document.querySelectorAll('.week-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.week-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('week-' + w).classList.add('active');
+  document.getElementById('wt-' + w).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ── LESSON NAVIGATION ─────────────────────────────────────────────────────────
+function showLesson(week, lesson) {
+  const wNum = week + 1;
+  const prefix = `w${wNum}`;
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById(`${prefix}-l${i}`);
+    if (el) el.style.display = 'none';
+    const nav = document.getElementById(`${prefix}-nav-${i}`);
+    if (nav) nav.classList.remove('active');
+  }
+  const showEl = document.getElementById(`${prefix}-l${lesson}`);
+  if (showEl) showEl.style.display = 'block';
+  const navEl = document.getElementById(`${prefix}-nav-${lesson}`);
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function completeLesson(week, lesson) {
+  const wNum = week + 1;
+  const key = `w${wNum}-l${lesson}`;
+  progress[key] = true;
+  const dot = document.getElementById(`w${wNum}-dot-${lesson}`);
+  if (dot) { dot.textContent = '✓'; }
+  const nav = document.getElementById(`w${wNum}-nav-${lesson}`);
+  if (nav) nav.classList.add('completed');
+  saveProgress();
+  showLesson(week, lesson + 1);
+  if (lesson === 2) initQuiz(`w${wNum}`);
+}
+
+// ── SCENARIO CARDS ─────────────────────────────────────────────────────────────
+function toggleScenario(card) {
+  const open = card.classList.contains('expanded');
+  document.querySelectorAll('.scenario-card[onclick]').forEach(c => c.classList.remove('expanded'));
+  if (!open) card.classList.add('expanded');
+}
+
+// ── CHART SWITCHER ─────────────────────────────────────────────────────────────
+function swC(fId, sym, iv, btn, swId) {
+  document.querySelectorAll('#'+swId+' .inst-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(fId).src = `https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=${sym}&interval=${iv}&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com`;
+}
+
+// ── EXERCISES ─────────────────────────────────────────────────────────────────
+const EX_DATA = {
+  'w1-ex1': {
+    correct: 'despair',
+    fb: {
+      correct: "✓ Correct. The trader is considering increasing risk because the challenge feels lost — not because the setup is better. This is despair rationalised as strategy. The mathematically correct action is to keep the same risk and let the challenge play out. FTMO has no time limit — a 16% gain in 12 days on 1% risk is still entirely possible.",
+      incorrect: "This is despair — the challenge feels unwinnable so the trader reaches for higher risk to 'save' it. It's not overconfidence (no winning streak), not FOMO (no missed move), and not fear (they're not avoiding trades). The logic 'I need more risk because the challenge is hard' is the signature of despair."
+    }
+  },
+  'w2-ex1': {
+    correct: 'wait-retrace',
+    fb: {
+      correct: "✓ Correct. Chasing the initial spike is one of the most consistently losing strategies in news trading. The spike is driven by algorithms reacting to headlines — it often retraces significantly. Waiting for the retrace to form a structural setup gives you a defined entry, a clear stop below a structural level, and a much better R:R than buying the spike top.",
+      incorrect: "The correct response is to wait for the retrace. NFP spikes are almost always followed by a retracement as traders evaluate the full report. Buying the spike puts your entry near the top of a fast move with no structural stop. Shorting the spike on the assumption of reversal is equally risky — strong NFP can sustain a rally. Avoiding NFP entirely removes one of the most significant trading opportunities of the month."
+    }
+  },
+  'w2-ex2': {
+    correct: 'close',
+    fb: {
+      correct: "✓ Correct. FOMC is a Tier 1 event. The rule is clear: no open positions going into Tier 1 events. The +£200 profit is real and worth protecting. Holding through FOMC risks not just losing the profit but potentially turning it into a significant loss in seconds. Close the position, take the £200, and re-evaluate after the initial spike settles.",
+      incorrect: "FOMC is the highest-impact scheduled event of the month. The Tier 1 rule is absolute: close all positions before it. Holding a long through FOMC — even with profit — exposes you to a 30+ point move against you in seconds. A breakeven stop offers no protection because slippage during FOMC can easily skip your stop level entirely."
+    }
+  },
+  'w3-ex1': {
+    correct: 'yes-justified',
+    fb: {
+      correct: "✓ Correct. Two conditions are met: (1) price has reached 1R profit — the minimum threshold for a breakeven stop move, and (2) the three-candle consolidation above the level suggests buyers are defending it. Moving the stop to breakeven (1.2650) is justified here. The remaining target is 1.2710 — if the consolidation holds, the move continues.",
+      incorrect: "Both 'Yes — I've hit 1R' and 'Yes — 1R hit and consolidation' are close. The distinction: the consolidation holding above 1.2685 is actually additional confirmation that makes moving to breakeven more justified. The consolidation shows buyers absorbing supply at this level — a structural reason on top of the 1R threshold. The best answer captures both."
+    }
+  }
+};
+
+function checkEx(exId, chosen, btn, correct) {
+  const opts = document.querySelectorAll(`#${exId}-opts .ex-opt`);
+  opts.forEach(o => { o.disabled = true; o.onclick = null; });
+  const ok = chosen === correct;
+  btn.classList.add(ok ? 'correct' : 'incorrect');
+  const fb = document.getElementById(`${exId}-fb`);
+  const data = EX_DATA[exId];
+  fb.className = `ex-feedback show ${ok ? 'correct' : 'incorrect'}`;
+  fb.innerHTML = `<strong>${ok ? '✓ Correct' : '✗ Not quite'}</strong> — ${ok ? data.fb.correct : data.fb.incorrect}`;
+  const nextBtn = document.getElementById(`${exId}-next`);
+  if (nextBtn) nextBtn.classList.add('show');
+}
+
+// ── SELF ASSESSMENT ────────────────────────────────────────────────────────────
+const assessAnswers = {};
+function assessQ(q, val, btn) {
+  document.querySelectorAll(`#q-${q} .ex-opt`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  assessAnswers[q] = val;
+  if (Object.keys(assessAnswers).length === 4) showAssessmentResult();
+}
+
+function showAssessmentResult() {
+  const counts = {};
+  Object.values(assessAnswers).forEach(v => counts[v] = (counts[v] || 0) + 1);
+  const dominant = Object.entries(counts).sort((a,b) => b[1]-a[1])[0][0];
+  const messages = {
+    overconfidence: "Your answers suggest overconfidence is your dominant pattern. You tend to feel invincible after winning streaks. Your defence: deliberately reduce position size by 25% after any 3-win streak. Don't increase size when things are going well.",
+    fear: "Your answers suggest fear is your dominant pattern. Losses cause you to avoid trading or second-guess valid setups. Your defence: pre-commit in writing to taking every setup that passes the checklist, regardless of recent results.",
+    fomo: "Your answers suggest FOMO is your dominant pattern. Missing moves pulls you into late, poorly-structured entries. Your defence: write 'there will be another setup' after every missed trade. There always is.",
+    revenge: "Your answers suggest revenge trading is your dominant pattern. Losses trigger immediate re-entry to recover. Your defence: mandatory 30-minute break after any loss, no exceptions. Physical distance from the screen breaks the impulse.",
+    despair: "Your answers suggest despair is your dominant pattern. When a challenge feels unlikely you reach for higher risk. Your defence: remember that FTMO has no time limit. Process over outcome. The target is reachable on 1% risk if you keep trading well.",
+    neutral: "Your answers suggest good emotional discipline — you approach trading with neutrality. Your challenge is maintaining this when things get difficult. Your defence: journal your emotional state every day so you can spot the early signs of any pattern emerging."
+  };
+  const result = document.getElementById('assessment-result');
+  document.getElementById('assessment-result-text').textContent = messages[dominant] || messages.neutral;
+  result.style.display = 'block';
+  result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── QUIZZES ────────────────────────────────────────────────────────────────────
+const QUIZ_DATA = {
+  w1: {
+    questions: [
+      { text: "A trader has just had their best week ever — 5 wins, 0 losses. They decide to increase their position size next week to capitalise on their momentum. Which emotional state is this?", options: ["Fear","Overconfidence","FOMO","Despair"], correct: 1, fb: { c: "Correct. Overconfidence follows winning streaks. The correct response to a great week is to maintain — or even reduce — position size, not increase it. The market doesn't care about recent performance.", w: "This is overconfidence — the belief that a winning streak reflects skill rather than a combination of skill and variance. The correct response to a great week is to maintain position size, not increase it." } },
+      { text: "Which emotional state causes traders to avoid taking valid setups after a losing streak?", options: ["Overconfidence","FOMO","Fear","Revenge"], correct: 2, fb: { c: "Correct. Fear causes paralysis — the inability to act on valid setups because recent losses have undermined confidence. The pre-trade checklist defence helps by making trade-taking a process rather than an emotional decision.", w: "Fear causes inaction after losses — avoiding valid setups because of what happened recently. FOMO causes action after missed moves. Revenge causes oversized re-entry after losses. Overconfidence causes oversizing after wins." } },
+      { text: "The pre-trade checklist includes a question about emotional state. Why?", options: ["To slow you down and prevent impulsive entries","To track your mood over time for journalling purposes","To identify whether you're entering for plan reasons or to recover a loss","To remind you to check the economic calendar"], correct: 2, fb: { c: "Correct. The emotional state check exists specifically to catch revenge trading before it happens. 'Am I entering this trade because it meets my criteria, or because I want to recover from the last loss?' is the most important question on the checklist.", w: "The emotional state check is specifically designed to catch revenge trading impulses before they become trades. It asks: is this entry driven by the plan or by the desire to recover a loss? That distinction is what the checklist is protecting against." } },
+      { text: "A trader says: 'The challenge ends in 5 days and I'm only halfway to the profit target. I need to increase my risk to 3% per trade to have any chance.' What is wrong with this logic?", options: ["Nothing — this is rational risk management", "FTMO has no time limit — the challenge doesn't end in 5 days unless it's Apex or MFFU", "3% risk is within the rules so it's technically allowed", "The trader should switch to a 1-step challenge instead"], correct: 1, fb: { c: "Correct. FTMO has no time limit on its 2-step challenge. The feeling of urgency is created by despair, not reality. The challenge can continue indefinitely. Maintaining 1% risk and continuing to trade well is both possible and correct.", w: "FTMO has no time limit. The urgency is an emotional illusion created by despair. There is no 5-day deadline. Increasing risk to 3% dramatically increases the chance of a daily limit breach — turning an achievable situation into a failed one." } },
+      { text: "What is the single most effective defence against revenge trading?", options: ["Reducing position size on the next trade","A mandatory break — physical distance from the screen after any loss","Reviewing the trade that was lost before re-entering","Switching to a different instrument for the next trade"], correct: 1, fb: { c: "Correct. Physical distance from the platform breaks the impulse-to-action cycle. You cannot revenge trade if you're not at the screen. A 30-minute mandatory break after any loss is the most practical and effective prevention.", w: "Physical distance from the screen is the most reliable defence. Reducing size, reviewing the trade, or switching instruments all still leave you at the platform where the impulse can lead to action. Removing yourself entirely breaks the cycle." } }
+    ]
+  },
+  w2: {
+    questions: [
+      { text: "Non-Farm Payrolls (NFP) comes in significantly weaker than expected. What is the typical initial market reaction for US equity indices like ES1!?", options: ["Sharp rally — weak jobs data means rate cuts coming","Sharp sell-off — weak economy is bad for stocks","No significant reaction — the market already priced it in","Slow, gradual decline over the following hours"], correct: 1, fb: { c: "Correct. Weak NFP signals economic slowdown, which is bad for corporate earnings. The initial reaction in equities is typically a sell-off, though this can reverse if the market reads it as increasing the probability of Fed rate cuts.", w: "Weak NFP typically causes an initial sell-off in equities — fewer jobs means a weaker economy. However, the secondary interpretation (more likely rate cuts → positive for risk) often causes a reversal. This is why news trading requires waiting for the initial spike and retrace to settle." } },
+      { text: "Which prop firm uses an intraday trailing drawdown that creates specific risk during news spikes?", options: ["FTMO — static drawdown","Apex Trader Funding — intraday trailing drawdown","MyFundedFutures — EOD trailing","FundedNext — no drawdown rule"], correct: 1, fb: { c: "Correct. Apex's intraday trailing drawdown follows peak equity in real time. A news spike that pushes a trade into profit temporarily raises the floor — if the spike reverses, you may be closer to the floor than before the event, even with a smaller profit.", w: "Apex uses an intraday trailing drawdown. If a news spike takes a trade into £2,000 profit floating, the floor rises. If the spike then reverses and the trade ends at £500 profit, you've lost £1,500 of buffer even though you made money on the trade." } },
+      { text: "Your Tier 1 news filter rule states: no open positions 15 minutes before, no trading for 15 minutes after. FOMC releases in 10 minutes. You have a profitable open trade. What do you do?", options: ["Hold — the rule applies only to new entries, not existing trades","Close immediately — the rule covers all open positions","Move stop to breakeven and hold — you're protected","Wait to see if FOMC is expected to be a non-event"], correct: 1, fb: { c: "Correct. The Tier 1 rule covers all open positions — including existing profitable ones. Close before the event. FOMC can move markets 50+ points in seconds regardless of expectations. The £200 in your open profit is not worth the risk of a sudden 40-point adverse move.", w: "The Tier 1 rule applies to all open positions, not just new entries. A profitable trade is still a risk exposure. FOMC produces the most volatile minutes of the month regardless of expectations — even widely anticipated decisions cause significant moves due to the accompanying press conference." } },
+      { text: "What is the recommended approach for trading the period immediately after a major news release?", options: ["Trade immediately — the move is clear and directional","Wait 15 minutes then enter in the direction of the spike","Wait for the spike and retrace to complete, then trade the post-news structural setup","Avoid trading for the rest of the day after any major news release"], correct: 2, fb: { c: "Correct. The post-news structural setup is the highest-probability entry. After the spike and retrace, a genuine market consensus forms — one with a definable structure, a clear stop, and a reasonable R:R. This is far preferable to trading the spike itself.", w: "Waiting for the retrace and then trading the structural setup is the most disciplined approach. The spike is driven by algorithms and is too fast for most manual traders to execute well. The post-news setup has structure, a clear stop, and better R:R." } },
+      { text: "Which economic event typically has the single largest impact on US equity futures and the US dollar?", options: ["GDP quarterly release","Non-Farm Payrolls (NFP)","FOMC interest rate decision","Consumer Price Index (CPI)"], correct: 2, fb: { c: "Correct. FOMC decisions have the broadest impact across all asset classes because interest rates affect the cost of capital for everything. The press conference that follows the decision often produces more volatility than the decision itself.", w: "FOMC is the highest-impact single event for US equity futures. While NFP and CPI are also major movers, the FOMC decision and press conference affect every asset class simultaneously and for a longer duration than other releases." } }
+    ]
+  },
+  w3: {
+    questions: [
+      { text: "What is the minimum amount of profit (in R terms) a trade should have before you consider moving the stop to breakeven?", options: ["0.5R — as soon as the trade is slightly in profit","1R — when you've made back your original risk","2R — only after reaching the full first target","It depends entirely on how you feel about the trade"], correct: 1, fb: { c: "Correct. 1R is the standard minimum threshold. Moving to breakeven at 0.5R converts too many good trades into scratches. At 1R, you've recovered your risk and the statistical case for the trade continuing is stronger.", w: "1R is the standard minimum. Moving to breakeven at 0.5R is too early — normal price retracement can hit your breakeven stop before the trade reaches its target. Wait for at least 1R before considering the move." } },
+      { text: "A trader scales out: closes 50% at 1R and lets 50% run to 2R. The first target is hit, stop moves to breakeven, but the second target is missed and price returns to entry. What is the trader's net result?", options: ["Breakeven — they made and lost the same amount","Net profit of 0.5R — from the first partial close","Net loss — the second half lost money","They need to know the exact position size to calculate"], correct: 1, fb: { c: "Correct. 50% closed at 1R = 0.5R profit. 50% stopped at breakeven = 0R. Net result: +0.5R. This is better than what a full-position holder would achieve (also 0R if they move to breakeven and get stopped). The scale-out preserved some profit.", w: "50% closed at 1R gains 0.5R total profit. 50% stopped at breakeven loses nothing. Net result = +0.5R. This is the key benefit of scaling out — even when the runner fails, you've locked in a partial profit that the full-position holder misses if they also move to breakeven." } },
+      { text: "A trade is in a loss but hasn't hit your stop. The original pattern has clearly failed — price has reclaimed a level it shouldn't have. What should you do?", options: ["Hold to the original stop — stops exist to define exits","Exit early at a smaller loss — the logic for the trade is gone","Move the stop wider to give the trade more room","Wait for the next candle to close before deciding"], correct: 1, fb: { c: "Correct. If the logic for the trade has been invalidated by price action, holding to the stop is irrational. The stop was placed based on the scenario 'the trade is wrong if price reaches here.' If price has already demonstrated the trade is wrong before reaching the stop, exit early and take a smaller loss.", w: "When the trade logic is invalidated — price has reclaimed a level it shouldn't have — holding to the stop is irrational. The stop was set for a specific scenario. A different invalidation has occurred. Exiting early at a smaller loss is the correct, disciplined action." } },
+      { text: "You have an open position 20 minutes before the end of your trading session. The position is at −0.5R loss. Your stop is another 0.5R below current price. What should you do?", options: ["Hold to the stop — that's what stops are for","Close — don't carry losses into the next session unless your plan allows it","Move the stop to breakeven — you don't want the loss","Increase size to average down and recover before close"], correct: 1, fb: { c: "Correct. Unless your plan explicitly allows carrying positions between sessions, close before the session ends. An open losing position overnight introduces gap risk that your risk management rules weren't designed for. Take the 0.5R loss and start fresh next session.", w: "Close the position before session end unless your plan explicitly allows overnight holds. Session-close risk (gap risk overnight) wasn't accounted for in your original position sizing and stop placement. A clean 0.5R loss is preferable to an uncontrolled overnight exposure." } },
+      { text: "Which type of trader benefits most from scaling out (partial profit taking)?", options: ["Traders with very low win rates (under 30%) targeting high R:R","Traders with moderate win rates (40–55%) who want smoother equity curves","Traders who use very tight stops that are often hit","All traders benefit equally from scaling out"], correct: 1, fb: { c: "Correct. Scaling out benefits traders with moderate win rates most. It smooths equity curves and reduces the psychological pressure of holding runners to full targets. Traders with very low win rates need the full R on every winner to compensate for frequent losses — scaling out reduces their maximum gain per trade.", w: "Scaling out suits moderate win rate traders best. Very low win rate traders (who rely on 1:3 or 1:4 R:R to be profitable) cannot afford to reduce their maximum gain per trade. Scaling out would turn their profitable system unprofitable over time." } }
+    ]
+  }
+};
+
+const quizState = {};
+
+function initQuiz(prefix) {
+  quizState[prefix] = { curQ: 0, score: 0, selOpt: null, answered: false };
+  const qs = document.getElementById(`${prefix}-quiz-questions`);
+  const res = document.getElementById(`${prefix}-quiz-result`);
+  if (qs) qs.style.display = 'block';
+  if (res) res.style.display = 'none';
+  renderQ(prefix);
+  renderDots(prefix);
+}
+
+function renderDots(prefix) {
+  const data = QUIZ_DATA[prefix];
+  if (!data) return;
+  const dots = document.getElementById(`${prefix}-q-dots`);
+  if (!dots) return;
+  const curQ = quizState[prefix].curQ;
+  dots.innerHTML = data.questions.map((_,i) =>
+    `<div class="q-dot ${i<curQ?'done':i===curQ?'active':''}"></div>`).join('');
+}
+
+function renderQ(prefix) {
+  const data = QUIZ_DATA[prefix];
+  if (!data) return;
+  const state = quizState[prefix];
+  const q = data.questions[state.curQ];
+  const L = ['A','B','C','D'];
+  const wrap = document.getElementById(`${prefix}-q-wrap`);
+  if (!wrap) return;
+  wrap.innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Question ${state.curQ+1} of ${data.questions.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-options">
+        ${q.options.map((o,i) => `<div class="q-opt" id="${prefix}-qo${i}" onclick="selQ('${prefix}',${i})"><div class="q-letter">${L[i]}</div><div class="q-opt-text">${o}</div></div>`).join('')}
+      </div>
+      <div class="q-feedback" id="${prefix}-q-fb"></div>
+    </div>`;
+  state.selOpt = null; state.answered = false;
+  document.getElementById(`${prefix}-q-submit`).disabled = true;
+  document.getElementById(`${prefix}-q-submit`).style.display = 'block';
+  document.getElementById(`${prefix}-q-next`).style.display = 'none';
+}
+
+function selQ(prefix, i) {
+  const state = quizState[prefix];
+  if (state.answered) return;
+  state.selOpt = i;
+  document.querySelectorAll(`[id^="${prefix}-qo"]`).forEach((o,j) => o.classList.toggle('selected', j===i));
+  document.getElementById(`${prefix}-q-submit`).disabled = false;
+}
+
+function submitQ(prefix) {
+  const state = quizState[prefix];
+  if (state.selOpt === null || state.answered) return;
+  state.answered = true;
+  const data = QUIZ_DATA[prefix];
+  const q = data.questions[state.curQ];
+  const ok = state.selOpt === q.correct;
+  if (ok) state.score++;
+  document.querySelectorAll(`[id^="${prefix}-qo"]`).forEach((o,i) => {
+    o.classList.remove('selected');
+    if (i === q.correct) o.classList.add('correct');
+    else if (i === state.selOpt && !ok) o.classList.add('incorrect');
+  });
+  const fb = document.getElementById(`${prefix}-q-fb`);
+  fb.className = `q-feedback show ${ok ? 'correct' : 'incorrect'}`;
+  fb.innerHTML = `<strong>${ok ? '✓ Correct' : '✗ Not quite'}</strong> — ${ok ? q.fb.c : q.fb.w}`;
+  document.getElementById(`${prefix}-q-submit`).style.display = 'none';
+  document.getElementById(`${prefix}-q-next`).style.display = 'block';
+  document.getElementById(`${prefix}-q-next`).textContent = state.curQ < data.questions.length - 1 ? 'Next →' : 'See results →';
+}
+
+function nextQ(prefix) {
+  quizState[prefix].curQ++;
+  if (quizState[prefix].curQ >= QUIZ_DATA[prefix].questions.length) { showQuizResult(prefix); return; }
+  renderDots(prefix); renderQ(prefix);
+}
+
+function showQuizResult(prefix) {
+  document.getElementById(`${prefix}-quiz-questions`).style.display = 'none';
+  document.getElementById(`${prefix}-quiz-result`).style.display = 'block';
+  const state = quizState[prefix];
+  const total = QUIZ_DATA[prefix].questions.length;
+  const pct = Math.round((state.score / total) * 100);
+  const pass = pct >= 80;
+  document.getElementById(`${prefix}-result-pct`).textContent = pct + '%';
+  document.getElementById(`${prefix}-result-pct`).className = `result-pct ${pass ? 'pass' : 'fail'}`;
+  document.getElementById(`${prefix}-result-lbl`).textContent = pass ? 'Passed ✓' : 'Not quite';
+  document.getElementById(`${prefix}-result-msg`).textContent = pass
+    ? `${state.score} of ${total} correct. Great work — you're ready for the next week.`
+    : `${state.score} of ${total} correct. Review the lessons and retry.`;
+  if (pass) {
+    const cta = document.getElementById(`${prefix}-result-cta`);
+    if (cta) cta.style.display = 'inline-block';
+    progress[`${prefix}-quiz`] = true;
+    const dot = document.getElementById(`${prefix}-dot-3`);
+    if (dot) { dot.textContent = '✓'; }
+    const nav = document.getElementById(`${prefix}-nav-3`);
+    if (nav) nav.classList.add('completed');
+    saveProgress();
+  }
+}
+
+function retryQuiz(prefix) {
+  document.getElementById(`${prefix}-quiz-result`).style.display = 'none';
+  initQuiz(prefix);
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  // Restore completed lesson dots from saved progress
+  Object.keys(progress).forEach(key => {
+    if (!progress[key]) return;
+    // key format: w1-l0, w1-quiz etc
+    const match = key.match(/^w(\d+)-l(\d+)$/);
+    if (match) {
+      const wNum = match[1];
+      const lNum = match[2];
+      const dot = document.getElementById(`w${wNum}-dot-${lNum}`);
+      if (dot) dot.textContent = '✓';
+      const nav = document.getElementById(`w${wNum}-nav-${lNum}`);
+      if (nav) nav.classList.add('completed');
+    }
+    const quizMatch = key.match(/^w(\d+)-quiz$/);
+    if (quizMatch) {
+      const wNum = quizMatch[1];
+      const dot = document.getElementById(`w${wNum}-dot-3`);
+      if (dot) dot.textContent = '✓';
+      const nav = document.getElementById(`w${wNum}-nav-3`);
+      if (nav) nav.classList.add('completed');
+    }
+  });
+  updateOverallProgress();
+  // Init all quizzes
+  ['w1','w2','w3'].forEach(p => initQuiz(p));
+});
+</script>
+</body>
+</html>

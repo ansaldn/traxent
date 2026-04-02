@@ -226,6 +226,26 @@ const ALL_FEATURES = [
     },
     action: 'Read feed', minPlan: 'funded_ready', requiredLabel: 'Funded Ready', link: '/news',
   },
+    {
+    icon: '🧪', title: 'Challenge Lab',
+    desc: {
+      free:         'Advanced 4-week programme covering psychology, news trading, and trade management.',
+      observer:     'Advanced 4-week programme covering psychology, news trading, and trade management.',
+      challenger:   'Full access — psychology, news calendar, advanced trade management, and 30-day sim programme.',
+      funded_ready: 'Full access — psychology, news calendar, advanced trade management, and 30-day sim programme.',
+    },
+    action: 'Open Challenge Lab', minPlan: 'challenger', requiredLabel: 'Challenger+', link: '/challenge-lab',
+  },
+  {
+    icon: '📅', title: 'Economic calendar',
+    desc: {
+      free:         'Know when high-impact news events are happening before you trade.',
+      observer:     'Know when high-impact news events are happening before you trade.',
+      challenger:   'Full calendar with Tier 1/2/3 impact ratings and prop firm news filter guide.',
+      funded_ready: 'Full calendar with event alerts and position management reminders.',
+    },
+    action: 'View calendar', minPlan: 'observer', requiredLabel: 'Observer+', link: '/calendar',
+  },
 ];
 
 async function initDashboard() {

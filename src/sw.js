@@ -1,4 +1,7 @@
-const CACHE_NAME = 'traxent-v1';
+// CACHE_NAME is rewritten at deploy time by the GitHub Actions workflow
+// (see .github/workflows/deploy.yml) so every deploy gets a fresh cache and
+// PWA users don't serve stale HTML.
+const CACHE_NAME = 'traxent-__BUILD_SHA__';
 
 // Core pages and assets to cache on install
 const PRECACHE = [

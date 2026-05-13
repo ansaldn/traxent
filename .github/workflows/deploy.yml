@@ -20,6 +20,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
 
+      - name: Stamp Service Worker cache version with commit SHA
+        run: |
+          sed -i "s/__BUILD_SHA__/${GITHUB_SHA::8}/g" src/sw.js
+          echo "sw.js CACHE_NAME after stamping:"
+          grep CACHE_NAME src/sw.js
+
       - name: Deploy to S3
         run: |
           aws s3 sync src/ s3://traxent.io \

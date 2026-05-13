@@ -21,14 +21,6 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/icons/screenshot-wide.png",
-      "sizes": "1366x1024",
-      "type": "image/png",
-      "form_factor": "wide"
-    }
-  ],
   "categories": ["education", "finance"],
   "shortcuts": [
     {

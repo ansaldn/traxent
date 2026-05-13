@@ -15,14 +15,6 @@
 <!-- Theme colour (browser chrome on Android, tab bar tint on iOS) -->
 <meta name="theme-color" content="#0e0e0c">
  
-<!-- Splash screens for iPad Pro 12.9" (2048x2732 @2x = 1024x1366 logical) -->
-<link rel="apple-touch-startup-image"
-  media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
-  href="/icons/splash-landscape-ipad-pro-12.png">
-<link rel="apple-touch-startup-image"
-  media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
-  href="/icons/splash-portrait-ipad-pro-12.png">
- 
 <!-- Service worker registration -->
 <script>
   if ('serviceWorker' in navigator) {
@@ -34,6 +26,10 @@
   }
 </script>
 <title>Sim Trade Journal — Traxent</title>
+<style id="auth-gate-style">body{visibility:hidden}</style>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="/auth.js"></script>
+<script>requireMinPlan('challenger');</script>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">

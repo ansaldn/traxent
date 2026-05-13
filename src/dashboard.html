@@ -15,14 +15,6 @@
   <!-- Theme colour (browser chrome on Android, tab bar tint on iOS) -->
   <meta name="theme-color" content="#0e0e0c">
   
-  <!-- Splash screens for iPad Pro 12.9" (2048x2732 @2x = 1024x1366 logical) -->
-  <link rel="apple-touch-startup-image"
-    media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
-    href="/icons/splash-landscape-ipad-pro-12.png">
-  <link rel="apple-touch-startup-image"
-    media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
-    href="/icons/splash-portrait-ipad-pro-12.png">
-  
   <!-- Service worker registration -->
   <script>
     if ('serviceWorker' in navigator) {
@@ -148,8 +140,8 @@
   </div>
 
   <div class="upgrade-nudge" id="nudge-challenger" style="display:none">
-    <div class="nudge-text">You're on <strong>Challenger</strong> — upgrade to Funded Ready at <strong>£29.99/mo</strong> for premium customisable data feeds and challenge simulation mode.</div>
-    <button class="btn-nudge" onclick="upgradePlan('funded_ready')">Upgrade to Funded Ready →</button>
+    <div class="nudge-text">You're on <strong>Challenger</strong> — upgrade to Funded Trader at <strong>£29.99/mo</strong> for premium customisable data feeds and challenge simulation mode.</div>
+    <button class="btn-nudge" onclick="upgradePlan('funded_ready')">Upgrade to Funded Trader →</button>
   </div>
 
   <div class="dash-section-label">Your features</div>
@@ -224,7 +216,7 @@ const ALL_FEATURES = [
       challenger:   'AI-tagged market news with bull/bear sentiment scoring.',
       funded_ready: 'Premium news feed with economic calendar integration and event alerts.',
     },
-    action: 'Read feed', minPlan: 'funded_ready', requiredLabel: 'Funded Ready', link: '/news',
+    action: 'Read feed', minPlan: 'funded_ready', requiredLabel: 'Funded Trader', link: '/news',
   },
     {
     icon: '🧪', title: 'Challenge Lab',
@@ -291,7 +283,7 @@ async function initDashboard() {
       free:         "You're on the free plan. Upgrade to start tracking your readiness.",
       observer:     "You're learning with delayed data. Upgrade to Challenger to unlock the readiness tracker.",
       challenger:   "You're tracking your readiness in real time. Keep building your edge.",
-      funded_ready: "You're on Funded Ready. Everything is unlocked — let's get you there.",
+      funded_ready: "You're on Funded Trader. Everything is unlocked — let's get you there.",
     };
     document.getElementById('welcome-sub').textContent = subMessages[plan] || subMessages.free;
 

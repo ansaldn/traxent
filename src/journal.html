@@ -563,6 +563,18 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
   return '£' + n.toLocaleString('en-GB', { minimumFractionDigits: dp, maximumFractionDigits: dp });
 }
 
+// HTML escape — use anywhere user-supplied data goes into innerHTML.
+// Protects against stored XSS via note/pattern/instrument fields.
+function esc(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // ── FIRM CONFIGS ───────────────────────────────────────────────────────────────
 const FIRMS = {
   ftmo: {
@@ -1075,17 +1087,18 @@ function renderTradesList() {
     const dateStr = new Date(t.date).toLocaleDateString('en-GB', { day:'numeric', month:'short' });
     const pnlStr = (t.pnl >= 0 ? '+' : '') + '£' + Math.abs(t.pnl).toFixed(2);
     const rrStr = (t.rr >= 0 ? '+' : '') + t.rr.toFixed(2) + 'R';
+    const dirClass = t.direction === 'long' ? 'long' : 'short';
     return `
       <div class="trade-row">
         <div class="tr-date">${dateStr}</div>
         <div class="tr-desc">
-          <div class="tr-instrument">${t.instrument}</div>
-          <div class="tr-pattern">${t.pattern || '—'} · ${t.note ? t.note.substring(0,40)+'…' : 'No note'}</div>
+          <div class="tr-instrument">${esc(t.instrument)}</div>
+          <div class="tr-pattern">${esc(t.pattern || '—')} · ${t.note ? esc(t.note.substring(0,40)) + '…' : 'No note'}</div>
         </div>
-        <div class="tr-dir ${t.direction}">${t.direction === 'long' ? '▲ Long' : '▼ Short'}</div>
+        <div class="tr-dir ${dirClass}">${dirClass === 'long' ? '▲ Long' : '▼ Short'}</div>
         <div class="tr-rr">${rrStr}</div>
         <div class="tr-pnl ${t.pnl > 0 ? 'pos' : 'neg'}">${pnlStr}</div>
-        <button class="tr-del" onclick="deleteTrade(${t.id})" title="Remove trade">✕</button>
+        <button class="tr-del" onclick="deleteTrade(${Number(t.id)})" title="Remove trade">✕</button>
       </div>`;
   }).join('');
 }

@@ -181,7 +181,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 
   <div id="plan-banner" style="display:none" class="plan-banner">
     <div class="plan-banner-text" id="plan-banner-text"></div>
-    <a href="/pricing" class="btn-banner-upgrade" id="plan-banner-btn">Upgrade →</a>
+    <a href="/#pricing" class="btn-banner-upgrade" id="plan-banner-btn">Upgrade →</a>
   </div>
 
   <div class="modules" id="modules-list">
@@ -193,7 +193,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
       <div class="learn-cta-title">Ready for more?</div>
       <div class="learn-cta-sub">Upgrade to Observer to unlock Modules 2, 3 and 4.</div>
     </div>
-    <a href="/pricing" class="learn-cta-btn">See pricing →</a>
+    <a href="/#pricing" class="learn-cta-btn">See pricing →</a>
   </div>
 
 </div>
@@ -336,7 +336,7 @@ async function initLearn() {
 
       let btnHTML = '';
       if (!isUnlocked) {
-        btnHTML = `<a href="/pricing" class="btn-start locked-btn">Unlock →</a>`;
+        btnHTML = `<a href="/#pricing" class="btn-start locked-btn">Unlock →</a>`;
       } else if (isComplete) {
         btnHTML = `<a href="${mod.link}" class="btn-start secondary">Review →</a>`;
       } else if (isStarted) {

@@ -1,0 +1,16 @@
+# Normalize line endings on commit so OneDrive + Windows + Linux don't fight.
+# Files in the repo are stored with LF; checkouts on Windows get LF too
+# (no auto-conversion) because the deploy target (S3 / Linux) expects LF.
+
+* text=auto eol=lf
+
+# Binary files — never touch.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.woff binary
+*.woff2 binary

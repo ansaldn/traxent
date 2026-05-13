@@ -66,3 +66,46 @@ async function canAccess(requiredPlan) {
   const requiredLevel = hierarchy.indexOf(requiredPlan);
   return userLevel >= requiredLevel;
 }
+
+// ---------------------------------------------------------------------------
+// requireMinPlan(minPlan)
+// Page-level paywall gate. Call from the <head> of any protected page.
+// Hides the body until auth is confirmed, then:
+//   - if not logged in → sends user through Auth0 login, returns to this page
+//   - if plan is below minPlan → redirects to /dashboard?needs=<plan>
+//   - if plan is sufficient → reveals the page
+// Requires a <style id="auth-gate-style">body{visibility:hidden}</style> in <head>.
+// ---------------------------------------------------------------------------
+async function requireMinPlan(minPlan) {
+  try {
+    await initAuth0();
+
+    if (window.location.search.includes('code=') || window.location.search.includes('state=')) {
+      await auth0Client.handleRedirectCallback();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    const isAuthenticated = await auth0Client.isAuthenticated();
+    if (!isAuthenticated) {
+      await auth0Client.loginWithRedirect({
+        authorizationParams: { redirect_uri: window.location.origin + window.location.pathname }
+      });
+      return;
+    }
+
+    const claims = await auth0Client.getIdTokenClaims();
+    const ns = 'https://traxent.io';
+    const plan = (claims && claims[`${ns}/plan`]) || 'free';
+    const hierarchy = ['free', 'observer', 'challenger', 'funded_ready'];
+    if (hierarchy.indexOf(plan) < hierarchy.indexOf(minPlan)) {
+      window.location.href = '/dashboard?needs=' + encodeURIComponent(minPlan);
+      return;
+    }
+
+    const gateStyle = document.getElementById('auth-gate-style');
+    if (gateStyle) gateStyle.remove();
+  } catch (err) {
+    console.error('requireMinPlan error:', err);
+    window.location.href = '/';
+  }
+}

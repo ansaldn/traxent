@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <title>Live Chart — Traxent</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -219,7 +220,7 @@ body.session-mode .upgrade-bar{display:none;}
     <iframe
       id="chart-frame"
       class="chart-frame"
-      src="https://s.tradingview.com/widgetsnext/embed/#locale=en&symbol=ES1!&interval=15&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_side_toolbar=0&allow_symbol_change=0&save_image=0&support_host=https%3A%2F%2Fwww.tradingview.com"
+      src="https://s.tradingview.com/widgetsnext/embed/#locale=en&symbol=ES1!&interval=15&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_side_toolbar=0&allow_symbol_change=0&save_image=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
     ></iframe>
 
     <!-- Delayed badge -->
@@ -376,7 +377,10 @@ body.session-mode .upgrade-bar{display:none;}
   </div>
 </div>
 
-<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script
+  src="https://cdn.auth0.com/js/auth0-spa-js/2.1.3/auth0-spa-js.production.js"
+  integrity="sha384-REPLACE_ME_WITH_HASH"
+  crossorigin="anonymous"></script>
 <script src="/auth.js"></script>
 <script>
 // ── STATE ──────────────────────────────────────────────────────────────────────

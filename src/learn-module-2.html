@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <!-- PWA manifest -->
 <link rel="manifest" href="/manifest.json">
  
@@ -27,7 +28,10 @@
 </script>
 <title>Module 2: Chart Patterns — Traxent Learn</title>
 <style id="auth-gate-style">body{visibility:hidden}</style>
-<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script
+  src="https://cdn.auth0.com/js/auth0-spa-js/2.1.3/auth0-spa-js.production.js"
+  integrity="sha384-REPLACE_ME_WITH_HASH"
+  crossorigin="anonymous"></script>
 <script src="/auth.js"></script>
 <script>requireMinPlan('observer');</script>
 <meta name="robots" content="noindex">
@@ -254,7 +258,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32
           <div class="chart-header"><div><div class="chart-title">Live chart — look for flag patterns</div><div class="chart-subtitle">Try 1H and 4H timeframes · strong moves followed by slow pullbacks</div></div>
             <div class="inst-switcher" id="sw1"><button class="inst-btn active" onclick="sw('f1','ES1!','60',this,'sw1')">ES1! 1H</button><button class="inst-btn" onclick="sw('f1','NQ1!','60',this,'sw1')">NQ1! 1H</button><button class="inst-btn" onclick="sw('f1','EURUSD','60',this,'sw1')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f1','GBPUSD','60',this,'sw1')">GBP/USD 1H</button><button class="inst-btn" onclick="sw('f1','XAUUSD','60',this,'sw1')">Gold 1H</button></div>
           </div>
-          <iframe id="f1" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+          <iframe id="f1" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
         </div>
         <div class="exercise">
           <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">Flag pattern recognition</span></div>
@@ -294,7 +298,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32
           <div class="chart-header"><div><div class="chart-title">Live chart — look for inside bars</div><div class="chart-subtitle">Daily and 4H timeframes show the clearest inside bars · look for candles fully contained within the previous one</div></div>
             <div class="inst-switcher" id="sw2"><button class="inst-btn active" onclick="sw('f2','EURUSD','D',this,'sw2')">EUR/USD Daily</button><button class="inst-btn" onclick="sw('f2','GBPUSD','D',this,'sw2')">GBP/USD Daily</button><button class="inst-btn" onclick="sw('f2','ES1!','D',this,'sw2')">ES1! Daily</button><button class="inst-btn" onclick="sw('f2','XAUUSD','D',this,'sw2')">Gold Daily</button></div>
           </div>
-          <iframe id="f2" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=EURUSD&interval=D&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+          <iframe id="f2" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=EURUSD&interval=D&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
         </div>
         <div class="exercise">
           <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">Inside bar identification</span></div>
@@ -337,7 +341,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32
           <div class="chart-header"><div><div class="chart-title">Live chart — BOS and VWAP</div><div class="chart-subtitle">Switch to intraday to see VWAP in action · daily for structure breaks</div></div>
             <div class="inst-switcher" id="sw3"><button class="inst-btn active" onclick="sw('f3','ES1!','15',this,'sw3')">ES1! 15M</button><button class="inst-btn" onclick="sw('f3','NQ1!','15',this,'sw3')">NQ1! 15M</button><button class="inst-btn" onclick="sw('f3','ES1!','D',this,'sw3')">ES1! Daily</button><button class="inst-btn" onclick="sw('f3','EURUSD','60',this,'sw3')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f3','GBPUSD','60',this,'sw3')">GBP/USD 1H</button></div>
           </div>
-          <iframe id="f3" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=15&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+          <iframe id="f3" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=15&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
         </div>
         <div class="exercise">
           <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">BOS identification</span></div>
@@ -377,7 +381,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32
           <div class="chart-header"><div><div class="chart-title">Live chart — find a confluence setup</div><div class="chart-subtitle">Use multiple timeframes · look for two or more signals aligning at the same level</div></div>
             <div class="inst-switcher" id="sw4"><button class="inst-btn active" onclick="sw('f4','ES1!','60',this,'sw4')">ES1! 1H</button><button class="inst-btn" onclick="sw('f4','ES1!','D',this,'sw4')">ES1! Daily</button><button class="inst-btn" onclick="sw('f4','EURUSD','60',this,'sw4')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f4','EURUSD','D',this,'sw4')">EUR/USD Daily</button><button class="inst-btn" onclick="sw('f4','NQ1!','60',this,'sw4')">NQ1! 1H</button></div>
           </div>
-          <iframe id="f4" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com"></iframe>
+          <iframe id="f4" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
         </div>
         <div class="exercise">
           <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">Confluence thinking</span></div>

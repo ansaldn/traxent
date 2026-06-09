@@ -511,4 +511,43 @@ async function cancelSubscription() {
       hideCancelModal();
       // Build a clear toast that tells the user exactly when their access ends
       let toastMsg = 'Subscription cancelled. Access continues until billing period ends.';
-      if (cancelAt
+      if (cancelAt) {
+        const endDate = new Date(cancelAt * 1000).toLocaleDateString('en-GB', {
+          day: 'numeric', month: 'long', year: 'numeric'
+        });
+        toastMsg = 'Subscription cancelled. Access continues until ' + endDate + '.';
+      }
+      showToast(toastMsg);
+
+      const badge = document.getElementById('header-plan-badge');
+      if (badge) {
+        badge.textContent = badge.textContent + ' (cancels soon)';
+        badge.style.opacity = '0.6';
+      }
+    }, 2200);
+
+  } catch (err) {
+    console.error('Cancel subscription error:', err);
+    showToast('Something went wrong — email hello@traxent.io and we will cancel for you.', false);
+    hideCancelModal();
+    if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = 'Yes, cancel'; }
+  }
+}
+
+function showToast(msg, success = true) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.style.borderLeft = success ? '3px solid #1a9e72' : '3px solid #9e1a1a';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+// Close modal on overlay click
+document.getElementById('cancel-modal').addEventListener('click', function(e) {
+  if (e.target === this) hideCancelModal();
+});
+
+initAccount();
+</script>
+</body>
+</html>

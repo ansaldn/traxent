@@ -357,4 +357,29 @@ function showToast(msg, success = true) {
     color:white;padding:12px 18px;border-radius:8px;
     font-size:13px;font-weight:500;
     font-family:'Geist',sans-serif;
-    z-index:9999;box-shadow:0 8px 
+    z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.18);
+    opacity:0;transform:translateY(8px);
+    transition:opacity .2s ease, transform .2s ease;
+  `;
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => {
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+  });
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(8px)';
+    setTimeout(() => toast.remove(), 250);
+  }, 4000);
+}
+
+// ── Entry point ───────────────────────────────────────────────────
+// Run the dashboard once the page has loaded. Without this call the
+// loading splash never clears. (This invocation, the tail of
+// showToast(), and the closing tags were lost to a file-truncation
+// bug and have been restored.)
+initDashboard();
+</script>
+</body>
+</html>

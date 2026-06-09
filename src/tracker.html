@@ -872,4 +872,15 @@ async function upgradePlan(plan) {
     const res = await fetch('https://da579ew81m.execute-api.eu-west-2.amazonaws.com/prod/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
- 
+      body: JSON.stringify({ plan, userId: user.sub, userEmail: user.email })
+    });
+    if (!res.ok) throw new Error();
+    const { url } = await res.json();
+    window.location.href = url;
+  } catch { alert('Something went wrong — please try from the dashboard.'); }
+}
+
+initTracker();
+</script>
+</body>
+</html>

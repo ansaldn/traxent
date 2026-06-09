@@ -480,26 +480,57 @@ function hideCancelModal() {
 }
 
 async function cancelSubscription() {
+  // Lock the confirm button so a double-tap doesn't fire two cancellations
+  const confirmBtn = document.querySelector('.btn-modal-cancel-sub');
+  if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.textContent = 'Cancelling…'; }
+
   try {
-    // Show success state immediately — in production this calls
-    // a Lambda endpoint that cancels the Stripe subscription
+    const user = await auth0Client.getUser();
+    const token = await auth0Client.getTokenSilently();
+
+    const res = await fetch('https://da579ew81m.execute-api.eu-west-2.amazonaws.com/Stage/cancel', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ userId: user.sub })
+    });
+
+    if (!res.ok) {
+      let serverMsg = '';
+      try { serverMsg = (await res.json()).error || ''; } catch (_) {}
+      throw new Error('Cancel failed (' + res.status + ')' + (serverMsg ? ': ' + serverMsg : ''));
+    }
+
+    const { cancelAt } = await res.json();
+
+    // Now we can confidently flip the UI to the success state
     document.getElementById('cancel-confirm').style.display = 'none';
     document.getElementById('cancel-success').classList.add('show');
     document.getElementById('danger-section').style.display = 'none';
 
-    // Close modal after 3 seconds
     setTimeout(() => {
       hideCancelModal();
-      showToast('Subscription cancelled. Access continues until billing period ends.');
-      // Update badge to show pending cancellation
+      // Build a clear toast that tells the user exactly when their access ends
+      let toastMsg = 'Subscription cancelled. Access continues until billing period ends.';
+      if (cancelAt) {
+        const endDate = new Date(cancelAt * 1000).toLocaleDateString('en-GB', {
+          day: 'numeric', month: 'long', year: 'numeric'
+        });
+        toastMsg = 'Subscription cancelled. Access continues until ' + endDate + '.';
+      }
+      showToast(toastMsg);
+
       const badge = document.getElementById('header-plan-badge');
-      badge.textContent = badge.textContent + ' (cancels soon)';
-      badge.style.opacity = '0.6';
-    }, 2800);
+      if (badge) {
+        badge.textContent = badge.textContent + ' (cancels soon)';
+        badge.style.opacity = '0.6';
+      }
+    }, 2200);
 
   } catch (err) {
+    console.error('Cancel subscription error:', err);
     showToast('Something went wrong — email hello@traxent.io and we will cancel for you.', false);
     hideCancelModal();
+    if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = 'Yes, cancel'; }
   }
 }
 

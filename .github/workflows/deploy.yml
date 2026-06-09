@@ -20,11 +20,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
 
-      - name: Stamp Service Worker cache version with commit SHA
+      - name: Stamp build SHA into Service Worker and auth.js references
         run: |
-          sed -i "s/__BUILD_SHA__/${GITHUB_SHA::8}/g" src/sw.js
+          # Stamp the commit SHA into sw.js (cache name) AND into every
+          # HTML <script src="auth.js?v=__BUILD_SHA__"> reference. Because the
+          # HTML is served no-cache, each deploy points browsers at a fresh
+          # auth.js URL — so a stale auth.js can never be reused, regardless
+          # of the CloudFront 4h max-age on .js files.
+          sed -i "s/__BUILD_SHA__/${GITHUB_SHA::8}/g" src/sw.js src/*.html
           echo "sw.js CACHE_NAME after stamping:"
           grep CACHE_NAME src/sw.js
+          echo "auth.js references after stamping:"
+          grep -h 'src="/\?auth.js' src/*.html | sort -u
 
       - name: Deploy to S3
         run: |

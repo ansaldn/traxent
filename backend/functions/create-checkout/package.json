@@ -1,16 +1,18 @@
 {
   "name": "create-checkout",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.mjs",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "description": "",
   "dependencies": {
     "@aws-sdk/client-ssm": "^3.1018.0",
+    "aws-jwt-verify": "^4.0.1",
     "stripe": "^21.0.1"
-  },
-  "description": ""
+  }
 }

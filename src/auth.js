@@ -12,7 +12,9 @@ async function initAuth0() {
     clientId: AUTH0_CLIENT_ID,
     authorizationParams: {
       redirect_uri: window.location.origin,
-      audience: `https://${AUTH0_DOMAIN}/api/v2/`,
+      // No `audience` set — Auth0 issues a standard OIDC ID token.
+      // We use the ID token (not access token) for API calls to our Lambdas;
+      // see authBearerToken() below.
     },
     cacheLocation: 'localstorage',
   });
@@ -49,6 +51,14 @@ async function getUser() {
   const isAuthenticated = await auth0Client.isAuthenticated();
   if (!isAuthenticated) return null;
   return await auth0Client.getUser();
+}
+
+// Get the raw ID token JWT — pass this as `Authorization: Bearer <token>`
+// when calling our Lambda APIs. ID token is always a JWT (signed RS256),
+// audience = Auth0 Client ID, issuer = Auth0 tenant.
+async function authBearerToken() {
+  const claims = await auth0Client.getIdTokenClaims();
+  return claims && claims.__raw;
 }
 
 // Get user's plan tier from JWT

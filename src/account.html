@@ -454,7 +454,7 @@ function renderPlanCard(plan) {
 async function upgradePlan(plan) {
   try {
     const user = await auth0Client.getUser();
-    const token = await auth0Client.getTokenSilently();
+    const token = await authBearerToken();
     showToast('Redirecting to checkout...');
     const res = await fetch('https://da579ew81m.execute-api.eu-west-2.amazonaws.com/prod/checkout', {
       method: 'POST',
@@ -486,7 +486,7 @@ async function cancelSubscription() {
 
   try {
     const user = await auth0Client.getUser();
-    const token = await auth0Client.getTokenSilently();
+    const token = await authBearerToken();
 
     const res = await fetch('https://da579ew81m.execute-api.eu-west-2.amazonaws.com/Stage/cancel', {
       method: 'POST',

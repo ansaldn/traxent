@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<!-- PWA manifest -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- iOS / iPadOS PWA support -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Traxent">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+
+<!-- Theme colour -->
+<meta name="theme-color" content="#0e0e0c">
+
+<!-- Service worker registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => {
+        console.warn('SW registration failed:', err);
+      });
+    });
+  }
+</script>
+
+<title>Waitlist — Traxent</title>
+<meta name="description" content="Join the Traxent waitlist for early access — track your path to funded across FTMO, Apex, MyFundedFutures and FundedNext. See what's live and what's coming.">
+<meta property="og:title" content="Waitlist — Traxent">
+<meta property="og:description" content="Get notified when Traxent opens to the public. See the roadmap.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://traxent.io/waitlist">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="canonical" href="https://traxent.io/waitlist">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f2;
+  --ink: #0e0e0c;
+  --ink2: #3a3a36;
+  --ink3: #7a7a72;
+  --accent: #0a6e4f;
+  --accent-light: #e8f5f0;
+  --accent-mid: #1a9e72;
+  --border: rgba(14,14,12,0.1);
+  --border2: rgba(14,14,12,0.06);
+  --surface: #ffffff;
+  --surface2: #f0efe9;
+  --good: #0a6e4f;
+  --warn: #b06000;
+  --bad: #9e1a1a;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', sans-serif;
+  --mono: 'Geist Mono', monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.fade-up { animation: fadeUp 0.7s ease forwards; }
+.fade-up-2 { animation: fadeUp 0.7s 0.15s ease forwards; opacity: 0; }
+.fade-up-3 { animation: fadeUp 0.7s 0.3s ease forwards; opacity: 0; }
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(247,246,242,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.nav-logo em { font-style: normal; color: var(--accent); }
+.nav-back { font-size: 13px; color: var(--ink3); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
+.nav-back:hover { color: var(--ink); }
+.nav-back::before { content: '←'; }
+
+/* ── HERO ── */
+.hero {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 80px 40px 40px;
+  text-align: center;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+.hero-h1 {
+  font-family: var(--serif);
+  font-size: 56px;
+  line-height: 1.04;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+}
+.hero-h1 em { font-style: italic; color: var(--accent); }
+.hero-body {
+  font-size: 17px;
+  color: var(--ink2);
+  line-height: 1.65;
+  margin: 0 auto 36px;
+  max-width: 560px;
+  font-weight: 300;
+}
+
+/* ── WAITLIST FORM (reused style) ── */
+.waitlist-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 40px;
+  max-width: 520px;
+  margin: 0 auto;
+  box-shadow: 0 16px 48px rgba(14,14,12,0.04);
+}
+.waitlist-form { display: flex; flex-direction: column; gap: 12px; }
+.waitlist-input-row { display: flex; gap: 8px; }
+.waitlist-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.waitlist-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(10,110,79,0.08);
+}
+.btn-waitlist {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-waitlist:hover { background: #085e43; }
+.btn-waitlist:active { transform: scale(0.98); }
+.waitlist-note {
+  font-size: 12px;
+  color: var(--ink3);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.waitlist-note::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s ease infinite;
+}
+.waitlist-success {
+  display: none;
+  background: var(--accent-light);
+  border: 1px solid rgba(10,110,79,0.2);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ── SECTION BASE ── */
+.section {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 64px 40px;
+}
+.section-divider { max-width: 960px; margin: 0 auto; padding: 0 40px; }
+.section-divider hr { border: none; border-top: 1px solid var(--border); }
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::before { content: ''; width: 20px; height: 1px; background: var(--accent); }
+.section-title {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+.section-sub {
+  font-size: 16px;
+  color: var(--ink3);
+  line-height: 1.65;
+  max-width: 620px;
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+
+/* ── ABOUT (3-col benefits) ── */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 32px;
+}
+.about-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 24px;
+}
+.about-card-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.about-card-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.about-card-body {
+  font-size: 13px;
+  color: var(--ink3);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ── PERKS ── */
+.perks {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px 40px;
+  margin-top: 24px;
+}
+.perks-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.perks-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.perks-list li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.6;
+  font-weight: 300;
+}
+.perks-list li strong { color: var(--ink); font-weight: 500; }
+.perk-tick {
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+/* ── ROADMAP ── */
+.roadmap-section { background: var(--ink); }
+.roadmap-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 80px 40px;
+}
+.roadmap-inner .section-label { color: var(--accent-mid); }
+.roadmap-inner .section-label::before { background: var(--accent-mid); }
+.roadmap-inner .section-title { color: white; }
+.roadmap-inner .section-sub { color: rgba(255,255,255,0.55); }
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 40px;
+}
+.timeline-phase {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 28px 32px;
+  position: relative;
+}
+.timeline-phase.now {
+  border-left: 3px solid var(--accent-mid);
+}
+.timeline-phase.soon {
+  border-left: 3px solid #fbbf24;
+}
+.timeline-phase.later {
+  border-left: 3px solid rgba(255,255,255,0.2);
+}
+.phase-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.phase-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: white;
+  font-style: italic;
+}
+.phase-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.phase-tag.now {
+  background: rgba(26,158,114,0.15);
+  color: #4ade80;
+  border: 1px solid rgba(26,158,114,0.3);
+}
+.phase-tag.soon {
+  background: rgba(251,191,36,0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(251,191,36,0.3);
+}
+.phase-tag.later {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.phase-items {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 24px;
+}
+.phase-items li {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  font-weight: 300;
+  line-height: 1.55;
+  padding-left: 18px;
+  position: relative;
+}
+.phase-items li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 7px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent-mid);
+  opacity: 0.7;
+}
+.timeline-phase.soon .phase-items li::before { background: #fbbf24; opacity: 0.6; }
+.timeline-phase.later .phase-items li::before { background: rgba(255,255,255,0.3); }
+
+.roadmap-disclaimer {
+  margin-top: 32px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  font-family: var(--mono);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ── CTA bottom ── */
+.bottom-cta {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 80px 40px;
+  text-align: center;
+}
+.bottom-cta-title {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.bottom-cta-sub {
+  font-size: 15px;
+  color: var(--ink3);
+  font-weight: 300;
+  margin-bottom: 28px;
+}
+.bottom-cta a {
+  background: var(--ink);
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 14px 28px;
+  border-radius: 8px;
+  display: inline-block;
+  transition: background 0.15s;
+}
+.bottom-cta a:hover { background: var(--accent); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink);
+  padding: 48px 40px 36px;
+}
+.footer-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 24px;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.footer-logo {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+.footer-logo em { font-style: normal; color: var(--accent-mid); }
+.footer-tagline {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 6px;
+  font-weight: 300;
+}
+.footer-links {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.footer-col-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 12px;
+}
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  margin-bottom: 6px;
+  transition: color 0.15s;
+}
+.footer-col a:hover { color: white; }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: var(--ink);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  transform: translateY(80px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 999;
+  max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero { padding: 56px 24px 24px; }
+  .hero-h1 { font-size: 38px; }
+  .waitlist-card { padding: 24px 20px; }
+  .section { padding: 48px 24px; }
+  .about-grid { grid-template-columns: 1fr; gap: 12px; }
+  .roadmap-inner { padding: 56px 24px; }
+  .timeline-phase { padding: 22px 22px; }
+  .phase-items { grid-template-columns: 1fr; }
+  .bottom-cta { padding: 56px 24px; }
+  .nav-inner { padding: 0 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">trax<em>ent</em></a>
+    <a href="/" class="nav-back">Back to home</a>
+  </div>
+</nav>
+
+<!-- Hero + form -->
+<section class="hero">
+  <div class="hero-eyebrow fade-up">Waitlist</div>
+  <h1 class="hero-h1 fade-up-2">Join the list for <em>early access</em></h1>
+  <p class="hero-body fade-up-3">Traxent is opening to the public soon. Add your email to get notified the moment it does — plus founding member perks reserved for the people who joined early.</p>
+
+  <div class="waitlist-card fade-up-3">
+    <form class="waitlist-form" id="wl-form" onsubmit="joinWaitlist(event)">
+      <div class="waitlist-input-row">
+        <input class="waitlist-input" type="email" id="wl-email" placeholder="your@email.com" autocomplete="email" required>
+        <button class="btn-waitlist" type="submit">Join the waitlist</button>
+      </div>
+      <div class="waitlist-note">Free to join. No spam. Unsubscribe anytime.</div>
+    </form>
+    <div class="waitlist-success" id="wl-success">
+      ✓ You're on the list. We'll be in touch before public launch.
+    </div>
+  </div>
+</section>
+
+<!-- About / why -->
+<section class="section">
+  <div class="section-label">What is Traxent</div>
+  <h2 class="section-title">Track your path to funded</h2>
+  <p class="section-sub">Traxent is an education-first platform for traders aiming to pass a prop firm challenge. Learn the patterns, log your sim trades, and let the readiness tracker tell you exactly which firm you're prepared for — before you pay a penny for a real challenge.</p>
+
+  <div class="about-grid">
+    <div class="about-card">
+      <div class="about-card-icon">📖</div>
+      <div class="about-card-title">Learn the craft</div>
+      <div class="about-card-body">Four structured modules cover the candlestick patterns, market structure, risk discipline, and prop-firm-specific quirks you actually need to know.</div>
+    </div>
+    <div class="about-card">
+      <div class="about-card-icon">📓</div>
+      <div class="about-card-title">Sim trade, log, measure</div>
+      <div class="about-card-body">Practice with simulated trades. Every entry is logged, every rule violation is flagged, and your win-rate plus R:R metric build the picture of a real funded-ready trader.</div>
+    </div>
+    <div class="about-card">
+      <div class="about-card-icon">🎯</div>
+      <div class="about-card-title">Score against real rules</div>
+      <div class="about-card-body">FTMO, Apex, MyFundedFutures, FundedNext — each firm's published rules are baked into the scoring engine. You'll see which one you're ready for before you spend money on a challenge.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- Perks -->
+<section class="section">
+  <div class="section-label">Why join the waitlist</div>
+  <h2 class="section-title">Founding member perks</h2>
+  <p class="section-sub">People on the waitlist get more than just an early-access invite. The list closes the moment we open to the public, so what's below is only available to people who sign up now.</p>
+
+  <div class="perks">
+    <ul class="perks-list">
+      <li>
+        <span class="perk-tick">✓</span>
+        <span><strong>50% off your first 3 months</strong> on any paid plan. Lock in the discount the moment you upgrade — no codes, no expiry on the offer.</span>
+      </li>
+      <li>
+        <span class="perk-tick">✓</span>
+        <span><strong>First in line</strong> when new firms (Topstep, The5ers, FXIFY and more) and new features like the news sentiment feed go live.</span>
+      </li>
+      <li>
+        <span class="perk-tick">✓</span>
+        <span><strong>A direct line to the founder.</strong> Reply to any of the (rare) waitlist updates and your feedback lands straight in our inbox. Genuinely shapes the roadmap.</span>
+      </li>
+      <li>
+        <span class="perk-tick">✓</span>
+        <span><strong>No spam.</strong> One short email at launch. One every few weeks during the build-up. That's it.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- Roadmap -->
+<div class="roadmap-section">
+  <div class="roadmap-inner">
+    <div class="section-label">Roadmap</div>
+    <h2 class="section-title">What's live, what's next,<br>what's on the horizon</h2>
+    <p class="section-sub">Traxent is a real product being built in the open. The list below is honest about what works today, what's nearly ready, and what's further out. No vapourware.</p>
+
+    <div class="timeline">
+
+      <!-- Now -->
+      <div class="timeline-phase now">
+        <div class="phase-head">
+          <div class="phase-name">Live in early access</div>
+          <div class="phase-tag now">● Available now</div>
+        </div>
+        <ul class="phase-items">
+          <li>Readiness tracker for FTMO, Apex, MyFundedFutures, FundedNext</li>
+          <li>4 learning modules: fundamentals, patterns, risk, prop firm mastery</li>
+          <li>Sim trade journal with R:R, win rate, and rule-compliance scoring</li>
+          <li>Challenge Lab — 4-week structured programme with psychology and discipline drills</li>
+          <li>Position size calculator with prop firm drawdown limits built in</li>
+          <li>Live chart embed with 15-minute delayed data</li>
+          <li>Three plan tiers: Observer, Challenger, Funded Trader</li>
+          <li>iPad and mobile PWA — installable, offline-capable</li>
+        </ul>
+      </div>
+
+      <!-- Soon -->
+      <div class="timeline-phase soon">
+        <div class="phase-head">
+          <div class="phase-name">Coming soon</div>
+          <div class="phase-tag soon">● Next 4–8 weeks</div>
+        </div>
+        <ul class="phase-items">
+          <li>4 more prop firms: Topstep, The5ers, FXIFY, FundingPips</li>
+          <li>News sentiment feed with AI-tagged bull/bear scoring</li>
+          <li>Cross-device journal sync — log a trade on iPad, see it on desktop</li>
+          <li>Public launch — opening sign-ups to everyone on this list first</li>
+        </ul>
+      </div>
+
+      <!-- Later -->
+      <div class="timeline-phase later">
+        <div class="phase-head">
+          <div class="phase-name">On the horizon</div>
+          <div class="phase-tag later">● Later this year</div>
+        </div>
+        <ul class="phase-items">
+          <li>4 final prop firms: E8 Funding, Tradeify, Alpha Capital, Goat Funded</li>
+          <li>Interactive chart lessons — drawing tools, mark-up, replay mode</li>
+          <li>Premium real-time data feed (currently delayed)</li>
+          <li>Challenge simulation mode — full sim under a firm's exact rules</li>
+          <li>Activity insights — weekly emails on your readiness movement</li>
+          <li>Enterprise / academy tier with SSO and bulk seats</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <p class="roadmap-disclaimer">Dates are intentionally rough. We ship when it's ready, not when a slide deck says so.</p>
+  </div>
+</div>
+
+<!-- Bottom CTA -->
+<section class="bottom-cta">
+  <div class="bottom-cta-title">Ready to be early?</div>
+  <div class="bottom-cta-sub">Two seconds. No card. Just your email.</div>
+  <a href="#wl-form" onclick="document.getElementById('wl-email').focus();">Join the waitlist →</a>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">trax<em>ent</em></div>
+        <div class="footer-tagline">Track your path to funded.</div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <div class="footer-col-title">Product</div>
+          <a href="/#how">How it works</a>
+          <a href="/#readiness">Readiness tracker</a>
+          <a href="/#pricing">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Company</div>
+          <a href="/faq">FAQ</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="mailto:hello@traxent.io">hello@traxent.io</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Traxent is provided by Akpan Limited. All rights reserved. Registered in England &amp; Wales.</span>
+      <span style="font-family:var(--mono);font-size:11px">traxent.io</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+function showToast(msg, ok = true) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.borderLeft = ok ? '3px solid #1a9e72' : '3px solid #9e1a1a';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+function joinWaitlist(e) {
+  e.preventDefault();
+  const email = document.getElementById('wl-email').value.trim();
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!re.test(email)) {
+    showToast('Please enter a valid email address', false);
+    return;
+  }
+  fetch('https://formspree.io/f/mlgogjdq', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ email, source: 'waitlist-page', ts: new Date().toISOString() })
+  })
+  .then(r => {
+    if (r.ok) {
+      document.getElementById('wl-form').style.display = 'none';
+      document.getElementById('wl-success').style.display = 'block';
+      showToast("You're on the list — we'll be in touch soon");
+    } else {
+      showToast('Something went wrong — please try again', false);
+    }
+  })
+  .catch(() => {
+    document.getElementById('wl-form').style.display = 'none';
+    document.getElementById('wl-success').style.display = 'block';
+    showToast("You're on the list!");
+  });
+}
+</script>
+</body>
+</html>

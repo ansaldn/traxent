@@ -18,6 +18,7 @@ const PRECACHE = [
   '/challenge-lab',
   '/account',
   '/faq',
+  '/waitlist',
   '/privacy',
   '/terms',
   '/logo.svg',

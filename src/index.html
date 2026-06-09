@@ -942,7 +942,7 @@ footer {
       <a href="#readiness">Readiness</a>
       <a href="#pricing">Pricing</a>
       <a href="#" id="nav-signin" onclick="handleAuthClick(event)">Sign in</a>
-      <a href="#waitlist" id="nav-waitlist" class="nav-cta">Join waitlist</a>
+      <a href="/waitlist" id="nav-waitlist" class="nav-cta">Join waitlist</a>
       <a href="/dashboard" id="nav-dashboard" class="nav-cta" style="display:none">Dashboard →</a>
     </div>
   </div>
@@ -1224,7 +1224,7 @@ const plans = [
     ],
     btn: 'Start free trial',
     btnClass: 'plan-btn-outline',
-    btnHref: '#waitlist',
+    btnHref: '/waitlist',
     featured: false,
   },
   {
@@ -1245,7 +1245,7 @@ const plans = [
     ],
     btn: 'Start 7-day free trial',
     btnClass: 'plan-btn-solid',
-    btnHref: '#waitlist',
+    btnHref: '/waitlist',
     featured: true,
   },
   {
@@ -1266,7 +1266,7 @@ const plans = [
     ],
     btn: 'Start 7-day free trial',
     btnClass: 'plan-btn-outline',
-    btnHref: '#waitlist',
+    btnHref: '/waitlist',
     featured: false,
   },
   {
@@ -1419,16 +1419,3 @@ async function handleAuthClick(e) {
 window.addEventListener('load', async () => {
   await initAuth0();
   const isAuthenticated = await auth0Client.isAuthenticated();
-  const signin   = document.getElementById('nav-signin');
-  const waitlist = document.getElementById('nav-waitlist');
-  const dash     = document.getElementById('nav-dashboard');
-  if (isAuthenticated) {
-    // Hide both pre-launch buttons, show the dashboard CTA
-    if (signin)   signin.style.display = 'none';
-    if (waitlist) waitlist.style.display = 'none';
-    if (dash)     dash.style.display = '';
-  }
-});
-</script>
-</body>
-</html>

@@ -209,17 +209,19 @@ const ALL_FEATURES = [
     },
     action: 'Open journal', minPlan: 'challenger', requiredLabel: 'Challenger+', link: '/journal',
   },
+  // News sentiment feed — hidden for UAT/launch. The /news page doesn't exist
+  // yet, so a click would 404. Restore this card when the feature ships:
+  // {
+  //   icon: '📰', title: 'News sentiment feed',
+  //   desc: {
+  //     free:         'AI-tagged market news with bull/bear sentiment scoring.',
+  //     observer:     'AI-tagged market news with bull/bear sentiment scoring.',
+  //     challenger:   'AI-tagged market news with bull/bear sentiment scoring.',
+  //     funded_ready: 'Premium news feed with economic calendar integration and event alerts.',
+  //   },
+  //   action: 'Read feed', minPlan: 'funded_ready', requiredLabel: 'Funded Trader', link: '/news',
+  // },
   {
-    icon: '📰', title: 'News sentiment feed',
-    desc: {
-      free:         'AI-tagged market news with bull/bear sentiment scoring.',
-      observer:     'AI-tagged market news with bull/bear sentiment scoring.',
-      challenger:   'AI-tagged market news with bull/bear sentiment scoring.',
-      funded_ready: 'Premium news feed with economic calendar integration and event alerts.',
-    },
-    action: 'Read feed', minPlan: 'funded_ready', requiredLabel: 'Funded Trader', link: '/news',
-  },
-    {
     icon: '🧪', title: 'Challenge Lab',
     desc: {
       free:         'Advanced 4-week programme covering psychology, news trading, and trade management.',

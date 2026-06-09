@@ -250,7 +250,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
     </div>
     <div class="firms-grid" id="firms-grid"></div>
     <div class="selector-note">Select up to 3 firms. Scores are based on publicly available rules — always verify directly with the firm before purchasing a challenge.</div>
-    <div class="coming-soon-chips" id="coming-soon-grid"></div>
+    <!-- Coming-soon chips hidden for UAT/launch. To re-enable: restore <div class="coming-soon-chips" id="coming-soon-grid"></div> here and uncomment renderer below. -->
   </div>
 
   <!-- Two column layout -->
@@ -699,13 +699,17 @@ function renderFirmSelector() {
     </div>
   `).join('');
 
+  // Coming-soon chip render is no-op while the section is hidden for UAT/launch.
+  // To re-enable: restore the `<div id="coming-soon-grid">` element above and the block below.
   const comingGrid = document.getElementById('coming-soon-grid');
-  comingGrid.innerHTML = COMING_SOON_FIRMS.map(f => `
-    <div class="coming-chip">
-      <div class="coming-chip-name">${f.name}</div>
-      <div class="coming-chip-label">Coming soon · ${f.type}</div>
-    </div>
-  `).join('');
+  if (comingGrid) {
+    comingGrid.innerHTML = COMING_SOON_FIRMS.map(f => `
+      <div class="coming-chip">
+        <div class="coming-chip-name">${f.name}</div>
+        <div class="coming-chip-label">Coming soon · ${f.type}</div>
+      </div>
+    `).join('');
+  }
 
   document.getElementById('selected-count').textContent = selectedFirms.length;
 }

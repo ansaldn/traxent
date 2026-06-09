@@ -1419,3 +1419,15 @@ async function handleAuthClick(e) {
 window.addEventListener('load', async () => {
   await initAuth0();
   const isAuthenticated = await auth0Client.isAuthenticated();
+  const signin   = document.getElementById('nav-signin');
+  const waitlist = document.getElementById('nav-waitlist');
+  const dash     = document.getElementById('nav-dashboard');
+  if (isAuthenticated) {
+    if (signin)   signin.style.display = 'none';
+    if (waitlist) waitlist.style.display = 'none';
+    if (dash)     dash.style.display = '';
+  }
+});
+</script>
+</body>
+</html>

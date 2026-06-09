@@ -941,7 +941,9 @@ footer {
       <a href="#how">How it works</a>
       <a href="#readiness">Readiness</a>
       <a href="#pricing">Pricing</a>
-      <a href="#" class="nav-cta" id="auth-btn" onclick="handleAuthClick(event)">Join waitlist</a>
+      <a href="#" id="nav-signin" onclick="handleAuthClick(event)">Sign in</a>
+      <a href="#waitlist" id="nav-waitlist" class="nav-cta">Join waitlist</a>
+      <a href="/dashboard" id="nav-dashboard" class="nav-cta" style="display:none">Dashboard →</a>
     </div>
   </div>
 </nav>
@@ -1417,9 +1419,14 @@ async function handleAuthClick(e) {
 window.addEventListener('load', async () => {
   await initAuth0();
   const isAuthenticated = await auth0Client.isAuthenticated();
-  const btn = document.getElementById('auth-btn');
+  const signin   = document.getElementById('nav-signin');
+  const waitlist = document.getElementById('nav-waitlist');
+  const dash     = document.getElementById('nav-dashboard');
   if (isAuthenticated) {
-    btn.textContent = 'Go to dashboard →';
+    // Hide both pre-launch buttons, show the dashboard CTA
+    if (signin)   signin.style.display = 'none';
+    if (waitlist) waitlist.style.display = 'none';
+    if (dash)     dash.style.display = '';
   }
 });
 </script>

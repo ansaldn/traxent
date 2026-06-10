@@ -83,4 +83,14 @@ window.TraxentData = {
     lsSet(LS_TRADES, this.getTrades().filter(t => t.id !== id));
     try { await apiFetch('/trades/' + encodeURIComponent(id), { method: 'DELETE' }); } catch {}
   },
+
+  // ── Account deletion (irreversible) ──
+  // Cancels billing, purges all stored data, and deletes the Auth0 user.
+  // Requires USERDATA_API to be set and the user authenticated. Resolves on
+  // success (HTTP 204); throws on failure so the UI can keep the user signed in.
+  async deleteAccount() {
+    if (!USERDATA_API) throw new Error('userdata-api-not-configured');
+    await apiFetch('/account', { method: 'DELETE' });
+    try { localStorage.removeItem(LS_PROGRESS); localStorage.removeItem(LS_TRADES); localStorage.removeItem(LS_FIRMS); } catch {}
+  },
 };

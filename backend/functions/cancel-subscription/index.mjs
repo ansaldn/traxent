@@ -12,9 +12,15 @@ const ssm = new SSMClient({ region: 'eu-west-2' });
 // so `aud` is the SPA Client ID — NOT the Management API audience. Verifying
 // against the old `https://auth.traxent.io/api/v2/` value rejected every call
 // with 401, which is why cancel/checkout silently failed.
+// Accept ID tokens from BOTH the web SPA and the iOS native app. Override with
+// the AUTH0_AUDIENCE env var (comma-separated) if a client ID ever changes.
+const AUDIENCES = (process.env.AUTH0_AUDIENCE
+  || 'ilvfACgF2sCmLWaugCn11qTB04aTvWxz,YKvrjZoxnehdES7nmMs9SRXi3G0MdXcK')
+  .split(',').map(s => s.trim()).filter(Boolean);
+
 const verifier = JwtRsaVerifier.create({
   issuer: 'https://auth.traxent.io/',
-  audience: 'ilvfACgF2sCmLWaugCn11qTB04aTvWxz', // Auth0 SPA Client ID (ID token aud)
+  audience: AUDIENCES, // web SPA + iOS native client IDs (ID token aud)
   jwksUri: 'https://auth.traxent.io/.well-known/jwks.json',
 });
 

@@ -23,8 +23,8 @@ Parameters:
     Description: Auth0 token issuer (custom domain, trailing slash).
   Auth0Audience:
     Type: String
-    Default: ilvfACgF2sCmLWaugCn11qTB04aTvWxz
-    Description: Auth0 SPA Client ID — the audience of the ID token the frontend sends.
+    Default: ilvfACgF2sCmLWaugCn11qTB04aTvWxz,YKvrjZoxnehdES7nmMs9SRXi3G0MdXcK
+    Description: Comma-separated ID-token audiences to accept — web SPA Client ID and iOS native Client ID.
   AllowedOrigin:
     Type: String
     Default: https://traxent.io
@@ -80,6 +80,38 @@ Resources:
             ApiId: !Ref UserDataApi
             Path: /user/{proxy+}
             Method: ANY
+
+  # Account deletion (App Review 5.1.1(v)). Isolated from the data CRUD function
+  # because it holds the powerful Stripe + Auth0-admin permissions. The specific
+  # `DELETE /user/account` route takes precedence over the data function's greedy
+  # ANY /user/{proxy+}.
+  AccountDeleteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-delete-account
+      Handler: index.handler
+      CodeUri: functions/delete-account/
+      Timeout: 30
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref UserDataTable
+          AUTH0_ISSUER: !Ref Auth0Issuer
+          AUTH0_AUDIENCE: !Ref Auth0Audience
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UserDataTable
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/*"
+      Events:
+        DeleteAccount:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/account
+            Method: DELETE
 
   UserDataApi:
     Type: AWS::Serverless::HttpApi

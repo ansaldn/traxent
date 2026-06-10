@@ -13,9 +13,15 @@ const ssm = new SSMClient({ region: 'eu-west-2' });
 // Must match the Auth0 SPA SDK config in src/auth.js:
 //   domain:    'auth.traxent.io'
 //   clientId:  'ilvfACgF2sCmLWaugCn11qTB04aTvWxz'  ← ID token audience
+// Accept ID tokens from BOTH the web SPA and the iOS native app. Override with
+// the AUTH0_AUDIENCE env var (comma-separated) if a client ID ever changes.
+const AUDIENCES = (process.env.AUTH0_AUDIENCE
+  || 'ilvfACgF2sCmLWaugCn11qTB04aTvWxz,YKvrjZoxnehdES7nmMs9SRXi3G0MdXcK')
+  .split(',').map(s => s.trim()).filter(Boolean);
+
 const verifier = JwtRsaVerifier.create({
   issuer: 'https://auth.traxent.io/',
-  audience: 'ilvfACgF2sCmLWaugCn11qTB04aTvWxz', // Auth0 SPA Client ID (ID token aud)
+  audience: AUDIENCES, // web SPA + iOS native client IDs (ID token aud)
   jwksUri: 'https://auth.traxent.io/.well-known/jwks.json',
 });
 
@@ -91,13 +97,26 @@ export const handler = async (event) => {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid plan' }) };
     }
 
+    // Find or create the Stripe customer carrying the Auth0 identity in metadata,
+    // so cancellation AND account deletion can reliably locate it later. We store
+    // both `auth0_user_id` (existing convention) and `auth0_sub` (delete flow).
+    let customer = (await stripe.customers.search({
+      query: `metadata['auth0_user_id']:'${userId}'`
+    })).data[0];
+    if (!customer) {
+      customer = await stripe.customers.create({
+        email: userEmail || undefined,
+        metadata: { auth0_user_id: userId, auth0_sub: userId },
+      });
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       payment_method_types: ['card'],
       line_items: [{ price: PRICE_IDS[plan], quantity: 1 }],
       success_url: 'https://traxent.io/dashboard.html?upgraded=true',
       cancel_url: 'https://traxent.io/dashboard.html',
-      customer_email: userEmail,
+      customer: customer.id,
       metadata: { auth0_user_id: userId, plan },
       subscription_data: { metadata: { auth0_user_id: userId, plan } }
     });

@@ -17,9 +17,14 @@ const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}), {
   marshallOptions: { removeUndefinedValues: true },
 });
 
+// Accept ID tokens from BOTH the web SPA and the iOS native app (comma-split env).
+const AUDIENCES = (process.env.AUTH0_AUDIENCE
+  || 'ilvfACgF2sCmLWaugCn11qTB04aTvWxz,YKvrjZoxnehdES7nmMs9SRXi3G0MdXcK')
+  .split(',').map(s => s.trim()).filter(Boolean);
+
 const verifier = JwtRsaVerifier.create({
   issuer: process.env.AUTH0_ISSUER || 'https://auth.traxent.io/',
-  audience: process.env.AUTH0_AUDIENCE || 'ilvfACgF2sCmLWaugCn11qTB04aTvWxz',
+  audience: AUDIENCES,
   jwksUri: (process.env.AUTH0_ISSUER || 'https://auth.traxent.io/') + '.well-known/jwks.json',
 });
 

@@ -267,6 +267,20 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
     </div>
   </div>
 
+  <!-- Account deletion — available to every user (App Review 5.1.1(v)) -->
+  <div class="danger-section">
+    <div class="danger-header">
+      <span class="danger-title">Delete account</span>
+    </div>
+    <div class="danger-row">
+      <div class="danger-info">
+        <div class="danger-label">Permanently delete your account</div>
+        <div class="danger-sub">Cancels any active subscription, erases your progress, journal and saved firms, and removes your login. This cannot be undone.</div>
+      </div>
+      <button class="btn-cancel" onclick="showDeleteModal()">Delete account</button>
+    </div>
+  </div>
+
 </div>
 
 <!-- Cancel modal -->
@@ -289,11 +303,46 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
   </div>
 </div>
 
+<!-- Delete account modal -->
+<div class="modal-overlay" id="delete-modal">
+  <div class="modal">
+    <div id="delete-confirm">
+      <div class="modal-title">Delete your account?</div>
+      <div class="modal-body">This permanently cancels any active subscription, erases all your data (progress, journal, saved firms), and deletes your login. <strong>This cannot be undone.</strong></div>
+      <div class="modal-note">If you subscribed through the iOS app, also cancel that subscription in your iPhone Settings — Apple subscriptions can't be cancelled for you.</div>
+      <div class="modal-actions">
+        <button class="btn-modal-keep" onclick="hideDeleteModal()">Keep my account</button>
+        <button class="btn-modal-cancel-sub" onclick="deleteAccount()">Delete forever</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
 <script src="auth.js?v=__BUILD_SHA__"></script>
+<script src="userdata.js?v=__BUILD_SHA__"></script>
 <script>
+
+// ── Account deletion (DELETE /user/account via the user-data API) ──
+function showDeleteModal() { document.getElementById('delete-modal').classList.add('show'); }
+function hideDeleteModal() { document.getElementById('delete-modal').classList.remove('show'); }
+async function deleteAccount() {
+  const btn = document.querySelector('#delete-confirm .btn-modal-cancel-sub');
+  if (btn) { btn.disabled = true; btn.textContent = 'Deleting…'; }
+  try {
+    if (typeof TraxentData === 'undefined' || !TraxentData.apiEnabled()) throw new Error('not-configured');
+    await TraxentData.deleteAccount();
+    showToast('Your account has been deleted.');
+    setTimeout(() => { try { logout(); } catch (e) { window.location.href = '/'; } }, 1200);
+  } catch (err) {
+    console.error('Account deletion error:', err);
+    hideDeleteModal();
+    if (btn) { btn.disabled = false; btn.textContent = 'Delete forever'; }
+    showToast('Account deletion isn\'t available yet — please email hello@traxent.io.', false);
+  }
+}
 
 const PLAN_CONFIG = {
   free: {

@@ -4,8 +4,7 @@
   "lambdas": {
     "cancel-subscription": "traxent-cancel-subscription",
     "create-checkout": "traxent-create-checkout",
-    "stripe-webhook": "traxent-stripe-webhook",
-    "news-feed": "traxent-news-feed"
+    "stripe-webhook": "traxent-stripe-webhook"
   },
   "cloudfrontFunctions": {
     "backend/cloudfront-functions/security-headers.js": "traxent-security-headers"

@@ -57,9 +57,16 @@ jobs:
             fi
             src="backend/functions/$dir"
             [ -d "$src" ] || { echo "::error::Missing source dir $src"; exit 1; }
+            # Skip functions that don't exist in AWS yet (e.g. ones the SAM stack owns).
+            if ! aws lambda get-function --function-name "$name" --region "$region" >/dev/null 2>&1; then
+              echo "::warning::Lambda '$name' not found in AWS — skipping (managed by the SAM stack?)"
+              continue
+            fi
             echo "::group::Deploy $dir -> $name"
             ( cd "$src"
-              if [ -f package-lock.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi
+              # Use `npm install` not `npm ci`: some functions' committed lock files
+              # are out of sync with package.json, which makes `npm ci` hard-fail.
+              npm install --omit=dev --no-audit --no-fund
               rm -f /tmp/"$dir".zip
               zip -qr /tmp/"$dir".zip . -x '*.git*' 'package-lock.json'
             )

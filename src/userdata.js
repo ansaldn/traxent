@@ -12,7 +12,7 @@
 //
 // Depends on authBearerToken() from auth.js (load auth.js first).
 
-const USERDATA_API = ''; // ← set to the deployed user-data ApiBaseUrl
+const USERDATA_API = 'https://gqway1e53f.execute-api.eu-west-2.amazonaws.com/'; // ← set to the deployed user-data ApiBaseUrl
 
 const LS_PROGRESS = 'traxent_progress';
 const LS_TRADES   = 'traxent_trades';

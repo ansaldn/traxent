@@ -1,0 +1,13 @@
+{
+  "name": "user-data",
+  "version": "1.0.0",
+  "main": "index.mjs",
+  "type": "module",
+  "license": "ISC",
+  "description": "Traxent per-user data API: lesson progress, paper trades, firm selections (DynamoDB).",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.700.0",
+    "@aws-sdk/lib-dynamodb": "^3.700.0",
+    "aws-jwt-verify": "^4.0.1"
+  }
+}

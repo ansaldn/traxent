@@ -1,0 +1,70 @@
+name: Deploy Infrastructure (SAM)
+
+# Infrastructure-as-code for the user-data stack (DynamoDB + Lambda + HTTP API).
+# Push a change under backend/user-data/** and this provisions/updates the whole
+# stack with `sam deploy`. First run creates the table, function and API; later
+# runs apply diffs. This is separate from the existing payment Lambdas.
+#
+# Required GitHub secrets (already present for the frontend deploy):
+#   AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+# The IAM user additionally needs permissions to manage CloudFormation, Lambda,
+# DynamoDB, API Gateway and IAM roles (see DEPLOY.md).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/user-data/**'
+      - '.github/workflows/deploy-infra.yml'
+  workflow_dispatch: {}
+
+jobs:
+  deploy-infra:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Set up Python (for SAM CLI)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up SAM CLI
+        uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+
+      - name: SAM build
+        working-directory: backend/user-data
+        run: sam build
+
+      - name: SAM deploy
+        working-directory: backend/user-data
+        run: |
+          sam deploy \
+            --stack-name traxent-user-data \
+            --resolve-s3 \
+            --capabilities CAPABILITY_IAM \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --region eu-west-2
+
+      - name: Show API URL
+        run: |
+          aws cloudformation describe-stacks \
+            --stack-name traxent-user-data \
+            --region eu-west-2 \
+            --query "Stacks[0].Outputs" --output table

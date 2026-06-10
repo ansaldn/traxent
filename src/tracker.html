@@ -253,6 +253,9 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
     <!-- Coming-soon chips hidden for UAT/launch. To re-enable: restore <div class="coming-soon-chips" id="coming-soon-grid"></div> here and uncomment renderer below. -->
   </div>
 
+  <!-- Best-matched firm (auto-recommended from the user's trading data) -->
+  <div id="best-match-panel" style="display:none;margin-bottom:28px"></div>
+
   <!-- Two column layout -->
   <div class="tracker-layout">
 
@@ -410,18 +413,203 @@ const FIRMS = [
     },
     notes: 'Futures accounts have no daily loss limit. CFD accounts have 5% DLL. Consistency rule (40%) applies to funded Futures accounts only.'
   },
+  {
+    id: 'topstep',
+    name: 'Topstep',
+    type: 'Futures only · Trailing DD',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 2,          // ~$1,000 on the 50K Combine (2% of account)
+      maxTotalLoss: 4,          // ~$2,000 trailing Max Loss Limit on 50K (4%)
+      minTradingDays: 2,        // two separate trading days to pass the Combine
+      consistencyRule: 50,      // no single day > 50% of total profit (Combine phase)
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are for the 50K Trading Combine. The Max Loss Limit trails your highest end-of-day balance and locks once it reaches your starting balance. The daily loss limit is a soft breach (auto-liquidation), not an instant fail.'
+  },
+  {
+    id: 'the5ers',
+    name: 'The5ers',
+    type: 'Forex · Scaling',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 5,          // 5% daily, from prior day closing balance (High Stakes)
+      maxTotalLoss: 10,         // 10% absolute max loss from initial balance (High Stakes)
+      minTradingDays: 0,        // no minimum trading days on High Stakes
+      consistencyRule: null,    // no consistency rule on classic High Stakes
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are for the High Stakes program; daily drawdown is measured from the prior day closing balance. Newer 1-step CFD plans (Hyper/Pro Growth) use 3% daily / 6% max, and the Futures track adds a 30% best-trade consistency rule.'
+  },
+  {
+    id: 'fxify',
+    name: 'FXIFY',
+    type: 'Forex + Futures · 2-step',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 4,          // 4% daily (Two-Phase Standard)
+      maxTotalLoss: 10,         // 10% trailing max drawdown (Two-Phase Standard)
+      minTradingDays: 4,        // 4 trading days per phase
+      consistencyRule: null,    // none on Standard eval (25% funded; 30% on Lightning)
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are for the Two-Phase Standard challenge, whose max drawdown trails your balance. One-Phase and Lightning models use 3% daily / 4-6% max and add a 30% consistency rule.'
+  },
+  {
+    id: 'e8',
+    name: 'E8 Funding',
+    type: 'Forex + Futures',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 5,          // 5% daily (E8 Classic forex; configurable on some models)
+      maxTotalLoss: 8,          // 8% max drawdown (E8 Classic)
+      minTradingDays: 0,        // no minimum trading days on evaluation
+      consistencyRule: 40,      // 40% best-day rule on funded accounts (E8 One)
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are for the E8 Classic forex evaluation. Daily drawdown is configurable (3-9.2%) on some models. A best-day consistency rule (40%, or 35% on Signature) applies on funded accounts.'
+  },
+  {
+    id: 'fundingpips',
+    name: 'FundingPips',
+    type: 'CFDs · 2-step',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 5,          // 5% daily (2-Step Standard), from higher of start balance or equity
+      maxTotalLoss: 10,         // 10% static max drawdown (2-Step Standard)
+      minTradingDays: 3,        // 3 trading days per phase
+      consistencyRule: null,    // none during evaluation (35% on Master payouts)
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are for the 2-Step Standard challenge. 1-Step and Pro models use 3% daily / 6% max. A 35% consistency rule applies only on Master on-demand payouts, not during evaluation.'
+  },
+  {
+    id: 'tradeify',
+    name: 'Tradeify',
+    type: 'Futures only · EOD DD',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 3,          // ~$1,250-$1,500 on 50K Growth/Select (~2.5-3%)
+      maxTotalLoss: 4,          // EOD trailing drawdown (~$2,000 on 50K Growth)
+      minTradingDays: 3,        // implied by the 40% consistency rule (3+ profitable days)
+      consistencyRule: 40,      // 40% rule on Select evaluation accounts
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are representative of the 50K Growth/Select accounts. Drawdown is End-of-Day trailing (recalculates at the close) but is enforced in real time. Lightning accounts have no daily loss limit.'
+  },
+  {
+    id: 'alphacapital',
+    name: 'Alpha Capital',
+    type: 'CFDs · 1-step',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 4,          // 4% daily (Alpha One)
+      maxTotalLoss: 6,          // 6% trailing max drawdown (Alpha One)
+      minTradingDays: 1,        // Alpha One requires only 1 trading day
+      consistencyRule: 40,      // 40% best-day rule for on-demand payouts
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are for Alpha One (1-step). Alpha Pro plans use 3-5% daily and 6-10% static max with a 3-day minimum. The 40% best-day rule applies to on-demand payouts.'
+  },
+  {
+    id: 'goatfunded',
+    name: 'Goat Funded Trader',
+    type: 'Forex + Futures · 2-step',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 5,          // 5% daily (2-Step Standard)
+      maxTotalLoss: 10,         // 10% max drawdown (2-Step Standard)
+      minTradingDays: 3,        // 3 trading days per phase
+      consistencyRule: null,    // none on Standard eval (15% on the GOAT payout model)
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are for the 2-Step Standard challenge. The 2-Step GOAT model uses 4% daily and adds a 15% payout consistency rule. Instant Funding models close the account if floating PnL drops below -2%.'
+  },
+  {
+    id: 'takeprofit',
+    name: 'Take Profit Trader',
+    type: 'Futures only · EOD DD',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: null,       // daily loss limit removed on eval and PRO accounts
+      maxTotalLoss: 4,          // EOD trailing drawdown (~$2,000 on 50K)
+      minTradingDays: 5,        // 5 trading days to pass the evaluation
+      consistencyRule: 50,      // no single day >= 50% of net profit (evaluation only)
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are for the 50K evaluation (Test account). Drawdown is End-of-Day trailing and locks at the starting balance. No daily loss limit. The 50% consistency rule and 5-day minimum apply on the evaluation; the funded PRO account switches to intraday drawdown with no consistency rule.'
+  },
+  {
+    id: 'fundedtradingplus',
+    name: 'Funded Trading Plus',
+    type: 'CFDs · 2-step',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 4,          // 4% daily (2-Step Classic)
+      maxTotalLoss: 8,          // 8% static max drawdown (2-Step Classic)
+      minTradingDays: 0,        // no minimum trading days
+      consistencyRule: 35,      // 35% during the 2-Step challenge (50% on funded)
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are for the 2-Step Classic account. There is no minimum-trading-days requirement, but a 3% per-symbol loss cap applies. The 1-Step model uses a 6% relative max / 4% daily with no consistency rule.'
+  },
+  {
+    id: 'maven',
+    name: 'Maven Trading',
+    type: 'Forex · 1-step',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 3,          // 3% daily (1-Step)
+      maxTotalLoss: 5,          // 5% EOD trailing from highest equity (1-Step)
+      minTradingDays: 3,        // 3 trading days with 0.5% profit per phase on some plans
+      consistencyRule: null,    // no consistency on challenges (20% on Instant only)
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are for the 1-Step Challenge; max drawdown is EOD trailing from the highest equity point. The 2-Step plans use 4% daily / 8% max. A 20% consistency rule applies only to Instant accounts.'
+  },
+  {
+    id: 'bulenox',
+    name: 'Bulenox',
+    type: 'Futures only · Trailing DD',
+    region: 'Global',
+    available: true,
+    rules: {
+      maxDailyLoss: 2,          // ~$1,100 on 50K (~2.2%) on accounts that include a DLL
+      maxTotalLoss: 5,          // real-time trailing drawdown (~$2,500 on 50K)
+      minTradingDays: 0,        // no minimum on the qualification phase
+      consistencyRule: 40,      // 40% rule applied to every payout (funded)
+      stopLossRequired: false,
+      maxRiskPerTrade: null,
+    },
+    notes: 'Figures shown are for the 50K account. Trailing drawdown updates in real time; the daily loss limit (where present) is a soft suspension, not a fail. The 40% consistency rule applies to payouts, and 10 trading days are required before the first payout on the funded Master account.'
+  },
 ];
 
-const COMING_SOON_FIRMS = [
-  { name: 'Topstep', type: 'Futures · US-focused' },
-  { name: 'The5ers', type: 'Forex · Scaling' },
-  { name: 'FXIFY', type: 'Forex + Futures' },
-  { name: 'E8 Funding', type: 'Forex + Futures' },
-  { name: 'FundingPips', type: 'CFDs · Global' },
-  { name: 'Tradeify', type: 'Futures only' },
-  { name: 'Alpha Capital', type: 'Forex · Global' },
-  { name: 'Goat Funded', type: 'Multi-asset' },
-];
+// All previously "coming soon" firms are now live and fully tracked in FIRMS above.
+// Add genuinely-future firms here to show them as "coming soon" chips again.
+const COMING_SOON_FIRMS = [];
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let selectedFirms = [];
@@ -592,8 +780,67 @@ function scoreFirm(firm) {
   return { pct, grade, results, firm };
 }
 
+// ── BEST-MATCH ENGINE ──────────────────────────────────────────────────────────
+// Scores the user's trading habits against EVERY firm and surfaces the best fit,
+// so a user who doesn't know which prop firm suits them gets a data-driven answer.
+function computeFirmRanking() {
+  return FIRMS.map(f => scoreFirm(f)).sort((a, b) => b.pct - a.pct);
+}
+
+function renderBestMatch() {
+  const panel = document.getElementById('best-match-panel');
+  if (!panel) return;
+  const ranked = computeFirmRanking();
+  if (!ranked.length) { panel.style.display = 'none'; return; }
+
+  const top = ranked[0];
+  const top3 = ranked.slice(0, 3);
+  const gradeColor = { pass: 'var(--good)', warn: 'var(--warn)', fail: 'var(--bad)' };
+  const gradeWord = { pass: 'Strong match', warn: 'Closest match', fail: 'Best of a tough set' };
+
+  // Reason: the most important rules the user currently passes for the top firm
+  const passes = top.results.filter(r => r.status === 'pass' && r.weight > 0).map(r => r.name.toLowerCase());
+  const weak = top.results.find(r => r.status === 'fail' && r.weight > 0)
+            || top.results.find(r => r.status === 'warn' && r.weight > 0);
+  const reason = passes.length
+    ? `Your habits line up with its ${passes.slice(0, 2).join(' and ')}.`
+    : `It is the least demanding fit for your current numbers.`;
+  const improve = weak ? ` Biggest gap: ${weak.name.toLowerCase()}.` : '';
+  const alreadySelected = selectedFirms.includes(top.firm.id);
+
+  const rows = top3.map((s, i) => `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:${i ? '1px solid var(--border2)' : 'none'}">
+      <div style="font-family:var(--mono);font-size:12px;color:var(--ink3);width:18px">${i + 1}</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:500;color:var(--ink)">${s.firm.name}</div>
+        <div style="font-size:11px;color:var(--ink3)">${s.firm.type}</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:14px;font-weight:500;color:${gradeColor[s.grade]}">${s.pct}%</div>
+    </div>`).join('');
+
+  panel.style.display = 'block';
+  panel.innerHTML = `
+    <div style="background:var(--ink);border-radius:16px;padding:24px 26px;color:white">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px">Your best-matched firm</div>
+      <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px">
+        <div style="font-family:var(--serif);font-size:30px;line-height:1">${top.firm.name}</div>
+        <div style="font-family:var(--mono);font-size:18px;color:${top.grade === 'pass' ? '#4ade80' : top.grade === 'warn' ? '#fbbf24' : '#f87171'}">${top.pct}% ready</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.5)">${gradeWord[top.grade]}</div>
+      </div>
+      <div style="font-size:14px;color:rgba(255,255,255,.7);line-height:1.6;max-width:560px">${reason}${improve}</div>
+      <div style="margin-top:18px;background:rgba(255,255,255,.06);border-radius:10px;padding:6px 18px">${rows}</div>
+      <div style="margin-top:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        ${alreadySelected
+          ? '<span style="font-size:12px;color:rgba(255,255,255,.5)">Already in your tracked firms below ✓</span>'
+          : `<button onclick="toggleFirm('${top.firm.id}')" style="background:var(--accent-mid,#1a9e72);color:white;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans)">Track ${top.firm.name} →</button>`}
+        <span style="font-size:11px;color:rgba(255,255,255,.4)">Ranked from your habits across all ${FIRMS.length} firms. Indicative only — verify rules with each firm.</span>
+      </div>
+    </div>`;
+}
+
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function renderResults() {
+  renderBestMatch();
   const panel = document.getElementById('results-panel');
   const noMsg = document.getElementById('no-firms-msg');
 

@@ -8,12 +8,14 @@ const ssm = new SSMClient({ region: 'eu-west-2' });
 // Instantiated once at module load. JWKS keys are fetched on first verify()
 // call and cached for ~10 minutes — subsequent invocations are fast.
 //
-// Issuer/audience must match the Auth0 SPA SDK config in src/auth.js:
-//   domain: 'auth.traxent.io'
-//   audience: 'https://auth.traxent.io/api/v2/'
+// The frontend (src/auth.js) sends the Auth0 *ID token* as the bearer token
+// (no API audience is configured), so the token's `aud` is the SPA Client ID.
+// Must match the Auth0 SPA SDK config in src/auth.js:
+//   domain:    'auth.traxent.io'
+//   clientId:  'ilvfACgF2sCmLWaugCn11qTB04aTvWxz'  ← ID token audience
 const verifier = JwtRsaVerifier.create({
   issuer: 'https://auth.traxent.io/',
-  audience: 'https://auth.traxent.io/api/v2/',
+  audience: 'ilvfACgF2sCmLWaugCn11qTB04aTvWxz', // Auth0 SPA Client ID (ID token aud)
   jwksUri: 'https://auth.traxent.io/.well-known/jwks.json',
 });
 

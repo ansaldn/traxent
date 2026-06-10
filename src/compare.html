@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0e0e0c">
+<meta name="description" content="Compare the rules of 16 top prop firms side by side — daily loss limits, max drawdown, consistency rules, minimum trading days and asset classes. Free from Traxent.">
+<title>Prop Firm Rules Compared — 16 Firms Side by Side | Traxent</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f6f2; --ink:#0e0e0c; --ink2:#3a3a36; --ink3:#7a7a72;
+  --accent:#0a6e4f; --accent-light:rgba(10,110,79,.08);
+  --border:rgba(14,14,12,0.1); --border2:rgba(14,14,12,0.06);
+  --surface:#fff; --surface2:#f0efe9; --good:#0a6e4f; --warn:#b06000; --bad:#9e1a1a;
+  --serif:'Instrument Serif',Georgia,serif; --sans:'Geist',sans-serif; --mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased}
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10}
+.nav-logo{font-family:var(--mono);font-size:15px;color:var(--ink);text-decoration:none}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-cta{font-size:13px;color:var(--accent);text-decoration:none;font-weight:500}
+.wrap{max-width:1100px;margin:0 auto;padding:48px 24px 80px}
+h1{font-family:var(--serif);font-size:44px;font-weight:400;letter-spacing:-0.01em;line-height:1.05;margin-bottom:14px}
+.sub{color:var(--ink3);font-size:16px;line-height:1.6;max-width:640px;margin-bottom:8px}
+.note{color:var(--ink3);font-size:13px;margin-bottom:28px}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.fbtn{font-family:var(--mono);font-size:11px;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--ink3);cursor:pointer;transition:all .15s}
+.fbtn:hover{border-color:var(--accent);color:var(--accent)}
+.fbtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.table-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;min-width:820px}
+th,td{text-align:left;padding:13px 16px;font-size:13px;border-bottom:1px solid var(--border2)}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);cursor:pointer;white-space:nowrap;user-select:none;background:var(--surface2)}
+th:hover{color:var(--accent)}
+th .arr{opacity:.4;font-size:9px}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--accent-light)}
+.firm{font-weight:500;color:var(--ink);font-size:14px}
+.firm-type{font-size:11px;color:var(--ink3);margin-top:2px}
+.val{font-family:var(--mono);font-size:13px}
+.tag{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;background:var(--surface2);color:var(--ink2)}
+.tag.none{color:var(--ink3)}
+.disclaimer{margin-top:28px;font-size:12px;color:var(--ink3);line-height:1.6;border-top:1px solid var(--border2);padding-top:18px}
+.cta-band{margin-top:36px;background:var(--ink);border-radius:16px;padding:28px 30px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.cta-band-title{font-family:var(--serif);font-size:24px}
+.cta-band-sub{font-size:13px;color:rgba(255,255,255,.5);margin-top:4px;max-width:440px}
+.cta-band a{background:var(--accent);color:#fff;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;white-space:nowrap}
+@media(max-width:640px){h1{font-size:32px}.wrap{padding:32px 16px 64px}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <a href="/waitlist" class="nav-cta">Join waitlist →</a>
+</nav>
+
+<div class="wrap">
+  <h1>Prop firm rules, compared</h1>
+  <p class="sub">The published evaluation rules of 16 leading prop firms, side by side — daily loss limits, maximum drawdown, consistency rules, minimum trading days and asset classes.</p>
+  <p class="note">Click any column heading to sort. Figures reflect each firm's flagship/representative challenge and can change — always verify with the firm.</p>
+
+  <div class="filter-row" id="filters"></div>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr id="head"></tr>
+      </thead>
+      <tbody id="body"></tbody>
+    </table>
+  </div>
+
+  <div class="cta-band">
+    <div>
+      <div class="cta-band-title">Which one fits how you trade?</div>
+      <div class="cta-band-sub">Traxent scores your trading habits against all 16 firms and tells you exactly which you're closest to passing — and what to fix.</div>
+    </div>
+    <a href="/waitlist">Find my match →</a>
+  </div>
+
+  <div class="disclaimer">
+    Rules are sourced from each firm's publicly available documentation and reflect a representative challenge per firm; many firms offer multiple account types with different numbers. Prop firm rules change frequently. This comparison is for educational purposes only, is not financial advice, and Traxent is not affiliated with any firm listed. Always confirm current rules directly with the firm before purchasing a challenge.
+  </div>
+</div>
+
+<script>
+// Representative published rules per firm (flagship challenge). Mirrors the tracker dataset.
+const FIRMS = [
+  { name:'FTMO', type:'Forex + Futures · 2-step', assets:'Forex/Futures', daily:5, maxdd:10, ddType:'Static', minDays:4, consistency:50 },
+  { name:'Apex Trader Funding', type:'Futures · Trailing DD', assets:'Futures', daily:null, maxdd:5, ddType:'Trailing', minDays:7, consistency:30 },
+  { name:'MyFundedFutures', type:'Futures · EOD DD', assets:'Futures', daily:null, maxdd:3, ddType:'EOD trail', minDays:2, consistency:40 },
+  { name:'FundedNext', type:'Forex + Futures · 1-step', assets:'Forex/Futures', daily:5, maxdd:10, ddType:'Static', minDays:5, consistency:40 },
+  { name:'Topstep', type:'Futures · Trailing DD', assets:'Futures', daily:2, maxdd:4, ddType:'Trailing', minDays:2, consistency:50 },
+  { name:'The5ers', type:'Forex · Scaling', assets:'Forex', daily:5, maxdd:10, ddType:'Static', minDays:0, consistency:null },
+  { name:'FXIFY', type:'Forex + Futures · 2-step', assets:'Forex/Futures', daily:4, maxdd:10, ddType:'Trailing', minDays:4, consistency:null },
+  { name:'E8 Funding', type:'Forex + Futures', assets:'Forex/Futures', daily:5, maxdd:8, ddType:'Static', minDays:0, consistency:40 },
+  { name:'FundingPips', type:'CFDs · 2-step', assets:'CFDs', daily:5, maxdd:10, ddType:'Static', minDays:3, consistency:null },
+  { name:'Tradeify', type:'Futures · EOD DD', assets:'Futures', daily:3, maxdd:4, ddType:'EOD trail', minDays:3, consistency:40 },
+  { name:'Alpha Capital', type:'CFDs · 1-step', assets:'CFDs', daily:4, maxdd:6, ddType:'Trailing', minDays:1, consistency:40 },
+  { name:'Goat Funded Trader', type:'Forex + Futures · 2-step', assets:'Forex/Futures', daily:5, maxdd:10, ddType:'Static', minDays:3, consistency:null },
+  { name:'Take Profit Trader', type:'Futures · EOD DD', assets:'Futures', daily:null, maxdd:4, ddType:'EOD trail', minDays:5, consistency:50 },
+  { name:'Funded Trading Plus', type:'CFDs · 2-step', assets:'CFDs', daily:4, maxdd:8, ddType:'Static', minDays:0, consistency:35 },
+  { name:'Maven Trading', type:'Forex · 1-step', assets:'Forex', daily:3, maxdd:5, ddType:'EOD trail', minDays:3, consistency:null },
+  { name:'Bulenox', type:'Futures · Trailing DD', assets:'Futures', daily:2, maxdd:5, ddType:'Trailing', minDays:0, consistency:40 },
+];
+
+const COLS = [
+  { key:'name', label:'Firm' },
+  { key:'assets', label:'Assets' },
+  { key:'daily', label:'Daily loss' },
+  { key:'maxdd', label:'Max drawdown' },
+  { key:'ddType', label:'DD type' },
+  { key:'minDays', label:'Min days' },
+  { key:'consistency', label:'Consistency' },
+];
+
+let sortKey = 'name', sortDir = 1, filter = 'All';
+const FILTERS = ['All','Futures','Forex','CFDs'];
+
+function pct(v){ return v == null ? '<span class="tag none">None</span>' : `<span class="val">${v}%</span>`; }
+function days(v){ return v === 0 ? '<span class="tag none">None</span>' : `<span class="val">${v}</span>`; }
+
+function renderFilters(){
+  document.getElementById('filters').innerHTML = FILTERS.map(f =>
+    `<button class="fbtn ${f===filter?'active':''}" onclick="setFilter('${f}')">${f}</button>`).join('');
+}
+function setFilter(f){ filter = f; renderFilters(); renderTable(); }
+
+function setSort(k){ if(sortKey===k){ sortDir*=-1; } else { sortKey=k; sortDir=1; } renderTable(); }
+
+function renderHead(){
+  document.getElementById('head').innerHTML = COLS.map(c =>
+    `<th onclick="setSort('${c.key}')">${c.label} <span class="arr">${sortKey===c.key?(sortDir>0?'▲':'▼'):'⇅'}</span></th>`).join('');
+}
+
+function renderTable(){
+  renderHead();
+  let rows = FIRMS.filter(f => filter==='All' || f.assets.includes(filter));
+  rows.sort((a,b)=>{
+    let x=a[sortKey], y=b[sortKey];
+    if(x==null) x = sortKey==='consistency'||sortKey==='daily' ? Infinity : '';
+    if(y==null) y = sortKey==='consistency'||sortKey==='daily' ? Infinity : '';
+    if(typeof x==='string') return x.localeCompare(y)*sortDir;
+    return (x-y)*sortDir;
+  });
+  document.getElementById('body').innerHTML = rows.map(f => `
+    <tr>
+      <td><div class="firm">${f.name}</div><div class="firm-type">${f.type}</div></td>
+      <td><span class="tag">${f.assets}</span></td>
+      <td>${pct(f.daily)}</td>
+      <td>${pct(f.maxdd)}</td>
+      <td><span class="val">${f.ddType}</span></td>
+      <td>${days(f.minDays)}</td>
+      <td>${pct(f.consistency)}</td>
+    </tr>`).join('');
+}
+
+renderFilters();
+renderTable();
+</script>
+</body>
+</html>

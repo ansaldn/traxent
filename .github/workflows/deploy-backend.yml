@@ -1,0 +1,97 @@
+name: Deploy Backend
+
+# Push backend code → this deploys it to AWS automatically, replacing the
+# manual zip uploads. It updates the existing Lambda functions and CloudFront
+# Functions in place — it does NOT create or rename infrastructure, so your
+# API Gateway URL, Stripe webhook, etc. are left untouched.
+#
+# One-time setup before this works (see DEPLOY.md):
+#   1. Fill the REPLACE_* names in backend/deploy-map.json.
+#   2. Ensure the AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY secrets' IAM user has:
+#        lambda:UpdateFunctionCode, lambda:GetFunction,
+#        cloudfront:DescribeFunction, cloudfront:UpdateFunction, cloudfront:PublishFunction
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/functions/**'
+      - 'backend/cloudfront-functions/**'
+      - 'backend/deploy-map.json'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch: {}   # allow manual runs from the Actions tab
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+
+      - name: Deploy Lambda functions
+        run: |
+          set -euo pipefail
+          map=backend/deploy-map.json
+          region=$(jq -r '.region // "eu-west-2"' "$map")
+          for dir in $(jq -r '.lambdas | keys[]' "$map"); do
+            name=$(jq -r --arg d "$dir" '.lambdas[$d]' "$map")
+            if [ -z "$name" ] || [ "$name" = "null" ] || [[ "$name" == REPLACE_* ]]; then
+              echo "::warning::Skipping Lambda '$dir' — no name set in deploy-map.json"
+              continue
+            fi
+            src="backend/functions/$dir"
+            [ -d "$src" ] || { echo "::error::Missing source dir $src"; exit 1; }
+            echo "::group::Deploy $dir -> $name"
+            ( cd "$src"
+              if [ -f package-lock.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi
+              rm -f /tmp/"$dir".zip
+              zip -qr /tmp/"$dir".zip . -x '*.git*' 'package-lock.json'
+            )
+            aws lambda update-function-code \
+              --function-name "$name" \
+              --zip-file "fileb:///tmp/$dir.zip" \
+              --region "$region" --no-cli-pager >/dev/null
+            aws lambda wait function-updated --function-name "$name" --region "$region"
+            echo "Deployed $name"
+            echo "::endgroup::"
+          done
+
+      - name: Deploy CloudFront Functions
+        run: |
+          set -euo pipefail
+          map=backend/deploy-map.json
+          n=$(jq -r '.cloudfrontFunctions | length' "$map")
+          if [ "$n" = "0" ]; then echo "No CloudFront functions configured."; exit 0; fi
+          for file in $(jq -r '.cloudfrontFunctions | keys[]' "$map"); do
+            name=$(jq -r --arg f "$file" '.cloudfrontFunctions[$f]' "$map")
+            if [ -z "$name" ] || [ "$name" = "null" ] || [[ "$name" == REPLACE_* ]]; then
+              echo "::warning::Skipping CloudFront function for '$file' — no name set"
+              continue
+            fi
+            [ -f "$file" ] || { echo "::error::Missing $file"; exit 1; }
+            echo "::group::Deploy CloudFront function $name from $file"
+            desc=$(aws cloudfront describe-function --name "$name" --output json)
+            etag=$(echo "$desc" | jq -r '.ETag')
+            runtime=$(echo "$desc" | jq -r '.FunctionSummary.FunctionConfig.Runtime')
+            comment=$(echo "$desc" | jq -r '.FunctionSummary.FunctionConfig.Comment // "Deployed by GitHub Actions"')
+            newtag=$(aws cloudfront update-function \
+              --name "$name" \
+              --function-code "fileb://$file" \
+              --function-config Comment="$comment",Runtime="$runtime" \
+              --if-match "$etag" --query ETag --output text)
+            aws cloudfront publish-function --name "$name" --if-match "$newtag"
+            echo "Published $name"
+            echo "::endgroup::"
+          done

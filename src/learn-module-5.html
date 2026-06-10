@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Traxent">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed:', err));
+    });
+  }
+</script>
+<title>Module 5: Trading Psychology & Discipline — Traxent Learn</title>
+<style id="auth-gate-style">body{visibility:hidden}</style>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="/auth.js?v=__BUILD_SHA__"></script>
+<script>requireMinPlan('challenger');</script>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f2; --ink: #0e0e0c; --ink2: #3a3a36; --ink3: #7a7a72;
+  --accent: #0a6e4f; --accent-light: rgba(10,110,79,.08); --accent-mid: #1a9e72;
+  --border: rgba(14,14,12,0.1); --border2: rgba(14,14,12,0.06);
+  --surface: #ffffff; --surface2: #f0efe9;
+  --good: #0a6e4f; --warn: #b06000; --bad: #9e1a1a;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', sans-serif; --mono: 'Geist Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; }
+.nav-logo { font-family: var(--mono); font-size: 15px; color: var(--ink); text-decoration: none; }
+.nav-logo em { font-style: normal; color: var(--accent); }
+.nav-back { font-size: 13px; color: var(--ink3); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
+.nav-back:hover { color: var(--ink); }
+.nav-back::before { content: '←'; }
+.learn-wrap { max-width: 1160px; margin: 0 auto; padding: 40px 32px; display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: start; }
+.sidebar { position: sticky; top: 76px; }
+.module-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.module-title { font-family: var(--serif); font-size: 18px; font-weight: 400; color: var(--ink); margin-bottom: 4px; }
+.module-meta { font-size: 12px; color: var(--ink3); margin-bottom: 20px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink3); margin-bottom: 6px; }
+.progress-bar { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; margin-bottom: 20px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.5s ease; }
+.lesson-list { display: flex; flex-direction: column; gap: 2px; }
+.lesson-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
+.lesson-item:hover { background: var(--surface); border-color: var(--border); }
+.lesson-item.active { background: var(--surface); border-color: var(--accent); }
+.lesson-item.completed .lesson-dot { background: var(--accent); color: white; border-color: var(--accent); }
+.lesson-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; font-family: var(--mono); color: var(--ink3); flex-shrink: 0; transition: all 0.2s; }
+.lesson-item.active .lesson-dot { background: var(--accent); color: white; border-color: var(--accent); }
+.lesson-name { font-size: 13px; color: var(--ink); }
+.lesson-item.active .lesson-name { font-weight: 500; color: var(--accent); }
+.lesson-dur { font-size: 10px; color: var(--ink3); font-family: var(--mono); margin-top: 1px; }
+.quiz-sep { height: 1px; background: var(--border); margin: 8px 0; }
+.sidebar-note { margin-top: 20px; padding: 14px 16px; background: var(--accent-light); border: 1px solid rgba(10,110,79,.15); border-radius: 8px; font-size: 12px; color: var(--ink2); line-height: 1.5; }
+.lesson-main { min-height: 60vh; }
+.lesson-hd { margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.lesson-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.lesson-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+.lesson-title { font-family: var(--serif); font-size: 38px; font-weight: 400; line-height: 1.1; color: var(--ink); margin-bottom: 14px; }
+.lesson-intro { font-size: 16px; color: var(--ink2); line-height: 1.7; font-weight: 300; max-width: 640px; }
+.lesson-body { max-width: 720px; }
+.lesson-body h2 { font-family: var(--serif); font-size: 24px; font-weight: 400; color: var(--ink); margin: 36px 0 14px; }
+.lesson-body p { font-size: 15px; color: var(--ink2); line-height: 1.8; margin-bottom: 16px; font-weight: 300; }
+.lesson-body strong { color: var(--ink); font-weight: 500; }
+.callout { border-radius: 8px; padding: 16px 20px; margin: 24px 0; }
+.callout-key { background: var(--accent-light); border: 1px solid rgba(10,110,79,.15); border-left: 3px solid var(--accent); }
+.callout-key .cl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.callout-example { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--ink3); }
+.callout-example .cl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
+.callout-warn { background: rgba(176,96,0,.06); border: 1px solid rgba(176,96,0,.15); border-left: 3px solid var(--warn); }
+.callout-warn .cl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warn); margin-bottom: 8px; }
+.callout p { margin-bottom: 0; font-size: 14px; }
+.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+.stat-val { font-family: var(--serif); font-size: 30px; font-weight: 400; color: var(--ink); font-style: italic; margin-bottom: 4px; }
+.stat-label { font-size: 12px; color: var(--ink3); line-height: 1.4; }
+.vis-exp { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 24px 0; }
+.vis-exp-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); margin-bottom: 14px; }
+.vis-row { display: flex; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 10px; }
+.vis-row:last-child { margin-bottom: 0; }
+.vis-cell { flex: 1; padding: 10px 14px; border-right: 1px solid var(--border); }
+.vis-cell:last-child { border-right: none; }
+.vis-cell-label { font-size: 10px; font-family: var(--mono); color: var(--ink3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+.vis-cell-val { font-size: 13px; color: var(--ink); font-weight: 500; }
+.vis-cell-sub { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+.vis-good { background: rgba(10,110,79,.06); }
+.vis-bad { background: rgba(158,26,26,.06); }
+.vis-cell-val.green { color: var(--good); }
+.vis-cell-val.red { color: var(--bad); }
+.exercise { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin: 28px 0; }
+.exercise-hd { padding: 14px 20px; border-bottom: 1px solid var(--border2); background: var(--surface2); display: flex; align-items: center; gap: 10px; }
+.ex-badge { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); border: 1px solid rgba(10,110,79,.2); padding: 3px 8px; border-radius: 3px; }
+.ex-title { font-size: 14px; font-weight: 500; color: var(--ink); }
+.exercise-body { padding: 20px; }
+.ex-question { font-size: 15px; color: var(--ink2); line-height: 1.6; margin-bottom: 18px; font-weight: 300; }
+.ex-question strong { color: var(--ink); font-weight: 500; }
+.ex-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.ex-opt { padding: 12px 18px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); font-size: 14px; color: var(--ink2); cursor: pointer; transition: all 0.15s; font-family: var(--sans); text-align: left; line-height: 1.5; }
+.ex-opt:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+.ex-opt.correct { border-color: var(--good); background: rgba(10,110,79,.08); color: var(--good); font-weight: 500; }
+.ex-opt.incorrect { border-color: var(--bad); background: rgba(158,26,26,.06); color: var(--bad); }
+.ex-opt.show-correct { border-color: var(--good); background: rgba(10,110,79,.06); color: var(--good); }
+.ex-feedback { padding: 14px 16px; border-radius: 8px; font-size: 14px; line-height: 1.6; display: none; }
+.ex-feedback.show { display: block; }
+.ex-feedback.correct { background: rgba(10,110,79,.08); border: 1px solid rgba(10,110,79,.2); color: var(--good); }
+.ex-feedback.incorrect { background: rgba(158,26,26,.06); border: 1px solid rgba(158,26,26,.15); color: var(--bad); }
+.ex-next-btn { margin-top: 14px; background: var(--accent); color: white; border: none; border-radius: 7px; padding: 10px 20px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--sans); transition: background 0.15s; display: none; }
+.ex-next-btn.show { display: inline-block; }
+.ex-next-btn:hover { background: #085e43; }
+.lesson-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border); }
+.btn-nav { display: flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; }
+.btn-prev { background: var(--surface); border: 1px solid var(--border); color: var(--ink2); }
+.btn-prev:hover { border-color: var(--ink); }
+.btn-prev::before { content: '←'; }
+.btn-next { background: var(--accent); color: white; }
+.btn-next:hover { background: #085e43; }
+.btn-next::after { content: '→'; }
+.nav-info { font-size: 12px; color: var(--ink3); font-family: var(--mono); }
+.quiz-wrap { max-width: 700px; }
+.quiz-hd { margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.quiz-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.quiz-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+.quiz-title { font-family: var(--serif); font-size: 38px; font-weight: 400; color: var(--ink); margin-bottom: 10px; }
+.quiz-sub { font-size: 15px; color: var(--ink2); line-height: 1.65; font-weight: 300; }
+.q-dots { display: flex; gap: 8px; margin-bottom: 32px; }
+.q-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); transition: all 0.2s; }
+.q-dot.active { background: var(--accent); border-color: var(--accent); }
+.q-dot.done { background: var(--accent); border-color: var(--accent); opacity: 0.4; }
+.q-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 26px; margin-bottom: 20px; }
+.q-num { font-family: var(--mono); font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+.q-text { font-size: 16px; color: var(--ink); line-height: 1.55; margin-bottom: 22px; }
+.q-options { display: flex; flex-direction: column; gap: 10px; }
+.q-opt { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+.q-opt:hover { border-color: var(--accent); background: var(--accent-light); }
+.q-opt.selected { border-color: var(--accent); background: var(--accent-light); }
+.q-opt.correct { border-color: var(--good); background: rgba(10,110,79,.08); }
+.q-opt.incorrect { border-color: var(--bad); background: rgba(158,26,26,.06); }
+.q-letter { width: 22px; height: 22px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; color: var(--ink3); flex-shrink: 0; transition: all 0.15s; }
+.q-opt.selected .q-letter { background: var(--accent); color: white; border-color: var(--accent); }
+.q-opt.correct .q-letter { background: var(--good); color: white; border-color: var(--good); }
+.q-opt.incorrect .q-letter { background: var(--bad); color: white; border-color: var(--bad); }
+.q-opt-text { font-size: 14px; color: var(--ink2); line-height: 1.5; padding-top: 2px; }
+.q-feedback { padding: 12px 16px; border-radius: 8px; margin-top: 14px; font-size: 14px; line-height: 1.55; display: none; }
+.q-feedback.show { display: block; }
+.q-feedback.correct { background: rgba(10,110,79,.08); border: 1px solid rgba(10,110,79,.2); color: var(--good); }
+.q-feedback.incorrect { background: rgba(158,26,26,.06); border: 1px solid rgba(158,26,26,.15); color: var(--bad); }
+.q-btn-row { display: flex; justify-content: flex-end; margin-top: 20px; gap: 10px; }
+.q-btn { padding: 11px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; }
+.q-submit { background: var(--accent); color: white; }
+.q-submit:hover { background: #085e43; }
+.q-submit:disabled { opacity: 0.35; cursor: not-allowed; }
+.q-next-btn { background: var(--ink); color: white; display: none; }
+.q-next-btn:hover { background: var(--accent); }
+.quiz-result { text-align: center; padding: 48px 0; display: none; }
+.result-pct { font-family: var(--serif); font-size: 80px; font-weight: 400; font-style: italic; line-height: 1; margin-bottom: 10px; }
+.result-pct.pass { color: var(--good); }
+.result-pct.fail { color: var(--bad); }
+.result-lbl { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 20px; }
+.result-msg { font-size: 15px; color: var(--ink2); line-height: 1.65; max-width: 480px; margin: 0 auto 28px; font-weight: 300; }
+.result-actions { display: flex; gap: 12px; justify-content: center; }
+.btn-result { padding: 11px 22px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; text-decoration: none; display: inline-block; }
+.btn-result-primary { background: var(--accent); color: white; }
+.btn-result-primary:hover { background: #085e43; }
+.btn-result-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--ink2); }
+.completion-banner { background: var(--ink); border-radius: 12px; padding: 24px 28px; margin-top: 32px; display: none; }
+.completion-banner.show { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.cb-title { font-family: var(--serif); font-size: 20px; color: white; }
+.cb-sub { font-size: 13px; color: rgba(255,255,255,.45); margin-top: 4px; }
+.cb-btn { background: var(--accent-mid); color: white; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; white-space: nowrap; }
+@media (max-width: 900px) {
+  .learn-wrap { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .stat-row { grid-template-columns: 1fr; }
+  .learn-wrap { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <a href="/learn" class="nav-back">All modules</a>
+</nav>
+
+<div class="learn-wrap">
+  <aside class="sidebar">
+    <div class="module-label">Module 5 · Challenger</div>
+    <div class="module-title">Trading Psychology &amp; Discipline</div>
+    <div class="module-meta">3 lessons · 1 quiz · ~30 min</div>
+    <div class="progress-label"><span>Progress</span><span id="prog-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="lesson-list">
+      <div class="lesson-item active" id="nav-0" onclick="showLesson(0)">
+        <div class="lesson-dot" id="dot-0">1</div>
+        <div><div class="lesson-name">The trader's brain under pressure</div><div class="lesson-dur">9 min · Interactive</div></div>
+      </div>
+      <div class="lesson-item" id="nav-1" onclick="showLesson(1)">
+        <div class="lesson-dot" id="dot-1">2</div>
+        <div><div class="lesson-name">Tilt, FOMO and revenge trading</div><div class="lesson-dur">11 min · Scenarios</div></div>
+      </div>
+      <div class="lesson-item" id="nav-2" onclick="showLesson(2)">
+        <div class="lesson-dot" id="dot-2">3</div>
+        <div><div class="lesson-name">Building a discipline system</div><div class="lesson-dur">10 min · Framework</div></div>
+      </div>
+      <div class="quiz-sep"></div>
+      <div class="lesson-item" id="nav-3" onclick="showLesson(3)">
+        <div class="lesson-dot" id="dot-3">✦</div>
+        <div><div class="lesson-name">Module 5 quiz</div><div class="lesson-dur">5 questions · Pass 80%</div></div>
+      </div>
+    </div>
+    <div class="sidebar-note">Psychology is the skill that separates traders who pass from traders who keep paying for resets. Finish this before relying on your edge under real challenge pressure.</div>
+  </aside>
+
+  <main>
+
+    <!-- LESSON 1 -->
+    <div id="lesson-0" class="lesson-main">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 5 · Lesson 1</div>
+        <h1 class="lesson-title">The trader's brain under pressure</h1>
+        <p class="lesson-intro">You can know every rule and pattern and still fail a challenge — because trading is a performance done under stress. This lesson explains what actually happens in your head when money is on the line, and why your worst decisions feel the most justified.</p>
+      </div>
+      <div class="lesson-body">
+        <h2>Why smart people make terrible trades</h2>
+        <p>When you place a trade, you are not a calm analyst. You are a nervous system reacting to perceived gain and loss. Decades of behavioural research show two forces dominate: <strong>loss aversion</strong> — losses hurt roughly twice as much as equivalent gains feel good — and <strong>the fight-or-flight response</strong>, which floods your body with cortisol and adrenaline the moment a position moves against you.</p>
+        <p>Under that chemistry, the part of your brain responsible for patient, rule-based decisions (the prefrontal cortex) gets quieter, and the reactive, threat-driven part gets louder. You do not feel irrational in that moment — you feel <strong>certain</strong>. That certainty is the trap.</p>
+
+        <div class="callout callout-key">
+          <div class="cl">Key concept</div>
+          <p>Discipline is not about feeling calm. Everyone feels fear and greed. Discipline is the ability to follow your plan <strong>despite</strong> what you feel. The goal is not to remove emotion — it is to remove emotion's authority over your actions.</p>
+        </div>
+
+        <h2>The three emotional states that cost money</h2>
+        <p>Almost every blown challenge traces back to one of three states. Learning to name the state you are in is the first step to interrupting it.</p>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">The three costly states</div>
+          <div class="vis-row">
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">Fear</div><div class="vis-cell-val red">Hesitation</div><div class="vis-cell-sub">Skip valid setups · cut winners early · move stops away</div></div>
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">Greed</div><div class="vis-cell-val red">Overreach</div><div class="vis-cell-sub">Oversize · add to winners blindly · ignore the plan</div></div>
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">Tilt</div><div class="vis-cell-val red">Revenge</div><div class="vis-cell-sub">Trade to recover a loss · abandon rules entirely</div></div>
+          </div>
+        </div>
+
+        <h2>The cost of one emotional decision</h2>
+        <p>In a prop firm challenge, the asymmetry is severe. Weeks of disciplined trading can be erased by a single tilt session. The maths of drawdown is unforgiving, which is exactly why emotional control is a hard requirement, not a soft skill.</p>
+
+        <div class="stat-row">
+          <div class="stat-card"><div class="stat-val">~2x</div><div class="stat-label">How much more a loss hurts than an equal gain feels good (loss aversion)</div></div>
+          <div class="stat-card"><div class="stat-val">1 session</div><div class="stat-label">Is all it takes for a tilt spiral to breach a daily loss limit</div></div>
+          <div class="stat-card"><div class="stat-val">80–90%</div><div class="stat-label">Of challenge failures are behavioural, not strategic</div></div>
+        </div>
+
+        <div class="exercise" id="ex1">
+          <div class="exercise-hd"><span class="ex-badge">Scenario 1</span><span class="ex-title">Spot the state</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">You take a loss right at your stop. Within 30 seconds you are sizing up a new trade that is not on your plan, telling yourself you can "make it back quickly." Which state are you in?</p>
+            <div class="ex-opts" id="ex1-opts">
+              <button class="ex-opt" onclick="checkEx('ex1','fear',this,'tilt')">Fear — you are protecting capital</button>
+              <button class="ex-opt" onclick="checkEx('ex1','greed',this,'tilt')">Greed — you spotted a great opportunity</button>
+              <button class="ex-opt" onclick="checkEx('ex1','tilt',this,'tilt')">Tilt — you are trading to recover the loss</button>
+            </div>
+            <div class="ex-feedback" id="ex1-fb"></div>
+            <button class="ex-next-btn" id="ex1-next" onclick="document.getElementById('after-ex1').style.display='block';document.getElementById('after-ex1').scrollIntoView({behavior:'smooth'})">Continue →</button>
+          </div>
+        </div>
+
+        <div id="after-ex1" style="display:none">
+          <div class="callout callout-warn">
+            <div class="cl">The tell</div>
+            <p>The phrase "make it back" is the single most reliable warning sign in trading. The market does not know or care that you just lost. A recovery trade is not analysis — it is your nervous system trying to undo pain. The correct response is almost always to stop trading for the session.</p>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <span></span>
+        <span class="nav-info">Lesson 1 of 3</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(0)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- LESSON 2 -->
+    <div id="lesson-1" class="lesson-main" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 5 · Lesson 2</div>
+        <h1 class="lesson-title">Tilt, FOMO and revenge trading</h1>
+        <p class="lesson-intro">These three patterns destroy more funded accounts than any bad strategy ever could. This lesson breaks down how each one works, how to recognise it in yourself in real time, and the specific circuit-breaker for each.</p>
+      </div>
+      <div class="lesson-body">
+        <h2>Tilt — the recovery spiral</h2>
+        <p>Tilt is borrowed from poker: a state of emotional frustration that leads to reckless decisions. In trading it usually starts with a loss that feels unfair — a stop hunt, a news spike, a trade that was "right" but stopped out. The frustration drives a bigger, faster trade to recover, which often loses, which deepens the tilt. Within an hour a disciplined trader can breach a daily limit they have respected for weeks.</p>
+
+        <div class="callout callout-key">
+          <div class="cl">Circuit-breaker for tilt</div>
+          <p>A hard, pre-committed rule: <strong>two losses in a row, or down 2% on the day, means you are done trading for that session.</strong> Not "one more trade." Done. Close the platform. The rule must be set before you trade, because in the moment your judgement is compromised.</p>
+        </div>
+
+        <h2>FOMO — the fear of missing out</h2>
+        <p>FOMO is the urge to chase a move that is already running, because watching it go without you feels like losing money you never had. Chasing means entering late, with a wide or absent stop, far from any logical invalidation level. The risk-to-reward is terrible precisely because the easy part of the move is already gone.</p>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">A planned entry vs a FOMO chase</div>
+          <div class="vis-row">
+            <div class="vis-cell vis-good"><div class="vis-cell-label">Planned</div><div class="vis-cell-val green">Wait for retrace</div><div class="vis-cell-sub">Enter near support · tight stop · clear invalidation</div></div>
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">FOMO</div><div class="vis-cell-val red">Chase the candle</div><div class="vis-cell-sub">Enter extended · no logical stop · poor R:R</div></div>
+          </div>
+        </div>
+
+        <h2>Revenge trading — making it personal</h2>
+        <p>Revenge trading treats the market as an opponent that owes you. It is tilt aimed at a specific instrument or a specific loss. The tell is emotional language: "this pair always does this to me", "I'm getting my money back from gold today." The market is not an adversary. It is indifferent. Any sentence that frames a trade as payback is a signal to stop.</p>
+
+        <div class="exercise" id="ex2">
+          <div class="exercise-hd"><span class="ex-badge">Scenario 2</span><span class="ex-title">FOMO under challenge pressure</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">NQ runs 80 points in your intended direction while you were away from the desk. You feel the urge to jump in so you do not "miss the rest." You are two days into a challenge with a 4% daily limit. What is the disciplined action?</p>
+            <div class="ex-opts" id="ex2-opts">
+              <button class="ex-opt" onclick="checkEx('ex2','chase',this,'wait')">Enter now at market — the trend is clearly strong</button>
+              <button class="ex-opt" onclick="checkEx('ex2','size',this,'wait')">Enter now but with double size to make up lost ground</button>
+              <button class="ex-opt" onclick="checkEx('ex2','wait',this,'wait')">Wait for a pullback to a level with a defined stop — or skip it</button>
+            </div>
+            <div class="ex-feedback" id="ex2-fb"></div>
+            <button class="ex-next-btn" id="ex2-next" onclick="document.getElementById('ex3').style.display='block';document.getElementById('ex3').scrollIntoView({behavior:'smooth'})">Next scenario →</button>
+          </div>
+        </div>
+
+        <div class="exercise" id="ex3" style="display:none">
+          <div class="exercise-hd"><span class="ex-badge">Scenario 3</span><span class="ex-title">Catching tilt early</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">You have lost two trades in a row this morning, both at your stop. Your pre-set rule is "two losses = stop for the session." You still feel sharp and you see another setup forming. What do you do?</p>
+            <div class="ex-opts" id="ex3-opts">
+              <button class="ex-opt" onclick="checkEx('ex3','one','this','stop')">Take the setup — feeling sharp means the rule does not apply today</button>
+              <button class="ex-opt" onclick="checkEx('ex3','half',this,'stop')">Take it at half size as a compromise</button>
+              <button class="ex-opt" onclick="checkEx('ex3','stop',this,'stop')">Honour the rule — stop for the session, review tomorrow</button>
+            </div>
+            <div class="ex-feedback" id="ex3-fb"></div>
+            <button class="ex-next-btn" id="ex3-next" onclick="document.getElementById('after-ex3').style.display='block';document.getElementById('after-ex3').scrollIntoView({behavior:'smooth'})">Continue →</button>
+          </div>
+        </div>
+
+        <div id="after-ex3" style="display:none">
+          <div class="callout callout-warn">
+            <div class="cl">Why "I feel sharp" is the trap</div>
+            <p>Rules exist for the version of you that is compromised — and that version always believes it is the exception. The entire value of a pre-committed rule is that you follow it on the day you least want to. The moment you negotiate with the rule, you no longer have one.</p>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-nav btn-prev" onclick="showLesson(0)">Previous</button>
+        <span class="nav-info">Lesson 2 of 3</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(1)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- LESSON 3 -->
+    <div id="lesson-2" class="lesson-main" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 5 · Lesson 3</div>
+        <h1 class="lesson-title">Building a discipline system</h1>
+        <p class="lesson-intro">Willpower is unreliable — it fades exactly when pressure peaks. Professionals do not rely on willpower; they rely on systems that make the disciplined choice the default. This lesson gives you a concrete framework you can use from your next session.</p>
+      </div>
+      <div class="lesson-body">
+        <h2>Rules beat willpower</h2>
+        <p>The trader who says "I'll just be more disciplined next time" will fail again, because they are relying on a resource that depletes. The trader who writes down three hard rules and follows them mechanically will outperform them — not because they are calmer, but because they removed the decision from the moment of stress.</p>
+
+        <div class="callout callout-key">
+          <div class="cl">Key concept</div>
+          <p>Make decisions when you are calm, so you do not have to make them when you are not. Every rule you set in advance is a decision your stressed self does not get to override.</p>
+        </div>
+
+        <h2>The pre-trade checklist</h2>
+        <p>A 15-second checklist inserts a deliberate pause between impulse and action. It does not slow good trades down — it stops bad ones.</p>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">A minimal pre-trade checklist</div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">1 · Setup</div><div class="vis-cell-val">Is this on my plan?</div><div class="vis-cell-sub">A defined setup — not a feeling</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">2 · Stop</div><div class="vis-cell-val">Where is invalidation?</div><div class="vis-cell-sub">A logical level, set before entry</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">3 · Size</div><div class="vis-cell-val">Is risk ≤ 1%?</div><div class="vis-cell-sub">Calculated, not eyeballed</div></div>
+          </div>
+        </div>
+
+        <h2>Daily guardrails</h2>
+        <p>Beyond the per-trade checklist, set hard session limits before the day begins. These are the rails that keep a bad day from becoming a blown challenge.</p>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">Example daily guardrails</div>
+          <div class="vis-row">
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">Loss cap</div><div class="vis-cell-val red">Stop at −2%</div><div class="vis-cell-sub">Well inside the firm's daily limit</div></div>
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">Streak rule</div><div class="vis-cell-val red">2 losses = done</div><div class="vis-cell-sub">No "one more" after two losers</div></div>
+            <div class="vis-cell vis-good"><div class="vis-cell-label">Win rule</div><div class="vis-cell-val green">Bank a great day</div><div class="vis-cell-sub">Hit target early? Protect it — stop</div></div>
+          </div>
+        </div>
+
+        <h2>The role of the journal</h2>
+        <p>You cannot fix what you do not measure. A journal that records not just entries and exits but your <strong>emotional state</strong> and whether you followed your rules turns vague feelings into data. Over time you will see your own patterns — the time of day you tilt, the instrument that baits you, the setup you overtrade. Module 6 covers exactly how to build that review habit, and the Traxent journal and readiness tracker are designed to log this for you automatically.</p>
+
+        <div class="callout callout-key">
+          <div class="cl">Traxent note</div>
+          <p>Process over outcome. A trade that followed every rule and still lost was a <strong>good</strong> trade. A trade that broke your rules and happened to win was a <strong>bad</strong> trade — it just rewarded the wrong behaviour. Judge yourself on the process, and the outcomes follow.</p>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-nav btn-prev" onclick="showLesson(1)">Previous</button>
+        <span class="nav-info">Lesson 3 of 3</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(2)">Take the quiz</button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="lesson-3" class="lesson-main" style="display:none">
+      <div class="quiz-wrap">
+        <div class="quiz-hd">
+          <div class="quiz-eyebrow">Module 5 · Quiz</div>
+          <h1 class="quiz-title">Test your knowledge</h1>
+          <p class="quiz-sub">5 questions on trading psychology and discipline. You need 80% to pass. These ideas matter more under real pressure than any pattern — take your time.</p>
+        </div>
+        <div id="quiz-questions">
+          <div class="q-dots" id="q-dots"></div>
+          <div id="q-wrap"></div>
+          <div class="q-btn-row">
+            <button class="q-btn q-submit" id="q-submit" onclick="submitQ()" disabled>Submit answer</button>
+            <button class="q-btn q-next-btn" id="q-next" onclick="nextQ()">Next →</button>
+          </div>
+        </div>
+        <div class="quiz-result" id="quiz-result">
+          <div class="result-pct" id="result-pct"></div>
+          <div class="result-lbl" id="result-lbl"></div>
+          <div class="result-msg" id="result-msg"></div>
+          <div class="result-actions">
+            <button class="btn-result btn-result-secondary" onclick="retryQuiz()">Retry quiz</button>
+            <a href="/learn" class="btn-result btn-result-primary" id="result-cta" style="display:none">Back to modules →</a>
+          </div>
+          <div class="completion-banner" id="completion-banner">
+            <div><div class="cb-title">Module 5 complete</div><div class="cb-sub">Module 6 — Review &amp; Building Your Edge — is next.</div></div>
+            <a href="/learn" class="cb-btn">Continue →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const LESSON_KEYS = ['l5-1','l5-2','l5-3','l5-quiz'];
+const completed = [false, false, false, false];
+
+function saveProgress() {
+  try {
+    const p = JSON.parse(localStorage.getItem('traxent_progress') || '{}');
+    completed.forEach((done, i) => { if (done) p[LESSON_KEYS[i]] = true; });
+    localStorage.setItem('traxent_progress', JSON.stringify(p));
+  } catch (e) { /* storage unavailable — non-fatal */ }
+}
+
+function showLesson(i) {
+  for (let j = 0; j < 4; j++) {
+    document.getElementById('lesson-' + j).style.display = 'none';
+    document.getElementById('nav-' + j).classList.remove('active');
+  }
+  document.getElementById('lesson-' + i).style.display = 'block';
+  document.getElementById('nav-' + i).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function completeLesson(i) {
+  completed[i] = true;
+  document.getElementById('dot-' + i).textContent = '✓';
+  document.getElementById('nav-' + i).classList.add('completed');
+  updateProgress();
+  saveProgress();
+  showLesson(i + 1);
+  if (i === 2) initQuiz();
+}
+
+function updateProgress() {
+  const done = completed.filter(Boolean).length;
+  const pct = Math.round((done / 4) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+}
+
+const EX_FB = {
+  ex1: {
+    tilt: { correct: 'Correct. The instant urge to place an unplanned trade right after a loss, framed as "making it back", is textbook tilt. The disciplined response is to step away, not to act.', incorrect: 'Look at the trigger and the language. The trade is unplanned and the motive is to recover the loss quickly — that is tilt, not analysis.' },
+    fear: { correct: 'Not quite — fear shows up as hesitation and protecting capital, not as rushing into a new unplanned trade.', incorrect: 'This is not fear. Fear makes you hesitate; here you are rushing to act to recover a loss — that is tilt.' },
+    greed: { correct: 'Not quite — greed is overreaching on a winner. Here the driver is a loss you want to undo, which is tilt.', incorrect: 'This is not greed. The motive is recovering a loss, not pressing an advantage — that is tilt.' }
+  },
+  ex2: {
+    wait: { correct: 'Correct. The easy part of the move is gone. Waiting for a pullback to a level gives you a defined stop and acceptable risk-to-reward — and skipping it entirely is a perfectly good answer.', incorrect: 'Chasing an extended move means entering with no logical stop and poor R:R. Wait for a pullback to a level, or skip it.' },
+    chase: { correct: 'Not quite — entering at market after an 80-point run means buying the expensive part with no defined invalidation.', incorrect: 'Chasing the move is the FOMO trap: late entry, no logical stop, bad R:R. Wait for a pullback or skip it.' },
+    size: { correct: 'Not quite — doubling size to "make up ground" combines FOMO with revenge sizing, exactly what breaches daily limits.', incorrect: 'Double size on a chased entry is the fastest route to a daily-limit breach. Wait for a defined entry instead.' }
+  },
+  ex3: {
+    stop: { correct: 'Correct. The rule exists precisely for moments when you feel fine and want to override it. Honouring it on the hard day is the entire point of having it.', incorrect: 'The disciplined answer is to honour the rule. "Feeling sharp" is exactly the rationalisation the rule is designed to overrule.' },
+    one: { correct: 'Not quite — "the rule does not apply today" is the rationalisation that makes rules worthless.', incorrect: 'If you can suspend the rule whenever you feel good, you do not really have a rule. Honour it and stop.' },
+    half: { correct: 'Not quite — half size is still negotiating with a rule that says stop. The point of the rule is that it is not negotiable.', incorrect: 'Half size is still breaking the rule. A pre-committed limit only works if you do not bargain with it. Stop for the session.' }
+  }
+};
+
+function checkEx(exId, chosen, btn, correct) {
+  const opts = document.querySelectorAll('#' + exId + '-opts .ex-opt');
+  opts.forEach(o => { o.disabled = true; o.onclick = null; });
+  const isCorrect = chosen === correct;
+  if (btn && btn.classList) btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+  const fb = document.getElementById(exId + '-fb');
+  fb.className = `ex-feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+  const msg = EX_FB[exId][chosen] || EX_FB[exId][correct];
+  fb.innerHTML = `<strong>${isCorrect ? '✓ Good' : 'Not quite'}</strong> — ${isCorrect ? msg.correct : msg.incorrect}`;
+  document.getElementById(exId + '-next').classList.add('show');
+}
+
+// QUIZ
+const QUESTIONS = [
+  { text: "What is the best working definition of trading discipline?", options: ["Never feeling fear or greed while trading","Following your plan despite what you feel in the moment","Trading only when you feel completely calm","Avoiding losses entirely through careful analysis"], correct: 1, fb: { c: "Correct. Everyone feels emotion. Discipline is acting on your plan rather than your feelings — removing emotion's authority, not the emotion itself.", w: "Discipline is not the absence of emotion — you will always feel it. It is following your plan despite what you feel." } },
+  { text: "A trader takes a loss and immediately enters an unplanned trade to 'make it back fast.' What is happening?", options: ["Smart capital recovery","Tilt / revenge trading","Disciplined risk management","A valid FOMO entry"], correct: 1, fb: { c: "Correct. The phrase 'make it back' after a loss, driving an unplanned trade, is the clearest signal of tilt. The right move is to stop.", w: "An unplanned trade driven by a desire to recover a loss is tilt. 'Make it back' is the warning phrase to watch for." } },
+  { text: "Why are pre-committed rules (like 'two losses = stop for the day') more effective than willpower?", options: ["Willpower is unlimited, so rules are just a backup","Rules remove the decision from the moment when judgement is compromised","Rules guarantee you never have a losing day","Willpower works better the more stressed you are"], correct: 1, fb: { c: "Correct. You set rules while calm so your stressed self cannot override them. Willpower depletes exactly when pressure peaks.", w: "The value of a rule is that it removes the decision from the stressed moment. Willpower fades precisely when you need it most." } },
+  { text: "You're chasing an 80-point move that already ran without you. What's the core problem with entering now?", options: ["The trend is too strong to trade","You'd be entering extended, far from any logical stop, with poor R:R","Large moves always reverse immediately","There is no problem — strong trends are free money"], correct: 1, fb: { c: "Correct. Chasing means a late entry with no logical invalidation and poor risk-to-reward — the defining flaw of FOMO trades.", w: "The problem is entry quality: chasing leaves you extended with no logical stop and bad R:R. Wait for a pullback or skip it." } },
+  { text: "How should you judge whether a single trade was 'good' or 'bad'?", options: ["By whether it made or lost money","By whether you followed your plan and rules","By how big the profit was","By whether other traders agreed with it"], correct: 1, fb: { c: "Correct. Process over outcome. A rule-following trade that lost was good; a rule-breaking trade that won was bad — it rewarded the wrong behaviour.", w: "Judge the process, not the outcome. A losing trade that followed your rules was good; a winning trade that broke them was bad." } }
+];
+
+let curQ = 0, selOpt = null, answered = false, score = 0;
+
+function initQuiz() {
+  curQ = 0; score = 0; selOpt = null; answered = false;
+  document.getElementById('quiz-questions').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  renderQ(); renderDots();
+}
+function renderDots() {
+  document.getElementById('q-dots').innerHTML = QUESTIONS.map((_,i) =>
+    `<div class="q-dot ${i<curQ?'done':i===curQ?'active':''}"></div>`).join('');
+}
+function renderQ() {
+  const q = QUESTIONS[curQ];
+  const L = ['A','B','C','D'];
+  document.getElementById('q-wrap').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Question ${curQ+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-options">
+        ${q.options.map((o,i)=>`<div class="q-opt" id="qo${i}" onclick="selQ(${i})"><div class="q-letter">${L[i]}</div><div class="q-opt-text">${o}</div></div>`).join('')}
+      </div>
+      <div class="q-feedback" id="q-fb"></div>
+    </div>`;
+  selOpt = null; answered = false;
+  document.getElementById('q-submit').disabled = true;
+  document.getElementById('q-submit').style.display = 'block';
+  document.getElementById('q-next').style.display = 'none';
+}
+function selQ(i) {
+  if (answered) return;
+  selOpt = i;
+  document.querySelectorAll('.q-opt').forEach((o,j) => o.classList.toggle('selected', j===i));
+  document.getElementById('q-submit').disabled = false;
+}
+function submitQ() {
+  if (selOpt === null || answered) return;
+  answered = true;
+  const q = QUESTIONS[curQ];
+  const ok = selOpt === q.correct;
+  if (ok) score++;
+  document.querySelectorAll('.q-opt').forEach((o,i) => {
+    o.classList.remove('selected');
+    if (i===q.correct) o.classList.add('correct');
+    else if (i===selOpt && !ok) o.classList.add('incorrect');
+  });
+  const fb = document.getElementById('q-fb');
+  fb.className = `q-feedback show ${ok?'correct':'incorrect'}`;
+  fb.innerHTML = `<strong>${ok?'✓ Correct':'✗ Not quite'}</strong> — ${ok?q.fb.c:q.fb.w}`;
+  document.getElementById('q-submit').style.display = 'none';
+  document.getElementById('q-next').style.display = 'block';
+  document.getElementById('q-next').textContent = curQ < QUESTIONS.length-1 ? 'Next →' : 'See results →';
+}
+function nextQ() {
+  curQ++;
+  if (curQ >= QUESTIONS.length) { showResult(); return; }
+  renderDots(); renderQ();
+}
+function showResult() {
+  document.getElementById('quiz-questions').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+  const pct = Math.round((score/QUESTIONS.length)*100);
+  const pass = pct >= 80;
+  document.getElementById('result-pct').textContent = pct+'%';
+  document.getElementById('result-pct').className = `result-pct ${pass?'pass':'fail'}`;
+  document.getElementById('result-lbl').textContent = pass ? 'Module 5 passed' : 'Not quite — try again';
+  document.getElementById('result-msg').textContent = pass
+    ? `You answered ${score} of ${QUESTIONS.length} correctly. This is the work most traders skip — and it is why they keep paying for resets. Module 6 builds the review habit that compounds it.`
+    : `You answered ${score} of ${QUESTIONS.length} correctly. Review the lessons and try again — psychology is the difference between knowing the rules and following them.`;
+  if (pass) {
+    document.getElementById('result-cta').style.display = 'inline-block';
+    completed[3] = true;
+    document.getElementById('dot-3').textContent = '✓';
+    document.getElementById('nav-3').classList.add('completed');
+    updateProgress();
+    saveProgress();
+    setTimeout(() => document.getElementById('completion-banner').classList.add('show'), 500);
+    try { localStorage.setItem('traxent_m5_complete', 'true'); } catch (e) {}
+  }
+}
+function retryQuiz() {
+  document.getElementById('quiz-result').style.display = 'none';
+  initQuiz();
+}
+
+initQuiz();
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Traxent user-data stack — DynamoDB table + Lambda + HTTP API that persists per-user
+  lesson/quiz progress, paper trades, and firm selections. Replaces browser localStorage
+  so a user's progress and trade history follow them across devices.
+
+  This is real infrastructure-as-code: `sam deploy` (or the deploy-infra GitHub Action)
+  creates/updates everything below. It is a SEPARATE stack from the existing manually-
+  deployed payment Lambdas, so it does not touch the Stripe/checkout endpoint.
+
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 256
+    Runtime: nodejs20.x
+    Architectures: [arm64]
+
+Parameters:
+  Auth0Issuer:
+    Type: String
+    Default: https://auth.traxent.io/
+    Description: Auth0 token issuer (custom domain, trailing slash).
+  Auth0Audience:
+    Type: String
+    Default: ilvfACgF2sCmLWaugCn11qTB04aTvWxz
+    Description: Auth0 SPA Client ID — the audience of the ID token the frontend sends.
+  AllowedOrigin:
+    Type: String
+    Default: https://traxent.io
+    Description: CORS allowed origin for the API.
+
+Resources:
+
+  UserDataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: TraxentUserData
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      SSESpecification:
+        SSEEnabled: true
+
+  UserDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-user-data
+      Handler: index.handler
+      CodeUri: functions/user-data/
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref UserDataTable
+          AUTH0_ISSUER: !Ref Auth0Issuer
+          AUTH0_AUDIENCE: !Ref Auth0Audience
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UserDataTable
+      Events:
+        ApiRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user
+            Method: ANY
+        ApiProxy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/{proxy+}
+            Method: ANY
+
+  UserDataApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref AllowedOrigin
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - OPTIONS
+
+Outputs:
+  ApiBaseUrl:
+    Description: Base URL for the user-data API. Put this in src/userdata.js (USERDATA_API).
+    Value: !Sub "https://${UserDataApi}.execute-api.${AWS::Region}.amazonaws.com"
+  TableName:
+    Value: !Ref UserDataTable

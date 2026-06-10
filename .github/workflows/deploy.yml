@@ -33,6 +33,30 @@ jobs:
           echo "auth.js references after stamping:"
           grep -h 'src="/\?auth.js' src/*.html | sort -u
 
+      - name: Verify HTML integrity (guard against truncated files)
+        run: |
+          # OneDrive has silently truncated HTML file tails before (eating the
+          # closing </script></body></html> and breaking inline scripts). Fail
+          # the deploy loudly rather than ship a corrupted page.
+          fail=0
+          for f in src/*.html; do
+            if ! tail -c 16 "$f" | tr -d '[:space:]' | grep -q '</html>'; then
+              echo "::error file=$f::Truncated HTML — file does not end with </html>"
+              fail=1
+            fi
+            open=$(grep -o '<script' "$f" | wc -l)
+            close=$(grep -o '</script>' "$f" | wc -l)
+            if [ "$open" -ne "$close" ]; then
+              echo "::error file=$f::Unbalanced script tags ($open <script> vs $close </script>)"
+              fail=1
+            fi
+          done
+          if [ "$fail" -ne 0 ]; then
+            echo "Deploy aborted: one or more HTML files look truncated/corrupted."
+            exit 1
+          fi
+          echo "HTML integrity check passed — all pages end in </html> with balanced <script> tags."
+
       - name: Deploy to S3
         run: |
           # Pass 1: upload everything (and handle deletions) with a long,
@@ -50,6 +74,7 @@ jobs:
             --exclude "*" \
             --include "*.html" \
             --include "auth.js" \
+            --include "userdata.js" \
             --include "sw.js" \
             --cache-control "no-cache"
 

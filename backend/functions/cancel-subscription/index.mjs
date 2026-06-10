@@ -7,9 +7,14 @@ const ssm = new SSMClient({ region: 'eu-west-2' });
 // ── Auth0 JWT verifier ─────────────────────────────────────────────────────
 // Same config as create-checkout. JWKS cached at module level so cold-start
 // only happens once per Lambda container, not per request.
+//
+// The frontend (src/auth.js) sends the Auth0 *ID token* as the bearer token,
+// so `aud` is the SPA Client ID — NOT the Management API audience. Verifying
+// against the old `https://auth.traxent.io/api/v2/` value rejected every call
+// with 401, which is why cancel/checkout silently failed.
 const verifier = JwtRsaVerifier.create({
   issuer: 'https://auth.traxent.io/',
-  audience: 'https://auth.traxent.io/api/v2/',
+  audience: 'ilvfACgF2sCmLWaugCn11qTB04aTvWxz', // Auth0 SPA Client ID (ID token aud)
   jwksUri: 'https://auth.traxent.io/.well-known/jwks.json',
 });
 

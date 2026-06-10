@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Traxent">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed:', err));
+    });
+  }
+</script>
+<title>Module 6: Review &amp; Building Your Edge — Traxent Learn</title>
+<style id="auth-gate-style">body{visibility:hidden}</style>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="/auth.js?v=__BUILD_SHA__"></script>
+<script>requireMinPlan('challenger');</script>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f2; --ink: #0e0e0c; --ink2: #3a3a36; --ink3: #7a7a72;
+  --accent: #0a6e4f; --accent-light: rgba(10,110,79,.08); --accent-mid: #1a9e72;
+  --border: rgba(14,14,12,0.1); --border2: rgba(14,14,12,0.06);
+  --surface: #ffffff; --surface2: #f0efe9;
+  --good: #0a6e4f; --warn: #b06000; --bad: #9e1a1a;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', sans-serif; --mono: 'Geist Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; }
+.nav-logo { font-family: var(--mono); font-size: 15px; color: var(--ink); text-decoration: none; }
+.nav-logo em { font-style: normal; color: var(--accent); }
+.nav-back { font-size: 13px; color: var(--ink3); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
+.nav-back:hover { color: var(--ink); }
+.nav-back::before { content: '←'; }
+.learn-wrap { max-width: 1160px; margin: 0 auto; padding: 40px 32px; display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: start; }
+.sidebar { position: sticky; top: 76px; }
+.module-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.module-title { font-family: var(--serif); font-size: 18px; font-weight: 400; color: var(--ink); margin-bottom: 4px; }
+.module-meta { font-size: 12px; color: var(--ink3); margin-bottom: 20px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink3); margin-bottom: 6px; }
+.progress-bar { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; margin-bottom: 20px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.5s ease; }
+.lesson-list { display: flex; flex-direction: column; gap: 2px; }
+.lesson-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
+.lesson-item:hover { background: var(--surface); border-color: var(--border); }
+.lesson-item.active { background: var(--surface); border-color: var(--accent); }
+.lesson-item.completed .lesson-dot { background: var(--accent); color: white; border-color: var(--accent); }
+.lesson-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; font-family: var(--mono); color: var(--ink3); flex-shrink: 0; transition: all 0.2s; }
+.lesson-item.active .lesson-dot { background: var(--accent); color: white; border-color: var(--accent); }
+.lesson-name { font-size: 13px; color: var(--ink); }
+.lesson-item.active .lesson-name { font-weight: 500; color: var(--accent); }
+.lesson-dur { font-size: 10px; color: var(--ink3); font-family: var(--mono); margin-top: 1px; }
+.quiz-sep { height: 1px; background: var(--border); margin: 8px 0; }
+.sidebar-note { margin-top: 20px; padding: 14px 16px; background: var(--accent-light); border: 1px solid rgba(10,110,79,.15); border-radius: 8px; font-size: 12px; color: var(--ink2); line-height: 1.5; }
+.lesson-main { min-height: 60vh; }
+.lesson-hd { margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.lesson-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.lesson-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+.lesson-title { font-family: var(--serif); font-size: 38px; font-weight: 400; line-height: 1.1; color: var(--ink); margin-bottom: 14px; }
+.lesson-intro { font-size: 16px; color: var(--ink2); line-height: 1.7; font-weight: 300; max-width: 640px; }
+.lesson-body { max-width: 720px; }
+.lesson-body h2 { font-family: var(--serif); font-size: 24px; font-weight: 400; color: var(--ink); margin: 36px 0 14px; }
+.lesson-body p { font-size: 15px; color: var(--ink2); line-height: 1.8; margin-bottom: 16px; font-weight: 300; }
+.lesson-body strong { color: var(--ink); font-weight: 500; }
+.callout { border-radius: 8px; padding: 16px 20px; margin: 24px 0; }
+.callout-key { background: var(--accent-light); border: 1px solid rgba(10,110,79,.15); border-left: 3px solid var(--accent); }
+.callout-key .cl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.callout-warn { background: rgba(176,96,0,.06); border: 1px solid rgba(176,96,0,.15); border-left: 3px solid var(--warn); }
+.callout-warn .cl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warn); margin-bottom: 8px; }
+.callout p { margin-bottom: 0; font-size: 14px; }
+.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+.stat-val { font-family: var(--serif); font-size: 30px; font-weight: 400; color: var(--ink); font-style: italic; margin-bottom: 4px; }
+.stat-label { font-size: 12px; color: var(--ink3); line-height: 1.4; }
+.vis-exp { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 24px 0; }
+.vis-exp-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); margin-bottom: 14px; }
+.vis-row { display: flex; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 10px; }
+.vis-row:last-child { margin-bottom: 0; }
+.vis-cell { flex: 1; padding: 10px 14px; border-right: 1px solid var(--border); }
+.vis-cell:last-child { border-right: none; }
+.vis-cell-label { font-size: 10px; font-family: var(--mono); color: var(--ink3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+.vis-cell-val { font-size: 13px; color: var(--ink); font-weight: 500; }
+.vis-cell-sub { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+.vis-good { background: rgba(10,110,79,.06); }
+.vis-bad { background: rgba(158,26,26,.06); }
+.vis-cell-val.green { color: var(--good); }
+.vis-cell-val.red { color: var(--bad); }
+.inline-calc { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin: 24px 0; }
+.ic-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 16px; }
+.ic-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.ic-field { display: flex; flex-direction: column; gap: 5px; }
+.ic-field label { font-size: 12px; color: var(--ink3); }
+.ic-row { display: flex; }
+.ic-input { flex: 1; width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; font-family: var(--sans); font-size: 14px; color: var(--ink); outline: none; transition: border-color 0.15s; }
+.ic-input:focus { border-color: var(--accent); }
+.ic-result { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; }
+.ic-result-label { font-size: 13px; color: var(--ink3); }
+.ic-result-val { font-family: var(--serif); font-size: 28px; font-style: italic; color: var(--ink); }
+.ic-working { margin-top: 12px; font-size: 13px; color: var(--ink3); line-height: 1.7; display: none; }
+.exercise { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin: 28px 0; }
+.exercise-hd { padding: 14px 20px; border-bottom: 1px solid var(--border2); background: var(--surface2); display: flex; align-items: center; gap: 10px; }
+.ex-badge { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); border: 1px solid rgba(10,110,79,.2); padding: 3px 8px; border-radius: 3px; }
+.ex-title { font-size: 14px; font-weight: 500; color: var(--ink); }
+.exercise-body { padding: 20px; }
+.ex-question { font-size: 15px; color: var(--ink2); line-height: 1.6; margin-bottom: 18px; font-weight: 300; }
+.ex-question strong { color: var(--ink); font-weight: 500; }
+.ex-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.ex-opt { padding: 12px 18px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); font-size: 14px; color: var(--ink2); cursor: pointer; transition: all 0.15s; font-family: var(--sans); text-align: left; line-height: 1.5; }
+.ex-opt:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+.ex-opt.correct { border-color: var(--good); background: rgba(10,110,79,.08); color: var(--good); font-weight: 500; }
+.ex-opt.incorrect { border-color: var(--bad); background: rgba(158,26,26,.06); color: var(--bad); }
+.ex-opt.show-correct { border-color: var(--good); background: rgba(10,110,79,.06); color: var(--good); }
+.ex-feedback { padding: 14px 16px; border-radius: 8px; font-size: 14px; line-height: 1.6; display: none; }
+.ex-feedback.show { display: block; }
+.ex-feedback.correct { background: rgba(10,110,79,.08); border: 1px solid rgba(10,110,79,.2); color: var(--good); }
+.ex-feedback.incorrect { background: rgba(158,26,26,.06); border: 1px solid rgba(158,26,26,.15); color: var(--bad); }
+.ex-next-btn { margin-top: 14px; background: var(--accent); color: white; border: none; border-radius: 7px; padding: 10px 20px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--sans); transition: background 0.15s; display: none; }
+.ex-next-btn.show { display: inline-block; }
+.ex-next-btn:hover { background: #085e43; }
+.lesson-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border); }
+.btn-nav { display: flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; }
+.btn-prev { background: var(--surface); border: 1px solid var(--border); color: var(--ink2); }
+.btn-prev:hover { border-color: var(--ink); }
+.btn-prev::before { content: '←'; }
+.btn-next { background: var(--accent); color: white; }
+.btn-next:hover { background: #085e43; }
+.btn-next::after { content: '→'; }
+.nav-info { font-size: 12px; color: var(--ink3); font-family: var(--mono); }
+.quiz-wrap { max-width: 700px; }
+.quiz-hd { margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.quiz-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.quiz-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+.quiz-title { font-family: var(--serif); font-size: 38px; font-weight: 400; color: var(--ink); margin-bottom: 10px; }
+.quiz-sub { font-size: 15px; color: var(--ink2); line-height: 1.65; font-weight: 300; }
+.q-dots { display: flex; gap: 8px; margin-bottom: 32px; }
+.q-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); transition: all 0.2s; }
+.q-dot.active { background: var(--accent); border-color: var(--accent); }
+.q-dot.done { background: var(--accent); border-color: var(--accent); opacity: 0.4; }
+.q-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 26px; margin-bottom: 20px; }
+.q-num { font-family: var(--mono); font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+.q-text { font-size: 16px; color: var(--ink); line-height: 1.55; margin-bottom: 22px; }
+.q-options { display: flex; flex-direction: column; gap: 10px; }
+.q-opt { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+.q-opt:hover { border-color: var(--accent); background: var(--accent-light); }
+.q-opt.selected { border-color: var(--accent); background: var(--accent-light); }
+.q-opt.correct { border-color: var(--good); background: rgba(10,110,79,.08); }
+.q-opt.incorrect { border-color: var(--bad); background: rgba(158,26,26,.06); }
+.q-letter { width: 22px; height: 22px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; color: var(--ink3); flex-shrink: 0; transition: all 0.15s; }
+.q-opt.selected .q-letter { background: var(--accent); color: white; border-color: var(--accent); }
+.q-opt.correct .q-letter { background: var(--good); color: white; border-color: var(--good); }
+.q-opt.incorrect .q-letter { background: var(--bad); color: white; border-color: var(--bad); }
+.q-opt-text { font-size: 14px; color: var(--ink2); line-height: 1.5; padding-top: 2px; }
+.q-feedback { padding: 12px 16px; border-radius: 8px; margin-top: 14px; font-size: 14px; line-height: 1.55; display: none; }
+.q-feedback.show { display: block; }
+.q-feedback.correct { background: rgba(10,110,79,.08); border: 1px solid rgba(10,110,79,.2); color: var(--good); }
+.q-feedback.incorrect { background: rgba(158,26,26,.06); border: 1px solid rgba(158,26,26,.15); color: var(--bad); }
+.q-btn-row { display: flex; justify-content: flex-end; margin-top: 20px; gap: 10px; }
+.q-btn { padding: 11px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; }
+.q-submit { background: var(--accent); color: white; }
+.q-submit:hover { background: #085e43; }
+.q-submit:disabled { opacity: 0.35; cursor: not-allowed; }
+.q-next-btn { background: var(--ink); color: white; display: none; }
+.q-next-btn:hover { background: var(--accent); }
+.quiz-result { text-align: center; padding: 48px 0; display: none; }
+.result-pct { font-family: var(--serif); font-size: 80px; font-weight: 400; font-style: italic; line-height: 1; margin-bottom: 10px; }
+.result-pct.pass { color: var(--good); }
+.result-pct.fail { color: var(--bad); }
+.result-lbl { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 20px; }
+.result-msg { font-size: 15px; color: var(--ink2); line-height: 1.65; max-width: 480px; margin: 0 auto 28px; font-weight: 300; }
+.result-actions { display: flex; gap: 12px; justify-content: center; }
+.btn-result { padding: 11px 22px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; text-decoration: none; display: inline-block; }
+.btn-result-primary { background: var(--accent); color: white; }
+.btn-result-primary:hover { background: #085e43; }
+.btn-result-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--ink2); }
+.completion-banner { background: var(--ink); border-radius: 12px; padding: 24px 28px; margin-top: 32px; display: none; }
+.completion-banner.show { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.cb-title { font-family: var(--serif); font-size: 20px; color: white; }
+.cb-sub { font-size: 13px; color: rgba(255,255,255,.45); margin-top: 4px; }
+.cb-btn { background: var(--accent-mid); color: white; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; white-space: nowrap; }
+@media (max-width: 900px) {
+  .learn-wrap { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .stat-row, .ic-grid { grid-template-columns: 1fr; }
+  .learn-wrap { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <a href="/learn" class="nav-back">All modules</a>
+</nav>
+
+<div class="learn-wrap">
+  <aside class="sidebar">
+    <div class="module-label">Module 6 · Challenger</div>
+    <div class="module-title">Review &amp; Building Your Edge</div>
+    <div class="module-meta">3 lessons · 1 quiz · ~32 min</div>
+    <div class="progress-label"><span>Progress</span><span id="prog-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="lesson-list">
+      <div class="lesson-item active" id="nav-0" onclick="showLesson(0)">
+        <div class="lesson-dot" id="dot-0">1</div>
+        <div><div class="lesson-name">The numbers that actually matter</div><div class="lesson-dur">11 min · Calculator</div></div>
+      </div>
+      <div class="lesson-item" id="nav-1" onclick="showLesson(1)">
+        <div class="lesson-dot" id="dot-1">2</div>
+        <div><div class="lesson-name">Journaling that changes behaviour</div><div class="lesson-dur">10 min · Framework</div></div>
+      </div>
+      <div class="lesson-item" id="nav-2" onclick="showLesson(2)">
+        <div class="lesson-dot" id="dot-2">3</div>
+        <div><div class="lesson-name">The weekly review loop</div><div class="lesson-dur">11 min · Scenarios</div></div>
+      </div>
+      <div class="quiz-sep"></div>
+      <div class="lesson-item" id="nav-3" onclick="showLesson(3)">
+        <div class="lesson-dot" id="dot-3">✦</div>
+        <div><div class="lesson-name">Module 6 quiz</div><div class="lesson-dur">5 questions · Pass 80%</div></div>
+      </div>
+    </div>
+    <div class="sidebar-note">An edge you cannot measure is a guess. This module turns your trade history into a feedback loop that compounds — the final step before going for funding.</div>
+  </aside>
+
+  <main>
+
+    <!-- LESSON 1 -->
+    <div id="lesson-0" class="lesson-main">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 6 · Lesson 1</div>
+        <h1 class="lesson-title">The numbers that actually matter</h1>
+        <p class="lesson-intro">Most traders track the wrong number: profit and loss. P&amp;L is an outcome, not a cause. This lesson covers the handful of metrics that actually describe whether you have an edge — and lets you compute your own expectancy.</p>
+      </div>
+      <div class="lesson-body">
+        <h2>Win rate is not your edge</h2>
+        <p>New traders obsess over win rate, but a 70% win rate with tiny winners and huge losers loses money, while a 35% win rate with large winners and small losers prints. What matters is the combination of how often you win and how big your wins are relative to your losses. That combination has a name: <strong>expectancy</strong>.</p>
+
+        <div class="callout callout-key">
+          <div class="cl">Key concept — expectancy</div>
+          <p>Expectancy is the average amount you can expect to win (or lose) per trade, in units of risk (R). The formula: <strong>(Win% × Avg win in R) − (Loss% × Avg loss in R)</strong>. A positive expectancy means that, repeated enough times, the system makes money. A negative one means it bleeds — no matter how good any single trade felt.</p>
+        </div>
+
+        <h2>Thinking in R</h2>
+        <p>The cleanest way to measure trading is in <strong>R</strong> — multiples of the amount you risked. If you risk 1% and make 2%, that is +2R. If you risk 1% and lose it, that is −1R. Measuring in R removes account size and position size from the picture and lets you compare every trade on equal footing.</p>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">Two traders, same P&amp;L, very different edge</div>
+          <div class="vis-row">
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">Trader A</div><div class="vis-cell-val red">70% win · +0.5R / −1R</div><div class="vis-cell-sub">Expectancy: (0.7×0.5) − (0.3×1) = +0.05R</div></div>
+            <div class="vis-cell vis-good"><div class="vis-cell-label">Trader B</div><div class="vis-cell-val green">40% win · +2.5R / −1R</div><div class="vis-cell-sub">Expectancy: (0.4×2.5) − (0.6×1) = +0.40R</div></div>
+          </div>
+        </div>
+        <p>Trader B wins less than half the time but has 8x the expectancy. Over 100 trades, Trader A nets +5R while Trader B nets +40R. Same markets — completely different outcome, driven by the size of winners relative to losers.</p>
+
+        <h2>Compute your own expectancy</h2>
+        <p>Enter your real numbers from your trade log below. Use your last 30–50 trades for a meaningful sample — fewer than that and the result is mostly noise.</p>
+
+        <div class="inline-calc">
+          <div class="ic-title">Expectancy calculator (in R)</div>
+          <div class="ic-grid">
+            <div class="ic-field">
+              <label>Win rate (%)</label>
+              <div class="ic-row"><input type="number" class="ic-input" id="ic-wr" value="45" min="0" max="100" step="1" oninput="calcExp()"></div>
+            </div>
+            <div class="ic-field">
+              <label>Avg win (R)</label>
+              <div class="ic-row"><input type="number" class="ic-input" id="ic-aw" value="2" min="0" step="0.1" oninput="calcExp()"></div>
+            </div>
+            <div class="ic-field">
+              <label>Avg loss (R)</label>
+              <div class="ic-row"><input type="number" class="ic-input" id="ic-al" value="1" min="0" step="0.1" oninput="calcExp()"></div>
+            </div>
+          </div>
+          <div class="ic-result">
+            <span class="ic-result-label">Expectancy per trade</span>
+            <span class="ic-result-val" id="ic-exp">—</span>
+          </div>
+          <div class="ic-working" id="ic-exp-working"></div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="cl">Sample size matters</div>
+          <p>A positive expectancy over 10 trades tells you almost nothing — variance dominates small samples. You need 50+ trades before the number means much, and you must keep risk consistent for R to be comparable. This is exactly the kind of consistency a prop firm is testing for.</p>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <span></span>
+        <span class="nav-info">Lesson 1 of 3</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(0)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- LESSON 2 -->
+    <div id="lesson-1" class="lesson-main" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 6 · Lesson 2</div>
+        <h1 class="lesson-title">Journaling that changes behaviour</h1>
+        <p class="lesson-intro">A journal that only records entries and exits is a spreadsheet. A journal that records your reasoning and emotional state is a mirror — and it is the single highest-leverage habit a developing trader can build.</p>
+      </div>
+      <div class="lesson-body">
+        <h2>What to actually log</h2>
+        <p>Price data is the least useful thing in a trade journal — your platform already has it. The value is in the context only you can capture: <strong>why</strong> you took the trade, whether it matched your plan, how you felt, and what you did when it moved. That is the data that reveals your leaks.</p>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">Fields that change behaviour</div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Setup</div><div class="vis-cell-val">Which plan?</div><div class="vis-cell-sub">Named setup, or "off-plan"</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Plan match</div><div class="vis-cell-val">Yes / No</div><div class="vis-cell-sub">Did you follow your rules?</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Emotion</div><div class="vis-cell-val">State at entry</div><div class="vis-cell-sub">Calm · FOMO · tilt · bored</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Result</div><div class="vis-cell-val">In R</div><div class="vis-cell-sub">+/− multiples of risk</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Management</div><div class="vis-cell-val">What you did</div><div class="vis-cell-sub">Held stop? Moved it? Cut early?</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Lesson</div><div class="vis-cell-val">One line</div><div class="vis-cell-sub">What would you repeat or change?</div></div>
+          </div>
+        </div>
+
+        <h2>The 'plan match' column is the whole game</h2>
+        <p>If you log only one extra field, log whether the trade followed your plan. Over a few weeks you can sort your trades into four boxes — and the pattern that emerges is almost always the same.</p>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">The four boxes</div>
+          <div class="vis-row">
+            <div class="vis-cell vis-good"><div class="vis-cell-label">On-plan · won</div><div class="vis-cell-val green">Repeat</div><div class="vis-cell-sub">Your edge working as designed</div></div>
+            <div class="vis-cell vis-good"><div class="vis-cell-label">On-plan · lost</div><div class="vis-cell-val green">Fine</div><div class="vis-cell-sub">A good trade with a bad outcome</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">Off-plan · lost</div><div class="vis-cell-val red">Obvious leak</div><div class="vis-cell-sub">Easy to see and cut</div></div>
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">Off-plan · won</div><div class="vis-cell-val red">Dangerous</div><div class="vis-cell-sub">Rewards the wrong behaviour</div></div>
+          </div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="cl">The most dangerous box</div>
+          <p>Off-plan trades that <strong>win</strong> are the ones that destroy traders, because the profit teaches your brain that breaking the rules pays. The journal is what lets you label that win as a bad trade and refuse to repeat it. Without the record, you just remember the money.</p>
+        </div>
+
+        <div class="exercise" id="ex1">
+          <div class="exercise-hd"><span class="ex-badge">Scenario 1</span><span class="ex-title">Reading your own journal</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">Your journal shows that 80% of your losing R comes from trades you marked "off-plan", and your on-plan trades have a positive expectancy. What is the highest-leverage change?</p>
+            <div class="ex-opts" id="ex1-opts">
+              <button class="ex-opt" onclick="checkEx('ex1','strategy',this,'discipline')">Find a new strategy — your edge is not good enough</button>
+              <button class="ex-opt" onclick="checkEx('ex1','size',this,'discipline')">Increase size on on-plan trades to grow faster</button>
+              <button class="ex-opt" onclick="checkEx('ex1','discipline',this,'discipline')">Simply stop taking off-plan trades — your edge already works</button>
+            </div>
+            <div class="ex-feedback" id="ex1-fb"></div>
+            <button class="ex-next-btn" id="ex1-next" onclick="document.getElementById('after-ex1').style.display='block';document.getElementById('after-ex1').scrollIntoView({behavior:'smooth'})">Continue →</button>
+          </div>
+        </div>
+
+        <div id="after-ex1" style="display:none">
+          <div class="callout callout-key">
+            <div class="cl">Traxent note</div>
+            <p>The Traxent sim journal and readiness tracker are built to capture exactly these fields — plan match, emotion, result in R — and surface the patterns automatically, so you get the feedback loop without maintaining a spreadsheet by hand.</p>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-nav btn-prev" onclick="showLesson(0)">Previous</button>
+        <span class="nav-info">Lesson 2 of 3</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(1)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- LESSON 3 -->
+    <div id="lesson-2" class="lesson-main" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 6 · Lesson 3</div>
+        <h1 class="lesson-title">The weekly review loop</h1>
+        <p class="lesson-intro">Logging trades is input. The review is where the learning happens. This lesson gives you a repeatable weekly routine that turns a pile of trades into one or two concrete changes — the loop that separates traders who improve from traders who just accumulate screen time.</p>
+      </div>
+      <div class="lesson-body">
+        <h2>Why weekly, not daily</h2>
+        <p>Daily review is too noisy — a single day is mostly variance. Weekly gives you enough trades to see a pattern without so many that the signal blurs. The aim of each review is modest and specific: leave with <strong>one thing to keep doing and one thing to change</strong>. Not ten. One of each is enough to compound.</p>
+
+        <div class="vis-exp">
+          <div class="vis-exp-title">The weekly review loop</div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">1 · Measure</div><div class="vis-cell-val">Expectancy &amp; R</div><div class="vis-cell-sub">Update your numbers for the week</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">2 · Sort</div><div class="vis-cell-val">Four boxes</div><div class="vis-cell-sub">On/off-plan vs won/lost</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">3 · Find</div><div class="vis-cell-val">Biggest leak</div><div class="vis-cell-sub">Where did the losing R come from?</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">4 · Decide</div><div class="vis-cell-val">One change</div><div class="vis-cell-sub">A single, specific rule tweak</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">5 · Commit</div><div class="vis-cell-val">Write it down</div><div class="vis-cell-sub">Make it the focus of next week</div></div>
+            <div class="vis-cell vis-good"><div class="vis-cell-label">6 · Repeat</div><div class="vis-cell-val green">Compound</div><div class="vis-cell-sub">Small weekly gains stack up</div></div>
+          </div>
+        </div>
+
+        <h2>Make changes one at a time</h2>
+        <p>If you change five things at once and your results improve, you have no idea which change helped — and you cannot keep what worked. Change one variable, give it a meaningful sample of trades, then measure. This is the same discipline a scientist uses, and it is why traders who review methodically pull away from those who tinker constantly.</p>
+
+        <div class="exercise" id="ex2">
+          <div class="exercise-hd"><span class="ex-badge">Scenario 2</span><span class="ex-title">Choosing the change</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">Your weekly review shows your expectancy is positive overall, but every Friday afternoon you give back most of the week's gains in over-traded, off-plan positions. What is the single best change for next week?</p>
+            <div class="ex-opts" id="ex2-opts">
+              <button class="ex-opt" onclick="checkEx('ex2','overhaul',this,'friday')">Rebuild your whole strategy from scratch</button>
+              <button class="ex-opt" onclick="checkEx('ex2','friday',this,'friday')">Add one rule: stop trading Friday after midday</button>
+              <button class="ex-opt" onclick="checkEx('ex2','bigger',this,'friday')">Trade bigger earlier in the week to bank more before Friday</button>
+            </div>
+            <div class="ex-feedback" id="ex2-fb"></div>
+            <button class="ex-next-btn" id="ex2-next" onclick="document.getElementById('ex3').style.display='block';document.getElementById('ex3').scrollIntoView({behavior:'smooth'})">Next scenario →</button>
+          </div>
+        </div>
+
+        <div class="exercise" id="ex3" style="display:none">
+          <div class="exercise-hd"><span class="ex-badge">Scenario 3</span><span class="ex-title">Readiness, not hope</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">You want to buy a prop firm challenge. Which signal best tells you that you are actually ready, rather than just hopeful?</p>
+            <div class="ex-opts" id="ex3-opts">
+              <button class="ex-opt" onclick="checkEx('ex3','feel',this,'data')">You feel confident and have had a few good days recently</button>
+              <button class="ex-opt" onclick="checkEx('ex3','data',this,'data')">A 50+ trade sample shows positive expectancy while staying inside the firm's daily and max-loss limits</button>
+              <button class="ex-opt" onclick="checkEx('ex3','target',this,'data')">You hit the profit target once in a demo last week</button>
+            </div>
+            <div class="ex-feedback" id="ex3-fb"></div>
+            <button class="ex-next-btn" id="ex3-next" onclick="document.getElementById('after-ex3').style.display='block';document.getElementById('after-ex3').scrollIntoView({behavior:'smooth'})">Continue →</button>
+          </div>
+        </div>
+
+        <div id="after-ex3" style="display:none">
+          <div class="callout callout-key">
+            <div class="cl">This is what Traxent measures</div>
+            <p>Readiness is evidence, not a feeling: a sample of trades with positive expectancy that would have respected a firm's specific rules. The Traxent readiness tracker scores exactly that against each firm, so you buy a challenge when the data says go — not when hope does.</p>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-nav btn-prev" onclick="showLesson(1)">Previous</button>
+        <span class="nav-info">Lesson 3 of 3</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(2)">Take the quiz</button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="lesson-3" class="lesson-main" style="display:none">
+      <div class="quiz-wrap">
+        <div class="quiz-hd">
+          <div class="quiz-eyebrow">Module 6 · Quiz</div>
+          <h1 class="quiz-title">Test your knowledge</h1>
+          <p class="quiz-sub">5 questions on metrics, journaling and the review loop. You need 80% to pass and complete the learning path.</p>
+        </div>
+        <div id="quiz-questions">
+          <div class="q-dots" id="q-dots"></div>
+          <div id="q-wrap"></div>
+          <div class="q-btn-row">
+            <button class="q-btn q-submit" id="q-submit" onclick="submitQ()" disabled>Submit answer</button>
+            <button class="q-btn q-next-btn" id="q-next" onclick="nextQ()">Next →</button>
+          </div>
+        </div>
+        <div class="quiz-result" id="quiz-result">
+          <div class="result-pct" id="result-pct"></div>
+          <div class="result-lbl" id="result-lbl"></div>
+          <div class="result-msg" id="result-msg"></div>
+          <div class="result-actions">
+            <button class="btn-result btn-result-secondary" onclick="retryQuiz()">Retry quiz</button>
+            <a href="/learn" class="btn-result btn-result-primary" id="result-cta" style="display:none">Back to modules →</a>
+          </div>
+          <div class="completion-banner" id="completion-banner">
+            <div><div class="cb-title">Learning path complete</div><div class="cb-sub">You've finished all six modules. Put it to work in the journal and readiness tracker.</div></div>
+            <a href="/tracker" class="cb-btn">Open tracker →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const LESSON_KEYS = ['l6-1','l6-2','l6-3','l6-quiz'];
+const completed = [false, false, false, false];
+
+function saveProgress() {
+  try {
+    const p = JSON.parse(localStorage.getItem('traxent_progress') || '{}');
+    completed.forEach((done, i) => { if (done) p[LESSON_KEYS[i]] = true; });
+    localStorage.setItem('traxent_progress', JSON.stringify(p));
+  } catch (e) { /* storage unavailable — non-fatal */ }
+}
+
+function showLesson(i) {
+  for (let j = 0; j < 4; j++) {
+    document.getElementById('lesson-' + j).style.display = 'none';
+    document.getElementById('nav-' + j).classList.remove('active');
+  }
+  document.getElementById('lesson-' + i).style.display = 'block';
+  document.getElementById('nav-' + i).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function completeLesson(i) {
+  completed[i] = true;
+  document.getElementById('dot-' + i).textContent = '✓';
+  document.getElementById('nav-' + i).classList.add('completed');
+  updateProgress();
+  saveProgress();
+  showLesson(i + 1);
+  if (i === 2) initQuiz();
+}
+
+function updateProgress() {
+  const done = completed.filter(Boolean).length;
+  const pct = Math.round((done / 4) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+}
+
+function calcExp() {
+  const wr = (parseFloat(document.getElementById('ic-wr').value) || 0) / 100;
+  const aw = parseFloat(document.getElementById('ic-aw').value) || 0;
+  const al = parseFloat(document.getElementById('ic-al').value) || 0;
+  const exp = (wr * aw) - ((1 - wr) * al);
+  const el = document.getElementById('ic-exp');
+  const work = document.getElementById('ic-exp-working');
+  el.textContent = (exp >= 0 ? '+' : '') + exp.toFixed(2) + 'R';
+  el.style.color = exp > 0 ? 'var(--good)' : exp < 0 ? 'var(--bad)' : 'var(--ink)';
+  work.style.display = 'block';
+  const lossPct = (1 - wr);
+  work.innerHTML = `(${(wr*100).toFixed(0)}% × ${aw}R) − (${(lossPct*100).toFixed(0)}% × ${al}R) = <strong>${(exp>=0?'+':'')+exp.toFixed(2)}R per trade</strong>.` +
+    (exp > 0 ? ' Positive — over a large enough sample this system makes money.' : exp < 0 ? ' Negative — this system loses over time. Raise avg win, cut avg loss, or improve win rate.' : ' Break-even — costs and slippage would make this a net loss.');
+}
+
+const EX_FB = {
+  ex1: {
+    discipline: { correct: 'Correct. Your edge already works on-plan; the entire loss is coming from off-plan trades. Cutting them is the single highest-leverage change — no new strategy needed.', incorrect: 'The data says your on-plan edge is fine and the losses are off-plan. The fix is discipline, not a new strategy.' },
+    strategy: { correct: 'Not quite — the journal shows your on-plan trades are profitable, so the strategy is not the problem.', incorrect: 'A new strategy would throw away an edge that already works. The leak is off-plan trades — cut those.' },
+    size: { correct: 'Not quite — sizing up before fixing the off-plan leak just amplifies the losses too.', incorrect: 'Increasing size magnifies both the edge and the leak. Fix the off-plan leak first, then consider sizing.' }
+  },
+  ex2: {
+    friday: { correct: 'Correct. One specific, testable rule that targets the exact leak the data revealed. Measure it next week, then keep or adjust.', incorrect: 'The best change is one specific rule aimed at the leak the data showed — stop trading Friday afternoon — then measure it.' },
+    overhaul: { correct: 'Not quite — a full rebuild discards a profitable edge to fix a single, specific time-of-day leak.', incorrect: 'Rebuilding everything is overkill and untestable. Change one variable that targets the Friday leak.' },
+    bigger: { correct: 'Not quite — trading bigger does not address the Friday giveback and increases risk.', incorrect: 'Sizing up earlier ignores the actual leak and adds risk. Target the Friday over-trading with one rule.' }
+  },
+  ex3: {
+    data: { correct: 'Correct. Readiness is evidence: a meaningful sample with positive expectancy that respected the firm\'s limits. That is what tells you to buy a challenge.', incorrect: 'Readiness is data, not a feeling or a single good day. The right signal is a 50+ trade sample with positive expectancy inside the firm\'s limits.' },
+    feel: { correct: 'Not quite — confidence and a few good days are feelings and small samples, not evidence of an edge.', incorrect: 'Confidence is not readiness. You need a meaningful sample showing positive expectancy within the firm\'s limits.' },
+    target: { correct: 'Not quite — hitting a target once can be variance; it does not prove a repeatable edge.', incorrect: 'One target hit is a small sample and could be luck. Readiness needs a consistent, rule-respecting sample.' }
+  }
+};
+
+function checkEx(exId, chosen, btn, correct) {
+  const opts = document.querySelectorAll('#' + exId + '-opts .ex-opt');
+  opts.forEach(o => { o.disabled = true; o.onclick = null; });
+  const isCorrect = chosen === correct;
+  if (btn && btn.classList) btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+  const fb = document.getElementById(exId + '-fb');
+  fb.className = `ex-feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+  const msg = EX_FB[exId][chosen] || EX_FB[exId][correct];
+  fb.innerHTML = `<strong>${isCorrect ? '✓ Good' : 'Not quite'}</strong> — ${isCorrect ? msg.correct : msg.incorrect}`;
+  document.getElementById(exId + '-next').classList.add('show');
+}
+
+// QUIZ
+const QUESTIONS = [
+  { text: "Why is win rate a poor measure of a trading edge on its own?", options: ["Win rate is impossible to calculate accurately","A high win rate with small winners and big losers can still lose money","Win rate only matters for futures, not forex","Prop firms ignore win rate entirely"], correct: 1, fb: { c: "Correct. Edge is win rate combined with the size of winners vs losers — i.e. expectancy. A 70% win rate with tiny wins and big losses loses money.", w: "Win rate alone is misleading: you also need the size of wins vs losses. Together they form expectancy." } },
+  { text: "A system wins 40% of the time, with average wins of 2.5R and average losses of 1R. What is its expectancy?", options: ["−0.10R (loses over time)","+0.40R (profitable over time)","+1.50R","Exactly break-even"], correct: 1, fb: { c: "Correct. (0.4 × 2.5) − (0.6 × 1) = 1.0 − 0.6 = +0.40R per trade. Positive expectancy.", w: "Work it through: (0.4 × 2.5) − (0.6 × 1) = +0.40R. Positive expectancy despite a sub-50% win rate." } },
+  { text: "In a trade journal, which single extra field is most likely to change your behaviour?", options: ["The exact entry and exit price","Whether the trade followed your plan ('plan match')","The time the market opened","The broker's spread at entry"], correct: 1, fb: { c: "Correct. 'Plan match' lets you sort trades into on/off-plan and see that most losses are off-plan — the clearest, most actionable leak.", w: "Price data is already in your platform. Logging whether the trade followed your plan is what reveals your real leaks." } },
+  { text: "Why is an off-plan trade that WINS considered dangerous?", options: ["It isn't — a win is always good","The profit teaches your brain that breaking your rules pays off","Winning trades are taxed more heavily","It always reverses the next day"], correct: 1, fb: { c: "Correct. An off-plan win rewards rule-breaking behaviour, making you more likely to repeat it. The journal lets you label it a bad trade.", w: "An off-plan win reinforces the wrong behaviour — your brain remembers the money, not the broken rule. That's why it's dangerous." } },
+  { text: "What best indicates you are genuinely ready to buy a prop firm challenge?", options: ["You feel confident after a few good days","A 50+ trade sample with positive expectancy that stayed within the firm's daily and max-loss limits","You hit the profit target once in a demo","A friend passed the same firm's challenge"], correct: 1, fb: { c: "Correct. Readiness is evidence — a meaningful sample showing a positive, rule-respecting edge against that specific firm's limits.", w: "Readiness is data, not a feeling or a single result. You want a 50+ trade sample with positive expectancy inside the firm's limits." } }
+];
+
+let curQ = 0, selOpt = null, answered = false, score = 0;
+
+function initQuiz() {
+  curQ = 0; score = 0; selOpt = null; answered = false;
+  document.getElementById('quiz-questions').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  renderQ(); renderDots();
+}
+function renderDots() {
+  document.getElementById('q-dots').innerHTML = QUESTIONS.map((_,i) =>
+    `<div class="q-dot ${i<curQ?'done':i===curQ?'active':''}"></div>`).join('');
+}
+function renderQ() {
+  const q = QUESTIONS[curQ];
+  const L = ['A','B','C','D'];
+  document.getElementById('q-wrap').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Question ${curQ+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-options">
+        ${q.options.map((o,i)=>`<div class="q-opt" id="qo${i}" onclick="selQ(${i})"><div class="q-letter">${L[i]}</div><div class="q-opt-text">${o}</div></div>`).join('')}
+      </div>
+      <div class="q-feedback" id="q-fb"></div>
+    </div>`;
+  selOpt = null; answered = false;
+  document.getElementById('q-submit').disabled = true;
+  document.getElementById('q-submit').style.display = 'block';
+  document.getElementById('q-next').style.display = 'none';
+}
+function selQ(i) {
+  if (answered) return;
+  selOpt = i;
+  document.querySelectorAll('.q-opt').forEach((o,j) => o.classList.toggle('selected', j===i));
+  document.getElementById('q-submit').disabled = false;
+}
+function submitQ() {
+  if (selOpt === null || answered) return;
+  answered = true;
+  const q = QUESTIONS[curQ];
+  const ok = selOpt === q.correct;
+  if (ok) score++;
+  document.querySelectorAll('.q-opt').forEach((o,i) => {
+    o.classList.remove('selected');
+    if (i===q.correct) o.classList.add('correct');
+    else if (i===selOpt && !ok) o.classList.add('incorrect');
+  });
+  const fb = document.getElementById('q-fb');
+  fb.className = `q-feedback show ${ok?'correct':'incorrect'}`;
+  fb.innerHTML = `<strong>${ok?'✓ Correct':'✗ Not quite'}</strong> — ${ok?q.fb.c:q.fb.w}`;
+  document.getElementById('q-submit').style.display = 'none';
+  document.getElementById('q-next').style.display = 'block';
+  document.getElementById('q-next').textContent = curQ < QUESTIONS.length-1 ? 'Next →' : 'See results →';
+}
+function nextQ() {
+  curQ++;
+  if (curQ >= QUESTIONS.length) { showResult(); return; }
+  renderDots(); renderQ();
+}
+function showResult() {
+  document.getElementById('quiz-questions').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+  const pct = Math.round((score/QUESTIONS.length)*100);
+  const pass = pct >= 80;
+  document.getElementById('result-pct').textContent = pct+'%';
+  document.getElementById('result-pct').className = `result-pct ${pass?'pass':'fail'}`;
+  document.getElementById('result-lbl').textContent = pass ? 'Module 6 passed' : 'Not quite — try again';
+  document.getElementById('result-msg').textContent = pass
+    ? `You answered ${score} of ${QUESTIONS.length} correctly. That completes the Traxent learning path. Now make every trade earn its place in your journal and let the readiness tracker tell you when you're ready.`
+    : `You answered ${score} of ${QUESTIONS.length} correctly. Review the lessons and try again — measuring your edge is what turns practice into progress.`;
+  if (pass) {
+    document.getElementById('result-cta').style.display = 'inline-block';
+    completed[3] = true;
+    document.getElementById('dot-3').textContent = '✓';
+    document.getElementById('nav-3').classList.add('completed');
+    updateProgress();
+    saveProgress();
+    setTimeout(() => document.getElementById('completion-banner').classList.add('show'), 500);
+    try { localStorage.setItem('traxent_m6_complete', 'true'); } catch (e) {}
+  }
+}
+function retryQuiz() {
+  document.getElementById('quiz-result').style.display = 'none';
+  initQuiz();
+}
+
+initQuiz();
+</script>
+</body>
+</html>

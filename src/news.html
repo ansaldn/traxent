@@ -122,8 +122,11 @@
 
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
 <script src="auth.js?v=__BUILD_SHA__"></script>
+<script src="userdata.js?v=__BUILD_SHA__"></script>
 <script>
-const NEWS_API = 'https://da579ew81m.execute-api.eu-west-2.amazonaws.com/prod/news';
+// News is now served from the user-data API (SAM stack), at <ApiBaseUrl>/news.
+// Derive the base from userdata.js's USERDATA_API so there's only one URL to set.
+const NEWS_API = (((window.TraxentData && TraxentData.apiBase && TraxentData.apiBase()) || '')) + '/news';
 const PLAN_HIERARCHY = ['free', 'observer', 'challenger', 'funded_ready'];
 
 function showState(icon, title, body) {

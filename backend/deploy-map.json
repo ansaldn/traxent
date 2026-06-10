@@ -2,12 +2,12 @@
   "_comment": "Maps repo backend code to the AWS resources the GitHub Actions backend deploy updates. Fill in the REPLACE_* values once with your real AWS names (see DEPLOY.md). Keys under 'lambdas' are the folder names in backend/functions/.",
   "region": "eu-west-2",
   "lambdas": {
-    "cancel-subscription": "REPLACE_WITH_AWS_LAMBDA_NAME",
-    "create-checkout": "REPLACE_WITH_AWS_LAMBDA_NAME",
-    "stripe-webhook": "REPLACE_WITH_AWS_LAMBDA_NAME",
-    "news-feed": "REPLACE_WITH_AWS_LAMBDA_NAME"
+    "cancel-subscription": "traxent-cancel-subscription",
+    "create-checkout": "traxent-create-checkout",
+    "stripe-webhook": "traxent-stripe-webhook",
+    "news-feed": "traxent-news-feed"
   },
   "cloudfrontFunctions": {
-    "backend/cloudfront-functions/security-headers.js": "REPLACE_WITH_CLOUDFRONT_FUNCTION_NAME"
+    "backend/cloudfront-functions/security-headers.js": "traxent-security-headers"
   }
 }

@@ -37,6 +37,7 @@ async function apiFetch(path, opts) {
 
 window.TraxentData = {
   apiEnabled() { return !!USERDATA_API; },
+  apiBase() { return USERDATA_API; },
 
   // Pull the full cloud state and mirror it into localStorage. Returns the
   // state object, or null if the API is unavailable (callers then use local).

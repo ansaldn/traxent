@@ -185,22 +185,20 @@ two one-time things:
 
 1. **Push the repo to `main`.** The workflow only becomes active once it's on the default
    branch. (It's currently only in your working folder.)
-2. **Give the deploy credentials the right permissions.** Your existing
-   `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` are scoped for the frontend (S3 + CloudFront)
-   only. SAM/CloudFormation needs more. Quickest path for a solo setup — attach these AWS
-   *managed* policies to that IAM user (tighten later):
-   `AWSCloudFormationFullAccess`, `AWSLambda_FullAccess`, `AmazonDynamoDBFullAccess`,
-   `AmazonAPIGatewayAdministrator`, `AmazonS3FullAccess` (for the SAM artifact bucket), and
-   `IAMFullAccess` (SAM creates the Lambda execution roles — the sensitive one; scope this
-   down to `iam:*Role*` on `traxent-*` when you can).
+2. **Set up the OIDC deploy role** — see **`IAM-OIDC-SETUP.md`** (full copy-paste steps).
+   You chose the keyless approach: the `deploy-backend.yml` and `deploy-infra.yml` workflows are
+   already wired to `role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}`. You: add the GitHub OIDC
+   provider, create one role (`traxent-github-deploy`) with the trust + permissions policy in
+   that doc, and set a GitHub **Actions variable** `AWS_DEPLOY_ROLE_ARN` to its ARN. No new
+   access keys or secrets.
 
 That's it. After those two steps, **IaC is fully automated**: edit anything under
 `backend/user-data/`, push, and the stack reconciles itself. No manual `sam` commands, no
 console clicking. Locally you can dry-run with `cd backend/user-data && sam build && sam deploy --guided`.
 
-**Better long-term (recommended):** replace the static access keys with a **GitHub OIDC role** —
-GitHub Actions assumes a scoped IAM role at deploy time, so there are no long-lived secrets. Worth
-doing before launch; not required to get automation working now.
+The frontend `deploy.yml` still uses the existing `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`
+secrets (unchanged, keeps working). The OIDC role already includes S3 + CloudFront, so you can
+migrate the frontend off keys later — `IAM-OIDC-SETUP.md` has the one-step swap.
 
 > The existing-Lambda code deploy (`deploy-backend.yml`) is the *other* automation and is
 > separate: it only updates already-created functions (cancel/checkout/news), and needs the

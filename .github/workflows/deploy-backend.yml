@@ -21,6 +21,11 @@ on:
       - '.github/workflows/deploy-backend.yml'
   workflow_dispatch: {}   # allow manual runs from the Actions tab
 
+# OIDC: assume the deploy role with a short-lived token (no static access keys).
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy-backend:
     runs-on: ubuntu-latest
@@ -33,11 +38,10 @@ jobs:
         with:
           node-version: 20
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
           aws-region: eu-west-2
 
       - name: Deploy Lambda functions

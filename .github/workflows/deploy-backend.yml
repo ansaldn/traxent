@@ -97,10 +97,14 @@ jobs:
             etag=$(echo "$desc" | jq -r '.ETag')
             runtime=$(echo "$desc" | jq -r '.FunctionSummary.FunctionConfig.Runtime')
             comment=$(echo "$desc" | jq -r '.FunctionSummary.FunctionConfig.Comment // "Deployed by GitHub Actions"')
+            # Build function-config as JSON, not Key=Value shorthand: the existing
+            # Comment contains commas, and the shorthand parser splits those into a
+            # list, breaking validation. jq escapes everything safely.
+            cfg=$(jq -nc --arg c "$comment" --arg r "$runtime" '{Comment: $c, Runtime: $r}')
             newtag=$(aws cloudfront update-function \
               --name "$name" \
               --function-code "fileb://$file" \
-              --function-config Comment="$comment",Runtime="$runtime" \
+              --function-config "$cfg" \
               --if-match "$etag" --query ETag --output text)
             aws cloudfront publish-function --name "$name" --if-match "$newtag"
             echo "Published $name"

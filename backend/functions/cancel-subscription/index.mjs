@@ -60,7 +60,7 @@ async function requireAuth(event) {
     err.statusCode = 401;
     throw err;
   }
-  return payload.sub;
+  return { sub: payload.sub, email: payload.email };
 }
 
 export const handler = async (event) => {
@@ -68,9 +68,11 @@ export const handler = async (event) => {
 
   // Verify the caller. userId is derived from the verified token, not from the body —
   // a malicious payload claiming to be someone else cannot cancel that user's subscription.
-  let userId;
+  let userId, email;
   try {
-    userId = await requireAuth(event);
+    const auth = await requireAuth(event);
+    userId = auth.sub;
+    email = auth.email;
   } catch (err) {
     return {
       statusCode: err.statusCode || 401,
@@ -83,9 +85,18 @@ export const handler = async (event) => {
     const secretKey = await getParam('/traxent/stripe/secret_key');
     const stripe = new Stripe(secretKey);
 
-    const customers = await stripe.customers.search({
-      query: `metadata['auth0_user_id']:'${userId}'`
-    });
+    // Find the customer. New checkouts stamp auth0_user_id + auth0_sub on the
+    // customer object; customers created before that fix have neither, so we
+    // fall back to an email match. If nothing matches, there is genuinely no
+    // Stripe customer in this account/mode (e.g. the plan was granted manually
+    // in Auth0, or the subscription lives in Stripe TEST mode while this key is LIVE).
+    let customers = await stripe.customers.search({ query: `metadata['auth0_user_id']:'${userId}'` });
+    if (!customers.data.length) {
+      customers = await stripe.customers.search({ query: `metadata['auth0_sub']:'${userId}'` });
+    }
+    if (!customers.data.length && email) {
+      customers = await stripe.customers.search({ query: `email:'${email}'` });
+    }
     if (!customers.data.length) {
       return { statusCode: 404, headers, body: JSON.stringify({ error: 'No customer found' }) };
     }

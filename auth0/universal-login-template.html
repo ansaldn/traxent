@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {%- auth0:head -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0e0e0c;
+        --accent: #0a6e4f;
+        --accent-mid: #1a9e72;
+        --accent-bright: #4ade80;
+        --serif: 'Instrument Serif', Georgia, serif;
+        --sans: 'Geist', sans-serif;
+        --mono: 'Geist Mono', monospace;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
+      body { font-family: var(--sans); background: #f7f6f2; }
+
+      .tx-split { display: flex; min-height: 100vh; }
+
+      /* ── Left: animated splash ─────────────────────────────────────────── */
+      .tx-splash {
+        position: relative;
+        flex: 1 1 50%;
+        background: var(--bg);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 56px 56px 48px;
+        color: #fff;
+      }
+      /* faint static grid */
+      .tx-splash::before {
+        content: '';
+        position: absolute; inset: 0;
+        background:
+          repeating-linear-gradient(0deg, transparent 0 26px, rgba(26,158,114,.05) 26px 27px),
+          repeating-linear-gradient(90deg, transparent 0 26px, rgba(26,158,114,.04) 26px 27px);
+        pointer-events: none;
+      }
+      /* moving green data-lines */
+      .tx-lines { position: absolute; inset: 0; pointer-events: none; }
+      .tx-lines i {
+        position: absolute;
+        left: -30%;
+        height: 2px;
+        width: 30%;
+        background: linear-gradient(90deg, transparent, var(--accent-mid), transparent);
+        opacity: 0;
+        border-radius: 2px;
+        animation: tx-drift linear infinite;
+      }
+      .tx-lines i:nth-child(1) { top: 18%; width: 38%; animation-duration: 9s;  animation-delay: 0s;   }
+      .tx-lines i:nth-child(2) { top: 33%; width: 26%; animation-duration: 7s;  animation-delay: 1.2s; background: linear-gradient(90deg, transparent, var(--accent-bright), transparent); }
+      .tx-lines i:nth-child(3) { top: 47%; width: 44%; animation-duration: 11s; animation-delay: .4s;  }
+      .tx-lines i:nth-child(4) { top: 61%; width: 22%; animation-duration: 6.5s;animation-delay: 2.1s; background: linear-gradient(90deg, transparent, var(--accent-bright), transparent); }
+      .tx-lines i:nth-child(5) { top: 72%; width: 34%; animation-duration: 10s; animation-delay: .9s;  }
+      .tx-lines i:nth-child(6) { top: 86%; width: 30%; animation-duration: 8s;  animation-delay: 1.7s; }
+      @keyframes tx-drift {
+        0%   { transform: translateX(0);     opacity: 0; }
+        12%  { opacity: .85; }
+        88%  { opacity: .85; }
+        100% { transform: translateX(440%);  opacity: 0; }
+      }
+      /* soft glow */
+      .tx-splash::after {
+        content: '';
+        position: absolute;
+        width: 520px; height: 520px;
+        right: -180px; bottom: -180px;
+        background: radial-gradient(circle, rgba(10,110,79,.35), transparent 65%);
+        pointer-events: none;
+      }
+
+      .tx-brand { position: relative; font-family: var(--mono); font-size: 22px; letter-spacing: .01em; }
+      .tx-brand em { font-style: normal; color: var(--accent-bright); }
+      .tx-splash-mid { position: relative; max-width: 460px; }
+      .tx-headline { font-family: var(--serif); font-size: 46px; line-height: 1.08; font-weight: 400; margin: 0 0 16px; }
+      .tx-headline span { color: var(--accent-bright); font-style: italic; }
+      .tx-sub { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,.55); font-weight: 300; }
+      .tx-foot { position: relative; font-size: 12px; color: rgba(255,255,255,.35); }
+
+      /* ── Right: the Auth0 widget ───────────────────────────────────────── */
+      .tx-form {
+        flex: 1 1 50%;
+        background: #f7f6f2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 24px;
+      }
+      .tx-form-inner { width: 100%; max-width: 400px; }
+
+      /* The widget injected by Auth0 */
+      .tx-form-inner > * { width: 100%; }
+
+      @media (max-width: 900px) {
+        .tx-splash { display: none; }
+        .tx-form { flex: 1 1 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tx-split">
+      <aside class="tx-splash">
+        <div class="tx-lines"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+        <div class="tx-brand">trax<em>ent</em></div>
+
+        <div class="tx-splash-mid">
+          <h1 class="tx-headline">Know <span>exactly</span> when you're ready to get funded.</h1>
+          <p class="tx-sub">Track your trading habits against the real rules of the top prop firms — and know which one you're closest to passing before you pay for a challenge.</p>
+        </div>
+
+        <div class="tx-foot">© Traxent · Educational platform. Not financial advice.</div>
+      </aside>
+
+      <main class="tx-form">
+        <div class="tx-form-inner">
+          {%- auth0:widget -%}
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -106,10 +106,38 @@ defined as code in `backend/user-data/template.yaml`.
    then push. Until that constant is set, `userdata.js` transparently falls back to
    `localStorage`, so nothing breaks before the stack exists.
 4. **Wiring (incremental)**: `userdata.js` exposes `TraxentData` (getProgress/markLesson,
-   getFirms/setFirms, getTrades/addTrade/deleteTrade, and `sync()`). To move a page off raw
-   `localStorage`, load `userdata.js` (with `?v=__BUILD_SHA__`) after `auth.js`, call
-   `await TraxentData.sync()` on init, and route reads/writes through `TraxentData`. The
-   tracker and learn pages are the natural first candidates.
+   getFirms/setFirms, getTrades/addTrade/deleteTrade, `deleteAccount`, and `sync()`). To move
+   a page off raw `localStorage`, load `userdata.js` (with `?v=__BUILD_SHA__`) after `auth.js`,
+   call `await TraxentData.sync()` on init, and route reads/writes through `TraxentData`. The
+   tracker and learn pages are the natural first candidates. (The account page is already
+   wired for `deleteAccount`.)
+
+---
+
+## 4a. Account deletion (`DELETE /user/account`) — App Review 5.1.1(v)
+
+The deletion Lambda (`backend/user-data/functions/delete-account`) is **part of the same SAM
+stack**, wired to `DELETE /user/account`, so it deploys automatically with §4 — no separate
+deploy. It cancels the user's Stripe subscription immediately, purges all their DynamoDB data,
+then deletes the Auth0 user. The web account page (`/account`) already has the delete button +
+confirm modal calling it; the same endpoint serves the iOS app.
+
+One-time prerequisites:
+1. **Auth0 Machine-to-Machine app** authorized for the **Management API** with the
+   `delete:users` scope. Put its credentials in SSM:
+   ```
+   aws ssm put-parameter --name /traxent/auth0/mgmt_client_id     --type String       --value <id>     --region eu-west-2
+   aws ssm put-parameter --name /traxent/auth0/mgmt_client_secret --type SecureString  --value <secret> --region eu-west-2
+   ```
+   (These are separate from the webhook's `m2m_*` params, which don't have `delete:users`.)
+2. The Stripe customer must carry the Auth0 identity. `create-checkout` now stamps
+   `auth0_sub` (and `auth0_user_id`) on the Stripe customer at checkout — already done; just
+   redeploy that Lambda (§2). The delete flow also falls back to an email search for legacy customers.
+3. Set `USERDATA_API` in `src/userdata.js` (§4 step 3) so the account page can reach the endpoint.
+
+Note for App Review: a free user with no subscription can still delete — Stripe cancellation is
+skipped gracefully. iOS-purchased subscriptions can't be cancelled server-side (Apple rule); the
+modal tells the user to cancel in iPhone Settings.
 
 ---
 
@@ -144,3 +172,35 @@ Also confirm **Allowed Logout URLs** and **Allowed Web Origins** include `https:
   tails has now corrupted 5 files across two incidents. The CI guard catches it at deploy
   time, but the real fix is to stop the corruption at source.
 - Consider a dedicated, least-privilege IAM deploy role per workflow rather than one shared user.
+
+---
+
+## 8. Is the IaC automation live yet? (answer + exactly what you must do)
+
+**Status:** the automation is **written and ready, but has not run yet.** The pipeline
+(`.github/workflows/deploy-infra.yml`) does the whole job — on any push that touches
+`backend/user-data/**` it runs `sam build` + `sam deploy`, which **creates/updates the DynamoDB
+table, both Lambdas, and the HTTP API from `template.yaml`.** Nothing is deployed until you do
+two one-time things:
+
+1. **Push the repo to `main`.** The workflow only becomes active once it's on the default
+   branch. (It's currently only in your working folder.)
+2. **Set up the OIDC deploy role** — see **`IAM-OIDC-SETUP.md`** (full copy-paste steps).
+   You chose the keyless approach: the `deploy-backend.yml` and `deploy-infra.yml` workflows are
+   already wired to `role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}`. You: add the GitHub OIDC
+   provider, create one role (`traxent-github-deploy`) with the trust + permissions policy in
+   that doc, and set a GitHub **Actions variable** `AWS_DEPLOY_ROLE_ARN` to its ARN. No new
+   access keys or secrets.
+
+That's it. After those two steps, **IaC is fully automated**: edit anything under
+`backend/user-data/`, push, and the stack reconciles itself. No manual `sam` commands, no
+console clicking. Locally you can dry-run with `cd backend/user-data && sam build && sam deploy --guided`.
+
+The frontend `deploy.yml` still uses the existing `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`
+secrets (unchanged, keeps working). The OIDC role already includes S3 + CloudFront, so you can
+migrate the frontend off keys later — `IAM-OIDC-SETUP.md` has the one-step swap.
+
+> The existing-Lambda code deploy (`deploy-backend.yml`) is the *other* automation and is
+> separate: it only updates already-created functions (cancel/checkout/news), and needs the
+> `deploy-map.json` names + the lambda/cloudfront permissions in §2. The new account-delete and
+> user-data functions are created by the SAM stack here, not by that workflow.

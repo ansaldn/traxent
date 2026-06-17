@@ -17,9 +17,15 @@ import { JwtRsaVerifier } from 'aws-jwt-verify';
 const ssm = new SSMClient({ region: 'eu-west-2' });
 
 // Same ID-token verifier as the other functions (aud = SPA Client ID).
+// Accept ID tokens from BOTH the web SPA and the iOS native app. Override with
+// the AUTH0_AUDIENCE env var (comma-separated) if a client ID ever changes.
+const AUDIENCES = (process.env.AUTH0_AUDIENCE
+  || 'ilvfACgF2sCmLWaugCn11qTB04aTvWxz,YKvrjZoxnehdES7nmMs9SRXi3G0MdXcK')
+  .split(',').map(s => s.trim()).filter(Boolean);
+
 const verifier = JwtRsaVerifier.create({
   issuer: 'https://auth.traxent.io/',
-  audience: 'ilvfACgF2sCmLWaugCn11qTB04aTvWxz',
+  audience: AUDIENCES,
   jwksUri: 'https://auth.traxent.io/.well-known/jwks.json',
 });
 
@@ -96,6 +102,15 @@ async function fetchProvider(key) {
   return { articles, providerNote: null };
 }
 
+// ── In-memory cache ─────────────────────────────────────────────────────────
+// Market news is the same for everyone, so we fetch from Alpha Vantage at most
+// once per CACHE_TTL_MS and serve that payload to all callers — keeping us well
+// under the free tier (~25 req/day). The cache lives in the warm Lambda
+// container; on a rate-limit or error we serve the last good payload (marked
+// `stale`) instead of blanking the feed. No extra AWS permissions needed.
+const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes
+let newsCache = { payload: null, at: 0 };
+
 export const handler = async (event) => {
   const method = event.requestContext?.http?.method || event.httpMethod;
   if (method === 'OPTIONS') return { statusCode: 200, headers, body: '' };
@@ -104,6 +119,12 @@ export const handler = async (event) => {
     await requireFundedReady(event);
   } catch (err) {
     return { statusCode: err.statusCode || 401, headers, body: JSON.stringify({ error: err.message || 'Unauthorized' }) };
+  }
+
+  const now = Date.now();
+  // Serve a fresh cached payload without calling SSM or the provider at all.
+  if (newsCache.payload && (now - newsCache.at) < CACHE_TTL_MS) {
+    return { statusCode: 200, headers, body: JSON.stringify({ ...newsCache.payload, cached: true }) };
   }
 
   try {
@@ -116,19 +137,30 @@ export const handler = async (event) => {
       };
     }
     const { articles, providerNote } = await fetchProvider(key);
+    if (articles.length) {
+      const payload = {
+        status: 'ok',
+        provider: 'alphavantage',
+        articles,
+        updated: new Date().toISOString(),
+      };
+      newsCache = { payload, at: now }; // refresh cache only on a good fetch
+      return { statusCode: 200, headers, body: JSON.stringify(payload) };
+    }
+    // Empty or rate-limited: serve the last good payload if we have one.
+    if (newsCache.payload) {
+      return { statusCode: 200, headers, body: JSON.stringify({ ...newsCache.payload, stale: true }) };
+    }
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({
-        status: articles.length ? 'ok' : 'empty',
-        provider: 'alphavantage',
-        providerNote,
-        articles,
-        updated: new Date().toISOString(),
-      }),
+      body: JSON.stringify({ status: 'empty', provider: 'alphavantage', providerNote, articles: [], updated: new Date().toISOString() }),
     };
   } catch (err) {
     console.error('news-feed error:', err);
+    if (newsCache.payload) {
+      return { statusCode: 200, headers, body: JSON.stringify({ ...newsCache.payload, stale: true }) };
+    }
     return { statusCode: 502, headers, body: JSON.stringify({ status: 'error', articles: [], error: 'Failed to load news' }) };
   }
 };

@@ -21,6 +21,11 @@ on:
       - '.github/workflows/deploy-backend.yml'
   workflow_dispatch: {}   # allow manual runs from the Actions tab
 
+# OIDC: assume the deploy role with a short-lived token (no static access keys).
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy-backend:
     runs-on: ubuntu-latest
@@ -31,13 +36,12 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
           aws-region: eu-west-2
 
       - name: Deploy Lambda functions
@@ -53,9 +57,16 @@ jobs:
             fi
             src="backend/functions/$dir"
             [ -d "$src" ] || { echo "::error::Missing source dir $src"; exit 1; }
+            # Skip functions that don't exist in AWS yet (e.g. ones the SAM stack owns).
+            if ! aws lambda get-function --function-name "$name" --region "$region" >/dev/null 2>&1; then
+              echo "::warning::Lambda '$name' not found in AWS — skipping (managed by the SAM stack?)"
+              continue
+            fi
             echo "::group::Deploy $dir -> $name"
             ( cd "$src"
-              if [ -f package-lock.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi
+              # Use `npm install` not `npm ci`: some functions' committed lock files
+              # are out of sync with package.json, which makes `npm ci` hard-fail.
+              npm install --omit=dev --no-audit --no-fund
               rm -f /tmp/"$dir".zip
               zip -qr /tmp/"$dir".zip . -x '*.git*' 'package-lock.json'
             )
@@ -86,10 +97,14 @@ jobs:
             etag=$(echo "$desc" | jq -r '.ETag')
             runtime=$(echo "$desc" | jq -r '.FunctionSummary.FunctionConfig.Runtime')
             comment=$(echo "$desc" | jq -r '.FunctionSummary.FunctionConfig.Comment // "Deployed by GitHub Actions"')
+            # Build function-config as JSON, not Key=Value shorthand: the existing
+            # Comment contains commas, and the shorthand parser splits those into a
+            # list, breaking validation. jq escapes everything safely.
+            cfg=$(jq -nc --arg c "$comment" --arg r "$runtime" '{Comment: $c, Runtime: $r}')
             newtag=$(aws cloudfront update-function \
               --name "$name" \
               --function-code "fileb://$file" \
-              --function-config Comment="$comment",Runtime="$runtime" \
+              --function-config "$cfg" \
               --if-match "$etag" --query ETag --output text)
             aws cloudfront publish-function --name "$name" --if-match "$newtag"
             echo "Published $name"

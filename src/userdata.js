@@ -12,7 +12,7 @@
 //
 // Depends on authBearerToken() from auth.js (load auth.js first).
 
-const USERDATA_API = ''; // ← set to the deployed user-data ApiBaseUrl
+const USERDATA_API = 'https://gqway1e53f.execute-api.eu-west-2.amazonaws.com/'; // ← set to the deployed user-data ApiBaseUrl
 
 const LS_PROGRESS = 'traxent_progress';
 const LS_TRADES   = 'traxent_trades';
@@ -37,6 +37,7 @@ async function apiFetch(path, opts) {
 
 window.TraxentData = {
   apiEnabled() { return !!USERDATA_API; },
+  apiBase() { return USERDATA_API; },
 
   // Pull the full cloud state and mirror it into localStorage. Returns the
   // state object, or null if the API is unavailable (callers then use local).
@@ -82,5 +83,15 @@ window.TraxentData = {
   async deleteTrade(id) {
     lsSet(LS_TRADES, this.getTrades().filter(t => t.id !== id));
     try { await apiFetch('/trades/' + encodeURIComponent(id), { method: 'DELETE' }); } catch {}
+  },
+
+  // ── Account deletion (irreversible) ──
+  // Cancels billing, purges all stored data, and deletes the Auth0 user.
+  // Requires USERDATA_API to be set and the user authenticated. Resolves on
+  // success (HTTP 204); throws on failure so the UI can keep the user signed in.
+  async deleteAccount() {
+    if (!USERDATA_API) throw new Error('userdata-api-not-configured');
+    await apiFetch('/account', { method: 'DELETE' });
+    try { localStorage.removeItem(LS_PROGRESS); localStorage.removeItem(LS_TRADES); localStorage.removeItem(LS_FIRMS); } catch {}
   },
 };

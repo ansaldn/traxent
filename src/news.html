@@ -84,7 +84,36 @@
     .state-body { font-size: 14px; line-height: 1.6; max-width: 440px; margin: 0 auto; }
     .disclaimer { margin-top: 36px; font-size: 12px; color: var(--ink3); line-height: 1.6; border-top: 1px solid var(--border2); padding-top: 20px; }
 
-    @media (max-width: 640px) { .wrap { padding: 28px 16px 64px; } h1 { font-size: 32px; } }
+    /* Controls */
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+    .ctrl-search { flex: 1 1 200px; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 13px; font-family: var(--sans); font-size: 14px; color: var(--ink); outline: none; }
+    .ctrl-search:focus { border-color: var(--accent); }
+    .ctrl-chips { display: flex; gap: 6px; }
+    .chip { font-family: var(--mono); font-size: 11px; padding: 7px 12px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface); color: var(--ink3); cursor: pointer; transition: all .15s; }
+    .chip:hover { border-color: var(--accent); }
+    .chip.chip-bull { color: var(--good); }
+    .chip.chip-bear { color: var(--bad); }
+    .chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .chip.chip-bull.active { background: var(--good); border-color: var(--good); color: #fff; }
+    .chip.chip-bear.active { background: var(--bad); border-color: var(--bad); color: #fff; }
+    .chip.chip-neutral.active { background: var(--ink3); border-color: var(--ink3); color: #fff; }
+    .ctrl-select { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; font-family: var(--sans); font-size: 13px; color: var(--ink2); cursor: pointer; outline: none; max-width: 170px; }
+    .ctrl-select:focus { border-color: var(--accent); }
+    .results-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; font-size: 12px; color: var(--ink3); }
+    .results-meta .updated { margin-left: auto; }
+    /* Pager */
+    .pager { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 28px; }
+    .pg-btn { font-family: var(--sans); font-size: 13px; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--ink2); cursor: pointer; transition: all .15s; }
+    .pg-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+    .pg-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .pg-info { font-family: var(--mono); font-size: 12px; color: var(--ink3); }
+
+    @media (max-width: 640px) {
+      .wrap { padding: 28px 16px 64px; } h1 { font-size: 32px; }
+      .controls { gap: 8px; }
+      .ctrl-select { max-width: none; flex: 1 1 45%; }
+      .ctrl-search { flex: 1 1 100%; }
+    }
   </style>
 </head>
 <body>
@@ -106,14 +135,29 @@
   </div>
   <p class="page-sub">AI-tagged market news with bull/bear sentiment scoring. Use it for context — never as a signal. Nothing here is financial advice.</p>
 
-  <div class="legend">
-    <div class="legend-item"><span class="dot bull"></span> Bullish</div>
-    <div class="legend-item"><span class="dot bear"></span> Bearish</div>
-    <div class="legend-item"><span class="dot neutral"></span> Neutral</div>
+  <div class="controls">
+    <input type="search" id="f-search" class="ctrl-search" placeholder="Search headlines…" oninput="onFilterChange()">
+    <div class="ctrl-chips">
+      <button class="chip active" data-v="all" onclick="setSentiment('all', this)">All</button>
+      <button class="chip chip-bull" data-v="bullish" onclick="setSentiment('bullish', this)">Bullish</button>
+      <button class="chip chip-bear" data-v="bearish" onclick="setSentiment('bearish', this)">Bearish</button>
+      <button class="chip chip-neutral" data-v="neutral" onclick="setSentiment('neutral', this)">Neutral</button>
+    </div>
+    <select id="f-ticker" class="ctrl-select" onchange="onFilterChange()"><option value="all">All tickers</option></select>
+    <select id="f-source" class="ctrl-select" onchange="onFilterChange()"><option value="all">All sources</option></select>
+  </div>
+  <div class="results-meta">
+    <span id="results-count"></span>
     <span class="updated" id="updated"></span>
   </div>
 
   <div class="feed" id="feed"></div>
+
+  <div class="pager" id="pager" style="display:none">
+    <button class="pg-btn" id="pg-prev" onclick="goPage(currentPage - 1)">← Prev</button>
+    <span class="pg-info" id="pg-info"></span>
+    <button class="pg-btn" id="pg-next" onclick="goPage(currentPage + 1)">Next →</button>
+  </div>
 
   <div class="disclaimer">
     News and sentiment scores are sourced from a third-party provider and are provided for educational context only. They do not constitute financial advice, investment advice, or a recommendation to trade. Sentiment tags are algorithmic and may be inaccurate. Always do your own research.
@@ -122,8 +166,11 @@
 
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
 <script src="auth.js?v=__BUILD_SHA__"></script>
+<script src="userdata.js?v=__BUILD_SHA__"></script>
 <script>
-const NEWS_API = 'https://da579ew81m.execute-api.eu-west-2.amazonaws.com/prod/news';
+// News is now served from the user-data API (SAM stack), at <ApiBaseUrl>/news.
+// Derive the base from userdata.js's USERDATA_API so there's only one URL to set.
+const NEWS_API = (((window.TraxentData && TraxentData.apiBase && TraxentData.apiBase()) || '')) + '/news';
 const PLAN_HIERARCHY = ['free', 'observer', 'challenger', 'funded_ready'];
 
 function showState(icon, title, body) {
@@ -169,6 +216,88 @@ function renderArticles(articles) {
   `).join('');
 }
 
+// ── State, filtering & pagination ───────────────────────────────────────────
+let allArticles = [];
+let filtered = [];
+let currentPage = 1;
+const PAGE_SIZE = 12;
+const F = { sentiment: 'all', ticker: 'all', source: 'all', q: '' };
+
+function uniqueSorted(arr) { return Array.from(new Set(arr.filter(Boolean))).sort(); }
+
+function populateDropdowns() {
+  const tickers = uniqueSorted(allArticles.flatMap(a => a.tickers || []));
+  const sources = uniqueSorted(allArticles.map(a => a.source));
+  document.getElementById('f-ticker').innerHTML =
+    '<option value="all">All tickers</option>' + tickers.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
+  document.getElementById('f-source').innerHTML =
+    '<option value="all">All sources</option>' + sources.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
+}
+
+function setSentiment(v, btn) {
+  F.sentiment = v;
+  document.querySelectorAll('.ctrl-chips .chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function onFilterChange() {
+  F.q = (document.getElementById('f-search').value || '').trim().toLowerCase();
+  F.ticker = document.getElementById('f-ticker').value;
+  F.source = document.getElementById('f-source').value;
+  applyFilters();
+}
+
+function applyFilters() {
+  filtered = allArticles.filter(a => {
+    if (F.sentiment !== 'all' && a.sentiment !== F.sentiment) return false;
+    if (F.ticker !== 'all' && !(a.tickers || []).includes(F.ticker)) return false;
+    if (F.source !== 'all' && a.source !== F.source) return false;
+    if (F.q) {
+      const hay = ((a.title || '') + ' ' + (a.summary || '')).toLowerCase();
+      if (!hay.includes(F.q)) return false;
+    }
+    return true;
+  });
+  currentPage = 1;
+  render();
+}
+
+function render() {
+  const total = filtered.length;
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if (currentPage > pages) currentPage = pages;
+  const countEl = document.getElementById('results-count');
+  const pager = document.getElementById('pager');
+
+  if (total === 0) {
+    showState('🔍', 'No matching stories', 'Try clearing a filter or searching for something else.');
+    pager.style.display = 'none';
+    if (countEl) countEl.textContent = '0 stories';
+    return;
+  }
+
+  const start = (currentPage - 1) * PAGE_SIZE;
+  renderArticles(filtered.slice(start, start + PAGE_SIZE));
+  if (countEl) countEl.textContent = total + (total === 1 ? ' story' : ' stories');
+
+  if (pages > 1) {
+    pager.style.display = 'flex';
+    document.getElementById('pg-info').textContent = `Page ${currentPage} of ${pages}`;
+    document.getElementById('pg-prev').disabled = currentPage <= 1;
+    document.getElementById('pg-next').disabled = currentPage >= pages;
+  } else {
+    pager.style.display = 'none';
+  }
+}
+
+function goPage(n) {
+  const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  currentPage = Math.min(Math.max(1, n), pages);
+  render();
+  document.getElementById('feed').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 async function loadNews() {
   try {
     const token = await authBearerToken();
@@ -187,7 +316,9 @@ async function loadNews() {
       showState('🗞️', 'No stories right now', 'There are no fresh stories at the moment. Check back in a little while.');
       return;
     }
-    renderArticles(data.articles);
+    allArticles = data.articles;
+    populateDropdowns();
+    applyFilters();
     if (data.updated) {
       document.getElementById('updated').textContent = 'Updated ' + new Date(data.updated).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
     }

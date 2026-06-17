@@ -13,7 +13,7 @@ Globals:
   Function:
     Timeout: 10
     MemorySize: 256
-    Runtime: nodejs20.x
+    Runtime: nodejs22.x
     Architectures: [arm64]
 
 Parameters:
@@ -23,8 +23,8 @@ Parameters:
     Description: Auth0 token issuer (custom domain, trailing slash).
   Auth0Audience:
     Type: String
-    Default: ilvfACgF2sCmLWaugCn11qTB04aTvWxz
-    Description: Auth0 SPA Client ID — the audience of the ID token the frontend sends.
+    Default: ilvfACgF2sCmLWaugCn11qTB04aTvWxz,YKvrjZoxnehdES7nmMs9SRXi3G0MdXcK
+    Description: Comma-separated ID-token audiences to accept — web SPA Client ID and iOS native Client ID.
   AllowedOrigin:
     Type: String
     Default: https://traxent.io
@@ -81,6 +81,65 @@ Resources:
             Path: /user/{proxy+}
             Method: ANY
 
+  # Account deletion (App Review 5.1.1(v)). Isolated from the data CRUD function
+  # because it holds the powerful Stripe + Auth0-admin permissions. The specific
+  # `DELETE /user/account` route takes precedence over the data function's greedy
+  # ANY /user/{proxy+}.
+  AccountDeleteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-delete-account
+      Handler: index.handler
+      CodeUri: functions/delete-account/
+      Timeout: 30
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref UserDataTable
+          AUTH0_ISSUER: !Ref Auth0Issuer
+          AUTH0_AUDIENCE: !Ref Auth0Audience
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UserDataTable
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/*"
+      Events:
+        DeleteAccount:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/account
+            Method: DELETE
+
+  # Market news feed (Funded tier). A NEW function — created, permissioned and
+  # routed entirely by this stack (it never existed before, which is why it
+  # wasn't in the Lambda console). Reads the provider key from SSM; caches
+  # in-memory for 30 min inside the function. Code stays at backend/functions/news-feed.
+  NewsFeedFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-news-feed
+      Handler: index.handler
+      CodeUri: ../functions/news-feed/
+      Timeout: 15
+      Environment:
+        Variables:
+          AUTH0_AUDIENCE: !Ref Auth0Audience
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/news/*"
+      Events:
+        News:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /news
+            Method: GET
+
   UserDataApi:
     Type: AWS::Serverless::HttpApi
     Properties:
@@ -101,5 +160,8 @@ Outputs:
   ApiBaseUrl:
     Description: Base URL for the user-data API. Put this in src/userdata.js (USERDATA_API).
     Value: !Sub "https://${UserDataApi}.execute-api.${AWS::Region}.amazonaws.com"
+  NewsApiUrl:
+    Description: News feed endpoint (Funded tier) = ApiBaseUrl + /news.
+    Value: !Sub "https://${UserDataApi}.execute-api.${AWS::Region}.amazonaws.com/news"
   TableName:
     Value: !Ref UserDataTable

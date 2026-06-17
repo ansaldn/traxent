@@ -15,8 +15,14 @@ on:
     branches: [main]
     paths:
       - 'backend/user-data/**'
+      - 'backend/functions/news-feed/**'
       - '.github/workflows/deploy-infra.yml'
   workflow_dispatch: {}
+
+# OIDC: assume the deploy role with a short-lived token (no static access keys).
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   deploy-infra:
@@ -28,7 +34,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Set up Python (for SAM CLI)
         uses: actions/setup-python@v5
@@ -40,11 +46,10 @@ jobs:
         with:
           use-installer: true
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
           aws-region: eu-west-2
 
       - name: SAM build

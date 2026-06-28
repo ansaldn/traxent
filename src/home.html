@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta name="robots" content="noindex">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Traxent">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+<title>Home — Traxent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Hide the page until we've confirmed an active session (members only). -->
+<style id="auth-gate-style">body{visibility:hidden}</style>
+<style>
+:root{
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
+  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);
+  --surface:#ffffff;--surface2:#f0efe9;--bad:#9e1a1a;--warn:#b06000;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+
+/* Nav */
+nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo{font-family:var(--mono);font-size:16px;font-weight:500;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-link{font-size:13px;color:var(--ink2);text-decoration:none;padding:8px 12px;border-radius:8px;transition:background .15s}
+.nav-link:hover{background:var(--surface2)}
+.nav-support{font-size:13px;font-weight:500;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.2);border-radius:8px;padding:8px 14px;cursor:pointer;font-family:var(--sans);display:inline-flex;align-items:center;gap:6px}
+.nav-support:hover{background:#dcefe6}
+.nav-cta{font-size:13px;font-weight:500;color:#fff;background:var(--accent);border-radius:8px;padding:9px 16px;text-decoration:none;white-space:nowrap}
+.nav-cta:hover{background:#085e43}
+.nav-signout{font-size:13px;color:var(--ink3);background:none;border:none;cursor:pointer;font-family:var(--sans);padding:8px 10px}
+.nav-signout:hover{color:var(--ink)}
+
+.wrap{max-width:1080px;margin:0 auto;padding:44px 32px 80px}
+
+/* Greeting */
+.hello-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.hello-row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hello-h1{font-family:var(--serif);font-size:46px;line-height:1.05;font-weight:400;letter-spacing:-.01em}
+.hello-h1 em{font-style:italic;color:var(--accent)}
+.plan-pill{font-family:var(--mono);font-size:12px;text-transform:capitalize;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.25);padding:7px 14px;border-radius:999px;white-space:nowrap}
+.plan-pill.free{color:var(--ink3);background:var(--surface2);border-color:var(--border)}
+.hello-sub{font-size:16px;color:var(--ink3);font-weight:300;margin-top:14px;max-width:560px}
+
+/* Primary on-page CTA → dashboard (the usual next stop) */
+.primary-cta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:22px}
+.btn-dash{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-size:15px;font-weight:500;cursor:pointer;font-family:var(--sans);text-decoration:none;display:inline-flex;align-items:center}
+.btn-dash:hover{background:#085e43}
+.primary-cta-note{font-size:13px;color:var(--ink3);font-weight:300}
+
+/* Section label */
+.sec-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin:46px 0 16px;display:flex;align-items:center;gap:10px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Jump back in grid */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;transition:border-color .15s,transform .1s;position:relative;cursor:pointer}
+.card:hover{border-color:rgba(10,110,79,.4);transform:translateY(-2px)}
+.card.locked{background:linear-gradient(180deg,var(--surface),var(--surface2))}
+.card-ic{font-size:22px}
+.card-title{font-size:15px;font-weight:500}
+.card-desc{font-size:13px;color:var(--ink3);font-weight:300;line-height:1.5}
+.card-lock{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.2);padding:3px 8px;border-radius:6px}
+.card-go{font-size:12px;color:var(--accent);font-weight:500;margin-top:2px}
+.card.showcase{border-style:dashed;border-color:rgba(10,110,79,.35)}
+
+/* Upgrade band */
+.upsell{margin-top:40px;background:var(--ink);border-radius:18px;padding:34px 36px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.upsell-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-mid);margin-bottom:10px}
+.upsell-h{font-family:var(--serif);font-size:26px;font-weight:400;line-height:1.15;max-width:560px}
+.upsell-h em{font-style:italic;color:var(--accent-mid)}
+.upsell-sub{font-size:14px;color:rgba(255,255,255,.6);margin-top:8px;font-weight:300;max-width:520px}
+.btn-upsell{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+.btn-upsell:hover{background:#085e43}
+
+/* Modals */
+.modal-ov{position:fixed;inset:0;background:rgba(14,14,12,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.modal-ov.show{display:flex}
+.modal{background:#fff;border-radius:16px;max-width:440px;width:100%;padding:30px;box-shadow:0 24px 64px rgba(0,0,0,.25);max-height:90vh;overflow:auto}
+.modal-h{font-family:var(--serif);font-size:24px;margin-bottom:8px}
+.modal-b{font-size:14px;color:var(--ink3);line-height:1.6;margin-bottom:22px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--ink2);border-radius:8px;padding:11px 18px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--sans)}
+.btn-solid{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:11px 18px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--sans);text-decoration:none;display:inline-flex;align-items:center}
+
+/* Feature preview (splash) */
+.pv-modal{max-width:540px}
+.pv-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.pv-h{font-family:var(--serif);font-size:26px;margin-bottom:16px}
+.pv-mockwrap{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px}
+.pv-benefits{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:9px}
+.pv-benefits li{font-size:13.5px;color:var(--ink2);padding-left:22px;position:relative;line-height:1.45}
+.pv-benefits li::before{content:'✓';position:absolute;left:0;color:var(--accent);font-weight:600}
+.pv-foot-note{font-size:12px;color:var(--ink3);margin:-6px 0 16px;line-height:1.5}
+.pos{color:var(--accent);font-weight:600}.amb{color:var(--warn);font-weight:600}.neg{color:var(--bad);font-weight:600}
+/* journal mock */
+.pv-jrow{display:grid;grid-template-columns:1fr auto auto;gap:14px;font-size:12.5px;padding:7px 0;border-bottom:1px solid var(--border);color:var(--ink2)}
+.pv-jrow.pv-jhead{color:var(--ink3);font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border)}
+.pv-jstats{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--ink3);margin-top:11px}
+.pv-jstats strong{color:var(--ink)}
+/* tracker mock */
+.pv-trow{display:grid;grid-template-columns:1fr 84px 40px;align-items:center;gap:10px;font-size:12.5px;padding:6px 0;color:var(--ink2)}
+.pv-bar{height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.pv-bar i{display:block;height:100%;background:var(--accent)}
+.pv-note{font-size:11px;color:var(--ink3);margin-top:9px}
+/* checklist */
+.pv-check{display:flex;flex-direction:column;gap:9px}
+.pv-check div{font-size:12.5px;color:var(--ink2);padding-left:24px;position:relative}
+.pv-check div::before{content:'';position:absolute;left:0;top:2px;width:14px;height:14px;border-radius:4px;border:1.5px solid var(--accent);box-sizing:border-box}
+.pv-check div.done::before{content:'✓';border:none;color:#fff;background:var(--accent);font-size:9px;text-align:center;line-height:14px}
+/* news mock */
+.pv-nrow{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;padding:7px 0;border-bottom:1px solid var(--border);color:var(--ink2)}
+.pv-nrow:last-child{border-bottom:none}
+/* connect mock */
+.pv-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pv-chip{font-size:12px;color:var(--ink2);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:6px 12px}
+.pv-flow{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink2);font-family:var(--mono)}
+.pv-flow b{color:var(--accent)}
+.pv-flow span{color:var(--ink3)}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--ink);color:#fff;padding:14px 20px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:transform .3s,opacity .3s;z-index:1100;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+
+#loading{display:flex;align-items:center;justify-content:center;min-height:60vh;color:var(--ink3);font-size:14px}
+
+@media (max-width:860px){
+  .grid{grid-template-columns:1fr 1fr}
+  .hello-h1{font-size:36px}
+  .upsell{padding:26px}
+}
+@media (max-width:560px){
+  .wrap{padding:32px 20px 64px}
+  .nav-inner{padding:0 20px}
+  .grid{grid-template-columns:1fr}
+  .nav-link.hide-sm{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/home" class="nav-logo">trax<em>ent</em></a>
+    <div class="nav-right">
+      <a href="/account" class="nav-link hide-sm">Account</a>
+      <button class="nav-support" onclick="openSupport()">◆ Support</button>
+      <a href="/dashboard" class="nav-cta">Go to dashboard →</a>
+      <button class="nav-signout" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div id="loading">Loading your space…</div>
+
+<main class="wrap" id="main-content" style="display:none">
+
+  <div class="hello-eyebrow" id="hello-eyebrow">Welcome back</div>
+  <div class="hello-row">
+    <h1 class="hello-h1">Good to see you,<br><em id="hello-name">trader</em></h1>
+    <span class="plan-pill" id="plan-pill">free</span>
+  </div>
+  <p class="hello-sub" id="hello-sub">Pick up right where you left off.</p>
+
+  <div class="primary-cta">
+    <a href="/dashboard" class="btn-dash">Open your dashboard →</a>
+    <span class="primary-cta-note">Your full toolkit, progress and plan — the usual next stop.</span>
+  </div>
+
+  <div class="sec-label">Jump back in</div>
+  <div class="grid" id="grid"></div>
+
+  <div id="upsell-slot"></div>
+
+</main>
+
+<!-- Feature preview / splash modal (filled by JS) -->
+<div class="modal-ov" id="preview-modal">
+  <div class="modal pv-modal" role="dialog" aria-modal="true" aria-labelledby="preview-title">
+    <div id="preview-body"></div>
+  </div>
+</div>
+
+<!-- Support modal (placeholder — member-only, separates subscribers from browsers) -->
+<div class="modal-ov" id="support-modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="support-h">
+    <div class="modal-h" id="support-h">Member support</div>
+    <div class="modal-b">You're a Traxent member, so you get priority help. Tell us what you need and we'll get back to you — your plan is included so we can jump straight in.</div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeSupport()">Close</button>
+      <a class="btn-solid" id="support-mail" href="#">Email support</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="auth.js?v=__BUILD_SHA__"></script>
+<script src="userdata.js?v=__BUILD_SHA__"></script>
+<script>
+const PAY = 'https://da579ew81m.execute-api.eu-west-2.amazonaws.com/prod';
+const ORDER = ['free', 'observer', 'challenger', 'funded_ready'];
+const PLAN_LABEL = { free: 'Free', observer: 'Observer', challenger: 'Challenger', funded_ready: 'Funded Trader' };
+
+// Where members pick back up. `min` = plan needed; `showcase` always opens the preview.
+const SPOTS = [
+  { id: 'learn',        title: 'Continue learning',  desc: 'Resume your next lesson and quiz.',        link: '/learn',         icon: '📖', min: 'free' },
+  { id: 'calculator',   title: 'Position calculator', desc: 'Size your next trade to a firm’s limits.', link: '/calculator',    icon: '🧮', min: 'free' },
+  { id: 'challenge-lab',title: 'Challenge Lab',       desc: 'Your 4-week readiness programme.',         link: '/challenge-lab', icon: '🧪', min: 'observer' },
+  { id: 'chart',        title: 'Live chart',          desc: 'Markets at a glance.',                     link: '/chart',         icon: '📈', min: 'observer' },
+  { id: 'tracker',      title: 'Readiness tracker',   desc: 'See which firm you’re ready for.',         link: '/tracker',       icon: '🎯', min: 'challenger' },
+  { id: 'journal',      title: 'Sim journal',         desc: 'Log trades and review your edge.',         link: '/journal',       icon: '📓', min: 'challenger' },
+  { id: 'connect',      title: 'Connect your account',desc: 'Bring your own broker trades in.',         link: '/integrations',  icon: '🔗', min: 'challenger', showcase: true },
+  { id: 'news',         title: 'News sentiment',      desc: 'AI-tagged bull/bear signal.',              link: '/news',          icon: '📰', min: 'funded_ready' },
+];
+
+// Illustrative previews (mockups, not live data) shown when a member taps a tile.
+const PREVIEWS = {
+  'challenge-lab': {
+    title: 'Challenge Lab',
+    mock: `<div class="pv-check">
+      <div class="done">Week 1 · Build your baseline & risk rules</div>
+      <div class="done">Week 2 · Pattern execution drills</div>
+      <div>Week 3 · Discipline under drawdown</div>
+      <div>Week 4 · Mock challenge under firm rules</div>
+    </div>`,
+    benefits: ['A structured 4-week path to challenge-ready', 'Psychology & discipline drills, not just charts', 'Your readiness tracked week over week'],
+  },
+  'chart': {
+    title: 'Live chart',
+    mock: `<svg viewBox="0 0 300 72" width="100%" height="72" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="#0a6e4f" stroke-width="2" points="0,58 30,44 60,50 90,30 120,38 150,20 180,28 210,12 240,22 270,10 300,16"/></svg>`,
+    benefits: ['Markets at a glance, right inside Traxent', 'Real-time data on Challenger and up', 'Context for the patterns you’re learning'],
+  },
+  'tracker': {
+    title: 'Readiness tracker',
+    mock: `<div class="pv-trow"><span>Apex Trader Funding</span><div class="pv-bar"><i style="width:88%"></i></div><b class="pos">88%</b></div>
+      <div class="pv-trow"><span>FTMO</span><div class="pv-bar"><i style="width:71%"></i></div><b class="amb">71%</b></div>
+      <div class="pv-trow"><span>MyFundedFutures</span><div class="pv-bar"><i style="width:44%"></i></div><b class="neg">44%</b></div>
+      <div class="pv-note">Your live readiness across at least 16 firms — scores shown are illustrative.</div>`,
+    benefits: ['Each firm’s real published rules baked in', 'See exactly which firm you’re ready for', 'Know before you pay for a real challenge'],
+  },
+  'journal': {
+    title: 'Sim trade journal',
+    mock: `<div class="pv-jrow pv-jhead"><span>Setup</span><span>R:R</span><span>Result</span></div>
+      <div class="pv-jrow"><span>EURUSD · breakout</span><span>1:2.4</span><span class="pos">+2.4R</span></div>
+      <div class="pv-jrow"><span>NAS100 · pullback</span><span>1:1.8</span><span class="neg">−1.0R</span></div>
+      <div class="pv-jrow"><span>GBPUSD · range</span><span>1:3.0</span><span class="pos">+3.0R</span></div>
+      <div class="pv-jstats"><span>Win rate <strong>64%</strong></span><span>Avg R:R <strong>1:2.3</strong></span><span>Rule breaks <strong>0</strong></span></div>`,
+    benefits: ['Every entry logged automatically', 'Rule violations flagged in real time', 'Win-rate, R:R and expectancy analytics'],
+  },
+  'news': {
+    title: 'News sentiment',
+    mock: `<div class="pv-nrow"><span>Fed holds rates, signals caution</span><b class="amb">Neutral</b></div>
+      <div class="pv-nrow"><span>NAS100 breaks to new highs</span><b class="pos">Bullish</b></div>
+      <div class="pv-nrow"><span>Oil slips on demand fears</span><b class="neg">Bearish</b></div>`,
+    benefits: ['AI-tagged bull / bear on every headline', 'Cut the noise to what moves your pairs', 'Funded Trader exclusive'],
+  },
+  'connect': {
+    title: 'Connect your trading account',
+    note: 'Connect is free to set up — you’ll need Challenger or above to see your readiness score against your real trades.',
+    mock: `<div class="pv-chips">
+        <span class="pv-chip">MetaTrader 4</span><span class="pv-chip">MetaTrader 5</span>
+        <span class="pv-chip">cTrader</span><span class="pv-chip">TradingView</span>
+        <span class="pv-chip">Interactive Brokers</span><span class="pv-chip">+ more</span>
+      </div>
+      <div class="pv-flow"><b>Your trades</b><span>→</span>aggregated<span>→</span><b>scored</b></div>`,
+    benefits: ['Bring paper & live trades in automatically', 'One timeline across every broker you use', 'Score your real trading against firm rules'],
+  },
+};
+
+let currentPlan = 'free';
+
+function greetWord() {
+  const h = new Date().getHours();
+  return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+}
+
+function renderGrid(plan) {
+  const lvl = ORDER.indexOf(plan);
+  document.getElementById('grid').innerHTML = SPOTS.map(s => {
+    const unlocked = lvl >= ORDER.indexOf(s.min);
+    // Showcase tiles (Connect account) always open the preview — it's a sell.
+    if (s.showcase) {
+      return `<a class="card showcase" href="javascript:void(0)" onclick="openPreview('${s.id}')">
+        <span class="card-ic">${s.icon}</span><span class="card-title">${s.title}</span>
+        <span class="card-desc">${s.desc}</span><span class="card-go">Take a look →</span></a>`;
+    }
+    if (unlocked) {
+      return `<a class="card" href="${s.link}">
+        <span class="card-ic">${s.icon}</span><span class="card-title">${s.title}</span>
+        <span class="card-desc">${s.desc}</span><span class="card-go">Open →</span></a>`;
+    }
+    // Locked → a feature preview (splash) that sells it + an upgrade CTA inside.
+    return `<a class="card locked" href="javascript:void(0)" onclick="openPreview('${s.id}')">
+      <span class="card-lock">${PLAN_LABEL[s.min]}</span>
+      <span class="card-ic">${s.icon}</span><span class="card-title">${s.title}</span>
+      <span class="card-desc">${s.desc}</span><span class="card-go">See what it does →</span></a>`;
+  }).join('');
+}
+
+const UPSELL = {
+  free:       { to: 'observer',     line: 'Go further with <em>Observer</em>', sub: 'Unlock delayed data, the Challenge Lab and live charts.' },
+  observer:   { to: 'challenger',   line: 'Ready to track readiness? <em>Challenger</em>', sub: 'Unlock the prop-firm readiness tracker and your sim journal.' },
+  challenger: { to: 'funded_ready', line: 'Get the edge with <em>Funded Trader</em>', sub: 'Unlock the news sentiment engine and challenge simulation mode.' },
+};
+
+function renderUpsell(plan) {
+  const u = UPSELL[plan];
+  const slot = document.getElementById('upsell-slot');
+  if (!u) { slot.innerHTML = ''; return; }
+  slot.innerHTML = `<div class="upsell">
+    <div>
+      <div class="upsell-eyebrow">Your membership</div>
+      <div class="upsell-h">${u.line}</div>
+      <div class="upsell-sub">${u.sub}</div>
+    </div>
+    <button class="btn-upsell" onclick="upgradeTo('${u.to}')">Upgrade to ${PLAN_LABEL[u.to]} →</button>
+  </div>`;
+}
+
+// Feature preview / splash — mockup + benefits + the right CTA for the member.
+function openPreview(id) {
+  const s = SPOTS.find(x => x.id === id) || {};
+  const p = PREVIEWS[id];
+  if (!p) { if (s.link) window.location.href = s.link; return; }
+  const needUpgrade = ORDER.indexOf(s.min) > ORDER.indexOf(currentPlan);
+  const benefits = p.benefits.map(b => `<li>${b}</li>`).join('');
+  let cta;
+  if (needUpgrade) cta = `<button class="btn-solid" onclick="upgradeTo('${s.min}')">Upgrade to ${PLAN_LABEL[s.min]} →</button>`;
+  else if (s.link) cta = `<a class="btn-solid" href="${s.link}">Open ${p.title} →</a>`;
+  else cta = '';
+  document.getElementById('preview-body').innerHTML = `
+    <div class="pv-eyebrow">${needUpgrade ? 'Unlock with ' + PLAN_LABEL[s.min] : 'Included in your plan'}</div>
+    <div class="pv-h" id="preview-title">${p.title}</div>
+    <div class="pv-mockwrap">${p.mock}</div>
+    <ul class="pv-benefits">${benefits}</ul>
+    ${p.note ? `<div class="pv-foot-note">${p.note}</div>` : ''}
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closePreview()">Close</button>
+      ${cta}
+    </div>`;
+  document.getElementById('preview-modal').classList.add('show');
+}
+function closePreview() { document.getElementById('preview-modal').classList.remove('show'); }
+document.getElementById('preview-modal').addEventListener('click', function (e) { if (e.target === this) closePreview(); });
+
+// Existing subscriber → prorated change-plan; brand-new → Stripe Checkout.
+// Both end on /dashboard?upgraded=true so the "what you unlocked" panel shows.
+async function upgradeTo(targetPlan) {
+  try {
+    const token = await authBearerToken();
+    if (currentPlan === 'free') {
+      const user = await auth0Client.getUser();
+      showToast('Redirecting to checkout…');
+      const res = await fetch(PAY + '/checkout', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ plan: targetPlan, userId: user.sub, userEmail: user.email })
+      });
+      if (!res.ok) throw new Error('checkout');
+      const { url } = await res.json(); window.location.href = url; return;
+    }
+    showToast('Updating your plan…');
+    const res = await fetch(PAY + '/change-plan', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ plan: targetPlan })
+    });
+    if (res.status === 409) {
+      const user = await auth0Client.getUser();
+      const r2 = await fetch(PAY + '/checkout', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ plan: targetPlan, userId: user.sub, userEmail: user.email })
+      });
+      if (!r2.ok) throw new Error('checkout'); const { url } = await r2.json(); window.location.href = url; return;
+    }
+    if (!res.ok) throw new Error('change-plan');
+    window.location.href = '/dashboard?upgraded=true';
+  } catch (e) {
+    console.error('upgrade error', e);
+    showToast('Something went wrong — please try again.', false);
+  }
+}
+
+function openSupport() { document.getElementById('support-modal').classList.add('show'); }
+function closeSupport() { document.getElementById('support-modal').classList.remove('show'); }
+document.getElementById('support-modal').addEventListener('click', function (e) { if (e.target === this) closeSupport(); });
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') { closePreview(); closeSupport(); }
+});
+
+function showToast(msg, ok = true) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.borderLeft = ok ? '3px solid #1a9e72' : '3px solid #9e1a1a';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+async function initHome() {
+  try {
+    await initAuth0();
+    if (window.location.search.includes('code=') || window.location.search.includes('state=')) {
+      await auth0Client.handleRedirectCallback();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    const isAuthenticated = await auth0Client.isAuthenticated();
+    if (!isAuthenticated) { window.location.replace('/?stay=1'); return; } // not a member → public site
+
+    const user = await auth0Client.getUser();
+    const claims = await auth0Client.getIdTokenClaims();
+    const plan = (claims && claims['https://traxent.io/plan']) || 'free';
+    currentPlan = plan;
+
+    const firstName = user.given_name
+      || (user.name && !user.name.includes('@') ? user.name.split(' ')[0] : 'trader');
+
+    document.getElementById('hello-eyebrow').textContent = greetWord();
+    document.getElementById('hello-name').textContent = firstName;
+    const pill = document.getElementById('plan-pill');
+    pill.textContent = PLAN_LABEL[plan] || 'Free';
+    if (plan === 'free') pill.classList.add('free');
+    document.getElementById('hello-sub').textContent = (plan === 'free')
+      ? 'You’re on the free plan — jump in, or unlock the full toolkit below.'
+      : 'Pick up right where you left off.';
+
+    document.getElementById('support-mail').href =
+      'mailto:hello@traxent.io?subject=' + encodeURIComponent('Member support — ' + (PLAN_LABEL[plan] || 'Free')) +
+      '&body=' + encodeURIComponent('Account: ' + (user.email || '') + '\nPlan: ' + (PLAN_LABEL[plan] || 'Free') + '\n\nHow can we help?\n');
+
+    renderGrid(plan);
+    renderUpsell(plan);
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+    const gate = document.getElementById('auth-gate-style'); if (gate) gate.remove();
+  } catch (err) {
+    console.error('home error', err);
+    window.location.replace('/?stay=1');
+  }
+}
+
+initHome();
+</script>
+</body>
+</html>

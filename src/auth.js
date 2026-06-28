@@ -28,11 +28,12 @@ async function initAuth0() {
   return auth0Client;
 }
 
-// Login
+// Login — returning members land on their personalised /home (Dashboard is one
+// click away from there, and remains the primary CTA on the home page).
 async function login() {
   await auth0Client.loginWithRedirect({
     authorizationParams: {
-      redirect_uri: window.location.origin + '/dashboard',
+      redirect_uri: window.location.origin + '/home',
     }
   });
 }

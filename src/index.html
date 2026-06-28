@@ -40,7 +40,7 @@
 <meta property="og:image:alt" content="Traxent — track your path to funded">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Traxent — Track Your Path to Funded">
-<meta name="twitter:description" content="Learn to trade, practise safely, and score your readiness against 16 prop firms' real rules.">
+<meta name="twitter:description" content="Learn to trade, practise safely, and score your readiness against at least 16 prop firms' real rules.">
 <meta name="twitter:image" content="https://traxent.io/og-image.png">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -72,7 +72,7 @@
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "Web, iOS",
       "url": "https://traxent.io",
-      "description": "Learn to trade, practise and journal your trades, and score how ready you are against the real published rules of 16 major prop trading firms before attempting a funded challenge.",
+      "description": "Learn to trade, practise and journal your trades, and score how ready you are against the real published rules of at least 16 major prop trading firms before attempting a funded challenge.",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
       "publisher": { "@id": "https://traxent.io/#organization" }
     }
@@ -1159,7 +1159,7 @@ footer {
       <div class="firm-picker-label">Preview any <strong>4 of 16</strong> firms:</div>
       <div class="firm-picker" id="firmPicker"></div>
       <div class="firms-list" id="firmsList"></div>
-      <div class="readiness-caption">Example scores — yours will reflect your actual trading habits across all 16 firms.</div>
+      <div class="readiness-caption">Example scores — yours will reflect your actual trading habits across at least 16 firms.</div>
     </div>
   </div>
 </div>
@@ -1272,7 +1272,7 @@ const plans = [
       'Prop firm readiness tracker',
       'Connect 1 trading account (real-trade sync)',
       'Retroactive “would your last 90 days have passed?”',
-      'Readiness score vs 16 firms',
+      'Readiness score vs at least 16 firms',
       'Weekly readiness report email',
     ],
     btn: 'Start 7-day free trial',
@@ -1442,7 +1442,7 @@ async function handleAuthClick(e) {
   await initAuth0();
   const isAuthenticated = await auth0Client.isAuthenticated();
   if (isAuthenticated) {
-    window.location.href = '/dashboard';
+    window.location.href = '/home';
   } else {
     await login();
   }
@@ -1451,6 +1451,12 @@ async function handleAuthClick(e) {
 window.addEventListener('load', async () => {
   await initAuth0();
   const isAuthenticated = await auth0Client.isAuthenticated();
+  // Returning members get their own home, not the marketing page — unless they
+  // explicitly asked to see the public site (?stay), which also prevents loops.
+  if (isAuthenticated && !location.search.includes('stay')) {
+    window.location.replace('/home');
+    return;
+  }
   const signin   = document.getElementById('nav-signin');
   const waitlist = document.getElementById('nav-waitlist');
   const dash     = document.getElementById('nav-dashboard');

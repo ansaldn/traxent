@@ -7,11 +7,10 @@ name: Deploy Payments (SAM)
 # owns these resources, so the API id (da579ew81m), URL and function names are
 # unchanged.
 #
-# FIRST-RUN SAFETY: --no-execute-changeset (in the deploy step) makes the deploy
-# CREATE a change set on traxent-backend but NOT apply it, so it can be reviewed in
-# the CloudFormation console before anything touches live payments. Once confirmed,
-# remove that flag (and drop the 3 functions from backend/deploy-map.json) for full
-# automatic deploys.
+# This reconciles the **traxent-backend** stack (which owns the live payment
+# resources) on each relevant push — same API id (da579ew81m), URL and function
+# names. The one-time adoption + change-set review is complete, so it now deploys
+# automatically. Payment function CODE is managed here now, not in deploy-backend.yml.
 on:
   push:
     branches: [main]
@@ -69,7 +68,6 @@ jobs:
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
-            --no-execute-changeset \
             --region eu-west-2
 
       - name: Show payment API URLs

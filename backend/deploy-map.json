@@ -1,11 +1,7 @@
 {
-  "_comment": "Maps repo backend code to the AWS resources the GitHub Actions backend deploy updates. Fill in the REPLACE_* values once with your real AWS names (see DEPLOY.md). Keys under 'lambdas' are the folder names in backend/functions/.",
+  "_comment": "Maps repo backend code to AWS resources that deploy-backend.yml updates in place. The payment functions (create-checkout, cancel-subscription, stripe-webhook) are intentionally NOT here — they're managed by the traxent-backend SAM stack via deploy-payments.yml, so deploy-backend no longer double-deploys them. Keys under 'lambdas' are folder names in backend/functions/.",
   "region": "eu-west-2",
-  "lambdas": {
-    "cancel-subscription": "traxent-cancel-subscription",
-    "create-checkout": "traxent-create-checkout",
-    "stripe-webhook": "traxent-stripe-webhook"
-  },
+  "lambdas": {},
   "cloudfrontFunctions": {
     "backend/cloudfront-functions/security-headers.js": "traxent-security-headers"
   }

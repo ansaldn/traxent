@@ -252,6 +252,70 @@ const ALL_FEATURES = [
   },
 ];
 
+// Paint all plan-dependent UI. Safe to call again after an upgrade to repaint in place.
+function applyPlan(plan) {
+  const badge = document.getElementById('plan-badge');
+  badge.textContent = plan.replace(/_/g, ' ');
+  badge.classList.toggle('free', plan === 'free');
+
+  const subMessages = {
+    free:         "You're on the free plan. Upgrade to start tracking your readiness.",
+    observer:     "You're learning with delayed data. Upgrade to Challenger to unlock the readiness tracker.",
+    challenger:   "You're tracking your readiness in real time. Keep building your edge.",
+    funded_ready: "You're on Funded Trader. Everything is unlocked — let's get you there.",
+  };
+  document.getElementById('welcome-sub').textContent = subMessages[plan] || subMessages.free;
+
+  // Reset nudges/gates first so a repaint after upgrade clears the old one.
+  ['plan-gate-free', 'nudge-observer', 'nudge-challenger'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  if (plan === 'free')       document.getElementById('plan-gate-free').style.display = 'flex';
+  if (plan === 'observer')   document.getElementById('nudge-observer').style.display = 'flex';
+  if (plan === 'challenger') document.getElementById('nudge-challenger').style.display = 'flex';
+
+  const userLevel = PLAN_HIERARCHY.indexOf(plan);
+  document.getElementById('dash-grid').innerHTML = ALL_FEATURES.map(f => {
+    const minLevel = PLAN_HIERARCHY.indexOf(f.minPlan);
+    const isUnlocked = userLevel >= minLevel;
+    const desc = f.desc[plan] || f.desc.free;
+    return `
+        <div class="dash-card ${isUnlocked ? '' : 'locked'}">
+          ${!isUnlocked ? `<div class="locked-tag">${f.requiredLabel}</div>` : ''}
+          <div class="card-icon">${f.icon}</div>
+          <div class="card-title">${f.title}</div>
+          <div class="card-desc">${desc}</div>
+          ${isUnlocked
+            ? `<a href="${f.link || '#'}" class="card-action">${f.action} →</a>`
+            : `<span class="card-required-plan">Requires ${f.requiredLabel}</span>`}
+        </div>
+      `;
+  }).join('');
+}
+
+// After returning from Stripe checkout, the plan in the ID token is stale (it was
+// minted at the previous login). Silently re-mint the token — no visible re-login,
+// since auth.traxent.io is a subdomain of traxent.io so the SSO session is reachable
+// — and poll for the async webhook to assign the new role. Returns the upgraded plan,
+// or null if it didn't land in the window (caller then shows a gentle fallback).
+async function refreshPlanAfterUpgrade(prevPlan) {
+  const hierarchy = ['free', 'observer', 'challenger', 'funded_ready'];
+  const prevIdx = hierarchy.indexOf(prevPlan);
+  for (let attempt = 0; attempt < 6; attempt++) {
+    try {
+      await auth0Client.getTokenSilently({ cacheMode: 'off' }); // force a fresh token
+    } catch (e) {
+      return null; // silent refresh unavailable (e.g. browser blocked it)
+    }
+    const claims = await auth0Client.getIdTokenClaims();
+    const plan = (claims && claims['https://traxent.io/plan']) || 'free';
+    if (hierarchy.indexOf(plan) > prevIdx) return plan; // upgrade landed
+    await new Promise(r => setTimeout(r, 2500));         // wait for the webhook, retry
+  }
+  return null;
+}
+
 async function initDashboard() {
   try {
     await initAuth0();
@@ -272,7 +336,7 @@ async function initDashboard() {
     const user = await auth0Client.getUser();
     const claims = await auth0Client.getIdTokenClaims();
     const ns = 'https://traxent.io';
-    const plan = (claims && claims[`${ns}/plan`]) || 'free';
+    let plan = (claims && claims[`${ns}/plan`]) || 'free';
 
     const firstName = user.given_name
       || (user.name && !user.name.includes('@') ? user.name.split(' ')[0] : 'Trader');
@@ -285,49 +349,29 @@ async function initDashboard() {
     const initials = displayName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
     document.getElementById('user-avatar').textContent = initials;
     document.getElementById('user-name').textContent = displayName;
-
-    const badge = document.getElementById('plan-badge');
-    badge.textContent = plan.replace(/_/g, ' ');
-    if (plan === 'free') badge.classList.add('free');
-
     document.getElementById('welcome-title').textContent = `Welcome back, ${firstName}`;
-    const subMessages = {
-      free:         "You're on the free plan. Upgrade to start tracking your readiness.",
-      observer:     "You're learning with delayed data. Upgrade to Challenger to unlock the readiness tracker.",
-      challenger:   "You're tracking your readiness in real time. Keep building your edge.",
-      funded_ready: "You're on Funded Trader. Everything is unlocked — let's get you there.",
-    };
-    document.getElementById('welcome-sub').textContent = subMessages[plan] || subMessages.free;
 
-    if (plan === 'free')       document.getElementById('plan-gate-free').style.display = 'flex';
-    if (plan === 'observer')   document.getElementById('nudge-observer').style.display = 'flex';
-    if (plan === 'challenger') document.getElementById('nudge-challenger').style.display = 'flex';
-
-    const userLevel = PLAN_HIERARCHY.indexOf(plan);
-    document.getElementById('dash-grid').innerHTML = ALL_FEATURES.map(f => {
-      const minLevel = PLAN_HIERARCHY.indexOf(f.minPlan);
-      const isUnlocked = userLevel >= minLevel;
-      const desc = f.desc[plan] || f.desc.free;
-      return `
-        <div class="dash-card ${isUnlocked ? '' : 'locked'}">
-          ${!isUnlocked ? `<div class="locked-tag">${f.requiredLabel}</div>` : ''}
-          <div class="card-icon">${f.icon}</div>
-          <div class="card-title">${f.title}</div>
-          <div class="card-desc">${desc}</div>
-          ${isUnlocked
-            ? `<a href="${f.link || '#'}" class="card-action">${f.action} →</a>`
-            : `<span class="card-required-plan">Requires ${f.requiredLabel}</span>`}
-        </div>
-      `;
-    }).join('');
-
-    if (window.location.search.includes('upgraded=true')) {
-      showToast('Plan upgraded successfully — enjoy your new features!');
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
+    // Paint the plan-dependent UI (badge, nudges, feature grid) and reveal the page.
+    applyPlan(plan);
     document.getElementById('loading').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
+
+    // Returning from a successful checkout: the plan in the ID token is stale, so
+    // without this the dashboard would show the OLD plan until the user signed out
+    // and back in. Silently re-mint the token, wait for the async webhook to assign
+    // the new role, then repaint — the upgrade appears in place, no sign-out needed.
+    if (window.location.search.includes('upgraded=true')) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      showToast('Activating your upgrade…');
+      const refreshed = await refreshPlanAfterUpgrade(plan);
+      if (refreshed) {
+        plan = refreshed;
+        applyPlan(plan);
+        showToast(`You're on ${plan.replace(/_/g, ' ')} — enjoy your new features!`);
+      } else {
+        showToast('Payment received — activating your plan. If your new features don’t appear in a minute, sign out and back in to finish.', true);
+      }
+    }
 
   } catch (err) {
     console.error('Dashboard error:', err);

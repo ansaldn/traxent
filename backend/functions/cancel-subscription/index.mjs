@@ -88,7 +88,7 @@ export const handler = async (event) => {
   }
 
   try {
-    const secretKey = await getParam('/traxent/stripe/secret_key');
+    const secretKey = await getParam(process.env.STRIPE_KEY_PARAM || '/traxent/stripe/secret_key');
     const stripe = new Stripe(secretKey);
 
     // Find the customer. New checkouts stamp auth0_user_id + auth0_sub on the

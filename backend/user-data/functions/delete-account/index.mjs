@@ -56,7 +56,7 @@ async function getParam(name) {
 async function cancelStripe(sub, email) {
   let stripe;
   try {
-    stripe = new Stripe(await getParam('/traxent/stripe/secret_key'));
+    stripe = new Stripe(await getParam(process.env.STRIPE_KEY_PARAM || '/traxent/stripe/secret_key'));
   } catch {
     console.warn('Stripe key not configured — skipping billing cancellation');
     return;

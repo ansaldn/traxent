@@ -86,7 +86,7 @@ export const handler = async (event) => {
 
   try {
     const [secretKey, priceObserver, priceChallenger, priceFundedReady] = await Promise.all([
-      getParam('/traxent/stripe/secret_key'),
+      getParam(process.env.STRIPE_KEY_PARAM || '/traxent/stripe/secret_key'),
       getParam('/traxent/stripe/price_observer'),
       getParam('/traxent/stripe/price_challenger'),
       getParam('/traxent/stripe/price_funded_ready'),

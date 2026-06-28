@@ -25,7 +25,7 @@ async function assignRole(token, domain, userId, roleId) {
 export const handler = async (event) => {
   try {
     const [secretKey, webhookSecret, auth0Domain, m2mClientId, m2mClientSecret, priceObserver, priceChallenger, priceFundedReady] = await Promise.all([
-      getParam('/traxent/stripe/secret_key'),
+      getParam(process.env.STRIPE_KEY_PARAM || '/traxent/stripe/secret_key'),
       getParam('/traxent/stripe/webhook_secret'),
       getParam('/traxent/auth0/domain'),
       getParam('/traxent/auth0/m2m_client_id'),

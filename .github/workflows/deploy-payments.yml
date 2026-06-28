@@ -11,15 +11,13 @@ name: Deploy Payments (SAM)
 # which is harmless but means nothing deploys. Do the runbook first, then this is
 # fully automatic.
 
+# ── PAUSED (2026-06-28) ───────────────────────────────────────────────────────
+# Auto-deploy on push is disabled until the one-time resource adoption is done
+# (see backend/PAYMENTS-IMPORT-RUNBOOK.md). The three payment Lambdas already exist
+# (created by hand), so a push would try to CREATE them again and fail the run.
+# The payment function CODE still deploys via deploy-backend.yml, so nothing is lost
+# by pausing. To re-enable later, restore the `push:` trigger that was here.
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'backend/template.yaml'
-      - 'backend/functions/create-checkout/**'
-      - 'backend/functions/cancel-subscription/**'
-      - 'backend/functions/stripe-webhook/**'
-      - '.github/workflows/deploy-payments.yml'
   workflow_dispatch: {}
 
 # OIDC: assume the deploy role with a short-lived token (no static access keys).

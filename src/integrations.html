@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Traxent">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed:', err));
+    });
+  }
+</script>
+<title>Connect your trading account — Traxent Integrations</title>
+<style id="auth-gate-style">body{visibility:hidden}</style>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="/auth.js?v=__BUILD_SHA__"></script>
+<script>requireMinPlan('challenger');</script>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;--accent-light:rgba(10,110,79,.08);--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);--surface:#fff;--surface2:#f0efe9;--good:#0a6e4f;--warn:#b06000;--serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace}
+@media(prefers-color-scheme:dark){:root{--bg:#0e0e0c;--ink:#f2f1ec;--ink2:#c9c8c2;--ink3:#8f8e87;--accent:#1a9e72;--accent-light:rgba(26,158,114,.1);--border:rgba(255,255,255,.12);--surface:#161613;--surface2:#1d1d19}}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased;min-height:100vh}
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.nav-logo{font-family:var(--mono);font-size:15px;color:var(--ink);text-decoration:none}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-back{font-size:13px;color:var(--ink3);text-decoration:none}
+.nav-back:hover{color:var(--ink)}
+.wrap{max-width:880px;margin:0 auto;padding:44px 24px 90px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+h1{font-family:var(--serif);font-size:42px;font-weight:400;line-height:1.06;margin-bottom:14px}
+.lede{color:var(--ink2);font-size:16px;max-width:640px;margin-bottom:8px}
+.limit{font-family:var(--mono);font-size:12px;color:var(--ink3);margin-top:14px}
+.limit b{color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:28px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px}
+.card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.card-name{font-family:var(--serif);font-size:22px;color:var(--ink)}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--border);color:var(--ink3)}
+.badge.soon{color:var(--warn);border-color:rgba(176,96,0,.3);background:rgba(176,96,0,.07)}
+.card-asset{font-size:13px;color:var(--ink3);margin-bottom:6px}
+.card-desc{font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:16px}
+.btn{width:100%;font-size:14px;font-weight:500;padding:10px;border-radius:9px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;font-family:var(--sans)}
+.btn:disabled{background:transparent;color:var(--ink3);border-color:var(--border);cursor:not-allowed}
+.section-note{margin-top:34px;padding:18px 20px;border:1px solid var(--border);border-radius:12px;background:var(--accent-light);font-size:14px;color:var(--ink2)}
+.section-note strong{color:var(--ink)}
+.indep{margin-top:16px;padding:16px 20px;border:1px solid var(--warn);border-radius:12px;background:rgba(176,96,0,.06);font-size:13px;color:var(--ink2)}
+.indep strong{color:var(--ink)}
+.foot{margin-top:40px;font-size:12px;color:var(--ink3)}
+.connected{margin-top:28px}
+.empty{margin-top:14px;padding:22px;border:1px dashed var(--border);border-radius:12px;text-align:center;color:var(--ink3);font-size:14px}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">tra<em>x</em>ent</a>
+  <a href="/dashboard" class="nav-back">← Dashboard</a>
+</nav>
+<div class="wrap">
+  <div class="eyebrow">Integrations</div>
+  <h1>Connect your trading account</h1>
+  <p class="lede">Link a trading platform and Traxent scores your <strong>real</strong> trades against each firm's exact rules — automatically. Connections are <strong>read-only</strong>: Traxent reads your closed trades and equity curve to score them, and never places trades or moves money.</p>
+  <div class="limit" id="planLimit">Your plan: <b id="planName">Challenger</b> · connections used <b id="connUsed">0</b> of <b id="connMax">1</b></div>
+
+  <div class="connected">
+    <div class="empty" id="emptyState">No accounts connected yet. Pick a platform below to get started.</div>
+  </div>
+
+  <div class="grid" id="providerGrid"></div>
+
+  <div class="section-note">
+    <strong>Connectors are coming online in phases.</strong> The platforms below are being switched on one at a time as each provider integration is approved — exactly like the news feed was before its data source went live. Choose <em>Notify me</em> on any platform and you'll be the first to connect it. Already see a live one? Connect it and your next sync will pull your real trades in.
+  </div>
+
+  <div class="indep">
+    <strong>Traxent is independent.</strong> We are not affiliated with, paid by, or endorsing any platform or broker listed here. They appear only because they let you practise realistically and sync your data into Traxent. Connections are read-only and which platform you use is your choice. This is not financial advice.
+  </div>
+
+  <div class="foot">Read-only data sync · You can disconnect any account at any time, which deletes its synced trades.</div>
+</div>
+<script>
+(function(){
+  var PROVIDERS = [
+    {id:"ctrader", name:"cTrader", asset:"Forex · Indices · CFDs", desc:"Connect via cTrader's secure login. Syncs closed positions and balance history.", phase:1},
+    {id:"mt", name:"MetaTrader 4/5", asset:"Forex · Indices · Metals", desc:"Connect with a read-only investor password. Works with most MT4/MT5 brokers.", phase:1},
+    {id:"tradovate", name:"Tradovate", asset:"Futures", desc:"Connect via Tradovate login. Ideal for Apex, Topstep and MyFundedFutures-style accounts.", phase:2},
+    {id:"ninjatrader", name:"NinjaTrader", asset:"Futures", desc:"Sync your NinjaTrader account performance and trade history.", phase:2},
+    {id:"rithmic", name:"Rithmic", asset:"Futures (pro)", desc:"Connect a Rithmic-powered account for tick-accurate fills.", phase:3}
+  ];
+
+  // Plan → max connections (mirrors the Membership & Integrations Plan).
+  var PLAN_MAX = { observer:0, challenger:1, funded_ready:3, enterprise:99 };
+  var plan = (window.TraxentAuth && window.TraxentAuth.plan) || (window.__traxentPlan) || "challenger";
+  var prettyPlan = { observer:"Observer", challenger:"Challenger", funded_ready:"Funded Trader", enterprise:"Enterprise" }[plan] || "Challenger";
+  var max = (plan in PLAN_MAX) ? PLAN_MAX[plan] : 1;
+
+  var connections = [];
+  try {
+    if (window.TraxentData && typeof window.TraxentData.getConnections === 'function') {
+      connections = window.TraxentData.getConnections() || [];
+    }
+  } catch(e){}
+
+  document.getElementById('planName').textContent = prettyPlan;
+  document.getElementById('connMax').textContent = max === 99 ? "∞" : max;
+  document.getElementById('connUsed').textContent = connections.length;
+  if (connections.length > 0) { var es = document.getElementById('emptyState'); if (es) es.style.display = 'none'; }
+
+  var atLimit = max !== 99 && connections.length >= max;
+  var grid = document.getElementById('providerGrid');
+
+  function notify(p){
+    // Placeholder: records interest until the live connector is switched on.
+    try {
+      if (window.TraxentData && typeof window.TraxentData.requestIntegration === 'function') {
+        window.TraxentData.requestIntegration(p.id);
+      }
+    } catch(e){}
+    alert("Thanks — we'll email you the moment the " + p.name + " connector goes live.");
+  }
+
+  PROVIDERS.forEach(function(p){
+    var card = document.createElement('div');
+    card.className = 'card';
+    var live = false; // flip per-provider to true as each connector is approved
+    var badge = live ? '<span class="badge">Live</span>' : '<span class="badge soon">Coming online</span>';
+    card.innerHTML =
+      '<div class="card-top"><div class="card-name">'+p.name+'</div>'+badge+'</div>'+
+      '<div class="card-asset">'+p.asset+'</div>'+
+      '<div class="card-desc">'+p.desc+'</div>';
+    var btn = document.createElement('button');
+    btn.className = 'btn';
+    if (live) {
+      btn.textContent = atLimit ? 'Connection limit reached' : 'Connect';
+      btn.disabled = atLimit;
+      btn.addEventListener('click', function(){ window.location.href = '/api/integrations/'+p.id+'/connect'; });
+    } else {
+      btn.textContent = 'Notify me when live';
+      btn.disabled = false;
+      btn.style.background = 'transparent'; btn.style.color = 'var(--accent)';
+      btn.addEventListener('click', function(){ notify(p); });
+    }
+    card.appendChild(btn);
+    grid.appendChild(card);
+  });
+})();
+</script>
+</body>
+</html>

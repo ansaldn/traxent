@@ -156,6 +156,156 @@ Resources:
           - DELETE
           - OPTIONS
 
+  # ── Edge protection: AWS WAF on the user-data HTTP API ────────────────────
+  # RateLimitPerIP BLOCKS any single IP exceeding 2000 requests / 5 min (volumetric
+  # abuse + enumeration). The AWS managed common rule set runs in COUNT mode first
+  # (observe-only) so you can watch for false positives in CloudWatch before
+  # switching its OverrideAction from `Count: {}` to `None: {}` to start blocking.
+  # ~$5/mo + a few cents per million requests.
+  ApiWebAcl:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: traxent-userdata-acl
+      Scope: REGIONAL
+      DefaultAction:
+        Allow: {}
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: traxent-userdata-acl
+      Rules:
+        - Name: RateLimitPerIP
+          Priority: 0
+          Action:
+            Block: {}
+          Statement:
+            RateBasedStatement:
+              Limit: 2000
+              AggregateKeyType: IP
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: RateLimitPerIP
+        - Name: AWSCommonRules
+          Priority: 1
+          OverrideAction:
+            Count: {}            # observe-only — change to `None: {}` to enforce
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesCommonRuleSet
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AWSCommonRules
+
+  ApiWebAclAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      ResourceArn: !Sub "arn:aws:apigateway:${AWS::Region}::/apis/${UserDataApi}/stages/$default"
+      WebACLArn: !GetAtt ApiWebAcl.Arn
+
+  # ── Alerting: SNS topic + email. Confirm the subscription from your inbox ──
+  AlertsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: traxent-alerts
+
+  AlertsEmailSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref AlertsTopic
+      Protocol: email
+      Endpoint: davidansa00@gmail.com
+
+  UserDataErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: traxent-user-data-errors
+      AlarmDescription: user-data Lambda error spike (possible abuse or bug).
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref UserDataFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 10
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+        - !Ref AlertsTopic
+
+  DeleteAccountErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: traxent-delete-account-errors
+      AlarmDescription: delete-account Lambda is failing — deletions may be stuck.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref AccountDeleteFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 3
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+        - !Ref AlertsTopic
+
+  WafBlockedSpikeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: traxent-waf-blocked-spike
+      AlarmDescription: WAF is blocking a lot of requests — possible attack in progress.
+      Namespace: AWS/WAFV2
+      MetricName: BlockedRequests
+      Dimensions:
+        - Name: WebACL
+          Value: traxent-userdata-acl
+        - Name: Region
+          Value: !Ref AWS::Region
+        - Name: Rule
+          Value: ALL
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 500
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+        - !Ref AlertsTopic
+
+  # ── Cost guardrail: email at 80% actual / 100% forecast of $50/mo ─────────
+  MonthlyBudget:
+    Type: AWS::Budgets::Budget
+    Properties:
+      Budget:
+        BudgetName: traxent-monthly
+        BudgetType: COST
+        TimeUnit: MONTHLY
+        BudgetLimit:
+          Amount: 50
+          Unit: USD
+      NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 80
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: davidansa00@gmail.com
+        - Notification:
+            NotificationType: FORECASTED
+            ComparisonOperator: GREATER_THAN
+            Threshold: 100
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: davidansa00@gmail.com
+
 Outputs:
   ApiBaseUrl:
     Description: Base URL for the user-data API. Put this in src/userdata.js (USERDATA_API).

@@ -28,7 +28,7 @@
 </script>
 <title>Position Size Calculator — Traxent</title>
 <meta name="description" content="Free position size calculator for prop firm traders. Calculate exactly how much to risk on any trade based on your account size and stop loss.">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -363,7 +363,7 @@ footer { background: var(--ink); padding: 40px; }
   <div class="tracker-cta">
     <div class="tracker-cta-left">
       <div class="tracker-cta-title">Track every trade against prop firm rules</div>
-      <div class="tracker-cta-sub">The readiness tracker scores your habits against 16 prop firms — FTMO, Apex, Topstep, MyFundedFutures and more — in real time. Available on the Challenger plan.</div>
+      <div class="tracker-cta-sub">The readiness tracker scores your habits against FTMO, Apex, MFFU and FundedNext in real time. Available on the Challenger plan.</div>
     </div>
     <a href="/tracker" class="tracker-cta-btn">Open readiness tracker →</a>
   </div>

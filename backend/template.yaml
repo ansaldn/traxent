@@ -1,0 +1,141 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Traxent payments stack — the Stripe checkout / cancel / webhook Lambdas and the
+  REST API that fronts them, defined as infrastructure-as-code.
+
+  These three functions and their API Gateway were originally created by hand in the
+  console (REST API da579ew81m, stage `prod`). This template brings them under version
+  control so the whole backend is reproducible from code. It is a SEPARATE stack from
+  `backend/user-data/template.yaml` (DynamoDB + user-data + delete-account + news-feed)
+  so the two lifecycles stay isolated.
+
+  Deploy: handled automatically by .github/workflows/deploy-payments.yml on any push that
+  touches backend/template.yaml or the three payment functions. First-time adoption of the
+  EXISTING live resources is a one-time step — see backend/PAYMENTS-IMPORT-RUNBOOK.md for
+  both the recommended clean-cutover path and the zero-new-endpoint CloudFormation import path.
+
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    Architectures: [arm64]
+    Timeout: 15
+    MemorySize: 256
+    Handler: index.handler
+
+Parameters:
+  StageName:
+    Type: String
+    Default: prod
+    Description: API Gateway stage name. Kept as `prod` to match the existing path structure (/prod/checkout).
+  Auth0Audience:
+    Type: String
+    Default: ilvfACgF2sCmLWaugCn11qTB04aTvWxz,YKvrjZoxnehdES7nmMs9SRXi3G0MdXcK
+    Description: Comma-separated ID-token audiences the checkout/cancel Lambdas accept (web SPA + iOS native Client IDs).
+  AllowedOrigin:
+    Type: String
+    Default: https://traxent.io
+    Description: CORS allowed origin (the Lambdas emit CORS headers themselves; passed through for consistency).
+
+Resources:
+
+  # ── REST API ──────────────────────────────────────────────────────────────
+  # Lambda-proxy integration on every route so each function sees the raw request
+  # (the Stripe webhook needs the unmodified raw body for signature verification)
+  # and manages its own CORS / OPTIONS handling exactly as it does today.
+  PaymentsApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: traxent-payments
+      StageName: !Ref StageName
+      EndpointConfiguration:
+        Type: REGIONAL
+      # Stage-level throttling: caps total req/s reaching the payment Lambdas so a
+      # flood returns HTTP 429 at the gateway instead of fanning out into (billed)
+      # Lambda + Stripe calls. Tune up if you ever legitimately exceed these.
+      MethodSettings:
+        - ResourcePath: "/*"
+          HttpMethod: "*"
+          ThrottlingRateLimit: 25
+          ThrottlingBurstLimit: 50
+
+  # ── Stripe Checkout session creation (POST /checkout) ─────────────────────
+  CreateCheckoutFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-create-checkout
+      CodeUri: functions/create-checkout/
+      Environment:
+        Variables:
+          AUTH0_AUDIENCE: !Ref Auth0Audience
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/*"
+      Events:
+        Checkout:
+          Type: Api
+          Properties:
+            RestApiId: !Ref PaymentsApi
+            Path: /checkout
+            Method: ANY
+
+  # ── Cancel / downgrade subscription (POST /cancel) ────────────────────────
+  CancelSubscriptionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-cancel-subscription
+      CodeUri: functions/cancel-subscription/
+      Environment:
+        Variables:
+          AUTH0_AUDIENCE: !Ref Auth0Audience
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/*"
+      Events:
+        Cancel:
+          Type: Api
+          Properties:
+            RestApiId: !Ref PaymentsApi
+            Path: /cancel
+            Method: ANY
+
+  # ── Stripe webhook (POST /webhook) — server-to-server, no CORS ────────────
+  # Reads the Stripe + Auth0 m2m params from SSM (the webhook assigns plan roles
+  # on checkout.session.completed / subscription.updated|deleted).
+  StripeWebhookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-stripe-webhook
+      CodeUri: functions/stripe-webhook/
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/*"
+      Events:
+        Webhook:
+          Type: Api
+          Properties:
+            RestApiId: !Ref PaymentsApi
+            Path: /webhook
+            Method: POST
+
+Outputs:
+  PaymentsApiBaseUrl:
+    Description: >
+      Base URL for the payments API. After a clean cutover, set this (with the stage) as the
+      checkout/cancel base in the frontend, and point the Stripe webhook endpoint at {base}/webhook.
+    Value: !Sub "https://${PaymentsApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}"
+  CheckoutUrl:
+    Value: !Sub "https://${PaymentsApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}/checkout"
+  CancelUrl:
+    Value: !Sub "https://${PaymentsApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}/cancel"
+  WebhookUrl:
+    Description: Configure this exact URL as the Stripe webhook endpoint (LIVE mode).
+    Value: !Sub "https://${PaymentsApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}/webhook"

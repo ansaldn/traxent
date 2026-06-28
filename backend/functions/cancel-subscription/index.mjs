@@ -29,6 +29,12 @@ async function getParam(name) {
   return res.Parameter.Value;
 }
 
+// Reject identifier values that could break out of a Stripe search-query string
+// (defence-in-depth: e.g. an email containing a quote). Returns the value if safe, else null.
+function safeQueryValue(v) {
+  return typeof v === 'string' && !/['"\\\n\r]/.test(v) ? v : null;
+}
+
 const headers = {
   'Access-Control-Allow-Origin': 'https://traxent.io',
   'Access-Control-Allow-Headers': 'Content-Type,Authorization',
@@ -94,8 +100,9 @@ export const handler = async (event) => {
     if (!customers.data.length) {
       customers = await stripe.customers.search({ query: `metadata['auth0_sub']:'${userId}'` });
     }
-    if (!customers.data.length && email) {
-      customers = await stripe.customers.search({ query: `email:'${email}'` });
+    const safeEmail = safeQueryValue(email);
+    if (!customers.data.length && safeEmail) {
+      customers = await stripe.customers.search({ query: `email:'${safeEmail}'` });
     }
     if (!customers.data.length) {
       return { statusCode: 404, headers, body: JSON.stringify({ error: 'No customer found' }) };

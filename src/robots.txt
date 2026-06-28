@@ -1,0 +1,58 @@
+# Traxent — robots.txt
+# Public marketing pages are crawlable; the authenticated app surface is not.
+# (Behind-login pages are unreadable to crawlers anyway — excluding them keeps
+#  the index clean and avoids thin/duplicate content penalties.)
+
+User-agent: *
+Allow: /$
+Allow: /compare
+Allow: /faq
+Allow: /privacy
+Allow: /terms
+Allow: /waitlist
+Allow: /firms
+Allow: /firm-
+
+# Authenticated application surface — keep out of the index.
+Disallow: /dashboard
+Disallow: /account
+Disallow: /journal
+Disallow: /tracker
+Disallow: /calendar
+Disallow: /chart
+Disallow: /calculator
+Disallow: /challenge-lab
+Disallow: /learn
+Disallow: /learn-module-1
+Disallow: /learn-module-2
+Disallow: /learn-module-3
+Disallow: /learn-module-4
+Disallow: /learn-module-5
+Disallow: /learn-module-6
+Disallow: /learn-module-7
+Disallow: /news
+Disallow: /integrations
+
+# AI answer engines / retrieval bots — explicitly welcomed on public pages so
+# Traxent can be surfaced when people ask "where can I learn and practise
+# before a funded challenge". They inherit the Disallow rules above.
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://traxent.io/sitemap.xml

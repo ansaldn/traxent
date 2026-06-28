@@ -63,7 +63,7 @@ async function requireAuth(event) {
     err.statusCode = 401;
     throw err;
   }
-  return payload.sub;
+  return { sub: payload.sub, email: payload.email };
 }
 
 export const handler = async (event) => {
@@ -71,9 +71,11 @@ export const handler = async (event) => {
 
   // Verify the caller. userId now comes from the token, NOT the body —
   // a forged userId in the body is ignored.
-  let userId;
+  let userId, tokenEmail;
   try {
-    userId = await requireAuth(event);
+    const auth = await requireAuth(event);
+    userId = auth.sub;
+    tokenEmail = auth.email;
   } catch (err) {
     return {
       statusCode: err.statusCode || 401,
@@ -105,7 +107,7 @@ export const handler = async (event) => {
     })).data[0];
     if (!customer) {
       customer = await stripe.customers.create({
-        email: userEmail || undefined,
+        email: tokenEmail || userEmail || undefined, // prefer the verified token email over the body
         metadata: { auth0_user_id: userId, auth0_sub: userId },
       });
     }

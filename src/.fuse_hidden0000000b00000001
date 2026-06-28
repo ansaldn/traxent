@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <!-- PWA manifest -->
   <link rel="manifest" href="/manifest.json">
@@ -193,9 +192,9 @@ const ALL_FEATURES = [
   {
     icon: '🎯', title: 'Readiness tracker',
     desc: {
-      free:         'Score your trading habits against 16 prop firms including FTMO, Apex, Topstep and MyFundedFutures.',
-      observer:     'Score your trading habits against 16 prop firms including FTMO, Apex, Topstep and MyFundedFutures.',
-      challenger:   'Full score breakdown per rule across all 16 firms — updated with every trade.',
+      free:         'Score your trading habits against FTMO, Apex, MFFU and FundedNext.',
+      observer:     'Score your trading habits against FTMO, Apex, MFFU and FundedNext.',
+      challenger:   'Full score breakdown per rule vs all 4 firms — updated with every trade.',
       funded_ready: 'Full score + personalised coaching on exactly what to fix per firm.',
     },
     action: 'See my score', minPlan: 'challenger', requiredLabel: 'Challenger+', link: '/tracker',
@@ -209,16 +208,6 @@ const ALL_FEATURES = [
       funded_ready: 'Full journal with challenge simulation mode — practice against real firm rules.',
     },
     action: 'Open journal', minPlan: 'challenger', requiredLabel: 'Challenger+', link: '/journal',
-  },
-  {
-    icon: '🔗', title: 'Connect your account',
-    desc: {
-      free:         'Sync your real trades so your readiness score runs on actual fills, not just sim data.',
-      observer:     'Sync your real trades so your readiness score runs on actual fills, not just sim data.',
-      challenger:   'Connect 1 trading account (read-only) — your real trades score themselves against every firm.',
-      funded_ready: 'Connect up to 3 accounts (read-only) — real-trade sync plus funded-phase tracking.',
-    },
-    action: 'Connect account', minPlan: 'challenger', requiredLabel: 'Challenger+', link: '/integrations',
   },
   {
     icon: '📰', title: 'News sentiment feed',

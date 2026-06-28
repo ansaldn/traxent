@@ -1,0 +1,47 @@
+# Dependabot — weekly dependency + GitHub Actions update PRs.
+# Each backend function has its own package.json, so each needs its own entry.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /backend/functions/create-checkout
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    labels: [dependencies, security]
+
+  - package-ecosystem: npm
+    directory: /backend/functions/cancel-subscription
+    schedule:
+      interval: weekly
+    labels: [dependencies, security]
+
+  - package-ecosystem: npm
+    directory: /backend/functions/stripe-webhook
+    schedule:
+      interval: weekly
+    labels: [dependencies, security]
+
+  - package-ecosystem: npm
+    directory: /backend/functions/news-feed
+    schedule:
+      interval: weekly
+    labels: [dependencies, security]
+
+  - package-ecosystem: npm
+    directory: /backend/user-data/functions/user-data
+    schedule:
+      interval: weekly
+    labels: [dependencies, security]
+
+  - package-ecosystem: npm
+    directory: /backend/user-data/functions/delete-account
+    schedule:
+      interval: weekly
+    labels: [dependencies, security]
+
+  # Keep the GitHub Actions (checkout, setup-node, configure-aws-credentials, …) current.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    labels: [dependencies, ci]

@@ -64,7 +64,9 @@ async function cancelStripe(sub, email) {
   // Customers are findable by the auth0_sub metadata set at checkout; fall
   // back to email search for legacy customers.
   const queries = [`metadata['auth0_sub']:'${sub}'`, `metadata['auth0_user_id']:'${sub}'`];
-  if (email) queries.push(`email:'${email}'`);
+  // Defence-in-depth: only use the email in the search query if it can't break out of it.
+  const safeEmail = typeof email === 'string' && !/['"\\\n\r]/.test(email) ? email : null;
+  if (safeEmail) queries.push(`email:'${safeEmail}'`);
   const seen = new Set();
   for (const query of queries) {
     const customers = await stripe.customers.search({ query });

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Traxent">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed:', err));
+    });
+  }
+</script>
+<title>Module 7: Going Live — Choosing &amp; Connecting Your Trading Account — Traxent Learn</title>
+<style id="auth-gate-style">body{visibility:hidden}</style>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="/auth.js?v=__BUILD_SHA__"></script>
+<script>requireMinPlan('challenger');</script>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;--accent-light:rgba(10,110,79,.08);--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);--surface:#fff;--surface2:#f0efe9;--good:#0a6e4f;--warn:#b06000;--serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace}
+@media(prefers-color-scheme:dark){:root{--bg:#0e0e0c;--ink:#f2f1ec;--ink2:#c9c8c2;--ink3:#8f8e87;--accent:#1a9e72;--accent-light:rgba(26,158,114,.1);--border:rgba(255,255,255,.12);--surface:#161613;--surface2:#1d1d19}}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased;line-height:1.6;min-height:100vh}
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.nav-logo{font-family:var(--mono);font-size:15px;color:var(--ink);text-decoration:none}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-back{font-size:13px;color:var(--ink3);text-decoration:none}
+.nav-back:hover{color:var(--ink)}
+.wrap{max-width:780px;margin:0 auto;padding:44px 24px 90px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+h1{font-family:var(--serif);font-size:44px;font-weight:400;letter-spacing:-.01em;line-height:1.06;margin-bottom:16px}
+.lede{color:var(--ink2);font-size:17px;margin-bottom:14px}
+.banner{background:var(--accent-light);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:26px 0;font-size:14px;color:var(--ink2)}
+.banner strong{color:var(--ink);font-weight:500}
+h2{font-family:var(--serif);font-size:27px;font-weight:400;margin:40px 0 6px}
+.step{display:flex;gap:18px;padding:22px 0;border-top:1px solid var(--border)}
+.step-num{flex-shrink:0;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px}
+.step-b h3{font-family:var(--sans);font-size:17px;font-weight:500;color:var(--ink);margin-bottom:6px}
+.step-b p{color:var(--ink2);font-size:15px;margin-bottom:10px}
+.step-b ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin:6px 0 4px}
+.step-b li{font-size:14px;color:var(--ink2);padding-left:16px;position:relative}
+.step-b li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+.cta{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:500;font-size:15px;padding:12px 24px;border-radius:10px;margin-top:8px}
+.cta.alt{background:transparent;color:var(--accent);border:1px solid var(--accent);margin-left:8px}
+.indep{margin-top:40px;padding:18px 20px;border:1px solid var(--warn);border-radius:12px;background:rgba(176,96,0,.06);font-size:13px;color:var(--ink2)}
+.indep strong{color:var(--ink)}
+.ready-gate{margin:24px 0;padding:16px 20px;border:1px dashed var(--border);border-radius:12px;font-size:14px;color:var(--ink3);font-family:var(--mono)}
+.foot{margin-top:48px;padding-top:22px;border-top:1px solid var(--border);font-size:12px;color:var(--ink3)}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">tra<em>x</em>ent</a>
+  <a href="/learn" class="nav-back">← Back to Learn</a>
+</nav>
+<div class="wrap">
+  <div class="eyebrow">Module 7 · Going Live</div>
+  <h1>Choosing &amp; connecting your trading account</h1>
+  <p class="lede">You've done the work and your readiness score says you're prepared. This module is the bridge from practising in Traxent to trading for real — choosing a platform, practising on it in demo, connecting it to Traxent so your real performance scores itself, and stepping into an evaluation with live data behind you.</p>
+
+  <div class="ready-gate" id="readyGate">This onboarding is designed for traders who have reached 85%+ readiness on a tracked firm. Not there yet? Keep logging trades on the <a href="/tracker" style="color:var(--accent)">readiness tracker</a> first.</div>
+
+  <div class="banner">
+    <strong>Why connect an account at all?</strong> Up to now your score has used your sim journal. The moment Traxent reads your real fills, the score becomes ungameable and genuinely trustworthy — it runs each firm's exact drawdown maths (trailing vs end-of-day vs static) on what you actually did, and can even tell you whether your last 90 days <em>would have passed</em> the challenge you're about to buy.
+  </div>
+
+  <h2>The four steps</h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-b">
+      <h3>Confirm your best-fit firm</h3>
+      <p>Open the readiness tracker and check the best-matched firm panel. It ranks all 16 firms against how you actually trade — your drawdown discipline, consistency and trading days — and names the one whose rules fit you best.</p>
+      <a href="/tracker" class="cta alt">Open best-match →</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-b">
+      <h3>Choose a platform you can practise on — and that Traxent syncs with</h3>
+      <p>Pick a trading platform that (a) matches your firm's asset class and (b) Traxent can read, so your trades flow in automatically. Start in <strong>demo / paper mode</strong> — it behaves like the real thing but risks nothing, and it's the cleanest way to rehearse the exact firm rules before you pay an evaluation fee.</p>
+      <ul>
+        <li>Futures (Apex, Topstep, MyFundedFutures, Tradeify…): Tradovate, NinjaTrader or Rithmic.</li>
+        <li>Forex / indices (FTMO, FundedNext, FXIFY…): cTrader or MetaTrader 4/5.</li>
+      </ul>
+      <a href="/integrations" class="cta">See supported platforms →</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-b">
+      <h3>Connect it to Traxent (read-only)</h3>
+      <p>On the Integrations page, connect your account. Traxent only ever <strong>reads</strong> your closed trades and equity curve to score them — it never places trades or touches your funds. Your real performance then updates your readiness score and journal automatically.</p>
+      <a href="/integrations" class="cta alt">Connect an account →</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-b">
+      <h3>Attempt the evaluation — then track the funded phase</h3>
+      <p>When your real, connected data holds above the firm's rules, buy the evaluation with confidence. After you pass, keep the account connected: Traxent tracks payout readiness and drawdown discipline on funded capital, so staying funded becomes as measurable as getting funded.</p>
+    </div>
+  </div>
+
+  <div class="indep">
+    <strong>Traxent is independent.</strong> We are not affiliated with, paid by, or endorsing any trading platform, broker or prop firm mentioned here or on the Integrations page. We suggest these platforms only because they let you practise realistically and sync your data into Traxent. The connection is read-only, recommendations are rules-based, and which platform or firm you use is entirely your choice. None of this is financial advice — trading involves risk.
+  </div>
+
+  <div class="foot">Module 7 of the Traxent learning path · Going Live</div>
+</div>
+<script>
+(function(){
+  // Soft-personalise the readiness banner if the app exposes a readiness value.
+  try {
+    var g = document.getElementById('readyGate');
+    var r = (window.TraxentData && typeof window.TraxentData.getReadiness === 'function')
+      ? window.TraxentData.getReadiness() : null;
+    if (typeof r === 'number' && r >= 85 && g) {
+      g.innerHTML = "You're at " + Math.round(r) + "% readiness — you're cleared to go live. Work through the steps below.";
+      g.style.color = 'var(--accent)';
+    }
+  } catch(e){}
+})();
+</script>
+</body>
+</html>

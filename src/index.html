@@ -33,10 +33,52 @@
 <meta property="og:description" content="The only trading education platform that tells you exactly which prop firm you're ready for.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://traxent.io">
+<meta property="og:site_name" content="Traxent">
+<meta property="og:image" content="https://traxent.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Traxent — track your path to funded">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="robots" content="index, follow">
+<meta name="twitter:title" content="Traxent — Track Your Path to Funded">
+<meta name="twitter:description" content="Learn to trade, practise safely, and score your readiness against 16 prop firms' real rules.">
+<meta name="twitter:image" content="https://traxent.io/og-image.png">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="canonical" href="https://traxent.io">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://traxent.io/#organization",
+      "name": "Traxent",
+      "url": "https://traxent.io",
+      "logo": "https://traxent.io/icons/icon-512.png",
+      "description": "Trading-education and prop-firm readiness platform.",
+      "email": "hello@traxent.io"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://traxent.io/#website",
+      "url": "https://traxent.io",
+      "name": "Traxent",
+      "publisher": { "@id": "https://traxent.io/#organization" },
+      "inLanguage": "en"
+    },
+    {
+      "@type": "WebApplication",
+      "name": "Traxent",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web, iOS",
+      "url": "https://traxent.io",
+      "description": "Learn to trade, practise and journal your trades, and score how ready you are against the real published rules of 16 major prop trading firms before attempting a funded challenge.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+      "publisher": { "@id": "https://traxent.io/#organization" }
+    }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -614,6 +656,21 @@ nav {
   text-align: center;
 }
 
+.firm-picker-label { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 12px; }
+.firm-picker-label strong { color: #4ade80; font-weight: 600; }
+.firm-picker { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 22px; }
+.firm-chip {
+  font-size: 12px; font-family: var(--mono); color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px; padding: 5px 12px; cursor: pointer; user-select: none;
+  transition: all 0.15s;
+}
+.firm-chip:hover { border-color: rgba(255,255,255,0.28); color: rgba(255,255,255,0.8); }
+.firm-chip.active {
+  background: rgba(74,222,128,0.14); border-color: rgba(74,222,128,0.5); color: #4ade80;
+}
+.firms-list { display: flex; flex-direction: column; gap: 12px; min-height: 1px; }
+
 /* ── PRICING ── */
 .pricing-toggle-wrap {
   display: flex;
@@ -1099,37 +1156,10 @@ footer {
       </div>
     </div>
     <div>
-      <div class="firms-list">
-        <div class="firm-card-dark">
-          <div class="fcd-left">
-            <div class="fcd-name">FTMO</div>
-            <div class="fcd-rules">7 rules tracked · 5% DDL · consistency</div>
-          </div>
-          <div class="fcd-score amber">71%</div>
-        </div>
-        <div class="firm-card-dark">
-          <div class="fcd-left">
-            <div class="fcd-name">Apex Trader Funding</div>
-            <div class="fcd-rules">7 rules tracked · trailing DD · 30% rule</div>
-          </div>
-          <div class="fcd-score green">88%</div>
-        </div>
-        <div class="firm-card-dark">
-          <div class="fcd-left">
-            <div class="fcd-name">MyFundedFutures</div>
-            <div class="fcd-rules">7 rules tracked · 3% EOD · activity</div>
-          </div>
-          <div class="fcd-score red">44%</div>
-        </div>
-        <div class="firm-card-dark">
-          <div class="fcd-left">
-            <div class="fcd-name">FundedNext</div>
-            <div class="fcd-rules">7 rules tracked · 5 day min · consistency</div>
-          </div>
-          <div class="fcd-score amber">63%</div>
-        </div>
-      </div>
-      <div class="readiness-caption">Example scores — yours will reflect your actual trading habits</div>
+      <div class="firm-picker-label">Preview any <strong>4 of 16</strong> firms:</div>
+      <div class="firm-picker" id="firmPicker"></div>
+      <div class="firms-list" id="firmsList"></div>
+      <div class="readiness-caption">Example scores — yours will reflect your actual trading habits across all 16 firms.</div>
     </div>
   </div>
 </div>
@@ -1182,6 +1212,8 @@ footer {
         </div>
         <div class="footer-col">
           <div class="footer-col-title">Company</div>
+          <a href="/compare">Compare prop firms</a>
+          <a href="/firms">Prop firm rules</a>
           <a href="/faq">FAQ</a>
           <a href="/privacy">Privacy Policy</a>
           <a href="/terms">Terms of Service</a>
@@ -1233,15 +1265,15 @@ const plans = [
     suffix: '/mo',
     altGbp: '≈ $16.25/mo',
     altUsd: '≈ £12.99/mo',
-    desc: 'Live data, the full readiness tracker, and your sim trade journal. The core Traxent experience.',
+    desc: 'Live data, the full readiness tracker, and real-trade sync. Score your actual trading — the core Traxent experience.',
     features: [
       'Live price data — real time',
       'All 15 pattern signals',
       'Prop firm readiness tracker',
-      'Sim trade journal + analytics',
+      'Connect 1 trading account (real-trade sync)',
+      'Retroactive “would your last 90 days have passed?”',
       'Readiness score vs 16 firms',
       'Weekly readiness report email',
-      { text: 'Premium data feed', dim: true },
     ],
     btn: 'Start 7-day free trial',
     btnClass: 'plan-btn-solid',
@@ -1254,13 +1286,13 @@ const plans = [
     suffix: '/mo',
     altGbp: '≈ $37.50/mo',
     altUsd: '≈ £29.99/mo',
-    desc: 'Customisable premium data feeds for active traders. A fraction of the cost of institutional tools.',
+    desc: 'Own the funded phase. Multi-account sync, funded-capital tracking and the Go-Live onboarding for active traders.',
     features: [
-      'Customisable premium data feeds',
       'Everything in Challenger',
+      'Connect up to 3 trading accounts',
+      'Funded-phase tracking (payout readiness + drawdown discipline)',
+      'Go-Live onboarding (Module 7)',
       'Advanced news sentiment engine',
-      'Economic calendar alerts',
-      'Challenge simulation mode',
       'Firm-specific rule coaching',
       'Priority support',
     ],
@@ -1428,6 +1460,69 @@ window.addEventListener('load', async () => {
     if (dash)     dash.style.display = '';
   }
 });
+</script>
+<script>
+/* Homepage readiness preview — pick any 4 of the 16 tracked firms.
+   Scores are illustrative examples only (see caption). */
+(function(){
+  var FIRMS = [
+    {n:"FTMO", r:"5% DDL · 10% static DD · 50% consistency", s:71, c:"amber"},
+    {n:"Apex Trader Funding", r:"trailing 5% DD · 30% consistency · 7-day min", s:88, c:"green"},
+    {n:"MyFundedFutures", r:"3% EOD DD · 40% consistency · 2-day min", s:44, c:"red"},
+    {n:"FundedNext", r:"5% DDL · 10% static DD · 5-day min", s:63, c:"amber"},
+    {n:"Topstep", r:"2% DDL · 4% trailing DD · 50% consistency", s:69, c:"amber"},
+    {n:"The5ers", r:"5% DDL · 10% static DD · scaling", s:82, c:"green"},
+    {n:"FXIFY", r:"4% DDL · 10% trailing DD · 2-step", s:58, c:"amber"},
+    {n:"E8 Funding", r:"5% DDL · 8% static DD · 40% consistency", s:76, c:"amber"},
+    {n:"FundingPips", r:"5% DDL · 10% static DD · CFDs · 2-step", s:80, c:"green"},
+    {n:"Tradeify", r:"3% DDL · 4% EOD DD · 40% consistency", s:51, c:"red"},
+    {n:"Alpha Capital", r:"4% DDL · 6% trailing DD · 1-step", s:66, c:"amber"},
+    {n:"Goat Funded Trader", r:"5% DDL · 10% static DD · 2-step", s:84, c:"green"},
+    {n:"Take Profit Trader", r:"4% EOD DD · 50% consistency · 5-day min", s:48, c:"red"},
+    {n:"Funded Trading Plus", r:"4% DDL · 8% static DD · 35% consistency", s:73, c:"amber"},
+    {n:"Maven Trading", r:"3% DDL · 5% EOD DD · 1-step", s:60, c:"amber"},
+    {n:"Bulenox", r:"2% DDL · 5% trailing DD · futures", s:90, c:"green"}
+  ];
+  var selected = [0,1,2,3]; // default: FTMO, Apex, MyFundedFutures, FundedNext
+  var picker = document.getElementById('firmPicker');
+  var list = document.getElementById('firmsList');
+  if(!picker || !list) return;
+
+  function renderCards(){
+    list.innerHTML = '';
+    selected.forEach(function(i){
+      var f = FIRMS[i];
+      var card = document.createElement('div');
+      card.className = 'firm-card-dark';
+      card.innerHTML = '<div class="fcd-left"><div class="fcd-name">'+f.n+
+        '</div><div class="fcd-rules">'+f.r+'</div></div>'+
+        '<div class="fcd-score '+f.c+'">'+f.s+'%</div>';
+      list.appendChild(card);
+    });
+  }
+  function renderChips(){
+    picker.innerHTML = '';
+    FIRMS.forEach(function(f, i){
+      var chip = document.createElement('span');
+      var active = selected.indexOf(i) !== -1;
+      chip.className = 'firm-chip' + (active ? ' active' : '');
+      chip.textContent = f.n;
+      chip.setAttribute('role','button');
+      chip.setAttribute('tabindex','0');
+      chip.setAttribute('aria-pressed', active ? 'true' : 'false');
+      function toggle(){
+        var idx = selected.indexOf(i);
+        if(idx !== -1){ if(selected.length > 1) selected.splice(idx,1); }
+        else { selected.push(i); if(selected.length > 4) selected.shift(); }
+        renderChips(); renderCards();
+      }
+      chip.addEventListener('click', toggle);
+      chip.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }});
+      picker.appendChild(chip);
+    });
+  }
+  renderChips(); renderCards();
+})();
 </script>
 </body>
 </html>

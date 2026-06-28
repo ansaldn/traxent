@@ -28,12 +28,18 @@
 </script>
 
 <title>Waitlist — Traxent</title>
-<meta name="description" content="Join the Traxent waitlist for early access — track your path to funded across FTMO, Apex, MyFundedFutures and FundedNext. See what's live and what's coming.">
+<meta name="description" content="Join the Traxent waitlist for early access — track your path to funded across 16 prop firms including FTMO, Apex, Topstep and MyFundedFutures. See what's live and what's coming.">
 <meta property="og:title" content="Waitlist — Traxent">
 <meta property="og:description" content="Get notified when Traxent opens to the public. See the roadmap.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://traxent.io/waitlist">
-<meta name="robots" content="index, follow">
+<meta property="og:site_name" content="Traxent">
+<meta property="og:image" content="https://traxent.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Waitlist — Traxent">
+<meta name="twitter:description" content="Get notified when Traxent opens to the public. See the roadmap.">
+<meta name="twitter:image" content="https://traxent.io/og-image.png">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="canonical" href="https://traxent.io/waitlist">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -632,7 +638,7 @@ footer {
     <div class="about-card">
       <div class="about-card-icon">🎯</div>
       <div class="about-card-title">Score against real rules</div>
-      <div class="about-card-body">FTMO, Apex, MyFundedFutures, FundedNext — each firm's published rules are baked into the scoring engine. You'll see which one you're ready for before you spend money on a challenge.</div>
+      <div class="about-card-body">16 prop firms — FTMO, Apex, Topstep, MyFundedFutures, FundedNext and more — each firm's published rules are baked into the scoring engine. You'll see which one you're ready for before you spend money on a challenge.</div>
     </div>
   </div>
 </section>
@@ -683,7 +689,7 @@ footer {
           <div class="phase-tag now">● Available now</div>
         </div>
         <ul class="phase-items">
-          <li>Readiness tracker for FTMO, Apex, MyFundedFutures, FundedNext</li>
+          <li>Readiness tracker for 16 prop firms (FTMO, Apex, Topstep, MyFundedFutures and more)</li>
           <li>4 learning modules: fundamentals, patterns, risk, prop firm mastery</li>
           <li>Sim trade journal with R:R, win rate, and rule-compliance scoring</li>
           <li>Challenge Lab — 4-week structured programme with psychology and discipline drills</li>
@@ -788,10 +794,20 @@ function joinWaitlist(e) {
     showToast('Please enter a valid email address', false);
     return;
   }
+  // Capture traffic-source attribution so every signup records where it came from.
+  const q = new URLSearchParams(location.search);
+  const utm = {
+    utm_source:   q.get('utm_source')   || '',
+    utm_medium:   q.get('utm_medium')   || '',
+    utm_campaign: q.get('utm_campaign') || '',
+    utm_content:  q.get('utm_content')  || '',
+    referrer:     document.referrer || '',
+    landing_path: location.pathname
+  };
   fetch('https://formspree.io/f/mlgogjdq', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify({ email, source: 'waitlist-page', ts: new Date().toISOString() })
+    body: JSON.stringify({ email, source: 'waitlist-page', ts: new Date().toISOString(), ...utm })
   })
   .then(r => {
     if (r.ok) {

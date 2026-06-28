@@ -4,7 +4,7 @@ The Stripe **checkout / cancel / webhook** Lambdas and their REST API (`da579ew8
 stage `prod`) were created by hand in the console. `backend/template.yaml` now describes
 them as code, and `.github/workflows/deploy-payments.yml` deploys the `traxent-payments`
 stack on every push. But CloudFormation won't manage resources it didn't create until you
-**adopt them once**. There are two ways to do that. Pick one.
+**adopt them once**. There are two ways to do that. **Chosen (2026-06-28): Option B — resource import**, so the public URL and function names stay identical (no frontend or Stripe changes). Option A (clean cutover) is kept below as a fallback.
 
 Region is `eu-west-2` throughout. The OIDC deploy role from `IAM-OIDC-SETUP.md` already has
 the permissions for both paths.
@@ -56,10 +56,17 @@ There are exactly **two consumers** of the payment API, which is why a cutover i
 
 ---
 
-## Option B — CloudFormation resource import (zero new endpoints)
+## Option B — CloudFormation resource import (CHOSEN) — adopt in place, URLs unchanged
 
-Keeps the exact same API id and function names — no consumer changes. More steps, and the
-imported template must match the live config closely.
+The "terraform import" equivalent: bring the existing hand-made Lambdas + REST API under the
+stack WITHOUT recreating them. Function names and the API id (`da579ew81m`, stage `prod`) stay
+identical, so **the frontend and the Stripe webhook need no changes**. Nothing references the
+function *names* anyway (the web/iOS clients and Stripe all call the API Gateway URL; the iOS
+app bills via Apple IAP and never touches this API), so this is low-risk.
+
+The template is already **import-ready**: the three functions and `PaymentsApi` carry
+`DeletionPolicy: Retain` + `UpdateReplacePolicy: Retain`, and the names match the live
+resources 1:1. CloudFormation will adopt — never recreate — them.
 
 1. **Confirm live config matches the template.** For each function check runtime / handler /
    memory / timeout and adjust `backend/template.yaml` (or the live function) so they agree:
@@ -86,14 +93,39 @@ imported template must match the live config closely.
    - `PaymentsApi` → `da579ew81m`
    Name the stack `traxent-payments`. Execute the import.
 
-   > The API Gateway `Deployment`/`Stage`/method resources that SAM generates implicitly can
-   > make a pure import awkward (SAM hides them behind the `Api` event). If the import balks on
-   > those generated resources, prefer **Option A** — it's why A is the recommendation.
+   > **API Gateway caveat + fix.** SAM's `AWS::Serverless::Api` expands into a RestApi + Stage
+   > + an implicit *Deployment*. Import can adopt the RestApi and Stage but NOT a Deployment,
+   > and an import change set can't CREATE resources — so importing `PaymentsApi` as-is stalls
+   > on that generated Deployment. Two clean ways through:
+   >
+   > **(a) Recommended.** Import the three functions now (they import cleanly), plus the RestApi
+   > (`da579ew81m`) + Stage (`prod`) via an explicit template (RestApi / Resource / Method /
+   > Stage, each `DeletionPolicy: Retain`, *no* Deployment). After the import succeeds, the first
+   > `sam deploy` on push creates the Deployment as a normal update (allowed outside an import
+   > change set) and reconciles everything. The URL is unchanged. To generate that explicit API
+   > template, capture the live shape and send it over:
+   > ```
+   > aws apigateway get-rest-apis  --region eu-west-2 --query "items[?id=='da579ew81m']"
+   > aws apigateway get-resources  --rest-api-id da579ew81m --region eu-west-2
+   > aws apigateway get-stages     --rest-api-id da579ew81m --region eu-west-2
+   > ```
+   > **(b) Pragmatic.** Import only the three functions and leave `da579ew81m` managed exactly as
+   > it is today. You still get the functions fully in IaC, a green deploy, and an untouched URL.
+   > Fold the API in later via (a) when convenient.
 
 4. **Reconcile**: push to `main`. `deploy-payments.yml` runs `sam deploy` against the now-
    adopted stack and brings everything to the template's desired state (this is also when any
    runtime/arch differences from step 1 get applied — verify checkout/cancel/webhook still work
    immediately after).
+
+5. **Stop double-management.** Once the functions are in this stack, remove `create-checkout`,
+   `cancel-subscription`, and `stripe-webhook` from `backend/deploy-map.json` so
+   `deploy-backend.yml` no longer also updates them by name. (Keep the `security-headers`
+   CloudFront entry — that stays deploy-backend's job.)
+
+6. **Confirm the URL is unchanged.** It must still be
+   `https://da579ew81m.execute-api.eu-west-2.amazonaws.com/prod/{checkout,cancel,webhook}` —
+   no frontend (`account.html`, `dashboard.html`, `tracker.html`) or Stripe webhook edits needed.
 
 ---
 

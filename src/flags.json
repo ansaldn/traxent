@@ -1,0 +1,11 @@
+{
+  "_comment": "Client-side feature flags. Each flag is { enabled: bool, launchAt: ISO-8601-UTC string or null }. A flag is ON if enabled===true, OR if launchAt is set and that UTC time is now in the past. This file IS deployed (it lives in src/), so treat it as PUBLIC — never gate anything secret on a client flag; use it for soft reveals only. See src/flags.js for the helper and SCHEDULED-RELEASES.md for usage.",
+  "newDashboardBanner": {
+    "enabled": false,
+    "launchAt": null
+  },
+  "summerPromo2099": {
+    "enabled": false,
+    "launchAt": "2099-06-01T09:00:00Z"
+  }
+}

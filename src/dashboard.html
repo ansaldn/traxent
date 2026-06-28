@@ -316,6 +316,58 @@ async function refreshPlanAfterUpgrade(prevPlan) {
   return null;
 }
 
+// Celebratory "here's what you just unlocked" panel, shown after an upgrade lands.
+// Lists the features newly available between the previous and new plan.
+function showUnlockedPanel(prevPlan, newPlan) {
+  const hierarchy = ['free', 'observer', 'challenger', 'funded_ready'];
+  const prevIdx = hierarchy.indexOf(prevPlan);
+  const newIdx = hierarchy.indexOf(newPlan);
+  const unlocked = ALL_FEATURES.filter(f => {
+    const lvl = PLAN_HIERARCHY.indexOf(f.minPlan);
+    return lvl > prevIdx && lvl <= newIdx;
+  });
+  const planLabel = newPlan.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  const items = unlocked.length
+    ? unlocked.map(f => `<li><span class="unlock-ic">${f.icon}</span><span><strong>${f.title}</strong><br><span class="unlock-desc">${f.desc[newPlan] || f.desc.free}</span></span></li>`).join('')
+    : `<li><span class="unlock-desc">Everything from your previous plan, plus first access to new features as they ship.</span></li>`;
+
+  if (!document.getElementById('unlock-styles')) {
+    const st = document.createElement('style');
+    st.id = 'unlock-styles';
+    st.textContent = `
+      .unlock-overlay{position:fixed;inset:0;background:rgba(14,14,12,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;animation:unlockFade .2s ease}
+      @keyframes unlockFade{from{opacity:0}to{opacity:1}}
+      .unlock-card{background:#fff;border-radius:16px;max-width:460px;width:100%;padding:32px;box-shadow:0 24px 64px rgba(0,0,0,.25);animation:unlockUp .25s ease}
+      @keyframes unlockUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+      .unlock-badge{display:inline-block;font-size:12px;font-weight:600;color:#0a6e4f;background:#e8f5f0;border:1px solid rgba(10,110,79,.2);padding:5px 12px;border-radius:999px;margin-bottom:14px}
+      .unlock-h{font-size:24px;margin:0 0 4px;color:#0e0e0c}
+      .unlock-sub{font-size:14px;color:#7a7a72;margin:0 0 18px}
+      .unlock-list{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:14px}
+      .unlock-list li{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:#3a3a36;line-height:1.45}
+      .unlock-ic{font-size:20px;flex-shrink:0}
+      .unlock-desc{font-size:13px;color:#7a7a72}
+      .unlock-btn{width:100%;background:#0a6e4f;color:#fff;border:none;border-radius:8px;padding:13px;font-size:15px;font-weight:600;cursor:pointer}
+      .unlock-btn:hover{background:#085e43}`;
+    document.head.appendChild(st);
+  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'unlock-overlay';
+  overlay.innerHTML = `
+    <div class="unlock-card" role="dialog" aria-modal="true" aria-labelledby="unlock-title">
+      <div class="unlock-badge">✓ Upgrade complete</div>
+      <h2 id="unlock-title" class="unlock-h">You're on ${planLabel}</h2>
+      <p class="unlock-sub">Here's what you just unlocked:</p>
+      <ul class="unlock-list">${items}</ul>
+      <button class="unlock-btn" type="button">Start exploring</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+  overlay.querySelector('.unlock-btn').addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+  document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); } });
+}
+
 async function initDashboard() {
   try {
     await initAuth0();
@@ -363,11 +415,12 @@ async function initDashboard() {
     if (window.location.search.includes('upgraded=true')) {
       window.history.replaceState({}, document.title, window.location.pathname);
       showToast('Activating your upgrade…');
+      const prevPlan = plan;
       const refreshed = await refreshPlanAfterUpgrade(plan);
       if (refreshed) {
         plan = refreshed;
         applyPlan(plan);
-        showToast(`You're on ${plan.replace(/_/g, ' ')} — enjoy your new features!`);
+        showUnlockedPanel(prevPlan, plan);
       } else {
         showToast('Payment received — activating your plan. If your new features don’t appear in a minute, sign out and back in to finish.', true);
       }
@@ -382,8 +435,29 @@ async function initDashboard() {
 
 async function upgradePlan(plan) {
   try {
-    const user = await auth0Client.getUser();
     const token = await authBearerToken();
+    const claims = await auth0Client.getIdTokenClaims();
+    const cur = (claims && claims['https://traxent.io/plan']) || 'free';
+
+    // Existing subscriber → change tier in place with proration (no new checkout,
+    // no full charge). Brand-new users (free) go through Stripe Checkout below.
+    if (cur !== 'free') {
+      showToast('Updating your plan…');
+      const changeRes = await fetch('https://da579ew81m.execute-api.eu-west-2.amazonaws.com/prod/change-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ plan })
+      });
+      if (changeRes.status !== 409) { // 409 = no active sub → fall through to checkout
+        if (!changeRes.ok) throw new Error('change-plan ' + changeRes.status);
+        const refreshed = await refreshPlanAfterUpgrade(cur);
+        if (refreshed) { applyPlan(refreshed); showUnlockedPanel(cur, refreshed); }
+        else showToast('Payment received — activating your plan. If it doesn’t appear shortly, sign out and back in.', true);
+        return;
+      }
+    }
+
+    const user = await auth0Client.getUser();
     showToast('Redirecting to checkout...');
     const res = await fetch('https://da579ew81m.execute-api.eu-west-2.amazonaws.com/prod/checkout', {
       method: 'POST',

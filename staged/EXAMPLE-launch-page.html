@@ -1,0 +1,113 @@
+<!--
+  SAMPLE STAGED PAGE — NOT LIVE.
+
+  This file lives in /staged/, which is OUTSIDE src/, so the deploy workflow
+  (.github/workflows/deploy.yml) never ships it on a normal push.
+
+  It is published only when the scheduled-release workflow copies it into src/
+  at the time set in /scheduled-releases.json. Copy this file, edit the copy,
+  then add a manifest entry pointing source -> dest with a publishAt time.
+
+  Keep any staged HTML well-formed: it MUST end in </html> and have balanced
+  <script>...</script> tags, or deploy.yml's HTML integrity check will fail
+  once the file lands in src/. See SCHEDULED-RELEASES.md for the full guide.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coming Soon — Traxent</title>
+  <meta name="description" content="A scheduled Traxent announcement." />
+  <style>
+    :root {
+      --accent: #0a6e4f;
+      --ink: #0e0e0c;
+      --bg: #f7f6f2;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Geist", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      line-height: 1.5;
+    }
+    main {
+      max-width: 36rem;
+      text-align: center;
+    }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 0 0 1rem;
+    }
+    h1 {
+      font-family: "Instrument Serif", Georgia, "Times New Roman", serif;
+      font-weight: 400;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      line-height: 1.05;
+      margin: 0 0 1rem;
+    }
+    p.lede {
+      font-size: 1.15rem;
+      margin: 0 0 2rem;
+      color: #3a3a36;
+    }
+    a.cta {
+      display: inline-block;
+      background: var(--accent);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.85rem 1.6rem;
+      border-radius: 0.6rem;
+    }
+    a.cta:focus-visible {
+      outline: 3px solid var(--ink);
+      outline-offset: 2px;
+    }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.85rem;
+      color: #6b6b66;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">New from Traxent</p>
+    <h1>Something is on the way.</h1>
+    <p class="lede">
+      This is a sample scheduled page. Replace the copy, wire your real content,
+      and the release workflow will publish it automatically at the time you set.
+    </p>
+    <a class="cta" href="/">Back to Traxent</a>
+    <footer>This example page was published on a schedule.</footer>
+  </main>
+  <script>
+    // Intentionally minimal. Stamp the publish time client-side as a demo of a
+    // balanced inline script block. Remove or replace in real pages.
+    (function () {
+      try {
+        var el = document.querySelector("footer");
+        if (el) {
+          el.textContent =
+            "This example page was published on a schedule (" +
+            new Date().getFullYear() + ").";
+        }
+      } catch (e) {
+        /* no-op: never let a demo script break the page */
+      }
+    })();
+  </script>
+</body>
+</html>

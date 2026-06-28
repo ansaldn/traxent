@@ -1,0 +1,11 @@
+[
+  {
+    "id": "example-launch-2099",
+    "source": "staged/EXAMPLE-launch-page.html",
+    "dest": "src/example-launch.html",
+    "publishAt": "2099-01-01T09:00:00Z",
+    "published": false,
+    "publishedAt": null,
+    "description": "Sample entry. Far-future publishAt so nothing actually fires. Copy this shape for real releases: stage a file under staged/, set dest to the live src/ path, and set publishAt to a UTC time. The cron in .github/workflows/scheduled-release.yml publishes it when due, and deploy.yml ships it."
+  }
+]

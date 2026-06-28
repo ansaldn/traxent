@@ -1,0 +1,12 @@
+{
+  "name": "account-update",
+  "version": "1.0.0",
+  "main": "index.mjs",
+  "type": "module",
+  "license": "ISC",
+  "description": "Traxent in-app account management (POST /user/profile, POST /user/password-reset): update name/email + trigger password reset via the Auth0 Management API, so users never see Auth0's hosted profile UI.",
+  "dependencies": {
+    "@aws-sdk/client-ssm": "^3.700.0",
+    "aws-jwt-verify": "^4.0.1"
+  }
+}

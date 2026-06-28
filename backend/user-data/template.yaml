@@ -140,6 +140,41 @@ Resources:
             Path: /news
             Method: GET
 
+  # In-app account management: update name/email + trigger password reset via the
+  # Auth0 Management API, so users never see Auth0's hosted profile UI. Isolated
+  # from the data function because it holds Auth0-admin (m2m) permissions, like
+  # delete-account. Its specific routes win over the data function's greedy
+  # ANY /user/{proxy+}.
+  AccountUpdateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-account-update
+      Handler: index.handler
+      CodeUri: functions/account-update/
+      Environment:
+        Variables:
+          AUTH0_ISSUER: !Ref Auth0Issuer
+          AUTH0_AUDIENCE: !Ref Auth0Audience
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/*"
+      Events:
+        Profile:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/profile
+            Method: POST
+        PasswordReset:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/password-reset
+            Method: POST
+
   UserDataApi:
     Type: AWS::Serverless::HttpApi
     Properties:
@@ -274,6 +309,25 @@ Resources:
       Period: 300
       EvaluationPeriods: 1
       Threshold: 500
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+        - !Ref AlertsTopic
+
+  DynamoThrottleAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: traxent-dynamodb-throttle
+      AlarmDescription: DynamoDB is throttling requests on TraxentUserData (capacity pressure or hot-partition abuse).
+      Namespace: AWS/DynamoDB
+      MetricName: ThrottledRequests
+      Dimensions:
+        - Name: TableName
+          Value: !Ref UserDataTable
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 10
       ComparisonOperator: GreaterThanOrEqualToThreshold
       TreatMissingData: notBreaching
       AlarmActions:

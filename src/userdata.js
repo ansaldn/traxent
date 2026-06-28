@@ -12,7 +12,7 @@
 //
 // Depends on authBearerToken() from auth.js (load auth.js first).
 
-const USERDATA_API = 'https://gqway1e53f.execute-api.eu-west-2.amazonaws.com/'; // ← set to the deployed user-data ApiBaseUrl
+const USERDATA_API = 'https://gqway1e53f.execute-api.eu-west-2.amazonaws.com'.replace(/\/+$/, ''); // ← deployed user-data ApiBaseUrl. Trailing slash(es) are stripped so paths like '/user' and '/news' don't become '//user' / '//news' (which the HTTP API 404s, silently falling back to localStorage and breaking cross-device sync).
 
 const LS_PROGRESS = 'traxent_progress';
 const LS_TRADES   = 'traxent_trades';

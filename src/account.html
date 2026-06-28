@@ -209,26 +209,68 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
     </div>
   </div>
 
+  <style>
+    .btn-link-edit{background:none;border:none;color:#0a6e4f;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;padding:0}
+    .btn-link-edit:hover{text-decoration:underline}
+    .btn-link-edit:disabled{opacity:.6;cursor:default}
+    .edit-field{display:block;margin-bottom:14px}
+    .edit-label{display:block;font-size:12px;color:#7a7a72;margin-bottom:6px}
+    .edit-input{width:100%;background:#f7f6f2;border:1px solid rgba(14,14,12,.12);border-radius:8px;padding:11px 14px;font-size:14px;color:#0e0e0c;font-family:inherit;outline:none;box-sizing:border-box}
+    .edit-input:focus{border-color:#0a6e4f}
+    .edit-note{font-size:12px;color:#7a7a72;margin:4px 0 16px;line-height:1.5}
+    .edit-actions{display:flex;gap:10px;justify-content:flex-end}
+    .btn-edit-cancel{background:none;border:1px solid rgba(14,14,12,.15);color:#3a3a36;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
+    .btn-edit-save{background:#0a6e4f;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
+    .btn-edit-save:disabled{opacity:.6;cursor:default}
+    .plan-switch-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+    .btn-switch-plan{background:none;border:1px solid rgba(14,14,12,.15);color:#0e0e0c;border-radius:8px;padding:9px 14px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
+    .btn-switch-plan:hover{border-color:#0a6e4f;color:#0a6e4f}
+  </style>
+
   <!-- Account details -->
   <div class="account-section">
     <div class="section-header">
       <span class="section-title">Account details</span>
+      <button class="btn-link-edit" type="button" id="edit-profile-btn" onclick="toggleEditProfile(true)">Edit</button>
     </div>
-    <div class="detail-row">
-      <span class="detail-label">Full name</span>
-      <span class="detail-value" id="detail-name">—</span>
+
+    <div id="profile-view">
+      <div class="detail-row">
+        <span class="detail-label">Full name</span>
+        <span class="detail-value" id="detail-name">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Email address</span>
+        <span class="detail-value mono" id="detail-email">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Member since</span>
+        <span class="detail-value" id="detail-since">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Account ID</span>
+        <span class="detail-value mono" id="detail-id" style="font-size:11px;color:var(--ink3)">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Password</span>
+        <button class="btn-link-edit" type="button" onclick="sendPasswordReset(this)">Send reset email</button>
+      </div>
     </div>
-    <div class="detail-row">
-      <span class="detail-label">Email address</span>
-      <span class="detail-value mono" id="detail-email">—</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Member since</span>
-      <span class="detail-value" id="detail-since">—</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Account ID</span>
-      <span class="detail-value mono" id="detail-id" style="font-size:11px;color:var(--ink3)">—</span>
+
+    <div id="profile-edit" style="display:none">
+      <label class="edit-field">
+        <span class="edit-label">Full name</span>
+        <input class="edit-input" id="edit-name" type="text" autocomplete="name" maxlength="100">
+      </label>
+      <label class="edit-field">
+        <span class="edit-label">Email address</span>
+        <input class="edit-input" id="edit-email" type="email" autocomplete="email">
+      </label>
+      <div class="edit-note">Changing your email sends a verification link to the new address.</div>
+      <div class="edit-actions">
+        <button class="btn-edit-cancel" type="button" onclick="toggleEditProfile(false)">Cancel</button>
+        <button class="btn-edit-save" type="button" id="save-profile-btn" onclick="saveProfile()">Save changes</button>
+      </div>
     </div>
   </div>
 
@@ -344,6 +386,9 @@ async function deleteAccount() {
   }
 }
 
+let currentPlan = 'free';
+let currentUser = null;
+
 const PLAN_CONFIG = {
   free: {
     name: 'Free',
@@ -422,6 +467,8 @@ async function initAccount() {
     const claims = await auth0Client.getIdTokenClaims();
     const ns = 'https://traxent.io';
     const plan = (claims && claims[`${ns}/plan`]) || 'free';
+    currentPlan = plan;
+    currentUser = user;
 
     // Build display name
     const displayName = user.name && !user.name.includes('@')
@@ -478,15 +525,31 @@ async function initAccount() {
 
 function renderPlanCard(plan) {
   const config = PLAN_CONFIG[plan] || PLAN_CONFIG.free;
-  const isPaid = plan !== 'free';
 
   const featuresHTML = config.features.map(f => `
     <div class="plan-feature ${f.locked ? 'locked' : ''}">${f.text}</div>
   `).join('');
 
-  const actionsHTML = config.upgradeLabel
-    ? `<button class="btn-upgrade-plan" onclick="upgradePlan('${config.upgradePlan}')">${config.upgradeLabel} →</button>`
-    : `<div style="font-size:13px;color:var(--ink3)">You're on the highest plan — thank you.</div>`;
+  let actionsHTML;
+  if (plan === 'free') {
+    // No subscription yet → start one via Stripe Checkout.
+    actionsHTML = `<button class="btn-upgrade-plan" onclick="upgradeViaCheckout('observer')">Upgrade to Observer →</button>`;
+  } else {
+    // Existing subscriber → switch tiers in place, prorated (change-plan).
+    const PAID = [
+      { id: 'observer', name: 'Observer', price: '£4.99' },
+      { id: 'challenger', name: 'Challenger', price: '£12.99' },
+      { id: 'funded_ready', name: 'Funded Trader', price: '£29.99' },
+    ];
+    const order = ['observer', 'challenger', 'funded_ready'];
+    const cur = order.indexOf(plan);
+    const buttons = PAID.filter(p => p.id !== plan).map(p => {
+      const dir = order.indexOf(p.id) > cur ? 'Upgrade' : 'Downgrade';
+      return `<button class="btn-switch-plan" onclick="changePlan('${p.id}')">${dir} to ${p.name} — ${p.price}</button>`;
+    }).join('');
+    actionsHTML = `<div class="plan-switch-row">${buttons}</div>
+      <div class="edit-note" style="margin-top:10px">Upgrades are charged pro-rata immediately; downgrades credit the difference to your next invoice. To move to Free, cancel below.</div>`;
+  }
 
   document.getElementById('plan-card-inner').innerHTML = `
     <div class="plan-name-row">
@@ -500,7 +563,14 @@ function renderPlanCard(plan) {
   `;
 }
 
-async function upgradePlan(plan) {
+function updatePlanChrome(plan) {
+  const badge = document.getElementById('header-plan-badge');
+  if (badge) { badge.textContent = plan.replace(/_/g, ' '); badge.classList.toggle('free', plan === 'free'); badge.style.opacity = ''; }
+  document.getElementById('danger-section').style.display = (plan !== 'free') ? 'block' : 'none';
+}
+
+// New subscriber → Stripe Checkout (redirect). Used only when there's no plan yet.
+async function upgradeViaCheckout(plan) {
   try {
     const user = await auth0Client.getUser();
     const token = await authBearerToken();
@@ -516,6 +586,47 @@ async function upgradePlan(plan) {
   } catch (err) {
     showToast('Something went wrong — please try again.', false);
   }
+}
+
+// Existing subscriber → change tier in place with Stripe proration (no new checkout).
+async function changePlan(targetPlan) {
+  try {
+    const token = await authBearerToken();
+    showToast('Updating your plan…');
+    const res = await fetch('https://da579ew81m.execute-api.eu-west-2.amazonaws.com/prod/change-plan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ plan: targetPlan })
+    });
+    if (res.status === 409) { return upgradeViaCheckout(targetPlan); } // no active sub → new checkout
+    if (!res.ok) throw new Error('change-plan ' + res.status);
+    const data = await res.json();
+    // Refresh the ID token so the new plan shows without a sign-out.
+    const newPlan = await refreshPlan(currentPlan);
+    currentPlan = newPlan || targetPlan;
+    renderPlanCard(currentPlan);
+    updatePlanChrome(currentPlan);
+    const verb = data.direction === 'downgrade' ? 'changed' : 'upgraded';
+    showToast(`Plan ${verb} to ${currentPlan.replace(/_/g, ' ')}.`);
+  } catch (err) {
+    console.error('change-plan error', err);
+    showToast('Could not change your plan — please try again.', false);
+  }
+}
+
+// Silently re-mint the ID token and wait for the webhook to flip the plan role,
+// so the new plan claim is available without signing out. Returns plan or null.
+async function refreshPlan(prevPlan) {
+  const ns = 'https://traxent.io';
+  for (let i = 0; i < 6; i++) {
+    try { await auth0Client.getTokenSilently({ cacheMode: 'off' }); }
+    catch (e) { return null; }
+    const claims = await auth0Client.getIdTokenClaims();
+    const p = (claims && claims[`${ns}/plan`]) || 'free';
+    if (p !== prevPlan) return p;
+    await new Promise(r => setTimeout(r, 2500));
+  }
+  return null;
 }
 
 function showCancelModal() {
@@ -580,6 +691,72 @@ async function cancelSubscription() {
     showToast('Something went wrong — email hello@traxent.io and we will cancel for you.', false);
     hideCancelModal();
     if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = 'Yes, cancel'; }
+  }
+}
+
+// ── In-app account editing (Auth0 Management API via /user/profile) ──
+function toggleEditProfile(show) {
+  document.getElementById('profile-view').style.display = show ? 'none' : 'block';
+  document.getElementById('profile-edit').style.display = show ? 'block' : 'none';
+  document.getElementById('edit-profile-btn').style.display = show ? 'none' : 'inline';
+  if (show) {
+    document.getElementById('edit-name').value =
+      (currentUser && currentUser.name && !currentUser.name.includes('@')) ? currentUser.name : '';
+    document.getElementById('edit-email').value = (currentUser && currentUser.email) || '';
+  }
+}
+
+async function saveProfile() {
+  const name = document.getElementById('edit-name').value.trim();
+  const email = document.getElementById('edit-email').value.trim();
+  const btn = document.getElementById('save-profile-btn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const token = await authBearerToken();
+    const res = await fetch(TraxentData.apiBase() + '/user/profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ name, email })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Update failed');
+    if (data.name) {
+      document.getElementById('detail-name').textContent = data.name;
+      document.getElementById('header-name').textContent = data.name;
+      if (currentUser) currentUser.name = data.name;
+    }
+    if (data.emailChanged && data.email) {
+      document.getElementById('detail-email').textContent = data.email;
+      document.getElementById('header-email').textContent = data.email;
+      if (currentUser) currentUser.email = data.email;
+      showToast('Saved. Check your new email for a verification link.');
+    } else {
+      showToast('Account details updated.');
+    }
+    toggleEditProfile(false);
+  } catch (err) {
+    console.error('saveProfile error', err);
+    showToast(err.message || 'Could not save changes.', false);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Save changes';
+  }
+}
+
+async function sendPasswordReset(btn) {
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  try {
+    const token = await authBearerToken();
+    const res = await fetch(TraxentData.apiBase() + '/user/password-reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: '{}'
+    });
+    if (!res.ok) throw new Error('reset failed');
+    showToast('Password reset email sent — check your inbox.');
+  } catch (err) {
+    showToast('Could not send reset email — try again later.', false);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Send reset email'; }
   }
 }
 

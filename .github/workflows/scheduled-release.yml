@@ -1,0 +1,97 @@
+# Scheduled release publisher.
+# -----------------------------------------------------------------------------
+# Publishes content that was queued in /scheduled-releases.json once its
+# publishAt time arrives. The flow:
+#
+#   1. Cron fires (every 15 min) or someone runs it manually.
+#   2. scripts/scheduled-release.mjs copies any due staged/* file into src/,
+#      marks the manifest entry published, and reports how many it published.
+#   3. If anything changed, this workflow commits the moved file(s) + the
+#      updated manifest as the bot and pushes to main.
+#   4. That push to main triggers the normal deploy workflow (deploy.yml),
+#      which syncs src/ to S3 and invalidates CloudFront. So the deploy is
+#      automatic — this workflow does NOT deploy anything itself.
+#
+# If nothing is due, the script reports published_count=0 and we make NO commit
+# (no empty commits, no noise). Cron granularity is 15 minutes, so a publishAt
+# effectively rounds UP to the next quarter hour. To change the cadence, edit
+# the cron expression below.
+#
+# Note on cron timing: GitHub's scheduled workflows can be delayed (often a few
+# minutes) under load and are skipped on inactive forks — treat publishAt as a
+# "no earlier than" time, not a to-the-second guarantee.
+# -----------------------------------------------------------------------------
+name: Scheduled Release
+
+on:
+  schedule:
+    # Every 15 minutes. Times are UTC (GitHub cron is always UTC).
+    - cron: "*/15 * * * *"
+  # Allow manual runs from the Actions tab (useful to publish immediately or test).
+  workflow_dispatch: {}
+
+# Least privilege: we only need to write repo contents (commit + push).
+permissions:
+  contents: write
+
+# Avoid overlapping runs racing to push the same commit.
+concurrency:
+  group: scheduled-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Keep the token so the later `git push` is authenticated.
+          persist-credentials: true
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run scheduled release publisher
+        id: publish
+        run: node scripts/scheduled-release.mjs
+
+      - name: Commit and push published content
+        # Only run when the script actually published something AND the working
+        # tree has real changes. The git check is a belt-and-suspenders guard
+        # alongside the script's published_count output.
+        if: steps.publish.outputs.published_count != '0' && steps.publish.outputs.published_count != ''
+        run: |
+          set -euo pipefail
+
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Script reported a publish but the working tree is clean — nothing to commit."
+            exit 0
+          fi
+
+          git config user.name "traxent-bot"
+          git config user.email "bot@traxent.io"
+
+          # Build a commit message that lists the IDs that were just published,
+          # parsed straight from the manifest (only entries published right now,
+          # i.e. publishedAt == today, are not easily isolated here, so we list
+          # every currently-published id for traceability).
+          IDS="$(node -e '
+            const fs = require("fs");
+            try {
+              const m = JSON.parse(fs.readFileSync("scheduled-releases.json", "utf8"));
+              const ids = (Array.isArray(m) ? m : [])
+                .filter(e => e && e.published === true)
+                .map(e => e.id);
+              process.stdout.write(ids.join(", "));
+            } catch (e) {
+              process.stdout.write("");
+            }
+          ')"
+
+          git add -A
+          git commit -m "chore(release): publish scheduled content [${IDS}]"
+          git push
+          echo "Pushed scheduled content to main — deploy.yml will ship it."

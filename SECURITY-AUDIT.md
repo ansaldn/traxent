@@ -21,7 +21,7 @@ Severity: 🔴 High · 🟠 Medium · 🟡 Low · 🟢 already done right. "Effo
 | M2 | 🟠 | No CloudWatch alarms and no billing budget — an attack/cost runaway is invisible until the bill | Infra | S | Alarms + AWS Budgets (§4.4) |
 | M3 | 🟠 | Stripe **Search-query injection** via interpolated `email` in checkout/cancel/delete | Backend | S | Validate/escape, prefer exact metadata match (§3.2) |
 | M4 | 🟠 | Supply chain: floating `^` deps, `npm install` (not `npm ci`) in CI, no Dependabot, no SRI on Auth0 SDK | CI/Web | S | Pin + lockfile install + Dependabot + SRI (§4.5) |
-| M5 | 🟠 | Unverified from repo: S3 bucket public-access posture + CloudFront OAC | Infra | S | Confirm Block Public Access + OAC (§4.6) |
+| M5 | 🟡 | S3 bucket is public (served via website endpoint, not OAC). Content is non-sensitive static HTML/JS → low risk; defer | Infra | M | Planned OAC migration (§4.6) |
 | M6 | 🟠 | Auth0 hardening not confirmed: Attack Protection, admin MFA, log streaming, M2M least-privilege | Auth0 | S | Enable in tenant (§5) |
 | L1 | 🟡 | iOS: no certificate/public-key pinning on API calls | iOS | M | Pin via URLSession delegate (§6.2) |
 | L2 | 🟡 | iOS: external article URLs opened without scheme validation | iOS | S | Allow only `https` (§6.3) |
@@ -195,8 +195,12 @@ Add equivalents for `traxent-user-data` errors, DynamoDB `ThrottledRequests`, an
 - **Enable Dependabot** (or `npm audit --audit-level=high` as a CI gate) on `backend/**`.
 - **Add SRI** to the Auth0 SDK `<script>` (pin a specific version + `integrity`/`crossorigin`) so a CDN compromise can't inject code.
 
-### 4.6 🟠 M5 — Verify S3 / CloudFront (couldn't confirm from repo)
-`deploy.yml` does `aws s3 sync src/ s3://traxent.io`. Confirm in the console: **Block Public Access = ON** at the bucket, the bucket is served **only** via CloudFront **Origin Access Control** (not a public website endpoint), and bucket-policy access is restricted to the distribution. A directly-readable origin bucket is a classic exposure.
+### 4.6 🟡 M5 — S3 bucket is public via the website endpoint (planned OAC migration)
+**Confirmed during this engagement:** `traxent.io` is served through the S3 **website endpoint**, which requires the bucket to be publicly readable — enabling Block Public Access on it returns a site-wide **403** (verified the hard way). So the bucket is directly reachable on the internet, bypassing CloudFront and therefore the WAF, the security headers, and HTTPS (website endpoints are HTTP-only).
+
+**Risk is low and this is deferred:** the bucket holds only the public static site (HTML/JS, the Auth0 *client* ID, public API URLs) — no secrets, which live in SSM/Lambda. So this is defence-in-depth, not an exposure.
+
+**Fix (planned migration, not a toggle):** repoint the CloudFront origin to the S3 **REST** endpoint behind an **Origin Access Control**; restrict the bucket policy to the distribution via `AWS:SourceArn`; replicate the website endpoint's index-document + clean-URL routing (`/dashboard` → `dashboard.html`) in a CloudFront Function + default root object; **then** enable all four Block Public Access flags. Step-by-step in `SECURITY-ACTIONS.md` Step 3.
 
 ### 4.7 🟢 B — AWS account baseline
 Confirm/enable: **root account MFA** + no root access keys, IAM Identity Center for human access, **CloudTrail** (all-region) to an access-locked bucket, **GuardDuty**, **AWS Config**, and **Security Hub** (turn on the AWS Foundational Security Best Practices standard — it'll surface most of §4 automatically going forward).
@@ -245,7 +249,7 @@ Server-side token verification on every endpoint · identity from the verified `
 
 ## 8. Suggested sequence
 
-1. **This week (high value, low effort):** WAF + API GW throttling (H1), CloudWatch alarms + budget (M2), migrate frontend deploy to OIDC and delete static keys (H2 part 1), enable Auth0 Attack Protection + admin MFA (M6), confirm S3 Block Public Access/OAC (M5).
+1. **This week (high value, low effort):** WAF + API GW throttling (H1), CloudWatch alarms + budget (M2), migrate frontend deploy to OIDC and delete static keys (H2 part 1), enable Auth0 Attack Protection + admin MFA (M6).
 2. **Next:** HTTP API JWT authorizer (M1), scope the IAM policy (H2 part 2), Dependabot + lockfile/`npm ci` + SRI (M4), Stripe restricted keys (L3), email-injection guard (M3).
 3. **Then:** shorten Auth0 token TTL and move toward nonce-CSP / BFF (H3), iOS cert pinning (L1), webhook idempotency (L4), account-baseline services (GuardDuty/Config/Security Hub).
 

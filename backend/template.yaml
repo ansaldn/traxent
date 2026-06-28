@@ -79,6 +79,25 @@ Resources:
             Method: post
             RestApiId: !Ref TraxentApi
 
+  # Upgrade/downgrade an existing subscription in place, with Stripe proration.
+  # (create-checkout is only for first-time subscribers.) New route on the same API.
+  ChangePlanFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-change-plan
+      CodeUri: functions/change-plan/
+      Handler: index.handler
+      Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: traxent/*
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /change-plan
+            Method: post
+            RestApiId: !Ref TraxentApi
+
 Outputs:
   ApiUrl:
     Value: !Sub "https://${TraxentApi}.execute-api.eu-west-2.amazonaws.com/prod"

@@ -28,16 +28,16 @@
 </script>
 
 <title>Waitlist — Traxent</title>
-<meta name="description" content="Join the Traxent waitlist for early access — track your path to funded across 16 prop firms including FTMO, Apex, Topstep and MyFundedFutures. See what's live and what's coming.">
+<meta name="description" content="Join Traxent early access — track your path to funded across 16 prop firms (FTMO, Apex, Topstep, MyFundedFutures and more) on web, iPad and now iPhone via TestFlight. Founding-member perks for early sign-ups.">
 <meta property="og:title" content="Waitlist — Traxent">
-<meta property="og:description" content="Get notified when Traxent opens to the public. See the roadmap.">
+<meta property="og:description" content="Now in early access on web and iOS (TestFlight). Join the list for your invite and founding-member perks.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://traxent.io/waitlist">
 <meta property="og:site_name" content="Traxent">
 <meta property="og:image" content="https://traxent.io/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Waitlist — Traxent">
-<meta name="twitter:description" content="Get notified when Traxent opens to the public. See the roadmap.">
+<meta name="twitter:description" content="Now in early access on web and iOS (TestFlight). Join the list for your invite and founding-member perks.">
 <meta name="twitter:image" content="https://traxent.io/og-image.png">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -586,6 +586,81 @@ footer {
   .bottom-cta { padding: 56px 24px; }
   .nav-inner { padding: 0 24px; }
 }
+
+/* ── STEPS (getting started / onboarding) ── */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 32px;
+}
+.step {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 24px;
+}
+.step-num {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
+.step-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+.step-body { font-size: 13px; color: var(--ink3); line-height: 1.6; font-weight: 300; }
+.step-body strong { color: var(--ink2); font-weight: 500; }
+
+/* ── iOS / TestFlight ── */
+.ios-wrap {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 40px;
+  align-items: center;
+  margin-top: 8px;
+}
+.ios-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--accent);
+  background: var(--accent-light); border: 1px solid rgba(10,110,79,0.2);
+  padding: 6px 12px; border-radius: 999px; margin-bottom: 18px;
+}
+.ios-eligibility {
+  margin-top: 20px; padding: 16px 18px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; font-size: 13px; color: var(--ink2); line-height: 1.6; font-weight: 300;
+}
+.ios-eligibility strong { color: var(--ink); font-weight: 500; }
+.shots { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.shot {
+  width: 132px; aspect-ratio: 9 / 19;
+  margin: 0;
+  border-radius: 26px;
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--surface), var(--surface2));
+  box-shadow: 0 18px 40px rgba(14,14,12,0.08);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; padding: 16px; text-align: center;
+  overflow: hidden;
+}
+.shot img { width: 100%; height: 100%; object-fit: cover; border-radius: 22px; }
+.shot-ph-icon { font-size: 24px; opacity: 0.5; }
+.shot-ph-label { font-family: var(--mono); font-size: 11px; color: var(--ink3); letter-spacing: 0.04em; }
+.shot:nth-child(2) { transform: translateY(-18px); }
+
+@media (max-width: 900px) {
+  .steps { grid-template-columns: 1fr 1fr; }
+  .ios-wrap { grid-template-columns: 1fr; gap: 28px; }
+  .shot:nth-child(2) { transform: none; }
+}
+@media (max-width: 520px) {
+  .steps { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -600,9 +675,9 @@ footer {
 
 <!-- Hero + form -->
 <section class="hero">
-  <div class="hero-eyebrow fade-up">Waitlist</div>
-  <h1 class="hero-h1 fade-up-2">Join the list for <em>early access</em></h1>
-  <p class="hero-body fade-up-3">Traxent is opening to the public soon. Add your email to get notified the moment it does — plus founding member perks reserved for the people who joined early.</p>
+  <div class="hero-eyebrow fade-up">Early access · now on iOS</div>
+  <h1 class="hero-h1 fade-up-2">Start your path to <em>funded</em></h1>
+  <p class="hero-body fade-up-3">Traxent is in early access today — on the web, as an installable iPad and mobile app, and now on iPhone through TestFlight for Challenger members and up. Add your email to get your invite, lock in founding-member perks, and start the moment a seat opens.</p>
 
   <div class="waitlist-card fade-up-3">
     <form class="waitlist-form" id="wl-form" onsubmit="joinWaitlist(event)">
@@ -617,6 +692,38 @@ footer {
     </div>
   </div>
 </section>
+
+<!-- How early access works (onboarding) -->
+<section class="section">
+  <div class="section-label">Getting started</div>
+  <h2 class="section-title">How early access works</h2>
+  <p class="section-sub">No long forms, no commitment. Here's the path from joining the list to logging your first sim trade inside Traxent.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num" aria-hidden="true">1</div>
+      <div class="step-title">Join the list</div>
+      <div class="step-body">Drop your email above — that's the whole sign-up. It reserves your spot and your founding-member perks.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" aria-hidden="true">2</div>
+      <div class="step-title">Get your invite</div>
+      <div class="step-body">We open seats in small batches and email you a link to create your account when yours is ready.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" aria-hidden="true">3</div>
+      <div class="step-title">Pick your plan</div>
+      <div class="step-body">Start free on <strong>Observer</strong>, or unlock the full tracker and Challenge Lab on <strong>Challenger</strong> or <strong>Funded Trader</strong>.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" aria-hidden="true">4</div>
+      <div class="step-title">Go mobile</div>
+      <div class="step-body"><strong>Challenger</strong> members and up get the iPhone app early via <strong>TestFlight</strong> — and your progress follows you across every device.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
 
 <!-- About / why -->
 <section class="section">
@@ -639,6 +746,43 @@ footer {
       <div class="about-card-icon">🎯</div>
       <div class="about-card-title">Score against real rules</div>
       <div class="about-card-body">16 prop firms — FTMO, Apex, Topstep, MyFundedFutures, FundedNext and more — each firm's published rules are baked into the scoring engine. You'll see which one you're ready for before you spend money on a challenge.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- iOS / TestFlight -->
+<section class="section">
+  <div class="ios-wrap">
+    <div class="ios-copy">
+      <div class="ios-badge">● TestFlight beta · iPhone</div>
+      <h2 class="section-title">Traxent, now in your pocket</h2>
+      <p class="section-sub" style="margin-bottom:0">The native iOS app brings the readiness tracker, learning modules, position calculator and your sim journal to iPhone — signed in with the same account, so your progress and firm selections sync straight across from the web. Built to feel at home on iOS: full VoiceOver and Dynamic Type support, and light or dark to match your device.</p>
+      <div class="ios-eligibility">
+        <strong>Who can test it:</strong> members on the <strong>Challenger</strong> and <strong>Funded Trader</strong> plans. Once you're on an eligible plan, your TestFlight invite goes out by email — no separate sign-up needed.
+      </div>
+    </div>
+    <div class="ios-shots">
+      <div class="shots">
+        <!-- TODO: replace each placeholder figure with a real iOS screenshot.
+             Drop the image in src/icons/ (or a new src/img/ folder) and swap the
+             figure's inner markup for, e.g.:
+               <img src="/icons/ios-dashboard.png" alt="Traxent iOS dashboard screen">
+             Recommended export: 1290×2796 PNG (iPhone 15 Pro Max) from the simulator. -->
+        <figure class="shot">
+          <span class="shot-ph-icon" aria-hidden="true">📊</span>
+          <figcaption class="shot-ph-label">Dashboard</figcaption>
+        </figure>
+        <figure class="shot">
+          <span class="shot-ph-icon" aria-hidden="true">🎯</span>
+          <figcaption class="shot-ph-label">Tracker</figcaption>
+        </figure>
+        <figure class="shot">
+          <span class="shot-ph-icon" aria-hidden="true">📓</span>
+          <figcaption class="shot-ph-label">Sim journal</figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </section>
@@ -697,6 +841,8 @@ footer {
           <li>Live chart embed with 15-minute delayed data</li>
           <li>Three plan tiers: Observer, Challenger, Funded Trader</li>
           <li>iPad and mobile PWA — installable, offline-capable</li>
+          <li>Native iOS app in TestFlight beta (Challenger &amp; Funded Trader members)</li>
+          <li>Cross-device sync — lesson progress and firm selections follow you across web, iPad and iPhone</li>
         </ul>
       </div>
 
@@ -709,7 +855,7 @@ footer {
         <ul class="phase-items">
           <li>4 more prop firms: Topstep, The5ers, FXIFY, FundingPips</li>
           <li>News sentiment feed with AI-tagged bull/bear scoring</li>
-          <li>Cross-device journal sync — log a trade on iPad, see it on desktop</li>
+          <li>Full sim-journal sync on iPhone — log a trade on iOS, see it everywhere</li>
           <li>Public launch — opening sign-ups to everyone on this list first</li>
         </ul>
       </div>

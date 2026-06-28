@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-ssm": "^3.1018.0",
-    "stripe": "^21.0.1"
+    "stripe": "^22.3.0"
   },
   "description": ""
 }

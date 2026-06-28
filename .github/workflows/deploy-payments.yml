@@ -1,23 +1,26 @@
 name: Deploy Payments (SAM)
 
 # Infrastructure-as-code for the Stripe payment Lambdas + their REST API
-# (checkout / cancel / webhook), defined in backend/template.yaml. Pushing a change
-# to the template or any of the three functions runs `sam build` + `sam deploy`,
-# which reconciles the `traxent-payments` stack.
+# (checkout / cancel / webhook), defined in backend/template.yaml. On a push that
+# touches the template or any of the three functions, this runs `sam build` +
+# `sam deploy` to reconcile the **traxent-backend** stack — the stack that already
+# owns these resources, so the API id (da579ew81m), URL and function names are
+# unchanged.
 #
-# IMPORTANT: this stack must first ADOPT the existing live resources once — see
-# backend/PAYMENTS-IMPORT-RUNBOOK.md. Until that one-time step is done, this workflow
-# would try to CREATE new functions with the same names and fail ("already exists"),
-# which is harmless but means nothing deploys. Do the runbook first, then this is
-# fully automatic.
-
-# ── PAUSED (2026-06-28) ───────────────────────────────────────────────────────
-# Auto-deploy on push is disabled until the one-time resource adoption is done
-# (see backend/PAYMENTS-IMPORT-RUNBOOK.md). The three payment Lambdas already exist
-# (created by hand), so a push would try to CREATE them again and fail the run.
-# The payment function CODE still deploys via deploy-backend.yml, so nothing is lost
-# by pausing. To re-enable later, restore the `push:` trigger that was here.
+# FIRST-RUN SAFETY: --no-execute-changeset (in the deploy step) makes the deploy
+# CREATE a change set on traxent-backend but NOT apply it, so it can be reviewed in
+# the CloudFormation console before anything touches live payments. Once confirmed,
+# remove that flag (and drop the 3 functions from backend/deploy-map.json) for full
+# automatic deploys.
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/template.yaml'
+      - 'backend/functions/create-checkout/**'
+      - 'backend/functions/cancel-subscription/**'
+      - 'backend/functions/stripe-webhook/**'
+      - '.github/workflows/deploy-payments.yml'
   workflow_dispatch: {}
 
 # OIDC: assume the deploy role with a short-lived token (no static access keys).
@@ -61,16 +64,17 @@ jobs:
         working-directory: backend
         run: |
           sam deploy \
-            --stack-name traxent-payments \
+            --stack-name traxent-backend \
             --resolve-s3 \
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
+            --no-execute-changeset \
             --region eu-west-2
 
       - name: Show payment API URLs
         run: |
           aws cloudformation describe-stacks \
-            --stack-name traxent-payments \
+            --stack-name traxent-backend \
             --region eu-west-2 \
             --query "Stacks[0].Outputs" --output table

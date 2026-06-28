@@ -8,9 +8,9 @@
 #      marks the manifest entry published, and reports how many it published.
 #   3. If anything changed, this workflow commits the moved file(s) + the
 #      updated manifest as the bot and pushes to main.
-#   4. That push to main triggers the normal deploy workflow (deploy.yml),
-#      which syncs src/ to S3 and invalidates CloudFront. So the deploy is
-#      automatic — this workflow does NOT deploy anything itself.
+#   4. It then explicitly triggers deploy.yml (workflow_dispatch) to sync src/ to
+#      S3 and invalidate CloudFront. (A push made with the default GITHUB_TOKEN does
+#      NOT trigger deploy.yml's `on: push`, so we dispatch it directly.)
 #
 # If nothing is due, the script reports published_count=0 and we make NO commit
 # (no empty commits, no noise). Cron granularity is 15 minutes, so a publishAt
@@ -30,9 +30,10 @@ on:
   # Allow manual runs from the Actions tab (useful to publish immediately or test).
   workflow_dispatch: {}
 
-# Least privilege: we only need to write repo contents (commit + push).
+# Write repo contents (commit + push) and trigger the deploy workflow.
 permissions:
   contents: write
+  actions: write
 
 # Avoid overlapping runs racing to push the same commit.
 concurrency:
@@ -94,4 +95,16 @@ jobs:
           git add -A
           git commit -m "chore(release): publish scheduled content [${IDS}]"
           git push
-          echo "Pushed scheduled content to main — deploy.yml will ship it."
+          echo "Pushed scheduled content to main."
+
+      - name: Trigger site deploy
+        # A push made with the default GITHUB_TOKEN does NOT trigger deploy.yml's
+        # `on: push` (GitHub loop-prevention). Dispatch it explicitly instead —
+        # workflow_dispatch via GITHUB_TOKEN runs deploy.yml against main HEAD
+        # (the commit we just pushed), shipping the published content.
+        if: steps.publish.outputs.published_count != '0' && steps.publish.outputs.published_count != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run deploy.yml --ref main
+          echo "Dispatched deploy.yml to ship the published content."

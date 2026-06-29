@@ -107,6 +107,7 @@ Resources:
           AUTH0_ISSUER: !Ref Auth0Issuer
           AUTH0_AUDIENCE: !Ref Auth0Audience
           ALLOWED_ORIGIN: !Ref AllowedOrigin
+          STRIPE_KEY_PARAM: /traxent/stripe/key_delete_account
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref UserDataTable

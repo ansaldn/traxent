@@ -34,6 +34,9 @@ Resources:
       FunctionName: traxent-create-checkout
       CodeUri: functions/create-checkout/
       Handler: index.handler
+      Environment:
+        Variables:
+          STRIPE_KEY_PARAM: /traxent/stripe/key_checkout
       Policies:
         - SSMParameterReadPolicy:
             ParameterName: traxent/*
@@ -51,6 +54,9 @@ Resources:
       FunctionName: traxent-stripe-webhook
       CodeUri: functions/stripe-webhook/
       Handler: index.handler
+      Environment:
+        Variables:
+          STRIPE_KEY_PARAM: /traxent/stripe/key_webhook
       Policies:
         - SSMParameterReadPolicy:
             ParameterName: traxent/*
@@ -68,6 +74,9 @@ Resources:
       FunctionName: traxent-cancel-subscription
       CodeUri: functions/cancel-subscription/
       Handler: index.handler
+      Environment:
+        Variables:
+          STRIPE_KEY_PARAM: /traxent/stripe/key_cancel
       Policies:
         - SSMParameterReadPolicy:
             ParameterName: traxent/*
@@ -87,6 +96,9 @@ Resources:
       FunctionName: traxent-change-plan
       CodeUri: functions/change-plan/
       Handler: index.handler
+      Environment:
+        Variables:
+          STRIPE_KEY_PARAM: /traxent/stripe/key_change_plan
       Policies:
         - SSMParameterReadPolicy:
             ParameterName: traxent/*

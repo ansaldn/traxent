@@ -105,7 +105,7 @@ The ISMS management-system clauses (risk assessment, objectives, internal audit,
 
 ## Known fix-up before audit / diligence
 
-- **Entity-name consistency.** The public `src/privacy.html` currently names the operator as "Traxent Ltd", whereas `security.txt`, `security.html` and this pack use **Akpan Limited**. Reconcile to the correct registered legal name on every surface before audit or diligence, and confirm the Companies House registration number, registered address and ICO registration. (Tracked in `risk-register.md` and `COMPLIANCE-ROADMAP.md`.)
+- **Entity-name consistency.** The public surfaces (`src/privacy.html`, `src/terms.html`, `security.txt`, `security.html`) now all name the operator as **Akpan Limited**, matching this pack. Still to confirm before audit or diligence: the Companies House registration number, registered address and ICO data-protection-fee registration. (Tracked in `risk-register.md` and `COMPLIANCE-ROADMAP.md`.)
 
 ---
 

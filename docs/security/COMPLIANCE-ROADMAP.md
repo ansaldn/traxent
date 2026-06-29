@@ -101,7 +101,7 @@ The honest gaps to close first are tracked in `risk-register.md` — chiefly WAF
 
 ## 7. David's first 5 actions (prioritised)
 
-1. **Reconcile the legal entity name and confirm registrations** — make every surface say **Akpan Limited** (fix `src/privacy.html`, which currently says "Traxent Ltd"), and confirm Companies House number + registered address and **ICO data-protection-fee registration**. *(Cheap, fast, and a credibility/compliance must — `risk-register.md` R-08.)*
+1. **Confirm the entity registrations** — the legal entity name now reads **Akpan Limited** across every public surface (`privacy.html`, `terms.html`, `security.txt`, `security.html`); still confirm the Companies House number + registered address and **ICO data-protection-fee registration**. *(Cheap, fast, and a credibility/compliance must — `risk-register.md` R-08.)*
 2. **Close the two highest security gaps:** turn on **AWS WAF + API Gateway throttling** (R-01) and **migrate the frontend `deploy.yml` to OIDC, then delete the static AWS access keys** + scope the deploy IAM policy (R-02). *(These are your biggest real-world risks and the first things an auditor or buyer probes.)*
 3. **Pick your first framework** based on your buyer/customer pull — **SOC 2** (US-leaning) or **ISO 27001** (UK/EU-leaning) — and decide SOC 2 **Type I first, then Type II**. Write the decision down.
 4. **Sign up for a compliance-automation platform** (shortlist **Vanta / Drata / Secureframe**), connect **AWS + GitHub + Auth0** (and Stripe if supported), and run its **readiness assessment**. Let it auto-collect evidence and generate the gap list. *(This is the force-multiplier; do it early.)*

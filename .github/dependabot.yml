@@ -28,6 +28,12 @@ updates:
     labels: [dependencies, security]
 
   - package-ecosystem: npm
+    directory: /backend/functions/change-plan
+    schedule:
+      interval: weekly
+    labels: [dependencies, security]
+
+  - package-ecosystem: npm
     directory: /backend/user-data/functions/user-data
     schedule:
       interval: weekly
@@ -35,6 +41,18 @@ updates:
 
   - package-ecosystem: npm
     directory: /backend/user-data/functions/delete-account
+    schedule:
+      interval: weekly
+    labels: [dependencies, security]
+
+  - package-ecosystem: npm
+    directory: /backend/user-data/functions/account-update
+    schedule:
+      interval: weekly
+    labels: [dependencies, security]
+
+  - package-ecosystem: npm
+    directory: /backend/user-data/functions/admin-metrics
     schedule:
       interval: weekly
     labels: [dependencies, security]

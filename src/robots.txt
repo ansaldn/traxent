@@ -14,7 +14,9 @@ Allow: /firms
 Allow: /firm-
 
 # Authenticated application surface — keep out of the index.
+Disallow: /home
 Disallow: /dashboard
+Disallow: /admin
 Disallow: /account
 Disallow: /journal
 Disallow: /tracker

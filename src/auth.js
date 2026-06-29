@@ -5,6 +5,20 @@ const AUTH0_NAMESPACE = 'https://traxent.io';
 
 let auth0Client = null;
 
+// ── Member-hint cookie ───────────────────────────────────────────────────────
+// A non-sensitive `tx_session` flag (NOT an auth token) that mirrors whether the
+// user has an Auth0 session. The (currently dormant) edge redirect reads it to
+// send members straight to /home server-side, before any HTML renders — no
+// marketing-page flash. Real auth is always enforced by the Auth0 token; this is
+// only a routing hint, so it's safe to ship before the edge function is live.
+function setSessionHint(on) {
+  try {
+    document.cookie = on
+      ? 'tx_session=1; path=/; max-age=2592000; secure; samesite=Lax'
+      : 'tx_session=; path=/; max-age=0; secure; samesite=Lax';
+  } catch (e) { /* cookies unavailable */ }
+}
+
 // Initialise Auth0
 async function initAuth0() {
   auth0Client = await auth0.createAuth0Client({
@@ -25,6 +39,10 @@ async function initAuth0() {
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 
+  // Keep the member-hint cookie in sync with the real session on every page load,
+  // so the (dormant) edge redirect can route logged-in users with no flash.
+  try { setSessionHint(await auth0Client.isAuthenticated()); } catch (e) {}
+
   return auth0Client;
 }
 
@@ -40,6 +58,7 @@ async function login() {
 
 // Logout
 async function logout() {
+  setSessionHint(false);
   await auth0Client.logout({
     logoutParams: {
       returnTo: window.location.origin

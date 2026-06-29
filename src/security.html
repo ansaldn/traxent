@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.execute-api.eu-west-2.amazonaws.com https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0e0e0c">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>Security &amp; Trust — Traxent</title>
+<meta name="description" content="How Traxent protects your data: encryption, authentication, infrastructure, GDPR alignment, and our responsible-disclosure policy.">
+<link rel="canonical" href="https://traxent.io/security">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
+  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);
+  --surface:#ffffff;--surface2:#f0efe9;--warn:#b06000;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:960px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-back{font-size:13px;color:var(--ink3);text-decoration:none}
+.nav-back:hover{color:var(--ink)}
+.hero{max-width:760px;margin:0 auto;padding:72px 32px 24px;text-align:center}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+h1{font-family:var(--serif);font-size:52px;line-height:1.05;font-weight:400;letter-spacing:-.01em;margin-bottom:18px}
+.lede{font-size:17px;color:var(--ink2);font-weight:300;max-width:600px;margin:0 auto}
+.wrap{max-width:960px;margin:0 auto;padding:24px 32px 80px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:28px 0 8px}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.22);border-radius:999px;padding:7px 13px}
+.chip.soon{color:var(--ink3);background:var(--surface2);border-color:var(--border)}
+.sec{margin-top:52px}
+.sec-h{font-family:var(--serif);font-size:28px;font-weight:400;margin-bottom:8px}
+.sec-sub{font-size:15px;color:var(--ink3);font-weight:300;margin-bottom:22px;max-width:640px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px}
+.card h3{font-size:15px;font-weight:500;margin-bottom:7px;display:flex;align-items:center;gap:8px}
+.card p{font-size:13.5px;color:var(--ink3);font-weight:300;line-height:1.6}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px 28px}
+.panel p{font-size:14px;color:var(--ink2);font-weight:300;margin-bottom:12px}
+.panel strong{color:var(--ink);font-weight:500}
+.roadmap-note{font-size:12.5px;color:var(--ink3);font-weight:300;margin-top:14px;font-style:italic}
+.discl{display:flex;flex-direction:column;gap:10px}
+.discl li{font-size:14px;color:var(--ink2);font-weight:300;padding-left:22px;position:relative;list-style:none;line-height:1.6}
+.discl li::before{content:'✓';position:absolute;left:0;color:var(--accent);font-weight:600}
+.mono-link{font-family:var(--mono);font-size:13px}
+footer{border-top:1px solid var(--border);margin-top:64px;padding:28px 32px;text-align:center;font-size:12px;color:var(--ink3)}
+@media(max-width:640px){.grid{grid-template-columns:1fr}h1{font-size:40px}}
+</style>
+</head>
+<body>
+<nav><div class="nav-inner"><a href="/" class="nav-logo">trax<em>ent</em></a><a href="/" class="nav-back">← Home</a></div></nav>
+
+<section class="hero">
+  <div class="eyebrow">Security &amp; Trust</div>
+  <h1>Built to keep your<br>data safe</h1>
+  <p class="lede">Traxent is provided by Akpan Limited (England &amp; Wales). Here's exactly how we protect your account and data — and where our security programme is headed.</p>
+  <div class="chips">
+    <span class="chip">Hosted on AWS</span>
+    <span class="chip">Payments via Stripe · PCI-DSS L1</span>
+    <span class="chip">TLS 1.2+ · HSTS</span>
+    <span class="chip">Encrypted at rest</span>
+    <span class="chip">MFA available</span>
+    <span class="chip">UK GDPR aligned</span>
+    <span class="chip">Vulnerability disclosure</span>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <div class="sec">
+    <div class="sec-h">How we protect your data</div>
+    <div class="grid">
+      <div class="card"><h3><span class="dot"></span>Encryption everywhere</h3><p>All traffic is served over HTTPS (TLS 1.2+) with HSTS enforced. Data at rest is encrypted — our database uses AWS-managed encryption with point-in-time recovery.</p></div>
+      <div class="card"><h3><span class="dot"></span>Authentication</h3><p>Login is handled by Auth0. We never store your password. Multi-factor authentication is available, and access tokens are short-lived.</p></div>
+      <div class="card"><h3><span class="dot"></span>We don't touch your card</h3><p>Payments run entirely through Stripe (PCI-DSS Level 1). Card details never reach our servers — we only ever see a token.</p></div>
+      <div class="card"><h3><span class="dot"></span>Least-privilege infrastructure</h3><p>Deployments use short-lived, scoped credentials (OIDC) — no long-lived keys. A web application firewall and rate limiting sit in front of our APIs.</p></div>
+      <div class="card"><h3><span class="dot"></span>Monitoring &amp; alerting</h3><p>Error spikes, abuse and unusual activity trigger automated alerts so we can respond quickly. Infrastructure is defined as code and reviewed before it ships.</p></div>
+      <div class="card"><h3><span class="dot"></span>You're in control</h3><p>You can edit your details, change your plan, and permanently delete your account and data at any time from your account page.</p></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">Compliance &amp; certifications</div>
+    <p class="sec-sub">We're transparent about what's certified today versus what we're working toward. We don't claim certifications we haven't earned.</p>
+    <div class="panel">
+      <p><strong>Infrastructure (inherited).</strong> Traxent runs on Amazon Web Services and Stripe, which maintain independently audited <strong>SOC 2 Type II</strong>, <strong>ISO/IEC 27001</strong> and <strong>PCI-DSS</strong> certifications for the infrastructure and payment rails we build on.</p>
+      <p><strong>Data protection.</strong> We align our handling of personal data with the <strong>UK GDPR</strong> and the Data Protection Act 2018 — data minimisation, encryption, deletion on request, and clear disclosure in our <a href="/privacy">Privacy Policy</a>.</p>
+      <p style="margin-bottom:6px"><strong>Our own certifications — on the roadmap:</strong></p>
+      <div class="chips" style="justify-content:flex-start;margin:0">
+        <span class="chip soon">SOC 2 Type II — planned</span>
+        <span class="chip soon">ISO/IEC 27001 — planned</span>
+      </div>
+      <p class="roadmap-note">These are company-level certifications that require independent audit. We're building the controls and documentation toward them; this page will be updated when each is achieved — not before.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">Responsible disclosure</div>
+    <p class="sec-sub">Found a security issue? We want to hear from you, and we'll work with researchers acting in good faith.</p>
+    <div class="panel">
+      <ul class="discl">
+        <li>Email <a href="mailto:security@traxent.io" class="mono-link">security@traxent.io</a> with details and steps to reproduce. Our machine-readable policy lives at <a href="/.well-known/security.txt" class="mono-link">/.well-known/security.txt</a>.</li>
+        <li>Give us reasonable time to investigate and fix before any public disclosure.</li>
+        <li>Don't access, modify or delete data that isn't yours, and don't degrade the service (no DoS, spam or social engineering).</li>
+        <li>Acting in good faith under this policy, we won't pursue legal action against you for your research.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">Your data &amp; your rights</div>
+    <p class="sec-sub">Under UK GDPR you can access, correct, export or delete your data. Manage most of it yourself in <a href="/account">your account</a>, or email <a href="mailto:hello@traxent.io">hello@traxent.io</a>. Full detail is in our <a href="/privacy">Privacy &amp; Cookies policy</a>.</p>
+  </div>
+
+</div>
+
+<footer>© 2026 Traxent — provided by Akpan Limited, registered in England &amp; Wales. · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/.well-known/security.txt">security.txt</a></footer>
+<script src="/consent.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Strict, page-specific CSP. Internal admin tool: only the auth0 CDN script and
+     the execute-api connect endpoint are allowed. Deliberately NO analytics
+     (Plausible etc.), NO consent banner, NO third-party frames. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://fonts.googleapis.com https://fonts.gstatic.com; frame-src https://auth.traxent.io https://*.auth0.com; form-action 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
+<title>Admin metrics — Traxent</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Hide the page until the admin check resolves, so non-admins never see chrome. -->
+<style id="auth-gate-style">body{visibility:hidden}</style>
+<style>
+:root {
+  --bg: #f7f6f2;
+  --ink: #0e0e0c;
+  --ink2: #3a3a36;
+  --ink3: #7a7a72;
+  --accent: #0a6e4f;
+  --accent-light: rgba(10,110,79,.08);
+  --border: rgba(14,14,12,0.1);
+  --border2: rgba(14,14,12,0.06);
+  --surface: #ffffff;
+  --surface2: #f0efe9;
+  --good: #0a6e4f;
+  --warn: #b06000;
+  --bad: #9e1a1a;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', sans-serif;
+  --mono: 'Geist Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+/* Loading */
+#loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 999; }
+.loading-logo { font-family: var(--mono); font-size: 20px; color: var(--ink); }
+.loading-logo em { font-style: normal; color: var(--accent); }
+.loading-bar { width: 120px; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.loading-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; animation: load 1.2s ease forwards; }
+@keyframes load { from { width: 0; } to { width: 100%; } }
+
+/* Nav */
+nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.nav-logo { font-family: var(--mono); font-size: 15px; color: var(--ink); text-decoration: none; }
+.nav-logo em { font-style: normal; color: var(--accent); }
+.nav-admin-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(10,110,79,.25); background: var(--accent-light); padding: 3px 8px; border-radius: 4px; margin-left: 12px; vertical-align: middle; }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.btn-refresh { font-size: 12px; color: var(--ink2); background: none; border: 1px solid var(--border); border-radius: 7px; padding: 7px 14px; cursor: pointer; font-family: var(--sans); transition: all 0.15s; }
+.btn-refresh:hover { border-color: var(--ink); color: var(--ink); }
+.btn-refresh:disabled { opacity: .5; cursor: default; }
+.btn-signout { font-size: 12px; color: var(--ink3); background: none; border: none; cursor: pointer; font-family: var(--sans); transition: color 0.15s; }
+.btn-signout:hover { color: var(--bad); }
+
+/* Main */
+.main { max-width: 1000px; margin: 0 auto; padding: 48px 40px 96px; }
+
+/* Page header */
+.page-header { margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.page-title { font-family: var(--serif); font-size: 34px; font-weight: 400; color: var(--ink); }
+.page-sub { font-size: 13px; color: var(--ink3); margin-top: 6px; }
+.page-sub .gen-time { font-family: var(--mono); color: var(--ink2); }
+
+/* Section label */
+.section-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin: 0 0 16px 2px; }
+.section-block { margin-bottom: 40px; }
+
+/* Card grid */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+.metric-label { font-size: 11px; color: var(--ink3); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+.metric-val { font-family: var(--serif); font-size: 42px; font-weight: 400; color: var(--ink); font-style: italic; line-height: 1; }
+.metric-val.muted { color: var(--ink3); font-size: 22px; font-style: normal; font-family: var(--sans); }
+.metric-note { font-size: 12px; color: var(--ink3); margin-top: 10px; line-height: 1.5; }
+
+/* Plan breakdown table-ish block */
+.breakdown { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.breakdown-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--border2); }
+.breakdown-row:last-child { border-bottom: none; }
+.breakdown-name { font-size: 14px; color: var(--ink); font-weight: 500; text-transform: capitalize; }
+.breakdown-name .plan-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 10px; vertical-align: middle; }
+.breakdown-count { font-family: var(--mono); font-size: 14px; color: var(--ink2); }
+
+/* Errors banner */
+.errors-banner { background: rgba(176,96,0,.07); border: 1px solid rgba(176,96,0,.25); border-radius: 10px; padding: 16px 20px; margin-bottom: 32px; }
+.errors-title { font-size: 13px; font-weight: 500; color: var(--warn); margin-bottom: 8px; }
+.errors-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.errors-list li { font-size: 12px; color: var(--ink2); font-family: var(--mono); }
+.errors-list li b { color: var(--warn); font-weight: 500; }
+
+/* Centred states (not-authorised / error) */
+.state-screen { min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.state-card { max-width: 440px; text-align: center; }
+.state-icon { font-size: 40px; margin-bottom: 16px; }
+.state-title { font-family: var(--serif); font-size: 28px; color: var(--ink); margin-bottom: 12px; }
+.state-body { font-size: 14px; color: var(--ink2); line-height: 1.65; font-weight: 300; margin-bottom: 24px; }
+.state-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.btn-primary { background: var(--accent); color: white; border: none; border-radius: 8px; padding: 11px 22px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--sans); text-decoration: none; display: inline-block; transition: background 0.15s; }
+.btn-primary:hover { background: #085e43; }
+.btn-ghost { background: none; border: 1px solid var(--border); color: var(--ink2); border-radius: 8px; padding: 11px 22px; font-size: 14px; cursor: pointer; font-family: var(--sans); text-decoration: none; display: inline-block; transition: all 0.15s; }
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+@media (max-width: 600px) {
+  .main { padding: 32px 20px 64px; }
+  nav { padding: 0 20px; }
+  .page-title { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .metric-val { font-size: 34px; }
+}
+@media (max-width: 420px) {
+  .card-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="loading-logo">trax<em>ent</em></div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<!-- Authorised dashboard -->
+<div id="admin-app" style="display:none">
+  <nav>
+    <span>
+      <a href="/" class="nav-logo">trax<em>ent</em></a>
+      <span class="nav-admin-tag">Admin</span>
+    </span>
+    <div class="nav-right">
+      <button class="btn-refresh" id="refresh-btn" onclick="loadMetrics()">Refresh</button>
+      <button class="btn-signout" onclick="logout()">Sign out</button>
+    </div>
+  </nav>
+
+  <div class="main">
+    <div class="page-header">
+      <div class="page-title">Metrics</div>
+      <div class="page-sub">Aggregate counts only — no personal data. <span id="gen-time" class="gen-time"></span></div>
+    </div>
+
+    <div id="errors-banner" class="errors-banner" style="display:none">
+      <div class="errors-title">Some data couldn't be loaded</div>
+      <ul class="errors-list" id="errors-list"></ul>
+    </div>
+
+    <!-- Audience -->
+    <div class="section-block">
+      <div class="section-label">Audience</div>
+      <div class="card-grid">
+        <div class="metric-card">
+          <div class="metric-label">Total signups</div>
+          <div class="metric-val" id="m-signups">—</div>
+          <div class="metric-note">Registered Auth0 accounts.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Users with saved data</div>
+          <div class="metric-val" id="m-users-data">—</div>
+          <div class="metric-note">Have any progress, trades or firm picks stored.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue -->
+    <div class="section-block">
+      <div class="section-label">Revenue</div>
+      <div class="card-grid">
+        <div class="metric-card">
+          <div class="metric-label">Active subscriptions</div>
+          <div class="metric-val" id="m-subs">—</div>
+          <div class="metric-note">Live Stripe subscriptions.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">MRR</div>
+          <div class="metric-val" id="m-mrr">—</div>
+          <div class="metric-note">Monthly recurring revenue (annual plans normalised).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan mix -->
+    <div class="section-block">
+      <div class="section-label">Plan mix</div>
+      <div class="breakdown" id="plan-breakdown">
+        <div class="breakdown-row"><span class="breakdown-name">—</span><span class="breakdown-count">—</span></div>
+      </div>
+    </div>
+
+    <!-- Usage -->
+    <div class="section-block">
+      <div class="section-label">Usage</div>
+      <div class="card-grid">
+        <div class="metric-card">
+          <div class="metric-label">Sim trades logged</div>
+          <div class="metric-val" id="m-trades">—</div>
+          <div class="metric-note">Across all journals.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Lessons / quizzes completed</div>
+          <div class="metric-val" id="m-lessons">—</div>
+          <div class="metric-note">Total completions, all users.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Firm selections</div>
+          <div class="metric-val" id="m-firms">—</div>
+          <div class="metric-note">Total prop-firm picks saved.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Not-authorised state -->
+<div id="denied-screen" class="state-screen" style="display:none">
+  <div class="state-card">
+    <div class="state-icon">🔒</div>
+    <div class="state-title">Not authorised</div>
+    <div class="state-body">This page is restricted to Traxent administrators. Your account doesn't have access.</div>
+    <div class="state-actions">
+      <a href="/dashboard" class="btn-primary">Go to dashboard</a>
+      <button class="btn-ghost" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<!-- Generic error state (API/network) -->
+<div id="error-screen" class="state-screen" style="display:none">
+  <div class="state-card">
+    <div class="state-icon">⚠️</div>
+    <div class="state-title">Couldn't load metrics</div>
+    <div class="state-body" id="error-screen-body">Something went wrong reaching the metrics API. Please try again.</div>
+    <div class="state-actions">
+      <button class="btn-primary" onclick="location.reload()">Retry</button>
+      <a href="/dashboard" class="btn-ghost">Back to dashboard</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="auth.js?v=__BUILD_SHA__"></script>
+<script src="userdata.js?v=__BUILD_SHA__"></script>
+<script>
+// ── Admin metrics dashboard ──────────────────────────────────────────────────
+// Signs the admin in (Auth0), then calls GET {userDataApiBase}/admin/metrics with
+// the ID token as a bearer. The Lambda enforces the real admin gate (ADMIN_SUBS
+// allow-list); this page just renders whatever it returns and handles 403.
+
+// Resolve the user-data API base. userdata.js exposes it via TraxentData.apiBase();
+// fall back to the known deployed base so the page is self-contained.
+function apiBase() {
+  try {
+    if (window.TraxentData && typeof TraxentData.apiBase === 'function') {
+      const b = TraxentData.apiBase();
+      if (b) return b.replace(/\/+$/, '');
+    }
+  } catch (e) {}
+  return 'https://gqway1e53f.execute-api.eu-west-2.amazonaws.com';
+}
+
+function show(id) {
+  ['loading', 'admin-app', 'denied-screen', 'error-screen'].forEach(function (x) {
+    var el = document.getElementById(x);
+    if (el) el.style.display = (x === id) ? (x === 'admin-app' ? 'block' : 'flex') : 'none';
+  });
+  // Reveal the page once we've decided what to show.
+  var gate = document.getElementById('auth-gate-style');
+  if (gate) gate.remove();
+}
+
+function fmtInt(n) {
+  if (n == null || isNaN(n)) return '—';
+  return Number(n).toLocaleString('en-GB');
+}
+
+function fmtMoney(amount, currency) {
+  if (amount == null || isNaN(amount)) return '—';
+  try {
+    return new Intl.NumberFormat('en-GB', {
+      style: 'currency', currency: (currency || 'GBP'),
+      minimumFractionDigits: 2, maximumFractionDigits: 2,
+    }).format(amount);
+  } catch (e) {
+    return (currency || 'GBP') + ' ' + Number(amount).toFixed(2);
+  }
+}
+
+var PLAN_LABELS = { observer: 'Observer', challenger: 'Challenger', funded_ready: 'Funded Trader', other: 'Other' };
+
+function render(data) {
+  // Generated-at timestamp
+  if (data.generatedAt) {
+    var d = new Date(data.generatedAt);
+    document.getElementById('gen-time').textContent =
+      'Updated ' + d.toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  }
+
+  // Audience
+  document.getElementById('m-signups').textContent =
+    data.signups ? fmtInt(data.signups.totalUsers) : '—';
+  document.getElementById('m-users-data').textContent =
+    data.usage ? fmtInt(data.usage.usersWithData) : '—';
+
+  // Revenue
+  var subs = data.subscriptions;
+  document.getElementById('m-subs').textContent = subs ? fmtInt(subs.activeSubscriptions) : '—';
+  document.getElementById('m-mrr').textContent = subs ? fmtMoney(subs.mrr, subs.currency) : '—';
+
+  // Plan mix
+  var pb = document.getElementById('plan-breakdown');
+  if (subs && subs.planBreakdown) {
+    var order = ['observer', 'challenger', 'funded_ready', 'other'];
+    var rows = order.filter(function (k) { return (subs.planBreakdown[k] || 0) > 0 || k !== 'other'; })
+      .map(function (k) {
+        var count = subs.planBreakdown[k] || 0;
+        return '<div class="breakdown-row">' +
+          '<span class="breakdown-name"><span class="plan-dot"></span>' + (PLAN_LABELS[k] || k) + '</span>' +
+          '<span class="breakdown-count">' + fmtInt(count) + '</span></div>';
+      }).join('');
+    pb.innerHTML = rows || '<div class="breakdown-row"><span class="breakdown-name">No active plans</span><span class="breakdown-count">0</span></div>';
+  } else {
+    pb.innerHTML = '<div class="breakdown-row"><span class="breakdown-name">Plan data unavailable</span><span class="breakdown-count">—</span></div>';
+  }
+
+  // Usage
+  var u = data.usage;
+  document.getElementById('m-trades').textContent = u ? fmtInt(u.simTrades) : '—';
+  document.getElementById('m-lessons').textContent = u ? fmtInt(u.lessonCompletions) : '—';
+  document.getElementById('m-firms').textContent = u ? fmtInt(u.firmSelections) : '—';
+
+  // Partial-failure banner
+  var banner = document.getElementById('errors-banner');
+  if (data.errors && data.errors.length) {
+    document.getElementById('errors-list').innerHTML = data.errors.map(function (e) {
+      return '<li><b>' + escapeHtml(e.source) + ':</b> ' + escapeHtml(e.message) + '</li>';
+    }).join('');
+    banner.style.display = 'block';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// Fetch metrics (also used by the Refresh button).
+async function loadMetrics() {
+  var btn = document.getElementById('refresh-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Refreshing…'; }
+  try {
+    var token = await authBearerToken();
+    var res = await fetch(apiBase() + '/admin/metrics', {
+      headers: { 'Authorization': 'Bearer ' + token },
+    });
+    if (res.status === 403) { show('denied-screen'); return; }
+    if (res.status === 401) {
+      // Token expired/invalid — bounce through login again.
+      await auth0Client.loginWithRedirect({
+        authorizationParams: { redirect_uri: window.location.origin + '/admin' }
+      });
+      return;
+    }
+    if (!res.ok) throw new Error('metrics-' + res.status);
+    var data = await res.json();
+    render(data);
+    show('admin-app');
+  } catch (err) {
+    console.error('admin metrics load failed:', err);
+    document.getElementById('error-screen-body').textContent =
+      'Something went wrong reaching the metrics API (' + (err.message || 'unknown') + '). Please try again.';
+    show('error-screen');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Refresh'; }
+  }
+}
+
+async function initAdmin() {
+  try {
+    await initAuth0();
+
+    if (window.location.search.includes('code=') || window.location.search.includes('state=')) {
+      await auth0Client.handleRedirectCallback();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    var isAuthenticated = await auth0Client.isAuthenticated();
+    if (!isAuthenticated) {
+      await auth0Client.loginWithRedirect({
+        authorizationParams: { redirect_uri: window.location.origin + '/admin' }
+      });
+      return;
+    }
+
+    // Authenticated — fetch metrics. The server decides admin vs not (403).
+    await loadMetrics();
+  } catch (err) {
+    console.error('Admin page error:', err);
+    document.getElementById('error-screen-body').textContent =
+      'Something went wrong signing you in. Please try again.';
+    show('error-screen');
+  }
+}
+
+initAdmin();
+</script>
+</body>
+</html>

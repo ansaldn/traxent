@@ -29,6 +29,15 @@ Parameters:
     Type: String
     Default: https://traxent.io
     Description: CORS allowed origin for the API.
+  AdminSubs:
+    Type: String
+    Default: ''
+    Description: >
+      Comma-separated Auth0 user IDs (the token `sub`, e.g. auth0|abc123) allowed
+      to view the aggregate admin metrics dashboard. Empty (the default) denies
+      EVERYONE — set this to your own Auth0 user id (shown as "Account ID" on the
+      /account page) to grant yourself access.
+    NoEcho: true
 
 Resources:
 
@@ -174,6 +183,43 @@ Resources:
             ApiId: !Ref UserDataApi
             Path: /user/password-reset
             Method: POST
+
+  # Admin-only aggregate metrics dashboard (GET /admin/metrics). Returns COUNTS
+  # ONLY — total signups (Auth0 Mgmt API), active subs + MRR + plan mix (Stripe),
+  # and usage totals (DynamoDB) — never any per-user record, so it stays low
+  # privacy-risk. Two gates: verify the Auth0 ID token, then require the token
+  # `sub` to be in the ADMIN_SUBS allow-list (empty ⇒ deny everyone). Isolated
+  # from the data function because it reads the powerful Stripe + Auth0-admin
+  # SSM params. Its specific /admin/metrics route is on a DIFFERENT base path
+  # from the data function's greedy ANY /user/{proxy+}, so there is no overlap.
+  AdminMetricsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-admin-metrics
+      Handler: index.handler
+      CodeUri: functions/admin-metrics/
+      Timeout: 30
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref UserDataTable
+          AUTH0_ISSUER: !Ref Auth0Issuer
+          AUTH0_AUDIENCE: !Ref Auth0Audience
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+          ADMIN_SUBS: !Ref AdminSubs
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref UserDataTable
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/*"
+      Events:
+        Metrics:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /admin/metrics
+            Method: GET
 
   UserDataApi:
     Type: AWS::Serverless::HttpApi

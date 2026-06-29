@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <!-- PWA manifest -->
 <link rel="manifest" href="/manifest.json">
  
@@ -27,7 +28,7 @@
   }
 </script>
 <title>Privacy Policy — Traxent</title>
-<meta name="description" content="Traxent privacy policy — how we collect, use and protect your data.">
+<meta name="description" content="Traxent privacy policy — how Akpan Limited collects, uses and protects your data under UK GDPR, including our cookie and storage declaration.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://traxent.io/privacy">
 <meta property="og:site_name" content="Traxent">
@@ -100,79 +101,85 @@ footer { background: var(--ink); padding: 40px; }
 <div class="page">
   <div class="page-eyebrow">Legal</div>
   <h1 class="page-title">Privacy Policy</h1>
-  <div class="page-meta">Last updated: 27 March 2026 · Traxent Ltd, registered in England &amp; Wales</div>
+  <div class="page-meta">Last updated: 29 June 2026 · Akpan Limited, registered in England &amp; Wales</div>
 
   <div class="highlight-box">
-    <p>Traxent is committed to protecting your personal data. This policy explains what we collect, why we collect it, and how we use it. We do not sell your data to any third party.</p>
+    <p>Traxent is committed to protecting your personal data. This policy explains what we collect, why we collect it, the lawful basis for using it, and the rights you have. We do not sell your data, and we use no advertising or cross-site tracking.</p>
   </div>
 
   <div class="section">
     <h2>Who we are</h2>
-    <p>Traxent is operated by Traxent Ltd, a company registered in England and Wales. Our platform is an educational trading tool — we do not provide financial advice, manage investments, or hold client funds.</a>.</p>
+    <p>Traxent is operated by <strong>Akpan Limited</strong>, a company registered in England and Wales, which is the data controller responsible for your personal data. Our platform is an educational trading tool — we do not provide financial advice, manage investments, or hold client funds.</p>
+    <p>For any privacy question, or to exercise your data rights, contact us at <a href="mailto:hello@traxent.io">hello@traxent.io</a>.</p>
   </div>
 
   <div class="section">
-    <h2>What data we collect</h2>
-    <p>We collect the minimum data necessary to provide the service:</p>
+    <h2>What we collect and why</h2>
+    <p>We collect the minimum data necessary to run the service, and only for the purposes set out below:</p>
     <ul>
-      <li>Email address — used to create your account and send service communications</li>
-      <li>Name — used to personalise your dashboard experience</li>
-      <li>Subscription and billing data — processed securely by Stripe on our behalf</li>
-      <li>Simulated trade journal entries — data you voluntarily log within the platform</li>
-      <li>Usage data — pages visited, features used, session duration (anonymised)</li>
-      <li>Technical data — browser type, device type, IP address (for security purposes)</li>
+      <li><strong>Account name and email</strong> — handled through our authentication provider, Auth0, so you can create an account, log in, and receive service communications such as receipts and account notifications.</li>
+      <li><strong>Usage data</strong> — your lesson progress, simulated (paper) trades, firm selections, and similar in-product activity, so we can provide the platform, save your work, and show your prop firm readiness.</li>
+      <li><strong>Payment data</strong> — your subscription and billing details are processed by Stripe. We never see or store your card numbers; Stripe handles them directly.</li>
+      <li><strong>Basic analytics</strong> — privacy-friendly, cookieless and aggregate (counts and pageviews only). No personal data, no profiles, and no cross-site tracking. See <a href="#cookies">Cookies &amp; storage</a> below.</li>
     </ul>
-    <p>We do not collect any real trading account data, brokerage credentials, or financial account information.</p>
+    <p>We do not collect any real trading account data, brokerage credentials, or financial account information, and we never use your data to make automated decisions that have a legal or similarly significant effect on you.</p>
   </div>
 
   <div class="section">
-    <h2>How we use your data</h2>
+    <h2>Lawful bases for processing</h2>
+    <p>Under UK GDPR we rely on the following lawful bases:</p>
     <ul>
-      <li>To create and manage your Traxent account</li>
-      <li>To process your subscription payments via Stripe</li>
-      <li>To calculate and display your prop firm readiness scores</li>
-      <li>To send transactional emails such as receipts and account notifications</li>
-      <li>To improve the platform based on aggregated usage patterns</li>
-      <li>To comply with legal obligations</li>
+      <li><strong>Performance of a contract</strong> — to create your account and provide the platform you have signed up for, including saving your lessons, simulated trades and firm selections, and processing your subscription.</li>
+      <li><strong>Legitimate interests</strong> — to keep the service secure, prevent abuse, and understand aggregate, cookieless usage so we can improve the product. We balance these interests against your rights and freedoms.</li>
+      <li><strong>Consent</strong> — where consent applies (for example, any future non-essential cookies or optional marketing), we will ask first and you can withdraw it at any time. We do not currently use any non-essential cookies.</li>
+      <li><strong>Legal obligation</strong> — where we must retain certain records, such as billing information for tax purposes.</li>
     </ul>
-    <p>We will never use your data to make automated decisions that have a legal or significant effect on you.</p>
   </div>
 
   <div class="section">
-    <h2>Third party services</h2>
-    <p>We use the following third party services to operate Traxent:</p>
+    <h2>Processors and sub-processors</h2>
+    <p>We use the following trusted providers to operate Traxent. Each processes data on our behalf under a data processing agreement and its own privacy policy:</p>
     <ul>
-      <li>Auth0 — user authentication and account management</li>
-      <li>Stripe — subscription billing and payment processing</li>
-      <li>Amazon Web Services — cloud infrastructure and data storage</li>
-      <li>Formspree — waitlist email capture</li>
+      <li><strong>Amazon Web Services (AWS)</strong> — hosting and infrastructure, in the UK region (eu-west-2).</li>
+      <li><strong>Auth0</strong> — authentication and account management (name, email, login sessions).</li>
+      <li><strong>Stripe</strong> — subscription billing and payment processing. Card details are handled entirely by Stripe and never stored by us.</li>
+      <li><strong>Plausible</strong> — privacy-friendly, cookieless analytics (aggregate counts only, no personal data).</li>
+      <li><strong>Formspree</strong> — processing submissions from our waitlist form.</li>
+      <li><strong>GitHub</strong> — source control and deployment of the website.</li>
     </ul>
-    <p>Each of these providers operates under their own privacy policies and is subject to appropriate data processing agreements. Your payment card details are never stored by Traxent — they are handled entirely by Stripe.</p>
+    <p>We do not sell your data, and we do not share it with advertisers.</p>
   </div>
 
   <div class="section">
     <h2>Data retention</h2>
-    <p>We retain your account data for as long as your account is active. If you cancel your subscription and request account deletion, we will delete your personal data within 30 days, except where we are required to retain it for legal or tax purposes.</p>
-    <p>Anonymised, aggregated usage data may be retained indefinitely as it cannot be used to identify you.</p>
+    <p>We retain your account data for as long as your account is active. If you cancel your subscription and request account deletion, we will delete your personal data within 30 days, except where we are required to retain it for legal or tax purposes — for example, billing records kept by Stripe and ourselves to meet tax obligations.</p>
+    <p>Our analytics data is aggregate and cookieless, so it cannot be used to identify you, and may be retained indefinitely in that form.</p>
   </div>
 
   <div class="section">
     <h2>Your rights under UK GDPR</h2>
     <p>As a UK resident you have the following rights regarding your personal data:</p>
     <ul>
-      <li>The right to access the personal data we hold about you</li>
-      <li>The right to correct inaccurate data</li>
-      <li>The right to request deletion of your data</li>
-      <li>The right to restrict or object to processing</li>
-      <li>The right to data portability</li>
-      <li>The right to withdraw consent at any time</li>
+      <li><strong>Access</strong> — the right to a copy of the personal data we hold about you.</li>
+      <li><strong>Rectification</strong> — the right to correct inaccurate or incomplete data.</li>
+      <li><strong>Erasure</strong> — the right to request deletion of your data.</li>
+      <li><strong>Restriction or objection</strong> — the right to restrict or object to how we process your data, including processing based on our legitimate interests.</li>
+      <li><strong>Portability</strong> — the right to receive your data in a portable, machine-readable format.</li>
+      <li><strong>Withdraw consent</strong> — where we rely on consent, the right to withdraw it at any time.</li>
     </ul>
-    <p>To exercise any of these rights, email us at <a href="mailto:data.gdpr@traxent.io">data.gdpr@traxent.io</a>. We will respond within 30 days.</p>
+    <p>You can manage much of this yourself: update your name and email, change or cancel your plan, and request deletion from your <a href="/account">account page</a>. For anything else — or to make a formal request — email us at <a href="mailto:hello@traxent.io">hello@traxent.io</a> and we will respond within 30 days. You also have the right to complain to the UK&apos;s Information Commissioner&apos;s Office (ICO) at <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a>.</p>
   </div>
 
-  <div class="section">
-    <h2>Cookies</h2>
-    <p>Traxent uses essential cookies only — these are required for authentication and to keep you logged in. We do not use advertising cookies or third party tracking cookies. You can disable cookies in your browser settings but this will prevent you from logging in to the platform.</p>
+  <div class="section" id="cookies">
+    <h2>Cookies and storage</h2>
+    <p>We keep this deliberately minimal. Traxent uses <strong>strictly necessary</strong> cookies and storage only — no consent is required for these because the site cannot work without them:</p>
+    <ul>
+      <li><strong>Auth0 login session</strong> — keeps you securely signed in.</li>
+      <li><strong>The <code>tx_session</code> cookie</strong> — a routing hint that helps direct your request correctly.</li>
+      <li><strong>PWA / service-worker cache</strong> — stores assets locally so the app loads quickly and works offline.</li>
+    </ul>
+    <p>In addition, we use <strong>cookieless</strong>, privacy-friendly analytics (Plausible). It measures aggregate counts and pageviews only — it sets no cookies, stores no personal data, builds no profiles, and does <strong>not</strong> track you across other websites. Because it is anonymous and consent-exempt under UK GDPR and PECR, it runs by default; we disclose it here for transparency.</p>
+    <p>We use <strong>no advertising and no cross-site tracking</strong> of any kind. You can clear or block cookies and storage in your browser settings, but doing so will prevent you from logging in and may stop parts of the platform from working.</p>
   </div>
 
   <div class="section">
@@ -187,7 +194,7 @@ footer { background: var(--ink); padding: 40px; }
 
   <div class="section">
     <h2>Contact us</h2>
-    <p>If you have any questions about this privacy policy or how we handle your data, please contact us at <a href="mailto:datapolicy@traxent.io">datapolicy@traxent.io</a>.</p>
+    <p>If you have any questions about this privacy policy or how we handle your data, please contact us at <a href="mailto:hello@traxent.io">hello@traxent.io</a>.</p>
   </div>
 </div>
 
@@ -202,5 +209,6 @@ footer { background: var(--ink); padding: 40px; }
   </div>
 </footer>
 
+<script src="/consent.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,11 @@
+# Traxent — provided by Akpan Limited (registered in England & Wales).
+# Vulnerability disclosure contact and policy, per RFC 9116.
+# Full policy: https://traxent.io/security
+
+Contact: mailto:security@traxent.io
+Contact: https://traxent.io/security
+Expires: 2027-06-29T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://traxent.io/.well-known/security.txt
+Policy: https://traxent.io/security
+# Hiring? We care about security. mailto:hello@traxent.io

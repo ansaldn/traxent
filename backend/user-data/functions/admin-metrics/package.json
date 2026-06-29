@@ -1,0 +1,15 @@
+{
+  "name": "admin-metrics",
+  "version": "1.0.0",
+  "main": "index.mjs",
+  "type": "module",
+  "license": "ISC",
+  "description": "Traxent admin-only aggregate metrics (GET /admin/metrics): counts-only dashboard data — signups (Auth0), active subs + MRR + plan mix (Stripe), and usage totals (DynamoDB). Gated by an ADMIN_SUBS allow-list.",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.700.0",
+    "@aws-sdk/lib-dynamodb": "^3.700.0",
+    "@aws-sdk/client-ssm": "^3.700.0",
+    "aws-jwt-verify": "^4.0.1",
+    "stripe": "^21.0.1"
+  }
+}

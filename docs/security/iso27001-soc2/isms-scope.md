@@ -14,7 +14,7 @@
 
 | Fact | Value |
 |------|-------|
-| Legal entity | **Akpan Limited**, registered in England & Wales |
+| Legal entity | **Akpan Holdings Limited**, registered in England & Wales |
 | Product | **Traxent** — a trading-education / prop-firm-readiness web + iOS application |
 | Nature of data | User account identity (via Auth0), self-entered learning progress, simulated ("paper") trade journal entries, firm selections, and subscription/billing status. **No real trading, no client funds, no card data on our servers, no PHI.** |
 | People | A single founder (David Ansah) currently holds all roles; an iOS contractor team consumes the backend API. |

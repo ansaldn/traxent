@@ -663,6 +663,7 @@ footer {
   .steps { grid-template-columns: 1fr; }
 }
 </style>
+<script src="/config.js" defer></script>
 </head>
 <body>
 
@@ -736,7 +737,7 @@ footer {
     <div class="about-card">
       <div class="about-card-icon">📖</div>
       <div class="about-card-title">Learn the craft</div>
-      <div class="about-card-body">Four structured modules cover the candlestick patterns, market structure, risk discipline, and prop-firm-specific quirks you actually need to know.</div>
+      <div class="about-card-body"><span data-tx="moduleCount">7</span> structured modules cover candlestick patterns, market structure, risk discipline, prop-firm-specific quirks, trading psychology, performance metrics, and your applied path to a funded challenge.</div>
     </div>
     <div class="about-card">
       <div class="about-card-icon">📓</div>
@@ -746,7 +747,7 @@ footer {
     <div class="about-card">
       <div class="about-card-icon">🎯</div>
       <div class="about-card-title">Score against real rules</div>
-      <div class="about-card-body">At least 16 prop firms — FTMO, Apex, Topstep, MyFundedFutures, FundedNext and more — each firm's published rules are baked into the scoring engine. You'll see which one you're ready for before you spend money on a challenge.</div>
+      <div class="about-card-body">At least <span data-tx="firmCount">16</span> prop firms — FTMO, Apex, Topstep, MyFundedFutures, FundedNext and more — each firm's published rules are baked into the scoring engine. You'll see which one you're ready for before you spend money on a challenge.</div>
     </div>
   </div>
 </section>
@@ -834,8 +835,8 @@ footer {
           <div class="phase-tag now">● Available now</div>
         </div>
         <ul class="phase-items">
-          <li>Readiness tracker for at least 16 prop firms (FTMO, Apex, Topstep, MyFundedFutures and more)</li>
-          <li>4 learning modules: fundamentals, patterns, risk, prop firm mastery</li>
+          <li>Readiness tracker for at least <span data-tx="firmCount">16</span> prop firms (FTMO, Apex, Topstep, MyFundedFutures and more)</li>
+          <li><span data-tx="moduleCount">7</span> learning modules: fundamentals, patterns, risk, prop-firm mastery, psychology, metrics and applied next steps</li>
           <li>Sim trade journal with R:R, win rate, and rule-compliance scoring</li>
           <li>Challenge Lab — 4-week structured programme with psychology and discipline drills</li>
           <li>Position size calculator with prop firm drawdown limits built in</li>
@@ -854,7 +855,6 @@ footer {
           <div class="phase-tag soon">● Next 4–8 weeks</div>
         </div>
         <ul class="phase-items">
-          <li>4 more prop firms: Topstep, The5ers, FXIFY, FundingPips</li>
           <li>News sentiment feed with AI-tagged bull/bear scoring</li>
           <li>Full sim-journal sync on iPhone — log a trade on iOS, see it everywhere</li>
           <li>Public launch — opening sign-ups to everyone on this list first</li>
@@ -868,7 +868,6 @@ footer {
           <div class="phase-tag later">● Later this year</div>
         </div>
         <ul class="phase-items">
-          <li>4 final prop firms: E8 Funding, Tradeify, Alpha Capital, Goat Funded</li>
           <li>Interactive chart lessons — drawing tools, mark-up, replay mode</li>
           <li>Premium real-time data feed (currently delayed)</li>
           <li>Challenge simulation mode — full sim under a firm's exact rules</li>
@@ -915,7 +914,7 @@ footer {
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Traxent is provided by Akpan Limited. All rights reserved. Registered in England &amp; Wales.</span>
+      <span>© <span data-tx="copyrightYear">2026</span> Traxent&trade; is provided and licensed by <span data-tx="companyName">Akpan Holdings Limited</span> (trademark pending). All rights reserved. Registered in England &amp; Wales.</span>
       <span style="font-family:var(--mono);font-size:11px">traxent.io</span>
     </div>
   </div>

@@ -164,7 +164,7 @@ catch anything broken, confusing, slow, or off-brand before public launch.
 - [ ] **Form submit** — valid email → success state + toast; invalid email → error toast; posts to Formspree; UTM params captured from query string.
 
 ### FAQ / Privacy / Terms
-- [ ] Render fully; up to date; "Akpan Limited" + 2026 footer correct; contact links work.
+- [ ] Render fully; up to date; "Akpan Holdings Limited" + 2026 footer correct; contact links work.
 
 **Notes:**
 

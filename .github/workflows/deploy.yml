@@ -80,6 +80,7 @@ jobs:
             --include "auth.js" \
             --include "userdata.js" \
             --include "sw.js" \
+            --include "config.js" \
             --cache-control "no-cache"
 
       - name: Invalidate CloudFront cache

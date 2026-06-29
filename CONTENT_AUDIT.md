@@ -64,7 +64,7 @@ Issues to tune:
 - **Noise** — lots of "class action / SEC Form 144" filings and duplicate stories. Add a simple
   dedupe (by title) and a title-keyword blocklist ("class action", "Form 144", "investor notice").
 
-**Learn (6 modules)** — Solid, consistent structure, real lessons + quizzes. Modules 5 & 6 match
+**Learn (7 modules)** — Solid, consistent structure, real lessons + quizzes. Modules 5 & 6 match
 the originals. No content gaps. (Optional: a short "what's next" CTA at the end of Module 6 → tracker.)
 
 **Calculator / Chart / Challenge Lab / Calendar / Journal** — All functional and on-brand. The

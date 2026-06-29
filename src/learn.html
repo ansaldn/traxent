@@ -147,6 +147,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
   .learn-cta { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
 }
 </style>
+<script src="/config.js" defer></script>
 </head>
 <body>
 
@@ -165,7 +166,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
   <div class="learn-header">
     <div class="learn-eyebrow">Learning centre</div>
     <h1 class="learn-title">Your path to funded</h1>
-    <p class="learn-sub">Six modules covering everything you need to know — from trading fundamentals and chart patterns to risk, psychology, and building a measurable edge. Start free, unlock more as you progress.</p>
+    <p class="learn-sub"><span data-tx="moduleCount">7</span> modules covering everything you need to know — from trading fundamentals and chart patterns to risk, psychology, and building a measurable edge. Start free, unlock more as you progress.</p>
     <div class="learn-progress-row">
       <span class="lpr-label">Overall progress</span>
       <div class="lpr-bar"><div class="lpr-fill" id="overall-fill" style="width:0%"></div></div>
@@ -192,7 +193,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 
 </div>
 
-<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="auth.js?v=__BUILD_SHA__"></script>
 <script>
 
@@ -351,7 +352,7 @@ async function initLearn() {
     // Show plan banner if on free plan
     if (plan === 'free') {
       document.getElementById('plan-banner').style.display = 'flex';
-      document.getElementById('plan-banner-text').innerHTML = `You're on the <strong>free plan</strong> — Module 1 is fully accessible. Upgrade to Observer at <strong>£4.99/mo</strong> for Modules 2–4, or Challenger for the full six-module path.`;
+      document.getElementById('plan-banner-text').innerHTML = `You're on the <strong>free plan</strong> — Module 1 is fully accessible. Upgrade to Observer at <strong>£4.99/mo</strong> for Modules 2–4, or Challenger for the full seven-module path.`;
       document.getElementById('learn-cta').style.display = 'flex';
     }
 

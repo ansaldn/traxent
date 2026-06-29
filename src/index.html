@@ -980,6 +980,7 @@ footer {
   .nav-links { display: none; }
 }
 </style>
+<script src="/config.js" defer></script>
 </head>
 <body>
 
@@ -1243,7 +1244,7 @@ footer {
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Traxent is provided by Akpan Limited. All rights reserved. Registered in England & Wales.</span>
+      <span>© <span data-tx="copyrightYear">2026</span> Traxent&trade; is provided and licensed by <span data-tx="companyName">Akpan Holdings Limited</span> (trademark pending). All rights reserved. Registered in England & Wales.</span>
       <span style="font-family:var(--mono);font-size:11px">traxent.io</span>
     </div>
   </div>
@@ -1454,7 +1455,7 @@ document.querySelectorAll('.how-card, .firm-card-dark, .plan-card').forEach(el =
 // ── INIT ──────────────────────────────────────────────────────────
 renderPricing();
 </script>
-<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="auth.js?v=__BUILD_SHA__"></script>
 <script>
 async function handleAuthClick(e) {

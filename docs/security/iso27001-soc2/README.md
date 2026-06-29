@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **For** | Akpan Limited (provider of Traxent) |
+| **For** | Akpan Holdings Limited (provider of Traxent) |
 | **Owner** | David Ansah (Founder / acting Security Lead) |
 | **Version** | 1.0 |
 | **Date** | 2026-06-29 |

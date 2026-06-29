@@ -18,7 +18,7 @@ Build **one** control set. Run it as an **ISO/IEC 27001:2022 ISMS** (the managem
 
 | Reason | Detail |
 |--------|--------|
-| **UK base, UK/EU buyers** | Akpan Limited is registered in England & Wales and hosts in AWS `eu-west-2` (London). ISO/IEC 27001 is the most recognised information-security badge in the UK/EU and internationally. |
+| **UK base, UK/EU buyers** | Akpan Holdings Limited is registered in England & Wales and hosts in AWS `eu-west-2` (London). ISO/IEC 27001 is the most recognised information-security badge in the UK/EU and internationally. |
 | **A shareable, public certificate** | ISO 27001 results in a **certificate** (3-year cycle, annual surveillance) you can show publicly — unlike a SOC 2 report, which is shared under NDA. Good for a small company that wants a visible trust signal. |
 | **The management system is producible now** | ISO 27001's core is the **ISMS** — scope, leadership, risk assessment/treatment, Statement of Applicability, objectives, internal audit, management review. These are **documentation and process** artifacts a solo founder can stand up today (this pack does exactly that), independent of headcount. |
 | **Annex A is a complete control catalogue** | The 93 Annex A:2022 controls give an exhaustive, internationally agreed checklist. Working the SoA forces an honest applicability decision on every control — which is precisely the gap analysis a buyer's diligence performs. |

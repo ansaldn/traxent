@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Document owner** | David Ansah (Data Protection point of contact) |
-| **Data controller** | **Akpan Limited**, registered in England & Wales |
+| **Data controller** | **Akpan Holdings Limited**, registered in England & Wales |
 | **Version** | 1.0 |
 | **Effective date** | 2026-06-29 |
 | **Review cadence** | At least annually, and on any change to processing or law |
@@ -14,13 +14,13 @@
 
 ## 1. Purpose & legal framework
 
-This policy sets out how **Akpan Limited** (the **data controller**) handles personal data through the **Traxent** service in compliance with the **UK General Data Protection Regulation (UK GDPR)** and the **Data Protection Act 2018**. The relevant supervisory authority is the UK **Information Commissioner's Office (ICO)**.
+This policy sets out how **Akpan Holdings Limited** (the **data controller**) handles personal data through the **Traxent** service in compliance with the **UK General Data Protection Regulation (UK GDPR)** and the **Data Protection Act 2018**. The relevant supervisory authority is the UK **Information Commissioner's Office (ICO)**.
 
 > **Scope note — HIPAA is not applicable.** Traxent processes **no Protected Health Information**. This policy concerns UK data-protection law only; nothing here relates to or implies HIPAA compliance.
 
 ## 2. Roles: controller and processors
 
-- **Controller:** **Akpan Limited** — determines the purposes and means of processing personal data through Traxent.
+- **Controller:** **Akpan Holdings Limited** — determines the purposes and means of processing personal data through Traxent.
 - **Processors / sub-processors:** third parties that process personal data **on our behalf and on our instructions**, each under a Data Processing Agreement (DPA). Our current sub-processors are **AWS, Auth0, Stripe, Plausible, Formspree and GitHub** — see `vendor-management.md` for the register, the data shared with each, and DPA status. Where a provider is an independent controller for part of the relationship (e.g. **Stripe** as a payment institution), that is noted in the register.
 
 ## 3. Data protection principles
@@ -103,7 +103,7 @@ Traxent is intended for adults (it is a trading-education product). We do not kn
 - **Security / vulnerability reports:** `security@traxent.io` (see `vulnerability-disclosure-policy.md`)
 - **Supervisory authority:** UK Information Commissioner's Office (ICO), `ico.org.uk`
 
-> **Action before audit/diligence:** confirm Akpan Limited's **ICO registration** (data-protection fee), Companies House number and registered address, and reconcile the operator name on `src/privacy.html` ("Traxent Ltd") to **Akpan Limited**. Tracked in `risk-register.md` (R-08) and `COMPLIANCE-ROADMAP.md`.
+> **Action before audit/diligence:** the operator/legal-entity name is now reconciled to **Akpan Holdings Limited** across the public surfaces (`privacy.html`, `terms.html`, `security.txt`, `security.html`) and this pack. Still to confirm: Akpan Holdings Limited's **ICO registration** (data-protection fee), Companies House number and registered address. Tracked in `risk-register.md` (R-08) and `COMPLIANCE-ROADMAP.md`.
 
 | Version | Date | Author | Change |
 |---------|------|--------|--------|

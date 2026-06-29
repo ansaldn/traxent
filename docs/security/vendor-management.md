@@ -13,7 +13,7 @@
 
 ## 1. Purpose
 
-Traxent runs on third-party platforms. This document governs how we select, approve, document and review those vendors — especially **sub-processors** that handle personal data on our behalf (as data controller, **Akpan Limited** remains accountable for them under UK GDPR). It contains the **sub-processor register**, which also feeds our Records of Processing Activities.
+Traxent runs on third-party platforms. This document governs how we select, approve, document and review those vendors — especially **sub-processors** that handle personal data on our behalf (as data controller, **Akpan Holdings Limited** remains accountable for them under UK GDPR). It contains the **sub-processor register**, which also feeds our Records of Processing Activities.
 
 ## 2. Vendor onboarding & due-diligence checklist
 

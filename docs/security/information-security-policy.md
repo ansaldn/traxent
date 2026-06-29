@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Document owner** | David Ansah (Founder / acting Security Lead) |
-| **Approved by** | Akpan Limited (directors) |
+| **Approved by** | Akpan Holdings Limited (directors) |
 | **Version** | 1.0 |
 | **Effective date** | 2026-06-29 |
 | **Review cadence** | At least annually, and after any major change or security incident |
@@ -13,7 +13,7 @@
 
 ## 1. Purpose
 
-This is the top-level policy of Traxent's Information Security Management System (ISMS). It sets out how **Akpan Limited** ("the company", "we") protects the confidentiality, integrity and availability of the information entrusted to **Traxent** ("the service") — most importantly our customers' personal data. All other documents in `docs/security/` sit beneath this one and implement it.
+This is the top-level policy of Traxent's Information Security Management System (ISMS). It sets out how **Akpan Holdings Limited** ("the company", "we") protects the confidentiality, integrity and availability of the information entrusted to **Traxent** ("the service") — most importantly our customers' personal data. All other documents in `docs/security/` sit beneath this one and implement it.
 
 ## 2. Scope
 
@@ -45,7 +45,7 @@ Traxent is a small organisation; one person currently holds several roles. They 
 | Role | Currently held by | Responsibility |
 |------|-------------------|----------------|
 | **Information Security Owner / Security Lead** | David Ansah | Owns this ISMS, approves policies, owns the risk register, leads incident response. |
-| **Data Protection point of contact** | David Ansah | Handles data-subject requests and breach notifications to the ICO (see `data-protection-policy.md`). Akpan Limited is **not** currently required to appoint a statutory DPO; reassess if processing scales. |
+| **Data Protection point of contact** | David Ansah | Handles data-subject requests and breach notifications to the ICO (see `data-protection-policy.md`). Akpan Holdings Limited is **not** currently required to appoint a statutory DPO; reassess if processing scales. |
 | **Engineering / Operations** | David Ansah | Implements controls, runs deployments, maintains IaC and monitoring. |
 | **Vendor / Sub-processor owner** | David Ansah | Maintains `vendor-management.md`, obtains DPAs, reviews vendor certifications. |
 | **All personnel** | Everyone | Follow these policies; report suspected incidents immediately (see `incident-response-plan.md`). |
@@ -98,7 +98,7 @@ Failure to follow this policy may lead to revocation of access and, for personne
 
 ## 12. Review and approval
 
-This policy is reviewed on the cadence above by the Security Lead and approved by Akpan Limited's directors. Material changes are recorded in the table below.
+This policy is reviewed on the cadence above by the Security Lead and approved by Akpan Holdings Limited's directors. Material changes are recorded in the table below.
 
 | Version | Date | Author | Change |
 |---------|------|--------|--------|

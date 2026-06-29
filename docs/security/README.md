@@ -1,6 +1,6 @@
 # Traxent — Security & Compliance Documentation Pack
 
-**Owner:** Akpan Limited (registered in England & Wales) — the provider of Traxent.
+**Owner:** Akpan Holdings Limited (registered in England & Wales) — the provider of Traxent.
 **Maintained by:** David Ansah (Founder / acting Security Lead).
 **Last reviewed:** 2026-06-29 · **Review cadence:** at least annually, and after any major change or incident.
 **Classification:** Internal. Not for public publication. (The public-facing summary lives at `https://traxent.io/security` and `/.well-known/security.txt`.)
@@ -24,7 +24,7 @@ This folder is Traxent's internal **Information Security Management System (ISMS
 | Fact | Value |
 |------|-------|
 | Product | **Traxent** — a trading-education / prop-firm-readiness web + iOS app |
-| Legal entity / data controller | **Akpan Limited**, registered in England & Wales |
+| Legal entity / data controller | **Akpan Holdings Limited**, registered in England & Wales |
 | Applicable data-protection law | **UK GDPR** + **Data Protection Act 2018** |
 | Supervisory authority | UK Information Commissioner's Office (**ICO**) |
 | Hosting | **AWS** (region `eu-west-2`, London) — S3 + CloudFront (static site), Lambda + API Gateway + DynamoDB (backend), defined as code with SAM/CloudFormation |
@@ -105,7 +105,7 @@ The ISMS management-system clauses (risk assessment, objectives, internal audit,
 
 ## Known fix-up before audit / diligence
 
-- **Entity-name consistency.** The public surfaces (`src/privacy.html`, `src/terms.html`, `security.txt`, `security.html`) now all name the operator as **Akpan Limited**, matching this pack. Still to confirm before audit or diligence: the Companies House registration number, registered address and ICO data-protection-fee registration. (Tracked in `risk-register.md` and `COMPLIANCE-ROADMAP.md`.)
+- **Entity-name consistency.** The public surfaces (`src/privacy.html`, `src/terms.html`, `security.txt`, `security.html`) now all name the operator as **Akpan Holdings Limited**, matching this pack. Still to confirm before audit or diligence: the Companies House registration number, registered address and ICO data-protection-fee registration. (Tracked in `risk-register.md` and `COMPLIANCE-ROADMAP.md`.)
 
 ---
 

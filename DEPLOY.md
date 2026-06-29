@@ -161,7 +161,7 @@ Also confirm **Allowed Logout URLs** and **Allowed Web Origins** include `https:
 - [ ] Account → Cancel plan → returns success (not 401).
 - [ ] `/news` loads (feed or "being set up" state), and is blocked for non-Funded users.
 - [ ] `/tracker` shows the **best-matched firm** panel and all 16 firms.
-- [ ] `/learn` shows six modules; Modules 5 & 6 open and the quizzes pass.
+- [ ] `/learn` shows seven modules; Modules 5 & 6 open and the quizzes pass.
 - [ ] GitHub Actions: all three workflows green.
 
 ---

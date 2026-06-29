@@ -15,7 +15,7 @@ and **effort**.
 - **`/news` sentiment feed** — Funded-tier market news with bull/bear tags, pluggable
   provider, server-side gated.
 - **Two new learn modules** — Psychology & Discipline, and Review & Building Your Edge —
-  taking the path from 4 to 6 modules.
+  taking the path from 4 to 7 modules.
 - **User-data backbone** — DynamoDB + Lambda + API (IaC) so progress, paper trades and firm
   selections persist across devices instead of living in one browser.
 

@@ -56,6 +56,7 @@ This folder is Traxent's internal **Information Security Management System (ISMS
 | [`risk-register.md`](risk-register.md) | Live register of risks with likelihood, impact, mitigation and owner. |
 | [`controls-matrix.md`](controls-matrix.md) | Each implemented control mapped to **SOC 2 TSC** and **ISO/IEC 27001:2022 Annex A**, with honest status. |
 | [`COMPLIANCE-ROADMAP.md`](COMPLIANCE-ROADMAP.md) | Plain-English action plan: how SOC 2 / ISO 27001 are *earned*, the recommended path, timelines, ballpark costs, and David's first 5 actions. |
+| [`iso27001-soc2/`](iso27001-soc2/README.md) | **Dual-framework readiness layer** (ISO 27001-led, SOC 2-mapped): ISMS scope, risk assessment & treatment, **Statement of Applicability** (all 93 Annex A controls), the **unified control matrix**, the SOC 2 TSC mapping, and the framework-choice rationale. Extends — does not duplicate — the documents above. No certification claimed. |
 
 Related existing artifacts in this repo (referenced by the docs above):
 

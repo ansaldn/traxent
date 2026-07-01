@@ -4,7 +4,7 @@
 <script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://s3.tradingview.com https://cdn.auth0.com https://plausible.io https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://s3.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://s3.tradingview.com https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <!-- PWA manifest -->
 <link rel="manifest" href="/manifest.json">
  
@@ -219,7 +219,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32
           <div class="chart-header"><div><div class="chart-title">Live chart — find a setup and calculate your size</div><div class="chart-subtitle">Note the current price and stop loss distance · use the calculator below</div></div>
             <div class="inst-switcher" id="sw1"><button class="inst-btn active" onclick="sw('f1','EURUSD','60',this,'sw1')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f1','GBPUSD','60',this,'sw1')">GBP/USD 1H</button><button class="inst-btn" onclick="sw('f1','ES1!','60',this,'sw1')">ES1! 1H</button><button class="inst-btn" onclick="sw('f1','NQ1!','60',this,'sw1')">NQ1! 1H</button><button class="inst-btn" onclick="sw('f1','XAUUSD','60',this,'sw1')">Gold 1H</button></div>
           </div>
-          <iframe id="f1" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=EURUSD&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+          <div id="f1" class="chart-frame tv-mount" data-sym="EURUSD" data-iv="60"></div>
         </div>
         <div class="inline-calc">
           <div class="ic-title">Position size calculator — try different risk levels</div>
@@ -256,7 +256,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32
           <div class="chart-header"><div><div class="chart-title">Live chart — practise identifying stop levels</div><div class="chart-subtitle">Find a pattern · identify where the logical stop loss would sit · not at a round number</div></div>
             <div class="inst-switcher" id="sw2"><button class="inst-btn active" onclick="sw('f2','ES1!','60',this,'sw2')">ES1! 1H</button><button class="inst-btn" onclick="sw('f2','EURUSD','60',this,'sw2')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f2','GBPUSD','60',this,'sw2')">GBP/USD 1H</button><button class="inst-btn" onclick="sw('f2','ES1!','D',this,'sw2')">ES1! Daily</button></div>
           </div>
-          <iframe id="f2" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+          <div id="f2" class="chart-frame tv-mount" data-sym="ES1!" data-iv="60"></div>
         </div>
         <div class="exercise">
           <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">Stop loss logic</span></div>
@@ -293,7 +293,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32
           <div class="chart-header"><div><div class="chart-title">Live chart — find an R:R setup</div><div class="chart-subtitle">Find a potential setup · measure stop distance · identify the next logical resistance for target</div></div>
             <div class="inst-switcher" id="sw3"><button class="inst-btn active" onclick="sw('f3','EURUSD','60',this,'sw3')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f3','ES1!','60',this,'sw3')">ES1! 1H</button><button class="inst-btn" onclick="sw('f3','NQ1!','60',this,'sw3')">NQ1! 1H</button><button class="inst-btn" onclick="sw('f3','XAUUSD','60',this,'sw3')">Gold 1H</button></div>
           </div>
-          <iframe id="f3" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=EURUSD&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+          <div id="f3" class="chart-frame tv-mount" data-sym="EURUSD" data-iv="60"></div>
         </div>
         <div class="inline-calc">
           <div class="ic-title">R:R calculator — measure your setup</div>
@@ -376,7 +376,7 @@ const completed=[false,false,false,false,false];
 function showLesson(i){for(let j=0;j<5;j++){document.getElementById('lesson-'+j).style.display='none';document.getElementById('nav-'+j).classList.remove('active');}document.getElementById('lesson-'+i).style.display='block';document.getElementById('nav-'+i).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
 function completeLesson(i){completed[i]=true;document.getElementById('dot-'+i).textContent='✓';document.getElementById('nav-'+i).classList.add('completed');updateProgress();showLesson(i+1);if(i===3)initQuiz();}
 function updateProgress(){const done=completed.filter(Boolean).length;const pct=Math.round((done/5)*100);document.getElementById('prog-fill').style.width=pct+'%';document.getElementById('prog-pct').textContent=pct+'%';}
-function sw(fid,sym,interval,btn,swid){document.querySelectorAll('#'+swid+' .inst-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById(fid).src=`https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=${sym}&interval=${interval}&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com`;}
+function sw(fid,sym,interval,btn,swid){document.querySelectorAll('#'+swid+' .inst-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');mountTV(fid, sym, interval);}
 function calcIC1(){const a=parseFloat(document.getElementById('ic1-account').value)||0;const r=parseFloat(document.getElementById('ic1-risk').value)||0;const e=parseFloat(document.getElementById('ic1-entry').value)||0;const s=parseFloat(document.getElementById('ic1-stop').value)||0;const re=document.getElementById('ic1-result');const w=document.getElementById('ic1-working');if(!e||!s){re.textContent='Enter prices above';w.style.display='none';return;}const ra=a*(r/100);const d=Math.abs(e-s);const sz=d>0?ra/d:0;re.textContent=sz.toFixed(2)+' units';w.style.display='block';w.innerHTML=`<strong>Risk:</strong> £${a.toLocaleString()} × ${r}% = <strong>£${ra.toFixed(2)}</strong> · <strong>Stop dist:</strong> ${d.toFixed(5)} · <strong>Size:</strong> ${sz.toFixed(2)} units`;}
 function calcIC2(){const e=parseFloat(document.getElementById('ic2-entry').value)||0;const s=parseFloat(document.getElementById('ic2-stop').value)||0;const t=parseFloat(document.getElementById('ic2-target').value)||0;const risk=parseFloat(document.getElementById('ic2-risk').value)||0;const re=document.getElementById('ic2-result');const w=document.getElementById('ic2-working');if(!e||!s||!t){re.textContent='Enter all prices';w.style.display='none';return;}const stopD=Math.abs(e-s);const targD=Math.abs(t-e);const rr=targD/stopD;const pot=risk*rr;re.textContent=`1 : ${rr.toFixed(2)}`;re.style.color=rr>=2?'var(--good)':rr>=1?'var(--warn)':'var(--bad)';w.style.display='block';w.innerHTML=`<strong>Stop distance:</strong> ${stopD.toFixed(5)} · <strong>Target distance:</strong> ${targD.toFixed(5)} · <strong>R:R:</strong> 1:${rr.toFixed(2)} · <strong>Potential profit:</strong> £${pot.toFixed(2)}`;}
 const EX={ex1:{C:{c:'✓ Correct. The stop loss should go just below the flag consolidation low — the structural level that defines the pattern. If price breaks that level, the bull flag is invalidated.',w:'Not quite. The logical stop is just below the flag consolidation low (5,200 with a small buffer). This is the structural level that defines the trade — if price breaks it, the trade idea is wrong.'}},ex2:{D:{c:'✓ Correct. After hitting 3% down and having three losing trades, the correct action is to stop trading for the day. Revenge trading with larger size is the fastest way to blow a challenge.',w:'Not quite. After three losses and 3% down, stopping for the day is the right call. Any trade taken with emotional intent to recover losses — regardless of size — is revenge trading.'}}};
@@ -400,5 +400,25 @@ function retryQuiz(){document.getElementById('quiz-result').style.display='none'
 initQuiz();
 </script>
 <script src="/consent.js?v=__BUILD_SHA__" defer></script>
+<script>
+/* Official TradingView Advanced Chart widget loader. mountTV builds the widget
+   inside a host element (by id or node); switchers call it to change symbol. */
+function mountTV(id, sym, iv){
+  var host = (typeof id === 'string') ? document.getElementById(id) : id;
+  if(!host) return;
+  host.classList.add('tradingview-widget-container');
+  host.innerHTML = '<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>';
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  s.text = JSON.stringify({symbol:String(sym), interval:String(iv), theme:'dark', style:'1', locale:'en', timezone:'Europe/London', autosize:true, hide_top_toolbar:false, hide_legend:false, allow_symbol_change:false, save_image:false, support_host:'https://www.tradingview.com'});
+  host.appendChild(s);
+}
+(function(){
+  function initTV(){ var m=document.querySelectorAll('.tv-mount'); for(var i=0;i<m.length;i++){ mountTV(m[i], m[i].getAttribute('data-sym'), m[i].getAttribute('data-iv')); } }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initTV); else initTV();
+})();
+</script>
 </body>
 </html>

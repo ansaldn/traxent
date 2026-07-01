@@ -4,7 +4,7 @@
 <script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://s3.tradingview.com https://cdn.auth0.com https://plausible.io https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://s3.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://s3.tradingview.com https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <!-- PWA manifest -->
 <link rel="manifest" href="/manifest.json">
  
@@ -256,7 +256,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32
           <div class="chart-header"><div><div class="chart-title">Live chart — look for flag patterns</div><div class="chart-subtitle">Try 1H and 4H timeframes · strong moves followed by slow pullbacks</div></div>
             <div class="inst-switcher" id="sw1"><button class="inst-btn active" onclick="sw('f1','ES1!','60',this,'sw1')">ES1! 1H</button><button class="inst-btn" onclick="sw('f1','NQ1!','60',this,'sw1')">NQ1! 1H</button><button class="inst-btn" onclick="sw('f1','EURUSD','60',this,'sw1')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f1','GBPUSD','60',this,'sw1')">GBP/USD 1H</button><button class="inst-btn" onclick="sw('f1','XAUUSD','60',this,'sw1')">Gold 1H</button></div>
           </div>
-          <iframe id="f1" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+          <div id="f1" class="chart-frame tv-mount" data-sym="ES1!" data-iv="60"></div>
         </div>
         <div class="exercise">
           <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">Flag pattern recognition</span></div>
@@ -296,7 +296,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32
           <div class="chart-header"><div><div class="chart-title">Live chart — look for inside bars</div><div class="chart-subtitle">Daily and 4H timeframes show the clearest inside bars · look for candles fully contained within the previous one</div></div>
             <div class="inst-switcher" id="sw2"><button class="inst-btn active" onclick="sw('f2','EURUSD','D',this,'sw2')">EUR/USD Daily</button><button class="inst-btn" onclick="sw('f2','GBPUSD','D',this,'sw2')">GBP/USD Daily</button><button class="inst-btn" onclick="sw('f2','ES1!','D',this,'sw2')">ES1! Daily</button><button class="inst-btn" onclick="sw('f2','XAUUSD','D',this,'sw2')">Gold Daily</button></div>
           </div>
-          <iframe id="f2" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=EURUSD&interval=D&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+          <div id="f2" class="chart-frame tv-mount" data-sym="EURUSD" data-iv="D"></div>
         </div>
         <div class="exercise">
           <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">Inside bar identification</span></div>
@@ -339,7 +339,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32
           <div class="chart-header"><div><div class="chart-title">Live chart — BOS and VWAP</div><div class="chart-subtitle">Switch to intraday to see VWAP in action · daily for structure breaks</div></div>
             <div class="inst-switcher" id="sw3"><button class="inst-btn active" onclick="sw('f3','ES1!','15',this,'sw3')">ES1! 15M</button><button class="inst-btn" onclick="sw('f3','NQ1!','15',this,'sw3')">NQ1! 15M</button><button class="inst-btn" onclick="sw('f3','ES1!','D',this,'sw3')">ES1! Daily</button><button class="inst-btn" onclick="sw('f3','EURUSD','60',this,'sw3')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f3','GBPUSD','60',this,'sw3')">GBP/USD 1H</button></div>
           </div>
-          <iframe id="f3" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=15&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+          <div id="f3" class="chart-frame tv-mount" data-sym="ES1!" data-iv="15"></div>
         </div>
         <div class="exercise">
           <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">BOS identification</span></div>
@@ -379,7 +379,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32
           <div class="chart-header"><div><div class="chart-title">Live chart — find a confluence setup</div><div class="chart-subtitle">Use multiple timeframes · look for two or more signals aligning at the same level</div></div>
             <div class="inst-switcher" id="sw4"><button class="inst-btn active" onclick="sw('f4','ES1!','60',this,'sw4')">ES1! 1H</button><button class="inst-btn" onclick="sw('f4','ES1!','D',this,'sw4')">ES1! Daily</button><button class="inst-btn" onclick="sw('f4','EURUSD','60',this,'sw4')">EUR/USD 1H</button><button class="inst-btn" onclick="sw('f4','EURUSD','D',this,'sw4')">EUR/USD Daily</button><button class="inst-btn" onclick="sw('f4','NQ1!','60',this,'sw4')">NQ1! 1H</button></div>
           </div>
-          <iframe id="f4" class="chart-frame" src="https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=ES1!&interval=60&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+          <div id="f4" class="chart-frame tv-mount" data-sym="ES1!" data-iv="60"></div>
         </div>
         <div class="exercise">
           <div class="exercise-hd"><span class="ex-badge">Chart exercise</span><span class="ex-title">Confluence thinking</span></div>
@@ -420,7 +420,7 @@ const completed=[false,false,false,false,false,false];
 function showLesson(i){for(let j=0;j<6;j++){document.getElementById('lesson-'+j).style.display='none';document.getElementById('nav-'+j).classList.remove('active');}document.getElementById('lesson-'+i).style.display='block';document.getElementById('nav-'+i).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
 function completeLesson(i){completed[i]=true;document.getElementById('dot-'+i).textContent='✓';document.getElementById('nav-'+i).classList.add('completed');updateProgress();showLesson(i+1);if(i===4)initQuiz();}
 function updateProgress(){const done=completed.filter(Boolean).length;const pct=Math.round((done/6)*100);document.getElementById('prog-fill').style.width=pct+'%';document.getElementById('prog-pct').textContent=pct+'%';}
-function sw(fid,sym,interval,btn,swid){document.querySelectorAll('#'+swid+' .inst-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById(fid).src=`https://www.tradingview.com/widgetsnext/embed/advanced-chart/advanced-chart.html#locale=en&symbol=${sym}&interval=${interval}&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_legend=0&allow_symbol_change=0&save_image=0&calendar=0&support_host=https%3A%2F%2Fwww.tradingview.com`;}
+function sw(fid,sym,interval,btn,swid){document.querySelectorAll('#'+swid+' .inst-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');mountTV(fid, sym, interval);}
 const EX={ex1:{B:{c:'✓ Correct. The flag is a slow, orderly pullback — small candles, slight drift against the trend. It is not a reversal, just a pause before continuation.',w:'Not quite. The flag portion is a slow, orderly pullback in a slight channel against the trend. It should not reverse the pole or surge further in the same direction.'}},ex2:{A:{c:'✓ Correct. An inside bar requires BOTH the high AND the low to be within the mother bar\'s range. If either extreme breaks outside, it is not an inside bar.',w:'Not quite. An inside bar requires both the high AND the low to be contained. The entire range must fit inside — not just the close.'}},ex3:{B:{c:'✓ Correct. A bullish BOS occurs when price closes above the previous swing high — breaking the sequence of lower highs that defined the downtrend.',w:'Not quite. A bullish BOS is a candle close above the previous swing high. This breaks the downtrend structure and signals buyers are gaining control.'}},ex4:{A:{c:'✓ Correct. Multiple signals aligning — daily uptrend, 1H bull flag, VWAP support — is high confluence. Each signal increases probability. Together they represent a significantly higher quality setup.',w:'Not quite. Multiple signals aligning is positive — more evidence pointing the same way. Confluence means higher probability, not a guaranteed win.'}}};
 function chk(exId,chosen,btn,correct){const opts=document.querySelectorAll('#'+exId+'-opts .ex-opt');opts.forEach(o=>{o.disabled=true;o.onclick=null;});const ok=chosen===correct;btn.classList.add(ok?'correct':'incorrect');if(!ok){const idx=['A','B','C','D'].indexOf(correct);if(idx>=0)opts[idx].classList.add('show-correct');}const fb=document.getElementById(exId+'-fb');fb.className=`ex-feedback show ${ok?'correct':'incorrect'}`;const m=EX[exId][correct];fb.innerHTML=`<strong>${ok?'✓ Correct':'Not quite'}</strong> — ${ok?m.c:m.w}`;document.getElementById(exId+'-next').classList.add('show');}
 const QS=[
@@ -442,5 +442,25 @@ function retryQuiz(){document.getElementById('quiz-result').style.display='none'
 initQuiz();
 </script>
 <script src="/consent.js?v=__BUILD_SHA__" defer></script>
+<script>
+/* Official TradingView Advanced Chart widget loader. mountTV builds the widget
+   inside a host element (by id or node); switchers call it to change symbol. */
+function mountTV(id, sym, iv){
+  var host = (typeof id === 'string') ? document.getElementById(id) : id;
+  if(!host) return;
+  host.classList.add('tradingview-widget-container');
+  host.innerHTML = '<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>';
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  s.text = JSON.stringify({symbol:String(sym), interval:String(iv), theme:'dark', style:'1', locale:'en', timezone:'Europe/London', autosize:true, hide_top_toolbar:false, hide_legend:false, allow_symbol_change:false, save_image:false, support_host:'https://www.tradingview.com'});
+  host.appendChild(s);
+}
+(function(){
+  function initTV(){ var m=document.querySelectorAll('.tv-mount'); for(var i=0;i<m.length;i++){ mountTV(m[i], m[i].getAttribute('data-sym'), m[i].getAttribute('data-iv')); } }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initTV); else initTV();
+})();
+</script>
 </body>
 </html>

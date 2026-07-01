@@ -37,8 +37,8 @@ nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-
 .tx-gate-info{background:var(--ink);color:#fff;padding:64px 56px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;isolation:isolate}
 .tx-gate-info > :not(.tx-gate-fx){position:relative;z-index:1}
 .tx-gate-fx{position:absolute;inset:0;z-index:0;pointer-events:none}
-.tx-gate-fx .star{position:absolute;top:var(--y);left:-15%;width:var(--len,200px);height:2px;border-radius:2px;transform-origin:left center;background:linear-gradient(90deg,rgba(26,158,114,0),rgba(26,158,114,.85));box-shadow:0 0 6px rgba(26,158,114,.45);opacity:0;animation:tx-shoot var(--dur,7s) linear var(--delay,0s) infinite}
-@keyframes tx-shoot{0%{transform:translate3d(0,0,0) rotate(20deg);opacity:0}6%{opacity:.85}45%{opacity:.85}72%{opacity:0}100%{transform:translate3d(120vw,-45vh,0) rotate(20deg);opacity:0}}
+.tx-gate-fx .star{position:absolute;top:var(--y);left:-20%;width:var(--len,200px);height:2px;border-radius:2px;transform-origin:left center;background:linear-gradient(90deg,rgba(26,158,114,0),rgba(26,158,114,.85));box-shadow:0 0 6px rgba(26,158,114,.45);opacity:0;animation:tx-shoot var(--dur,7s) linear var(--delay,0s) infinite}
+@keyframes tx-shoot{0%{transform:rotate(-22deg) translateX(0);opacity:0}6%{opacity:.85}55%{opacity:.85}80%{opacity:0}100%{transform:rotate(-22deg) translateX(150vw);opacity:0}}
 @media (prefers-reduced-motion:reduce){.tx-gate-fx .star{animation:none;opacity:0}}
 .tx-gate-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-mid);margin-bottom:20px}
 .tx-gate-info h2{font-family:var(--serif);font-size:44px;line-height:1.08;font-weight:400;margin-bottom:18px}
@@ -163,8 +163,6 @@ footer a{color:var(--ink3)}
       <span class="tx-gate-pill">Free · about 2 minutes</span>
       <h3>Create your free account</h3>
       <p class="sub">Unlock Trading 201 &amp; 301 and the readiness tracker. No card required.</p>
-      <label class="tx-gate-label" for="gate-email">Email</label>
-      <input class="tx-gate-input" type="email" id="gate-email" placeholder="you@email.com" autocomplete="email">
       <button class="tx-gate-btn" id="gate-signup" type="button">Create free account →</button>
       <div class="tx-gate-signin">Already have an account? <button id="gate-signin" type="button">Sign in</button></div>
       <p class="tx-gate-micro">Secure sign-up powered by Auth0 — you'll set a password and confirm any two-factor step on the next screen. We never see your password.</p>

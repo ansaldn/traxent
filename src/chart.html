@@ -4,7 +4,7 @@
 <script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://s3.tradingview.com https://cdn.auth0.com https://plausible.io https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://s3.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://s3.tradingview.com https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <title>Live Chart — Traxent</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -218,11 +218,7 @@ body.session-mode .upgrade-bar{display:none;}
 
   <!-- Chart area -->
   <div class="chart-area" id="chart-area">
-    <iframe
-      id="chart-frame"
-      class="chart-frame"
-      src="https://s.tradingview.com/widgetsnext/embed/#locale=en&symbol=ES1!&interval=15&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_side_toolbar=0&allow_symbol_change=0&save_image=0&support_host=https%3A%2F%2Fwww.tradingview.com" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-    ></iframe>
+    <div id="chart-frame" class="chart-frame tv-mount" data-sym="ES1!" data-iv="15"></div>
 
     <!-- Delayed badge -->
     <div class="delayed-overlay" id="delayed-badge">15-MIN DELAY</div>
@@ -484,8 +480,7 @@ function switchTF(tf, btn) {
 }
 
 function updateChart() {
-  const url = `https://s.tradingview.com/widgetsnext/embed/#locale=en&symbol=${currentInst}&interval=${currentTF}&theme=dark&style=1&timezone=Europe%2FLondon&hide_top_toolbar=0&hide_side_toolbar=0&allow_symbol_change=0&save_image=0&support_host=https%3A%2F%2Fwww.tradingview.com`;
-  document.getElementById('chart-frame').src = url;
+  mountTV('chart-frame', currentInst, currentTF);
 }
 
 // ── SESSION MODE ────────────────────────────────────────────────────────────────
@@ -691,5 +686,25 @@ function renderSessionTrades() {
 initChart();
 </script>
 <script src="/consent.js?v=__BUILD_SHA__" defer></script>
+<script>
+/* Official TradingView Advanced Chart widget loader. mountTV builds the widget
+   inside a host element (by id or node); switchers call it to change symbol. */
+function mountTV(id, sym, iv){
+  var host = (typeof id === 'string') ? document.getElementById(id) : id;
+  if(!host) return;
+  host.classList.add('tradingview-widget-container');
+  host.innerHTML = '<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>';
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  s.text = JSON.stringify({symbol:String(sym), interval:String(iv), theme:'dark', style:'1', locale:'en', timezone:'Europe/London', autosize:true, hide_top_toolbar:false, hide_legend:false, allow_symbol_change:false, save_image:false, support_host:'https://www.tradingview.com'});
+  host.appendChild(s);
+}
+(function(){
+  function initTV(){ var m=document.querySelectorAll('.tv-mount'); for(var i=0;i<m.length;i++){ mountTV(m[i], m[i].getAttribute('data-sym'), m[i].getAttribute('data-iv')); } }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initTV); else initTV();
+})();
+</script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <!-- PWA manifest -->
 <link rel="manifest" href="/manifest.json">
  
@@ -28,7 +28,7 @@
   }
 </script>
 <title>Privacy Policy — Traxent</title>
-<meta name="description" content="Traxent privacy policy — how Akpan Holdings Limited collects, uses and protects your data under UK GDPR, including our cookie and storage declaration.">
+<meta name="description" content="Traxent privacy policy — how we collect, use and protect your data under UK GDPR, including our cookie and storage declaration.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://traxent.io/privacy">
 <meta property="og:site_name" content="Traxent">
@@ -104,7 +104,7 @@ footer { background: var(--ink); padding: 40px; }
   <div class="page-meta">Last updated: 29 June 2026 · Akpan Holdings Limited, registered in England &amp; Wales</div>
 
   <div class="highlight-box">
-    <p>Traxent is committed to protecting your personal data. This policy explains what we collect, why we collect it, the lawful basis for using it, and the rights you have. We do not sell your data, and we use no advertising or cross-site tracking.</p>
+    <p>Traxent is committed to protecting your personal data. This policy explains what we collect, why we collect it, the lawful basis for using it, and the rights you have. We do not sell your data. Our analytics are cookieless by default; the only advertising tracking we use is the Meta Pixel, and only if you consent.</p>
   </div>
 
   <div class="section">
@@ -121,6 +121,7 @@ footer { background: var(--ink); padding: 40px; }
       <li><strong>Usage data</strong> — your lesson progress, simulated (paper) trades, firm selections, and similar in-product activity, so we can provide the platform, save your work, and show your prop firm readiness.</li>
       <li><strong>Payment data</strong> — your subscription and billing details are processed by Stripe. We never see or store your card numbers; Stripe handles them directly.</li>
       <li><strong>Basic analytics</strong> — privacy-friendly, cookieless and aggregate (counts and pageviews only). No personal data, no profiles, and no cross-site tracking. See <a href="#cookies">Cookies &amp; storage</a> below.</li>
+      <li><strong>Advertising (Meta Pixel)</strong> — <em>only if you consent</em>, we load Meta's (Facebook) pixel to measure and improve our marketing. This involves cross-site tracking. Reject it in the cookie banner and it never loads. See <a href="#cookies">Cookies &amp; storage</a> below.</li>
     </ul>
     <p>We do not collect any real trading account data, brokerage credentials, or financial account information, and we never use your data to make automated decisions that have a legal or similarly significant effect on you.</p>
   </div>
@@ -131,7 +132,7 @@ footer { background: var(--ink); padding: 40px; }
     <ul>
       <li><strong>Performance of a contract</strong> — to create your account and provide the platform you have signed up for, including saving your lessons, simulated trades and firm selections, and processing your subscription.</li>
       <li><strong>Legitimate interests</strong> — to keep the service secure, prevent abuse, and understand aggregate, cookieless usage so we can improve the product. We balance these interests against your rights and freedoms.</li>
-      <li><strong>Consent</strong> — where consent applies (for example, any future non-essential cookies or optional marketing), we will ask first and you can withdraw it at any time. We do not currently use any non-essential cookies.</li>
+      <li><strong>Consent</strong> — for non-essential cookies (currently the Meta Pixel, used for advertising measurement), we ask first via our cookie banner, load them only if you accept, and let you withdraw at any time.</li>
       <li><strong>Legal obligation</strong> — where we must retain certain records, such as billing information for tax purposes.</li>
     </ul>
   </div>
@@ -179,7 +180,8 @@ footer { background: var(--ink); padding: 40px; }
       <li><strong>PWA / service-worker cache</strong> — stores assets locally so the app loads quickly and works offline.</li>
     </ul>
     <p>In addition, we use <strong>cookieless</strong>, privacy-friendly analytics (Plausible). It measures aggregate counts and pageviews only — it sets no cookies, stores no personal data, builds no profiles, and does <strong>not</strong> track you across other websites. Because it is anonymous and consent-exempt under UK GDPR and PECR, it runs by default; we disclose it here for transparency.</p>
-    <p>We use <strong>no advertising and no cross-site tracking</strong> of any kind. You can clear or block cookies and storage in your browser settings, but doing so will prevent you from logging in and may stop parts of the platform from working.</p>
+    <p>With your <strong>consent</strong>, we also load the <strong>Meta Pixel</strong> (Facebook) — advertising cookies that measure our marketing and help us reach people like you. This involves <strong>cross-site tracking</strong>. It loads <strong>only after you choose "Accept"</strong> in our cookie banner; choose <strong>"Reject"</strong> and it never loads, with no loss of functionality. You can change your choice at any time by reopening the banner, and manage Meta's use of your data in your <a href="https://www.facebook.com/settings" rel="noopener noreferrer">Facebook settings</a>.</p>
+    <p>You can also clear or block cookies and storage in your browser settings, but blocking the strictly-necessary ones will prevent you from logging in and may stop parts of the platform from working.</p>
   </div>
 
   <div class="section">

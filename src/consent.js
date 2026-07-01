@@ -7,9 +7,9 @@
 //   • Analytics: privacy-first and COOKIELESS (no personal data, no cross-site
 //     tracking) — so it's consent-exempt under UK GDPR/PECR. We still disclose it.
 //
-// Because we use no non-essential cookies today, this is a NOTICE (not a hard
-// opt-in wall). But it records the choice and exposes TraxentConsent.allowed(cat)
-// so we can gate any future non-essential cookies (e.g. ads) behind real consent.
+// Marketing cookies (Meta Pixel) ARE used now, gated behind real consent — so this
+// is an opt-in: Accept loads the pixel, Reject keeps TraxentConsent.allowed('marketing')
+// false so it never loads. Essential storage + cookieless analytics are always on.
 //
 // Load on every page: <script src="/consent.js" defer></script>
 
@@ -58,26 +58,27 @@
 
     var txt = document.createElement('div');
     txt.style.cssText = 'flex:1;min-width:240px;color:rgba(255,255,255,.82)';
-    txt.innerHTML = 'We use <strong>essential</strong> storage to keep you signed in and the site secure, '
-      + 'plus <strong>privacy-friendly, cookieless analytics</strong> (no personal data, no cross-site tracking). '
-      + 'See our <a href="/privacy#cookies" style="color:#4ade80;text-decoration:underline">Privacy &amp; Cookies</a>.';
+    txt.innerHTML = 'We use <strong>essential</strong> storage to keep you signed in, plus <strong>cookieless analytics</strong>. '
+      + 'With your consent we also use <strong>advertising cookies</strong> (Meta Pixel) to measure our marketing, which involves cross-site tracking. '
+      + 'Reject and we won\'t load them. See our <a href="/privacy#cookies" style="color:#4ade80;text-decoration:underline">Privacy &amp; Cookies</a>.';
 
     var btns = document.createElement('div');
     btns.style.cssText = 'display:flex;gap:8px;flex-shrink:0';
 
-    var manage = document.createElement('a');
-    manage.href = '/privacy#cookies';
-    manage.textContent = 'Manage';
-    manage.style.cssText = 'padding:9px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;font-weight:500;font-size:13px';
+    var reject = document.createElement('button');
+    reject.type = 'button';
+    reject.textContent = 'Reject';
+    reject.style.cssText = 'padding:9px 18px;border-radius:8px;border:1px solid rgba(255,255,255,.28);background:transparent;color:#fff;font-weight:500;font-size:13px;cursor:pointer;font-family:inherit';
+    reject.addEventListener('click', function () { dismiss('rejected', bar); });
 
-    var ok = document.createElement('button');
-    ok.type = 'button';
-    ok.textContent = 'Got it';
-    ok.style.cssText = 'padding:9px 18px;border-radius:8px;border:none;background:#0a6e4f;color:#fff;font-weight:500;font-size:13px;cursor:pointer;font-family:inherit';
-    ok.addEventListener('click', function () { dismiss('accepted', bar); });
+    var accept = document.createElement('button');
+    accept.type = 'button';
+    accept.textContent = 'Accept';
+    accept.style.cssText = 'padding:9px 18px;border-radius:8px;border:none;background:#0a6e4f;color:#fff;font-weight:500;font-size:13px;cursor:pointer;font-family:inherit';
+    accept.addEventListener('click', function () { dismiss('accepted', bar); loadMetaPixel(); });
 
-    btns.appendChild(manage);
-    btns.appendChild(ok);
+    btns.appendChild(reject);
+    btns.appendChild(accept);
     bar.appendChild(txt);
     bar.appendChild(btns);
 
@@ -85,5 +86,24 @@
     if (document.body) attach(); else document.addEventListener('DOMContentLoaded', attach);
   }
 
+  // ── Meta Pixel (marketing — consent-gated) ────────────────────────────────
+  // Loads ONLY after the visitor allows the 'marketing' category, so it can
+  // never fire before consent. Deliberately NO <noscript> fallback: without JS
+  // we can't obtain consent, so we must not track. Disclose at /privacy#cookies.
+  var META_PIXEL_ID = '1383366740521692';
+  function loadMetaPixel() {
+    if (window.fbq || !window.TraxentConsent.allowed('marketing')) return;
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v;
+      s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    window.fbq('init', META_PIXEL_ID);
+    window.fbq('track', 'PageView');
+  }
+
   render(false);
+  loadMetaPixel(); // returning visitors who already consented
 })();

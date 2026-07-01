@@ -32,7 +32,12 @@ nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-
 .nav-cta{font-size:13px;font-weight:500;color:#fff;background:var(--accent);border-radius:8px;padding:9px 16px;text-decoration:none;white-space:nowrap}
 .nav-cta:hover{background:#085e43}
 .tx-gate{min-height:calc(100vh - 64px);display:grid;grid-template-columns:60% 40%}
-.tx-gate-info{background:var(--ink);color:#fff;padding:64px 56px;display:flex;flex-direction:column;justify-content:center}
+.tx-gate-info{background:var(--ink);color:#fff;padding:64px 56px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;isolation:isolate}
+.tx-gate-info > :not(.tx-gate-fx){position:relative;z-index:1}
+.tx-gate-fx{position:absolute;inset:0;z-index:0;pointer-events:none}
+.tx-gate-fx .star{position:absolute;top:var(--y);left:-15%;width:var(--len,200px);height:2px;border-radius:2px;transform-origin:left center;background:linear-gradient(90deg,rgba(26,158,114,0),rgba(26,158,114,.85));box-shadow:0 0 6px rgba(26,158,114,.45);opacity:0;animation:tx-shoot var(--dur,7s) linear var(--delay,0s) infinite}
+@keyframes tx-shoot{0%{transform:translate3d(0,0,0) rotate(20deg);opacity:0}6%{opacity:.85}45%{opacity:.85}72%{opacity:0}100%{transform:translate3d(120vw,-45vh,0) rotate(20deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){.tx-gate-fx .star{animation:none;opacity:0}}
 .tx-gate-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-mid);margin-bottom:20px}
 .tx-gate-info h2{font-family:var(--serif);font-size:44px;line-height:1.08;font-weight:400;margin-bottom:18px}
 .tx-gate-info h2 em{font-style:italic;color:var(--accent-mid)}
@@ -138,6 +143,7 @@ footer a{color:var(--ink3)}
 
 <section class="tx-gate" id="gate" aria-label="Create your free account to continue">
   <div class="tx-gate-info">
+    <div class="tx-gate-fx" aria-hidden="true"><span class="star" style="--y:12%;--delay:0s;--dur:7s;--len:220px"></span><span class="star" style="--y:26%;--delay:2.4s;--dur:6s;--len:150px"></span><span class="star" style="--y:44%;--delay:1.1s;--dur:8s;--len:270px"></span><span class="star" style="--y:60%;--delay:4.2s;--dur:6.5s;--len:180px"></span><span class="star" style="--y:76%;--delay:3s;--dur:7.5s;--len:210px"></span><span class="star" style="--y:90%;--delay:5.6s;--dur:6s;--len:140px"></span></div>
     <div class="tx-gate-eyebrow">Trading 301 · Risk &amp; the path to funded</div>
     <h2>The part that keeps<br>you <em>funded</em>.</h2>
     <p class="tx-gate-lead">101 and 201 covered how markets work and how to place a trade. Trading 301 is risk, psychology, and the leap to funded trading — free with a Traxent account.</p>

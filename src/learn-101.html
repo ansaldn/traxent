@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://plausible.io https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0e0e0c">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>Trading 101: How Markets Work — Free Course — Traxent</title>
+<meta name="description" content="A free, beginner-friendly Trading 101 course: what a share is, how companies go public, how stock exchanges and prices work, and the main markets — plain English, no jargon, no account needed.">
+<meta name="keywords" content="how to learn trading, trading for beginners, what is a share, what is an IPO, how do stock exchanges work, learn to trade free">
+<meta property="og:title" content="Trading 101: How Markets Work — Free Course">
+<meta property="og:description" content="Start from zero: shares, IPOs, exchanges, how prices are set, and the main markets. Free and beginner-friendly.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://traxent.io/learn-101">
+<meta property="og:site_name" content="Traxent">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://traxent.io/learn-101">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Trading 101: How Markets Work",
+  "description": "A free, beginner-friendly introduction to the stock market and trading: what a company and a share are, how companies go public (IPOs), how stock exchanges and market hours work, who the participants are, how a price is set, how to read a chart, and the main markets (stocks, forex, indices, futures, crypto).",
+  "provider": { "@type": "Organization", "name": "Traxent", "url": "https://traxent.io" },
+  "isAccessibleForFree": true,
+  "educationalLevel": "Beginner",
+  "inLanguage": "en",
+  "teaches": ["what a share is", "how companies go public (IPO)", "how stock exchanges work", "how market prices are set", "reading a price chart", "types of financial markets"],
+  "about": ["stock market basics", "investing for beginners", "how trading works"]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
+  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);
+  --surface:#ffffff;--surface2:#f0efe9;--good:#0a6e4f;--bad:#9e1a1a;--warn:#b06000;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1000px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-link{font-size:13px;color:var(--ink2);text-decoration:none;padding:8px 10px;border-radius:8px}
+.nav-link:hover{background:var(--surface2)}
+.nav-cta{font-size:13px;font-weight:500;color:#fff;background:var(--accent);border-radius:8px;padding:9px 16px;text-decoration:none;white-space:nowrap}
+.nav-cta:hover{background:#085e43}
+.wrap{max-width:800px;margin:0 auto;padding:0 32px}
+.hero{max-width:800px;margin:0 auto;padding:64px 32px 24px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.pill-free{background:var(--accent-light);border:1px solid rgba(10,110,79,.22);color:var(--accent);border-radius:999px;padding:3px 10px;font-size:10px}
+h1{font-family:var(--serif);font-size:50px;line-height:1.05;font-weight:400;letter-spacing:-.01em;margin-bottom:16px}
+.hero-sub{font-size:17px;color:var(--ink2);font-weight:300;max-width:640px}
+.hero-meta{margin-top:18px;font-family:var(--mono);font-size:12px;color:var(--ink3);display:flex;gap:18px;flex-wrap:wrap}
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin:28px auto 0;max-width:800px}
+.toc-h{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
+.toc ol{margin:0;padding-left:20px;columns:2;column-gap:32px}
+.toc li{font-size:14px;color:var(--ink2);margin-bottom:8px;break-inside:avoid}
+.toc a{color:var(--ink2);text-decoration:none}
+.toc a:hover{color:var(--accent)}
+.cta-band{background:var(--ink);color:#fff;border-radius:16px;padding:24px 28px;margin:32px auto 0;max-width:800px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.cta-band-t{font-family:var(--serif);font-size:20px;font-weight:400;line-height:1.2}
+.cta-band-s{font-size:13px;color:rgba(255,255,255,.6);font-weight:300;margin-top:4px;max-width:440px}
+.cta-band a{background:var(--accent);color:#fff;text-decoration:none;font-size:14px;font-weight:500;padding:12px 22px;border-radius:8px;white-space:nowrap}
+.cta-band a:hover{background:var(--accent-mid)}
+.lesson{max-width:800px;margin:0 auto;padding:44px 32px 0}
+.lesson-num{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.lesson h2{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1.15;margin-bottom:16px;letter-spacing:-.01em}
+.lesson p{font-size:16px;color:var(--ink2);margin-bottom:16px}
+.lesson strong{color:var(--ink);font-weight:500}
+.lesson ul{margin:0 0 16px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.lesson ul li{font-size:15px;color:var(--ink2);padding-left:20px;position:relative}
+.lesson ul li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(10,110,79,.18);border-radius:10px;padding:16px 20px;margin:0 0 16px}
+.callout p{font-size:14.5px;margin:0;color:var(--ink2)}
+.divider{max-width:800px;margin:44px auto 0;padding:0 32px}
+.divider hr{border:none;border-top:1px solid var(--border)}
+/* Quiz */
+.quiz{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 30px}
+.quiz-h{font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:6px}
+.quiz-sub{font-size:14px;color:var(--ink3);font-weight:300;margin-bottom:22px}
+.q{margin-bottom:22px}
+.q-text{font-size:15px;font-weight:500;margin-bottom:12px}
+.opt{display:block;width:100%;text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 15px;font-family:var(--sans);font-size:14px;color:var(--ink2);cursor:pointer;margin-bottom:8px;transition:all .15s}
+.opt:hover{border-color:var(--accent)}
+.opt.correct{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:500}
+.opt.wrong{background:#fdeaea;border-color:var(--bad);color:var(--bad)}
+.q-exp{font-size:13.5px;color:var(--ink3);margin-top:6px;display:none}
+.q-exp.show{display:block}
+/* Sources */
+.sources{max-width:800px;margin:44px auto 0;padding:0 32px}
+.sources h2{font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:8px}
+.sources p.muted{font-size:13px;color:var(--ink3);font-weight:300;margin-bottom:18px}
+.src-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.src-list li{font-size:14px;color:var(--ink2);padding-left:20px;position:relative}
+.src-list li::before{content:'↗';position:absolute;left:0;color:var(--accent);font-size:12px}
+.src-list a{font-weight:500}
+/* Next */
+.next{max-width:800px;margin:40px auto 0;padding:0 32px}
+.next-card{display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;text-decoration:none;color:inherit;transition:border-color .15s}
+.next-card:hover{border-color:var(--accent)}
+.next-card .nl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.next-card .nt{font-family:var(--serif);font-size:22px;font-weight:400}
+.next-card .arrow{font-size:22px;color:var(--accent)}
+footer{border-top:1px solid var(--border);margin-top:56px;padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
+footer a{color:var(--ink3)}
+@media(max-width:640px){h1{font-size:36px}.hero{padding:44px 22px 20px}.lesson{padding:36px 22px 0}.toc ol{columns:1}.cta-band{padding:20px}}
+</style>
+<script src="/config.js" defer></script>
+</head>
+<body>
+
+<nav><div class="nav-inner">
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <div class="nav-right">
+    <a href="/learn-101" class="nav-link">101</a>
+    <a href="/learn-201" class="nav-link">201</a>
+    <a href="/learn-301" class="nav-link">301</a>
+    <a href="/dashboard" class="nav-cta">Sign up free</a>
+  </div>
+</div></nav>
+
+<section class="hero">
+  <div class="eyebrow"><span class="pill-free">Free course</span> Trading 101 · How markets work</div>
+  <h1>How markets actually work</h1>
+  <p class="hero-sub">Start right at the beginning. No jargon, no account needed — just the plain-English basics of shares, exchanges and prices that most people are never actually taught. This is the stuff that makes everything else make sense.</p>
+  <div class="hero-meta"><span>7 lessons</span><span>~25 min read</span><span>Beginner · no experience needed</span></div>
+</section>
+
+<div class="toc">
+  <div class="toc-h">What you'll learn</div>
+  <ol>
+    <li><a href="#l1">What a company and a share are</a></li>
+    <li><a href="#l2">Going public: IPOs</a></li>
+    <li><a href="#l3">Stock exchanges &amp; market hours</a></li>
+    <li><a href="#l4">Who's who in the market</a></li>
+    <li><a href="#l5">How a price is set</a></li>
+    <li><a href="#l6">Reading a chart &amp; a ticker</a></li>
+    <li><a href="#l7">The main markets</a></li>
+  </ol>
+</div>
+
+<div class="cta-band">
+  <div>
+    <div class="cta-band-t">Trading 201 &amp; 301 are free with an account</div>
+    <div class="cta-band-s">This 101 is completely open — read it all, no sign-up needed. When you're ready to continue to Trading 201 and 301 (and to unlock the readiness tracker), a free Traxent account takes seconds.</div>
+  </div>
+  <a href="/dashboard">Create free account →</a>
+</div>
+
+<article>
+
+  <section class="lesson" id="l1">
+    <div class="lesson-num">Lesson 1</div>
+    <h2>What is a company, and what is a share?</h2>
+    <p>A company is just a business that people own. When a business needs money to grow — to hire people, build products, open shops — one way to raise it is to sell small slices of ownership to the public. Those slices are called <strong>shares</strong> (or "stock").</p>
+    <p>If a company is divided into a million shares and you own one, you own one-millionth of that business. That entitles you to a share of its future profits (sometimes paid out as a <strong>dividend</strong>) and a vote on big decisions. If the business becomes more valuable, your slice becomes more valuable too — and if it struggles, your slice is worth less.</p>
+    <div class="callout"><p><strong>Plain version:</strong> a share is a tiny piece of a real company that you can buy and sell. Owning shares makes you a part-owner, not a gambler on a number.</p></div>
+  </section>
+
+  <section class="lesson" id="l2">
+    <div class="lesson-num">Lesson 2</div>
+    <h2>Going public: IPOs</h2>
+    <p>At first, a company's shares are usually held privately by its founders and early investors. When it decides to sell shares to the general public for the first time, that event is called an <strong>Initial Public Offering</strong>, or <strong>IPO</strong> — people say the company is "going public" or "listing".</p>
+    <p>After the IPO, the shares trade on a stock exchange, where anyone can buy them from or sell them to other investors. The company got its cash at the IPO; from then on, the day-to-day price is just people buying and selling those existing shares among themselves.</p>
+    <p>This is a key idea: <strong>when you buy Apple shares, you're not usually buying them from Apple</strong> — you're buying them from another investor who wants to sell.</p>
+  </section>
+
+  <section class="lesson" id="l3">
+    <div class="lesson-num">Lesson 3</div>
+    <h2>Stock exchanges and market hours</h2>
+    <p>A <strong>stock exchange</strong> is the organised marketplace where shares are bought and sold. The big ones you'll hear about are the London Stock Exchange (LSE), the New York Stock Exchange (NYSE) and the Nasdaq. Each lists thousands of companies.</p>
+    <p>Exchanges are only open during set hours. For example, the main US market runs roughly 9:30am to 4:00pm New York time, Monday to Friday; London runs 8:00am to 4:30pm UK time. Outside those hours the market is closed, though some products (like currencies and futures) trade nearly around the clock across global sessions.</p>
+    <div class="callout"><p><strong>Why hours matter:</strong> prices can only change while a market is open. Big news overnight often causes a jump when the market reopens — the "gap" you'll hear traders mention.</p></div>
+  </section>
+
+  <section class="lesson" id="l4">
+    <div class="lesson-num">Lesson 4</div>
+    <h2>Who's who in the market</h2>
+    <p>Lots of different players trade at once, and it helps to know who they are:</p>
+    <ul>
+      <li><strong>Retail traders</strong> — everyday individuals like you, trading their own money through an app or broker.</li>
+      <li><strong>Institutions</strong> — banks, pension funds and hedge funds moving very large sums.</li>
+      <li><strong>Brokers</strong> — the companies that give you access to the market and place your orders (for example, a trading app).</li>
+      <li><strong>Market makers</strong> — firms that always stand ready to buy and sell, which keeps the market "liquid" so your order can fill quickly.</li>
+    </ul>
+    <p>You don't need to compete with the institutions to do well — but it helps to remember they're there, and that they're often on the other side of your trade.</p>
+  </section>
+
+  <section class="lesson" id="l5">
+    <div class="lesson-num">Lesson 5</div>
+    <h2>How a price is actually set</h2>
+    <p>A share doesn't have an official price handed down by anyone. The price is simply <strong>the last amount someone was willing to pay, and someone else was willing to accept</strong>. It moves constantly as buyers and sellers change their minds.</p>
+    <p>At any moment there's a highest price buyers will pay (the <strong>bid</strong>) and a lowest price sellers will accept (the <strong>ask</strong> or "offer"). When a buyer and seller agree, a trade happens and that becomes the new price. More eager buyers than sellers push the price up; more eager sellers push it down. That's supply and demand in action.</p>
+  </section>
+
+  <section class="lesson" id="l6">
+    <div class="lesson-num">Lesson 6</div>
+    <h2>Reading a price chart and a ticker</h2>
+    <p>A <strong>ticker</strong> is the short code for a company — AAPL for Apple, TSLA for Tesla — usually shown next to its current price and how much it's changed today.</p>
+    <p>A <strong>price chart</strong> plots the price over time: time along the bottom, price up the side. Zoom out and you see the long-term trend; zoom in and you see today's wiggles. Most traders use "candlestick" charts, where each candle shows the open, high, low and close for a slice of time — but at this stage, just knowing that <strong>up-and-to-the-right means rising, down means falling</strong> is enough.</p>
+    <div class="callout"><p><strong>Try it:</strong> open any free charting site, type a ticker, and switch between a 1-day and a 5-year view. Seeing the same company on both timeframes is the fastest way to build intuition.</p></div>
+  </section>
+
+  <section class="lesson" id="l7">
+    <div class="lesson-num">Lesson 7</div>
+    <h2>The main markets</h2>
+    <p>Shares are just one of several markets you can trade. In plain terms:</p>
+    <ul>
+      <li><strong>Stocks (equities)</strong> — slices of individual companies.</li>
+      <li><strong>Indices</strong> — a basket that tracks many companies at once (e.g. the S&amp;P 500, the FTSE 100), used as a health-check on a whole market.</li>
+      <li><strong>Forex (FX)</strong> — currencies traded in pairs, like GBP/USD; the largest market in the world and open 24/5.</li>
+      <li><strong>Futures</strong> — contracts to buy or sell something (an index, oil, gold) at a set date; popular with active traders and most prop firms.</li>
+      <li><strong>Crypto</strong> — digital assets like Bitcoin; trades 24/7 and is highly volatile.</li>
+    </ul>
+    <p>You don't need to trade all of these. Most people focus on one or two. The point for now is simply to know the menu.</p>
+  </section>
+
+</article>
+
+<div class="divider"><hr></div>
+
+<div class="wrap" style="padding-top:44px">
+  <div class="quiz">
+    <div class="quiz-h">Quick check</div>
+    <div class="quiz-sub">Four questions. No pressure — the answer and a short explanation appear as you click.</div>
+
+    <div class="q">
+      <div class="q-text">1. When you buy a share of a listed company, what do you actually own?</div>
+      <button class="opt" onclick="pick(this,false)">A loan the company must repay you</button>
+      <button class="opt" onclick="pick(this,true)">A small piece of ownership in the company</button>
+      <button class="opt" onclick="pick(this,false)">A guaranteed monthly income</button>
+      <div class="q-exp">A share is part-ownership — you own a slice of the business and its future profits, not a loan or a guaranteed income.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-text">2. What is an IPO?</div>
+      <button class="opt" onclick="pick(this,true)">The first time a company sells shares to the public</button>
+      <button class="opt" onclick="pick(this,false)">A tax charged when you sell a share</button>
+      <button class="opt" onclick="pick(this,false)">A type of chart pattern</button>
+      <div class="q-exp">IPO = Initial Public Offering: a company "goes public" and lists its shares on an exchange for the first time.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-text">3. What sets a share's price at any given moment?</div>
+      <button class="opt" onclick="pick(this,false)">The government sets it each morning</button>
+      <button class="opt" onclick="pick(this,false)">The company chooses its own price</button>
+      <button class="opt" onclick="pick(this,true)">What a buyer will pay and a seller will accept</button>
+      <div class="q-exp">Price is just the meeting point of supply and demand — the last agreed price between a buyer and a seller.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-text">4. Which of these tracks many companies at once?</div>
+      <button class="opt" onclick="pick(this,false)">A single stock ticker</button>
+      <button class="opt" onclick="pick(this,true)">An index, like the S&amp;P 500 or FTSE 100</button>
+      <button class="opt" onclick="pick(this,false)">A forex pair</button>
+      <div class="q-exp">An index is a basket of many companies, used as a health-check on a whole market.</div>
+    </div>
+  </div>
+</div>
+
+<div class="sources">
+  <h2>Sources &amp; keep learning</h2>
+  <p class="muted">We believe in showing our working. These are reputable, free places to go deeper — they're independent resources, not affiliated with Traxent.</p>
+  <ul class="src-list">
+    <li><a href="https://www.investor.gov/introduction-investing/investing-basics" rel="noopener">U.S. SEC — Investor.gov: Investing Basics</a> — plain-English basics from the market regulator.</li>
+    <li><a href="https://www.khanacademy.org/economics-finance-domain/core-finance" rel="noopener">Khan Academy — Finance &amp; Capital Markets</a> — free video lessons on shares, IPOs and how markets work.</li>
+    <li><a href="https://www.investopedia.com/terms/i/ipo.asp" rel="noopener">Investopedia — IPO, shares and stock market terms</a> — a searchable dictionary of every term above.</li>
+    <li><a href="https://www.londonstockexchange.com" rel="noopener">London Stock Exchange</a> and <a href="https://www.nasdaq.com" rel="noopener">Nasdaq</a> — the exchanges themselves, with investor-education sections.</li>
+    <li><strong>YouTube:</strong> search "what is a stock", "how does the stock market work" or "what is an IPO" — the <a href="https://www.youtube.com/@khanacademy" rel="noopener">Khan Academy</a> channel is a reliable, ad-free starting point.</li>
+  </ul>
+</div>
+
+<div class="next">
+  <a href="/learn-201" class="next-card">
+    <div>
+      <div class="nl">Next · Free</div>
+      <div class="nt">Trading 201: Placing a trade</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+</div>
+
+<footer>
+  Free foundational course from <a href="/">Traxent</a> — education only, not financial advice. © <span data-tx="copyrightYear">2026</span> <span data-tx="companyName">Akpan Holdings Limited</span>. <a href="/learn-101">101</a> · <a href="/learn-201">201</a> · <a href="/learn-301">301</a> · <a href="/faq">FAQ</a>
+</footer>
+
+<script>
+function pick(btn, correct){
+  var q = btn.closest('.q');
+  if (q.getAttribute('data-done')) return;
+  q.setAttribute('data-done','1');
+  var opts = q.querySelectorAll('.opt');
+  for (var i=0;i<opts.length;i++){ opts[i].disabled = true; }
+  if (correct){ btn.classList.add('correct'); }
+  else {
+    btn.classList.add('wrong');
+    for (var j=0;j<opts.length;j++){ if (opts[j].getAttribute('onclick').indexOf('true')>-1) opts[j].classList.add('correct'); }
+  }
+  var exp = q.querySelector('.q-exp'); if (exp) exp.classList.add('show');
+}
+// Trading 101 is intentionally open and untracked — no login, no stored progress.
+</script>
+<script src="/consent.js" defer></script>
+</body>
+</html>

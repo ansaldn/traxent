@@ -166,7 +166,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
   <div class="learn-header">
     <div class="learn-eyebrow">Learning centre</div>
     <h1 class="learn-title">Your path to funded</h1>
-    <p class="learn-sub"><span data-tx="moduleCount">7</span> modules covering everything you need to know — from trading fundamentals and chart patterns to risk, psychology, and building a measurable edge. Start free, unlock more as you progress.</p>
+    <p class="learn-sub"><span data-tx="moduleCount">10</span> modules and 50+ lessons — start completely free with <strong>Trading 101, 201 &amp; 301</strong> (how markets work, placing a trade, and risk), then go deeper into chart patterns, prop-firm rules, psychology and building a measurable edge. Beginners welcome — no experience needed.</p>
     <div class="learn-progress-row">
       <span class="lpr-label">Overall progress</span>
       <div class="lpr-bar"><div class="lpr-fill" id="overall-fill" style="width:0%"></div></div>
@@ -186,7 +186,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
   <div class="learn-cta" id="learn-cta" style="display:none">
     <div class="learn-cta-left">
       <div class="learn-cta-title">Ready for more?</div>
-      <div class="learn-cta-sub">Upgrade to Observer to unlock Modules 2, 3 and 4.</div>
+      <div class="learn-cta-sub">Modules 1-3 (Trading 101-301) are free. Upgrade to Observer to unlock Modules 4-7.</div>
     </div>
     <a href="/#pricing" class="learn-cta-btn">See pricing →</a>
   </div>
@@ -199,13 +199,76 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 
 const MODULES = [
   {
-    id: 'module-1',
+    id: 'module-101',
     num: 'Module 01',
-    title: 'Trading Fundamentals',
-    desc: 'Start here. Learn what prop firms are, how markets move, and how to calculate risk on any trade. No experience needed.',
+    title: 'Trading 101: How Markets Work',
+    desc: 'Completely free — no account needed. What a share is, how companies go public, how exchanges and prices work, and the main markets. Plain English, start from zero.',
     tag: 'free',
-    tagLabel: 'Free',
+    tagLabel: 'Free · open',
     minPlan: 'free',
+    duration: '~25 min',
+    link: '/learn-101',
+    lessons: [
+      { name: 'What a company and a share are', type: 'Lesson', key: 'l101-1' },
+      { name: 'Going public: IPOs', type: 'Lesson', key: 'l101-2' },
+      { name: 'Stock exchanges & market hours', type: 'Lesson', key: 'l101-3' },
+      { name: "Who's who in the market", type: 'Lesson', key: 'l101-4' },
+      { name: 'How a price is set', type: 'Lesson', key: 'l101-5' },
+      { name: 'Reading a chart & a ticker', type: 'Lesson', key: 'l101-6' },
+      { name: 'The main markets', type: 'Lesson', key: 'l101-7' },
+      { name: 'Trading 101 quiz', type: 'Quiz', key: 'l101-quiz' },
+    ]
+  },
+  {
+    id: 'module-201',
+    num: 'Module 02',
+    title: 'Trading 201: Placing a Trade',
+    desc: 'Free with a free account. Order types, the bid/ask spread, going long vs short, leverage & margin, the real costs, and what moves prices.',
+    tag: 'free',
+    tagLabel: 'Free · sign in',
+    minPlan: 'free',
+    duration: '~25 min',
+    link: '/learn-201',
+    lessons: [
+      { name: 'Market, limit & stop orders', type: 'Lesson', key: 'l201-1' },
+      { name: 'The bid, ask & spread', type: 'Lesson', key: 'l201-2' },
+      { name: 'Going long vs short', type: 'Lesson', key: 'l201-3' },
+      { name: 'Leverage & margin', type: 'Lesson', key: 'l201-4' },
+      { name: 'The real costs of trading', type: 'Lesson', key: 'l201-5' },
+      { name: 'What moves prices', type: 'Lesson', key: 'l201-6' },
+      { name: 'Getting filled: liquidity & slippage', type: 'Lesson', key: 'l201-7' },
+      { name: 'Trading 201 quiz', type: 'Quiz', key: 'l201-quiz' },
+    ]
+  },
+  {
+    id: 'module-301',
+    num: 'Module 03',
+    title: 'Trading 301: Risk & the Path to Funded',
+    desc: 'Free with a free account. Risk management, position sizing, stop-losses, drawdown, psychology and demo trading — and what prop firms actually are.',
+    tag: 'free',
+    tagLabel: 'Free · sign in',
+    minPlan: 'free',
+    duration: '~28 min',
+    link: '/learn-301',
+    lessons: [
+      { name: 'Why risk management is everything', type: 'Lesson', key: 'l301-1' },
+      { name: 'Position sizing & the 1% rule', type: 'Lesson', key: 'l301-2' },
+      { name: 'Stop-losses & risk-to-reward', type: 'Lesson', key: 'l301-3' },
+      { name: 'Drawdown: how accounts blow up', type: 'Lesson', key: 'l301-4' },
+      { name: 'Psychology: FOMO, tilt & revenge', type: 'Lesson', key: 'l301-5' },
+      { name: 'Practise first: demo trading', type: 'Lesson', key: 'l301-6' },
+      { name: 'Prop firms & funded accounts', type: 'Lesson', key: 'l301-7' },
+      { name: 'Trading 301 quiz', type: 'Quiz', key: 'l301-quiz' },
+    ]
+  },
+  {
+    id: 'module-1',
+    num: 'Module 04',
+    title: 'Trading Fundamentals',
+    desc: 'The core trading skills in depth — what prop firms are, how markets move, and how to calculate risk on any trade. Builds on the free Trading 101-301.',
+    tag: 'observer',
+    tagLabel: 'Observer+',
+    minPlan: 'observer',
     duration: '~25 min',
     link: '/learn-module-1',
     lessons: [
@@ -217,7 +280,7 @@ const MODULES = [
   },
   {
     id: 'module-2',
-    num: 'Module 02',
+    num: 'Module 05',
     title: 'Chart Patterns',
     desc: 'The 15 most reliable chart patterns used by funded traders — bull flags, bear flags, inside bars, BOS, VWAP reclaims, and more.',
     tag: 'observer',
@@ -236,7 +299,7 @@ const MODULES = [
   },
   {
     id: 'module-3',
-    num: 'Module 03',
+    num: 'Module 06',
     title: 'Risk Management',
     desc: 'The skill that separates consistent traders from gamblers. Position sizing, stop placement, R:R ratios, and why most traders blow accounts.',
     tag: 'observer',
@@ -254,7 +317,7 @@ const MODULES = [
   },
   {
     id: 'module-4',
-    num: 'Module 04',
+    num: 'Module 07',
     title: 'Prop Firm Mastery',
     desc: 'Deep dive into the specific rules of at least 16 prop firms — FTMO, Apex, Topstep, MyFundedFutures and more. Build a challenge-ready trading plan and test it before you pay.',
     tag: 'observer',
@@ -271,7 +334,7 @@ const MODULES = [
   },
   {
     id: 'module-5',
-    num: 'Module 05',
+    num: 'Module 08',
     title: 'Trading Psychology & Discipline',
     desc: 'The skill that separates traders who pass from traders who keep paying for resets. Master tilt, FOMO and revenge trading, and build a discipline system that holds under pressure.',
     tag: 'challenger',
@@ -288,7 +351,7 @@ const MODULES = [
   },
   {
     id: 'module-6',
-    num: 'Module 06',
+    num: 'Module 09',
     title: 'Review & Building Your Edge',
     desc: 'Turn your trade history into a feedback loop. Expectancy, thinking in R, journaling that changes behaviour, and the weekly review routine that compounds small gains into a real edge.',
     tag: 'challenger',
@@ -305,7 +368,7 @@ const MODULES = [
   },
   {
     id: 'module-7',
-    num: 'Module 07',
+    num: 'Module 10',
     title: 'Going Live: Choosing & Connecting Your Trading Account',
     desc: 'The bridge from practising in Traxent to trading for real. Confirm your best-fit firm, choose a platform Traxent syncs with, connect it read-only so your real trades score themselves, then step into an evaluation with live data behind you.',
     tag: 'challenger',
@@ -352,7 +415,7 @@ async function initLearn() {
     // Show plan banner if on free plan
     if (plan === 'free') {
       document.getElementById('plan-banner').style.display = 'flex';
-      document.getElementById('plan-banner-text').innerHTML = `You're on the <strong>free plan</strong> — Module 1 is fully accessible. Upgrade to Observer at <strong>£4.99/mo</strong> for Modules 2–4, or Challenger for the full seven-module path.`;
+      document.getElementById('plan-banner-text').innerHTML = `You're on the <strong>free plan</strong> — Trading 101, 201 &amp; 301 (Modules 1-3) are fully accessible. Upgrade to Observer at <strong>£4.99/mo</strong> for Modules 4-7, or Challenger for the full ten-module path.`;
       document.getElementById('learn-cta').style.display = 'flex';
     }
 

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://plausible.io https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta name="robots" content="noindex">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0e0e0c">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>Trading 201: Placing a Trade — Free Course — Traxent</title>
+<meta name="description" content="Trading 201: how to actually place a trade — order types, the bid/ask spread, going long vs short, leverage and margin, the real costs, and what moves prices. Free with a Traxent account.">
+<link rel="canonical" href="https://traxent.io/learn-201">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style id="auth-gate-style">body{visibility:hidden}</style>
+<style>
+:root{
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
+  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);
+  --surface:#ffffff;--surface2:#f0efe9;--good:#0a6e4f;--bad:#9e1a1a;--warn:#b06000;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1000px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-link{font-size:13px;color:var(--ink2);text-decoration:none;padding:8px 10px;border-radius:8px}
+.nav-link:hover{background:var(--surface2)}
+.nav-cta{font-size:13px;font-weight:500;color:#fff;background:var(--accent);border-radius:8px;padding:9px 16px;text-decoration:none;white-space:nowrap}
+.nav-cta:hover{background:#085e43}
+.wrap{max-width:800px;margin:0 auto;padding:0 32px}
+.hero{max-width:800px;margin:0 auto;padding:64px 32px 24px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.pill-free{background:var(--accent-light);border:1px solid rgba(10,110,79,.22);color:var(--accent);border-radius:999px;padding:3px 10px;font-size:10px}
+h1{font-family:var(--serif);font-size:50px;line-height:1.05;font-weight:400;letter-spacing:-.01em;margin-bottom:16px}
+.hero-sub{font-size:17px;color:var(--ink2);font-weight:300;max-width:640px}
+.hero-meta{margin-top:18px;font-family:var(--mono);font-size:12px;color:var(--ink3);display:flex;gap:18px;flex-wrap:wrap}
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin:28px auto 0;max-width:800px}
+.toc-h{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
+.toc ol{margin:0;padding-left:20px;columns:2;column-gap:32px}
+.toc li{font-size:14px;color:var(--ink2);margin-bottom:8px;break-inside:avoid}
+.toc a{color:var(--ink2);text-decoration:none}
+.toc a:hover{color:var(--accent)}
+.lesson{max-width:800px;margin:0 auto;padding:44px 32px 0}
+.lesson-num{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.lesson h2{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1.15;margin-bottom:16px;letter-spacing:-.01em}
+.lesson p{font-size:16px;color:var(--ink2);margin-bottom:16px}
+.lesson strong{color:var(--ink);font-weight:500}
+.lesson ul{margin:0 0 16px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.lesson ul li{font-size:15px;color:var(--ink2);padding-left:20px;position:relative}
+.lesson ul li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(10,110,79,.18);border-radius:10px;padding:16px 20px;margin:0 0 16px}
+.callout p{font-size:14.5px;margin:0;color:var(--ink2)}
+.divider{max-width:800px;margin:44px auto 0;padding:0 32px}
+.divider hr{border:none;border-top:1px solid var(--border)}
+.quiz{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 30px}
+.quiz-h{font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:6px}
+.quiz-sub{font-size:14px;color:var(--ink3);font-weight:300;margin-bottom:22px}
+.q{margin-bottom:22px}
+.q-text{font-size:15px;font-weight:500;margin-bottom:12px}
+.opt{display:block;width:100%;text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 15px;font-family:var(--sans);font-size:14px;color:var(--ink2);cursor:pointer;margin-bottom:8px;transition:all .15s}
+.opt:hover{border-color:var(--accent)}
+.opt.correct{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:500}
+.opt.wrong{background:#fdeaea;border-color:var(--bad);color:var(--bad)}
+.q-exp{font-size:13.5px;color:var(--ink3);margin-top:6px;display:none}
+.q-exp.show{display:block}
+.sources{max-width:800px;margin:44px auto 0;padding:0 32px}
+.sources h2{font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:8px}
+.sources p.muted{font-size:13px;color:var(--ink3);font-weight:300;margin-bottom:18px}
+.src-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.src-list li{font-size:14px;color:var(--ink2);padding-left:20px;position:relative}
+.src-list li::before{content:'↗';position:absolute;left:0;color:var(--accent);font-size:12px}
+.src-list a{font-weight:500}
+.next{max-width:800px;margin:40px auto 0;padding:0 32px}
+.next-card{display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;text-decoration:none;color:inherit;transition:border-color .15s}
+.next-card:hover{border-color:var(--accent)}
+.next-card .nl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.next-card .nt{font-family:var(--serif);font-size:22px;font-weight:400}
+.next-card .arrow{font-size:22px;color:var(--accent)}
+footer{border-top:1px solid var(--border);margin-top:56px;padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
+footer a{color:var(--ink3)}
+@media(max-width:640px){h1{font-size:36px}.hero{padding:44px 22px 20px}.lesson{padding:36px 22px 0}.toc ol{columns:1}}
+</style>
+<script src="/config.js" defer></script>
+</head>
+<body>
+
+<nav><div class="nav-inner">
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <div class="nav-right">
+    <a href="/learn-101" class="nav-link">101</a>
+    <a href="/learn-201" class="nav-link">201</a>
+    <a href="/learn-301" class="nav-link">301</a>
+    <a href="/dashboard" class="nav-cta">Dashboard →</a>
+  </div>
+</div></nav>
+
+<section class="hero">
+  <div class="eyebrow"><span class="pill-free">Free · with account</span> Trading 201 · Placing a trade</div>
+  <h1>How a trade actually works</h1>
+  <p class="hero-sub">You know what a market is — now here's the mechanics of buying and selling: the order types, the spread you pay, going long or short, and how leverage can help or hurt. Plain English, still no maths degree required.</p>
+  <div class="hero-meta"><span>7 lessons</span><span>~25 min read</span><span>Free with your account</span></div>
+</section>
+
+<div class="toc">
+  <div class="toc-h">What you'll learn</div>
+  <ol>
+    <li><a href="#l1">Market, limit &amp; stop orders</a></li>
+    <li><a href="#l2">The bid, ask &amp; spread</a></li>
+    <li><a href="#l3">Going long vs short</a></li>
+    <li><a href="#l4">Leverage &amp; margin</a></li>
+    <li><a href="#l5">The real costs of trading</a></li>
+    <li><a href="#l6">What moves prices</a></li>
+    <li><a href="#l7">Getting filled: liquidity &amp; slippage</a></li>
+  </ol>
+</div>
+
+<article>
+
+  <section class="lesson" id="l1">
+    <div class="lesson-num">Lesson 1</div>
+    <h2>Market, limit and stop orders</h2>
+    <p>An <strong>order</strong> is just an instruction to your broker. The three you'll use most:</p>
+    <ul>
+      <li><strong>Market order</strong> — "buy/sell right now at whatever the current price is." Fast, but you don't control the exact price.</li>
+      <li><strong>Limit order</strong> — "only buy at £10.00 or lower" (or "only sell at £12.00 or higher"). You control the price, but it might never fill if the market doesn't reach it.</li>
+      <li><strong>Stop order</strong> — a trigger. "If the price falls to £9.00, sell me out." Used to cap a loss (a stop-loss) or to enter once a level breaks.</li>
+    </ul>
+    <div class="callout"><p><strong>Rule of thumb:</strong> use limit orders when price matters more than speed, market orders when getting in or out <em>now</em> matters more, and always know where your stop is before you enter.</p></div>
+  </section>
+
+  <section class="lesson" id="l2">
+    <div class="lesson-num">Lesson 2</div>
+    <h2>The bid, the ask and the spread</h2>
+    <p>At any moment there are two prices, not one: the <strong>bid</strong> (the highest price buyers will pay) and the <strong>ask</strong> (the lowest price sellers will accept). The gap between them is the <strong>spread</strong>.</p>
+    <p>When you buy at market you pay the ask; when you sell at market you receive the bid. So the spread is a small, built-in cost of trading — you start every trade slightly "in the red" by the spread. Heavily traded markets (like major currencies or big stocks) have tiny spreads; thin, obscure ones have wide spreads.</p>
+  </section>
+
+  <section class="lesson" id="l3">
+    <div class="lesson-num">Lesson 3</div>
+    <h2>Going long vs going short</h2>
+    <p><strong>Going long</strong> is the familiar one: you buy expecting the price to rise, then sell higher for a profit. Buy low, sell high.</p>
+    <p><strong>Going short</strong> is the mirror image: you profit when the price <em>falls</em>. Your broker effectively lets you sell first at a high price and buy back later at a lower one, pocketing the difference. It's how traders can make money in falling markets — but because a price can (in theory) rise without limit, a short that goes wrong can lose more than you put in, so it needs careful risk control.</p>
+    <div class="callout"><p><strong>Key point:</strong> long = betting up, short = betting down. Prop firms and most trading platforms let you do both.</p></div>
+  </section>
+
+  <section class="lesson" id="l4">
+    <div class="lesson-num">Lesson 4</div>
+    <h2>Leverage and margin, explained simply</h2>
+    <p><strong>Leverage</strong> lets you control a large position with a small amount of your own money. With 10:1 leverage, £1,000 of your cash can control a £10,000 position. The slice of your money set aside to hold that position is called the <strong>margin</strong>.</p>
+    <p>Leverage cuts both ways — it multiplies gains <em>and</em> losses by the same amount. A 5% move in your favour on 10:1 leverage is a 50% gain; a 5% move against you is a 50% loss. This is exactly why beginners blow up: not because they picked wrong, but because they used far too much leverage. Treat it as something to use sparingly, not a shortcut.</p>
+  </section>
+
+  <section class="lesson" id="l5">
+    <div class="lesson-num">Lesson 5</div>
+    <h2>The real costs of trading</h2>
+    <p>Beyond the spread, watch for:</p>
+    <ul>
+      <li><strong>Commission</strong> — a per-trade fee some brokers charge (many are now "zero commission" but earn from the spread instead).</li>
+      <li><strong>Overnight / swap fees</strong> — if you hold a leveraged position overnight, you're often charged a small financing cost each day.</li>
+      <li><strong>Slippage</strong> — the difference between the price you expected and the price you actually got (more on this in Lesson 7).</li>
+    </ul>
+    <p>None of these are huge on a single trade, but they add up over hundreds of trades. Knowing your all-in cost per trade is part of trading like a professional.</p>
+  </section>
+
+  <section class="lesson" id="l6">
+    <div class="lesson-num">Lesson 6</div>
+    <h2>What moves prices</h2>
+    <p>Prices move when the balance of buyers and sellers shifts — and that usually happens because new information arrives. The big drivers:</p>
+    <ul>
+      <li><strong>Company earnings</strong> — quarterly results that beat or miss expectations move individual stocks sharply.</li>
+      <li><strong>Economic data</strong> — inflation, jobs and interest-rate decisions move whole markets and currencies.</li>
+      <li><strong>News &amp; sentiment</strong> — headlines, and simple fear and greed, can move prices even without hard data.</li>
+    </ul>
+    <p>You don't need to predict the news. But you should know when major scheduled events (like a central-bank rate decision) are due, because prices can move violently around them.</p>
+  </section>
+
+  <section class="lesson" id="l7">
+    <div class="lesson-num">Lesson 7</div>
+    <h2>Getting filled: liquidity and slippage</h2>
+    <p><strong>Liquidity</strong> means how easily you can buy or sell without moving the price. A liquid market has lots of buyers and sellers, so your order fills instantly at the price you see. A thin market may not have anyone on the other side at your price.</p>
+    <p><strong>Slippage</strong> is what happens when it doesn't fill exactly: in fast-moving or thin markets, the price you actually get can be a little worse (or occasionally better) than the price you clicked. It's usually tiny in big markets, and larger around news. Using limit orders and trading liquid markets keeps it under control.</p>
+  </section>
+
+</article>
+
+<div class="divider"><hr></div>
+
+<div class="wrap" style="padding-top:44px">
+  <div class="quiz">
+    <div class="quiz-h">Quick check</div>
+    <div class="quiz-sub">Four questions. The answer and a short explanation appear as you click.</div>
+
+    <div class="q">
+      <div class="q-text">1. You want to buy only if the price drops to £10 or below. Which order?</div>
+      <button class="opt" onclick="pick(this,false)">Market order</button>
+      <button class="opt" onclick="pick(this,true)">Limit order</button>
+      <button class="opt" onclick="pick(this,false)">There's no way to do that</button>
+      <div class="q-exp">A limit order lets you set the maximum you'll pay (or minimum you'll accept). It only fills at your price or better.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-text">2. What is the "spread"?</div>
+      <button class="opt" onclick="pick(this,true)">The gap between the bid and the ask price</button>
+      <button class="opt" onclick="pick(this,false)">A tax on profits</button>
+      <button class="opt" onclick="pick(this,false)">The number of shares you own</button>
+      <div class="q-exp">The spread is the difference between the highest price buyers will pay and the lowest sellers will accept — a small built-in cost of every trade.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-text">3. On 10:1 leverage, a 5% move against your position means roughly what?</div>
+      <button class="opt" onclick="pick(this,false)">A 5% loss</button>
+      <button class="opt" onclick="pick(this,false)">A 0.5% loss</button>
+      <button class="opt" onclick="pick(this,true)">A 50% loss</button>
+      <div class="q-exp">Leverage multiplies both gains and losses. 10× a 5% move is 50% — which is why over-leverage blows up accounts.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-text">4. "Going short" means you profit when…</div>
+      <button class="opt" onclick="pick(this,false)">The price rises</button>
+      <button class="opt" onclick="pick(this,true)">The price falls</button>
+      <button class="opt" onclick="pick(this,false)">Nothing happens</button>
+      <div class="q-exp">Short = betting the price will fall. You sell high first and buy back lower, keeping the difference.</div>
+    </div>
+  </div>
+</div>
+
+<div class="sources">
+  <h2>Sources &amp; keep learning</h2>
+  <p class="muted">Independent, reputable places to go deeper — not affiliated with Traxent.</p>
+  <ul class="src-list">
+    <li><a href="https://www.investopedia.com/terms/o/order.asp" rel="noopener">Investopedia — order types, spread, leverage &amp; margin</a>.</li>
+    <li><a href="https://www.babypips.com/learn/forex" rel="noopener">BabyPips — School of Pipsology</a> — the classic free course on spreads, leverage and orders (forex-focused, but the mechanics apply everywhere).</li>
+    <li><a href="https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/types-orders" rel="noopener">U.S. SEC — Types of orders</a>.</li>
+    <li><a href="https://www.khanacademy.org/economics-finance-domain/core-finance" rel="noopener">Khan Academy — Finance &amp; Capital Markets</a>.</li>
+    <li><strong>YouTube:</strong> search "market vs limit order", "what is leverage in trading" or "long vs short explained" — look for reputable, ad-free explainers.</li>
+  </ul>
+</div>
+
+<div class="next">
+  <a href="/learn-301" class="next-card">
+    <div>
+      <div class="nl">Next · Free with account</div>
+      <div class="nt">Trading 301: Risk &amp; the path to funded</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+</div>
+
+<footer>
+  Free foundational course from <a href="/">Traxent</a> — education only, not financial advice. © <span data-tx="copyrightYear">2026</span> <span data-tx="companyName">Akpan Holdings Limited</span>. <a href="/learn-101">101</a> · <a href="/learn-201">201</a> · <a href="/learn-301">301</a> · <a href="/faq">FAQ</a>
+</footer>
+
+<script>
+function pick(btn, correct){
+  var q = btn.closest('.q');
+  if (q.getAttribute('data-done')) return;
+  q.setAttribute('data-done','1');
+  var opts = q.querySelectorAll('.opt');
+  for (var i=0;i<opts.length;i++){ opts[i].disabled = true; }
+  if (correct){ btn.classList.add('correct'); }
+  else {
+    btn.classList.add('wrong');
+    for (var j=0;j<opts.length;j++){ if (opts[j].getAttribute('onclick').indexOf('true')>-1) opts[j].classList.add('correct'); }
+  }
+  var exp = q.querySelector('.q-exp'); if (exp) exp.classList.add('show');
+}
+</script>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
+<script src="/auth.js?v=__BUILD_SHA__"></script>
+<script>
+// ── Login gate: Trading 201 is free but requires a (free) account ──
+(async function(){
+  try{
+    await initAuth0();
+    var authed = await auth0Client.isAuthenticated();
+    if(!authed){
+      await auth0Client.loginWithRedirect({ authorizationParams: { redirect_uri: window.location.origin + '/learn-201' } });
+      return;
+    }
+    var g = document.getElementById('auth-gate-style'); if (g) g.parentNode.removeChild(g);
+    document.body.style.visibility = 'visible';
+  }catch(e){
+    try{ await auth0Client.loginWithRedirect({ authorizationParams: { redirect_uri: window.location.origin + '/learn-201' } }); }catch(_){}
+  }
+})();
+</script>
+<script src="/consent.js" defer></script>
+</body>
+</html>

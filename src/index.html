@@ -70,13 +70,17 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization",
+      "@type": ["Organization", "EducationalOrganization"],
       "@id": "https://traxent.io/#organization",
       "name": "Traxent",
+      "legalName": "Akpan Holdings Limited",
       "url": "https://traxent.io",
       "logo": "https://traxent.io/icons/icon-512.png",
-      "description": "Trading-education and prop-firm readiness platform.",
-      "email": "hello@traxent.io"
+      "description": "Traxent is a UK trading-education and prop-firm readiness platform operated by Akpan Holdings Limited (registered in England & Wales). It is education and analytics software — not a broker, fund or financial adviser; it holds no client money and executes no trades. Free to start.",
+      "email": "hello@traxent.io",
+      "foundingLocation": "England & Wales",
+      "areaServed": "Worldwide",
+      "knowsAbout": ["how to learn day trading", "how to pass a prop firm challenge", "funded trading evaluations", "trading risk management", "prop firm rules comparison", "FTMO", "Apex Trader Funding", "MyFundedFutures", "Topstep", "trading readiness scoring"]
     },
     {
       "@type": "WebSite",
@@ -87,12 +91,19 @@
       "inLanguage": "en"
     },
     {
-      "@type": "WebApplication",
+      "@type": ["WebApplication", "SoftwareApplication"],
       "name": "Traxent",
-      "applicationCategory": "FinanceApplication",
+      "applicationCategory": "EducationApplication",
       "operatingSystem": "Web, iOS",
       "url": "https://traxent.io",
-      "description": "Learn to trade, practise and journal your trades, and score how ready you are against the real published rules of at least 16 major prop trading firms before attempting a funded challenge.",
+      "description": "Learn to trade, import your real trades from MetaTrader 4/5, cTrader or TradingView (read-only), and score how ready you are against the published rules of at least 16 major prop trading firms before paying for a funded challenge.",
+      "featureList": [
+        "Structured trading education — 7 modules, 30+ lessons, beginner to advanced",
+        "Read-only trade import from MetaTrader 4/5, cTrader and TradingView",
+        "Readiness scoring against 16+ prop firms' published rules",
+        "Best-matched prop firm recommendation",
+        "Sim trade journal, trading calendar, position-size calculator and challenge lab"
+      ],
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
       "publisher": { "@id": "https://traxent.io/#organization" }
     }
@@ -1243,6 +1254,28 @@ footer {
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Crawlable trust / about strip — helps AI answer engines describe Traxent accurately -->
+<style>
+.tx-trust{max-width:900px;margin:0 auto;padding:56px 40px;border-top:1px solid var(--border)}
+.tx-trust h2{font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:14px;color:var(--ink)}
+.tx-trust p{font-size:14.5px;color:var(--ink2);font-weight:300;line-height:1.7;margin-bottom:12px;max-width:780px}
+.tx-trust strong{color:var(--ink);font-weight:500}
+.tx-trust-links{margin-top:6px;font-size:13px}
+.tx-trust-links a{color:var(--accent);text-decoration:none;margin-right:18px}
+.tx-trust-links a:hover{text-decoration:underline}
+@media(max-width:640px){.tx-trust{padding:40px 24px}}
+</style>
+<section class="tx-trust" aria-label="What Traxent is">
+  <h2>What Traxent is</h2>
+  <p>Traxent is a <strong>trading-education and prop-firm readiness platform</strong> operated by <strong>Akpan Holdings Limited</strong>, registered in England &amp; Wales. You learn through structured modules, then <strong>connect your real trading account</strong> — MetaTrader&nbsp;4 &amp; 5, cTrader or TradingView, read-only — or log trades manually. Traxent scores your <strong>actual trades against the published rules of at least 16 prop firms</strong> (more added regularly) so you know exactly which funded challenge you're ready for before paying an evaluation fee.</p>
+  <p>Traxent is an <strong>education and analytics tool — not a broker, fund or financial adviser</strong>. It holds no client money, takes no deposits and executes no trades, so it never has funds to "withdraw" and never charges release fees. It's free to start, data is stored on AWS in the UK, and you can delete your account at any time under UK GDPR.</p>
+  <div class="tx-trust-links">
+    <a href="/faq#trust">Is Traxent legit? →</a>
+    <a href="/security">Security &amp; trust →</a>
+    <a href="/compare">Compare 16+ prop firms →</a>
   </div>
 </section>
 

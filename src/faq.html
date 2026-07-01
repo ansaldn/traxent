@@ -78,6 +78,46 @@
       "@type": "Question",
       "name": "Is my data safe and can I delete my account?",
       "acceptedAnswer": { "@type": "Answer", "text": "Your data is stored securely on AWS infrastructure in the UK over encrypted HTTPS, with authentication handled by Auth0. You can request full deletion of your account and all associated data at any time, in line with UK GDPR." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Traxent legitimate and safe to use?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Traxent is a real trading-education and analytics product operated by Akpan Holdings Limited, a company registered in England & Wales. It is free to start with no card required, takes no deposits and holds no client funds, connects to trading platforms on a read-only basis, stores data on AWS in the UK with Auth0 authentication, and lets you delete your account and data at any time under UK GDPR. Because Traxent never holds money, there are no withdrawal or release fees — anyone asking you to pay such a fee is not Traxent." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Traxent a broker, and is it regulated by the FCA?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No, and it does not need to be. Traxent is educational software and analytics: it does not execute trades, offer trading accounts, hold client money, or give investment advice, so it is not a broker or a regulated financial firm. FCA authorisation applies to firms that handle client funds or provide regulated financial advice; an education and readiness tool falls outside that scope. All trading practice inside Traxent is simulated." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Traxent hold my money or charge withdrawal fees?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Traxent never takes deposits, never holds funds, and has nothing to withdraw. The only optional payment is a monthly subscription processed securely by Stripe; card details never touch Traxent's servers. Anyone claiming you must pay Traxent a fee to release or withdraw funds is impersonating us." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I connect my trading account and import my trades into Traxent?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes — this is what makes Traxent different. You can connect popular trading platforms including MetaTrader 4 and 5, cTrader and TradingView on a read-only basis, or log trades manually. Traxent then analyses your real closed trades and scores them against each prop firm's published rules, so your readiness reflects how you actually trade rather than a guess." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Traxent different from TradingView or MetaTrader?",
+      "acceptedAnswer": { "@type": "Answer", "text": "They solve different problems and Traxent works alongside them. TradingView and MetaTrader are charting and execution platforms; Traxent is a readiness layer on top. You can import your trades from those tools, and Traxent measures them against the specific published rules of at least 16 prop firms — daily loss limits, drawdown type, consistency rules and minimum days — to tell you which funded challenge you are actually ready to attempt." }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does Traxent cost, and is there an early-bird discount?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Traxent is free to start; paid plans begin at GBP 4.99 per month. There is no time-limited early-bird or percentage discount. Instead, founding members who join during the waitlist lock in their price for life — the price you see when you join is the price you keep, protected from future rises for as long as you stay subscribed." }
+    },
+    {
+      "@type": "Question",
+      "name": "How many lessons and modules does Traxent have, and is it suitable for complete beginners?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Traxent's curriculum is 7 structured modules with more than 30 lessons and quizzes, and more are added regularly. It is designed for beginners: Module 1 is free and starts from the basics — what a prop firm is, how markets move, and your first risk calculation — before progressing through chart patterns, risk management, prop-firm rules, trading psychology, building a measurable edge, and going live by connecting your trading account. A blog with insights from experienced traders and investors is coming soon." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Traxent teach you to trade from scratch, or does it only analyse trades?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Both. Traxent teaches trading from scratch through its 7-module, 30+ lesson path that begins with the fundamentals, and it also analyses your real trades against each prop firm's rules. The rule-matching and analytics engine is what makes Traxent different, but it sits on top of a full beginner-to-advanced curriculum — it does not replace teaching. A complete beginner can start at Module 1 for free." }
     }
   ]
 }
@@ -222,7 +262,7 @@ footer { background: var(--ink); padding: 40px; margin-top: 0; }
   </div>
   <div class="faq-stats">
     <div class="faq-stat">
-      <div class="faq-stat-val">4</div>
+      <div class="faq-stat-val">16+</div>
       <div class="faq-stat-label">Prop firms tracked with real published rules — more being added</div>
     </div>
     <div class="faq-stat">
@@ -243,7 +283,8 @@ footer { background: var(--ink); padding: 40px; margin-top: 0; }
   <aside class="cat-nav">
     <div class="cat-nav-label">Categories</div>
     <div class="cat-list">
-      <a href="#about" class="cat-item active" onclick="setActive(this)">About Traxent</a>
+      <a href="#trust" class="cat-item active" onclick="setActive(this)">Is Traxent legit?</a>
+      <a href="#about" class="cat-item" onclick="setActive(this)">About Traxent</a>
       <a href="#readiness" class="cat-item" onclick="setActive(this)">Readiness scores</a>
       <a href="#firms" class="cat-item" onclick="setActive(this)">Prop firms</a>
       <a href="#already-trade" class="cat-item" onclick="setActive(this)">Existing traders</a>
@@ -260,6 +301,83 @@ footer { background: var(--ink); padding: 40px; margin-top: 0; }
 
   <!-- FAQ sections -->
   <div class="faq-sections">
+
+    <!-- Trust & safety -->
+    <div id="trust">
+      <div class="faq-section-title"><span class="faq-section-icon">🛡️</span> Is Traxent legit?</div>
+      <div class="faq-list">
+
+        <div class="faq-item open">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">Is Traxent legitimate and safe to use?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes. Traxent is a real trading-education and analytics product operated by <strong>Akpan Holdings Limited</strong>, a company registered in England &amp; Wales. It is free to start with no card required.</p>
+            <p>It takes <strong>no deposits and holds no client funds</strong>, connects to trading platforms on a <strong>read-only</strong> basis, stores data on AWS in the UK with Auth0 authentication, and lets you delete your account and data at any time under UK GDPR.</p>
+            <div class="answer-highlight">
+              <p>Because Traxent never holds money, there are no "withdrawal fees" or "release fees." If anyone asks you to pay a fee to release funds in Traxent's name, that is a scam impersonating us — report it to us at hello@traxent.io.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">Is Traxent a broker, and is it regulated by the FCA?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>No — and it does not need to be. Traxent is educational software and analytics. It does not execute trades, offer trading accounts, hold client money, or give investment advice, so it is not a broker or a regulated financial firm.</p>
+            <p>FCA authorisation applies to firms that handle client funds or provide regulated financial advice. An education and readiness tool falls outside that scope, in the same way a trading course or a spreadsheet does. All trading practice inside Traxent is simulated.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">Does Traxent hold my money or charge withdrawal fees?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>No. Traxent never takes deposits, never holds funds, and has nothing to withdraw. The only optional payment is a monthly subscription processed securely by <strong>Stripe</strong> — card details never touch Traxent's servers.</p>
+            <p>Anyone claiming you must pay Traxent a fee to "release" or "withdraw" funds is impersonating us.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">Can I connect my trading account and import my trades?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes — this is what makes Traxent different. You can connect popular trading platforms including <strong>MetaTrader 4 and 5, cTrader and TradingView</strong> on a read-only basis, or log trades manually.</p>
+            <p>Traxent then analyses your <strong>real closed trades</strong> and scores them against each prop firm's published rules — so your readiness reflects how you actually trade, not a guess.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">How is Traxent different from TradingView or MetaTrader?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>They solve different problems, and Traxent works alongside them. TradingView and MetaTrader are charting and execution platforms; Traxent is a <strong>readiness layer</strong> on top.</p>
+            <p>You import your trades from those tools, and Traxent measures them against the specific published rules of <strong>at least 16 prop firms</strong> — daily loss limits, drawdown type, consistency rules and minimum days — to tell you which funded challenge you are actually ready to attempt.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">How much does Traxent cost — is there an early-bird discount?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Traxent is free to start; paid plans begin at <strong>£4.99/month</strong>. There is <strong>no</strong> time-limited "early-bird" or percentage discount (if you have seen one quoted elsewhere, it is out of date).</p>
+            <p>Instead, founding members who join during the waitlist <strong>lock in their price for life</strong> — the price you see when you join is the price you keep, protected from future rises for as long as you stay subscribed.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
     <!-- About -->
     <div id="about">
@@ -290,6 +408,20 @@ footer { background: var(--ink); padding: 40px; margin-top: 0; }
             <p>No — and any platform that makes that claim should be avoided. Traxent cannot guarantee trading results because no one can. Markets are unpredictable, and trading involves genuine risk.</p>
             <p>What Traxent does is give you the best possible preparation. A high readiness score means your simulated trading habits align with a firm's rules — your drawdown is within limits, your consistency is within the required threshold, your risk per trade is appropriate. That is strong preparation. It is not a guarantee.</p>
             <p>The traders who pass challenges consistently are not the ones who got lucky. They are the ones who built disciplined habits over time, understood the rules they were being evaluated against, and managed their emotions when trades went wrong. Traxent is designed to help you build exactly those habits.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggle(this)">
+            <span class="faq-q-text">How many lessons are there — and is it good for a complete beginner?</span>
+            <span class="faq-chevron">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p>Traxent's curriculum is <strong>7 structured modules with over 30 lessons and quizzes</strong>, and more are added regularly. It's built for beginners: <strong>Module 1 is free</strong> and starts from the basics — what a prop firm is, how markets move, and your first risk calculation.</p>
+            <p>From there it progresses through chart patterns, risk management, prop-firm rules, trading psychology, building a measurable edge, and going live by connecting your account. So Traxent <strong>does</strong> teach you to trade from scratch — the rule-matching analytics sit on top of a full curriculum, they don't replace it.</p>
+            <div class="answer-highlight">
+              <p>Coming soon: a blog with insights and trade breakdowns from experienced traders and investors.</p>
+            </div>
           </div>
         </div>
 

@@ -10,6 +10,8 @@ Allow: /faq
 Allow: /privacy
 Allow: /terms
 Allow: /waitlist
+Allow: /open
+Allow: /security
 Allow: /firms
 Allow: /firm-
 

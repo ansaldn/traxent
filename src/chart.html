@@ -356,8 +356,8 @@ body.session-mode .upgrade-bar{display:none;}
 <div class="journal-modal-overlay" id="journal-modal">
   <div class="journal-modal">
     <div class="jm-eyebrow">Session mode setup</div>
-    <h2 class="jm-title">Connect your sim journal?</h2>
-    <p class="jm-sub">Trades logged during session mode can save to your main sim journal — or stay private to this session only. You can change this any time.</p>
+    <h2 class="jm-title">Set up your live session</h2>
+    <p class="jm-sub">Session mode is your live-trading companion — watch the chart and log trades in real time as you go. Choose where those trades are saved; you can change this any time.</p>
     <div class="jm-options">
       <div class="jm-option" id="jm-opt-yes" onclick="selectJournalOpt('yes')">
         <div class="jm-opt-icon">📓</div>
@@ -373,6 +373,9 @@ body.session-mode .upgrade-bar{display:none;}
           <div class="jm-opt-desc">Trades are tracked for this session only. Nothing saved to the journal. Useful if you're trading live alongside Traxent.</div>
         </div>
       </div>
+    </div>
+    <div style="font-size:12.5px;color:var(--ink3);line-height:1.55;margin:4px 0 18px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px">
+      <strong style="color:var(--ink2)">Trade on a real platform?</strong> Connect MetaTrader, cTrader or another supported platform (read-only) via <a href="/integrations" style="color:var(--accent);font-weight:500">Connect your account</a> and your real fills can flow into the session automatically — no manual logging. Traxent is independent and not affiliated with any platform or broker.
     </div>
     <button class="jm-confirm" id="jm-confirm" onclick="confirmJournalSetup()" disabled>Confirm →</button>
   </div>

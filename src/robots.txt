@@ -15,6 +15,7 @@ Allow: /security
 Allow: /firms
 Allow: /firm-
 Allow: /learn-101
+Allow: /founding-terms
 
 # Authenticated application surface — keep out of the index.
 Disallow: /home

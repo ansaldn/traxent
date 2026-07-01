@@ -14,7 +14,6 @@
 <link rel="canonical" href="https://traxent.io/learn-301">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style id="auth-gate-style">body{visibility:hidden}</style>
 <style>
 :root{
   --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
@@ -92,6 +91,33 @@ h1{font-family:var(--serif);font-size:50px;line-height:1.05;font-weight:400;lett
 footer{border-top:1px solid var(--border);margin-top:56px;padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
 footer a{color:var(--ink3)}
 @media(max-width:640px){h1{font-size:36px}.hero{padding:44px 22px 20px}.lesson{padding:36px 22px 0}.toc ol{columns:1}.bridge-card{padding:24px}}
+/* ── Free-with-account gate (60/40 split) ── */
+.tx-gate{min-height:calc(100vh - 64px);display:grid;grid-template-columns:60% 40%}
+.tx-gate-info{background:var(--ink);color:#fff;padding:64px 56px;display:flex;flex-direction:column;justify-content:center}
+.tx-gate-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-mid);margin-bottom:20px}
+.tx-gate-info h2{font-family:var(--serif);font-size:44px;line-height:1.08;font-weight:400;margin-bottom:18px}
+.tx-gate-info h2 em{font-style:italic;color:var(--accent-mid)}
+.tx-gate-lead{font-size:16px;color:rgba(255,255,255,.66);font-weight:300;max-width:520px;margin-bottom:28px}
+.tx-gate-path{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.5);margin-bottom:28px;flex-wrap:wrap}
+.tx-gate-path .done{color:var(--accent-mid)}
+.tx-gate-path .cur{color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:4px 10px}
+.tx-gate-list{list-style:none;display:flex;flex-direction:column;gap:12px;max-width:520px}
+.tx-gate-list li{font-size:14.5px;color:rgba(255,255,255,.8);padding-left:26px;position:relative}
+.tx-gate-list li::before{content:'→';position:absolute;left:0;color:var(--accent-mid)}
+.tx-gate-panel{background:var(--bg);padding:56px 48px;display:flex;flex-direction:column;justify-content:center}
+.tx-gate-card{max-width:360px;margin:0 auto;width:100%}
+.tx-gate-pill{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);border:1px solid rgba(10,110,79,.2);border-radius:999px;padding:4px 11px;margin-bottom:16px}
+.tx-gate-card h3{font-family:var(--serif);font-size:30px;font-weight:400;margin-bottom:8px}
+.tx-gate-card .sub{font-size:14px;color:var(--ink3);font-weight:300;margin-bottom:22px}
+.tx-gate-label{display:block;font-size:12px;color:var(--ink3);margin-bottom:6px}
+.tx-gate-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:13px 15px;font-family:var(--sans);font-size:14px;color:var(--ink);outline:none;margin-bottom:14px}
+.tx-gate-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(10,110,79,.08)}
+.tx-gate-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:14px;font-family:var(--sans);font-size:15px;font-weight:500;cursor:pointer}
+.tx-gate-btn:hover{background:#085e43}
+.tx-gate-signin{text-align:center;font-size:13px;color:var(--ink3);margin-top:16px}
+.tx-gate-signin button{background:none;border:none;color:var(--accent);font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;padding:0;text-decoration:underline}
+.tx-gate-micro{font-size:11.5px;color:var(--ink3);text-align:center;margin-top:18px;line-height:1.5}
+@media(max-width:860px){.tx-gate{grid-template-columns:1fr}.tx-gate-info{padding:44px 26px;order:2}.tx-gate-panel{padding:44px 24px;order:1}.tx-gate-info h2{font-size:32px}}
 </style>
 <script src="/config.js" defer></script>
 </head>
@@ -106,6 +132,36 @@ footer a{color:var(--ink3)}
     <a href="/dashboard" class="nav-cta">Dashboard →</a>
   </div>
 </div></nav>
+
+<!-- ── Gate: shown to logged-out visitors; lesson content revealed once signed in ── -->
+<section class="tx-gate" id="gate" aria-label="Create your free account to continue">
+  <div class="tx-gate-info">
+    <div class="tx-gate-eyebrow">Trading 301 · Risk &amp; the path to funded</div>
+    <h2>The part that keeps<br>you <em>funded</em>.</h2>
+    <p class="tx-gate-lead">101 and 201 covered how markets work and how to place a trade. Trading 301 is risk, psychology, and the leap to funded trading — free with a Traxent account.</p>
+    <div class="tx-gate-path"><span class="done">✓ 101</span> <span>→</span> <span class="done">✓ 201</span> <span>→</span> <span class="cur">Trading 301</span> <span>→ Funded</span></div>
+    <ul class="tx-gate-list">
+      <li>Risk management &amp; the 1% rule — why it beats predictions</li>
+      <li>Stop-losses, risk-to-reward and surviving drawdown</li>
+      <li>Psychology: beating FOMO, tilt and revenge trading</li>
+      <li>What prop firms are, and how to get funded</li>
+    </ul>
+  </div>
+  <div class="tx-gate-panel">
+    <div class="tx-gate-card">
+      <span class="tx-gate-pill">Free · about 2 minutes</span>
+      <h3>Create your free account</h3>
+      <p class="sub">Unlock Trading 301 and the readiness tracker. No card required.</p>
+      <label class="tx-gate-label" for="gate-email">Email</label>
+      <input class="tx-gate-input" type="email" id="gate-email" placeholder="you@email.com" autocomplete="email">
+      <button class="tx-gate-btn" id="gate-signup" type="button">Create free account →</button>
+      <div class="tx-gate-signin">Already have an account? <button id="gate-signin" type="button">Sign in</button></div>
+      <p class="tx-gate-micro">Secure sign-up powered by Auth0 — you'll set a password and confirm any two-factor step on the next screen. We never see your password.</p>
+    </div>
+  </div>
+</section>
+
+<div id="lessonContent" style="display:none">
 
 <section class="hero">
   <div class="eyebrow"><span class="pill-free">Free · with account</span> Trading 301 · Risk &amp; the path to funded</div>
@@ -257,6 +313,8 @@ footer a{color:var(--ink3)}
   </div>
 </div>
 
+</div><!-- /lessonContent -->
+
 <footer>
   Free foundational course from <a href="/">Traxent</a> — education only, not financial advice. © <span data-tx="copyrightYear">2026</span> <span data-tx="companyName">Akpan Holdings Limited</span>. <a href="/learn-101">101</a> · <a href="/learn-201">201</a> · <a href="/learn-301">301</a> · <a href="/faq">FAQ</a>
 </footer>
@@ -279,20 +337,35 @@ function pick(btn, correct){
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="/auth.js?v=__BUILD_SHA__"></script>
 <script>
-// ── Login gate: Trading 301 is free but requires a (free) account ──
-(async function(){
-  try{
-    await initAuth0();
-    var authed = await auth0Client.isAuthenticated();
-    if(!authed){
-      await auth0Client.loginWithRedirect({ authorizationParams: { redirect_uri: window.location.origin + '/learn-301' } });
-      return;
-    }
-    var g = document.getElementById('auth-gate-style'); if (g) g.parentNode.removeChild(g);
-    document.body.style.visibility = 'visible';
-  }catch(e){
-    try{ await auth0Client.loginWithRedirect({ authorizationParams: { redirect_uri: window.location.origin + '/learn-301' } }); }catch(_){}
+// ── Free-with-account gate: custom 60/40 screen → Auth0 signup / sign-in ──
+// We do NOT embed the password/2FA form (Auth0 best practice); the buttons open
+// Auth0's hosted signup ('signup') or login screen, pre-filled with the email
+// typed here. Password + any 2FA are handled securely on Auth0's screen.
+(function(){
+  var PATH = '/learn-301';
+  function toAuth(hint){
+    if (typeof auth0Client === 'undefined' || !auth0Client) return;
+    var el = document.getElementById('gate-email');
+    var email = el && el.value ? el.value.trim() : '';
+    var params = { redirect_uri: window.location.origin + PATH };
+    if (hint === 'signup') params.screen_hint = 'signup';
+    if (email) params.login_hint = email;
+    auth0Client.loginWithRedirect({ authorizationParams: params });
   }
+  var su = document.getElementById('gate-signup'); if (su) su.addEventListener('click', function(){ toAuth('signup'); });
+  var si = document.getElementById('gate-signin'); if (si) si.addEventListener('click', function(){ toAuth('login'); });
+  var inp = document.getElementById('gate-email'); if (inp) inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') toAuth('signup'); });
+
+  (async function(){
+    try{
+      await initAuth0();
+      if (await auth0Client.isAuthenticated()){
+        var g = document.getElementById('gate'); if (g) g.style.display = 'none';
+        var c = document.getElementById('lessonContent'); if (c) c.style.display = '';
+      }
+      // else: the gate stays visible so the visitor can sign up or sign in.
+    }catch(e){ /* on error, leave the gate visible */ }
+  })();
 })();
 </script>
 <script src="/consent.js" defer></script>

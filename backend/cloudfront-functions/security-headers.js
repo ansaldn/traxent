@@ -46,12 +46,12 @@ function handler(event) {
   // prevents traxent.io from being loaded in someone else's iframe.
   headers['content-security-policy'] = {
     value: "default-src 'self'; "
-      + "script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io; "
+      + "script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io https://connect.facebook.net; "
       + "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
       + "font-src 'self' https://fonts.gstatic.com; "
       + "img-src 'self' data: https:; "
       + "frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; "
-      + "connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; "
+      + "connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; "
       + "form-action 'self' https://formspree.io; "
       + "frame-ancestors 'none'; "
       + "object-src 'none'; "

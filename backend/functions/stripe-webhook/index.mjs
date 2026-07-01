@@ -1,10 +1,12 @@
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 import Stripe from 'stripe';
+import { sendWelcomeEmail } from './email.mjs';
 const ssm = new SSMClient({ region: 'eu-west-2' });
 async function getParam(name) {
   const res = await ssm.send(new GetParameterCommand({ Name: name, WithDecryption: true }));
   return res.Parameter.Value;
 }
+async function getParamSafe(name) { try { return await getParam(name); } catch { return null; } }
 async function getAuth0Token(domain, clientId, clientSecret) {
   const res = await fetch(`https://${domain}/oauth/token`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ client_id: clientId, client_secret: clientSecret, audience: `https://${domain}/api/v2/`, grant_type: 'client_credentials' }) });
   return (await res.json()).access_token;
@@ -50,6 +52,13 @@ export const handler = async (event) => {
         if (!s.metadata?.auth0_user_id || !s.metadata?.plan) break;
         await removeAllPlanRoles(token, auth0Domain, s.metadata.auth0_user_id, roleIds);
         await assignRole(token, auth0Domain, s.metadata.auth0_user_id, roleIds[s.metadata.plan]);
+        // Best-effort branded welcome email via Resend. Fully guarded: a missing key
+        // or any failure is swallowed so it can NEVER block or break plan provisioning.
+        try {
+          const resendKey = await getParamSafe('/traxent/resend/api_key');
+          const toEmail = s.customer_details?.email || s.customer_email;
+          if (resendKey && toEmail) await sendWelcomeEmail(resendKey, toEmail, s.metadata.plan);
+        } catch (e) { console.error('welcome email (non-fatal):', e.message); }
         break;
       }
       case 'customer.subscription.updated': {

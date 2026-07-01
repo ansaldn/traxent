@@ -439,7 +439,10 @@ footer a{color:var(--ink3)}
 // ── Lesson player (same interaction as the paid modules) ──
 var LESSONS = ['Market, limit & stop orders','The bid, ask & spread','Going long vs short','Leverage & margin','The real costs of trading','What moves prices','Getting filled','Quick check'];
 var TOTAL = LESSONS.length;
-var done = {};
+var MKEY = 'learn-201';
+function loadDone(){ try { return (JSON.parse(localStorage.getItem('tx_course_progress')||'{}')[MKEY]) || {}; } catch(e){ return {}; } }
+function saveDone(){ try { var a = JSON.parse(localStorage.getItem('tx_course_progress')||'{}'); a[MKEY]=done; localStorage.setItem('tx_course_progress', JSON.stringify(a)); } catch(e){} }
+var done = loadDone();
 function renderList(){
   var html = '';
   for (var i=0;i<TOTAL;i++){
@@ -463,17 +466,17 @@ function updateProgress(){
   document.getElementById('prog-pct').textContent = pct+'%';
   document.getElementById('prog-fill').style.width = pct+'%';
 }
-function completeLesson(i){ done[i]=true; updateProgress(); showLesson(Math.min(i+1,TOTAL-1)); }
+function completeLesson(i){ done[i]=true; saveDone(); updateProgress(); showLesson(Math.min(i+1,TOTAL-1)); }
 function pick(btn,correct){
   var q=btn.closest('.q'); if(q.getAttribute('data-done'))return; q.setAttribute('data-done','1');
   var opts=q.querySelectorAll('.opt'); for(var i=0;i<opts.length;i++)opts[i].disabled=true;
   if(correct){btn.classList.add('correct');}else{btn.classList.add('wrong');for(var j=0;j<opts.length;j++){if(opts[j].getAttribute('onclick').indexOf('true')>-1)opts[j].classList.add('correct');}}
   var e=q.querySelector('.q-exp'); if(e)e.classList.add('show');
-  done[TOTAL-1]=true; updateProgress();
+  done[TOTAL-1]=true; saveDone(); updateProgress();
   var d=document.getElementById('dot-'+(TOTAL-1)); if(d)d.textContent='✓';
   var it=document.getElementById('nav-'+(TOTAL-1)); if(it)it.classList.add('completed');
 }
-renderList(); showLesson(0);
+renderList(); updateProgress(); showLesson(0);
 
 // ── Free-with-account gate → Auth0 signup / sign-in ──
 (function(){

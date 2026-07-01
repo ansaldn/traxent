@@ -129,7 +129,7 @@
 
   <div class="plan-gate" id="plan-gate-free" style="display:none">
     <div class="plan-gate-text">
-      You're on the <strong>free plan.</strong> Upgrade to Observer at <strong>£4.99/mo</strong> to unlock pattern learning with live delayed data — or jump straight to Challenger at <strong>£12.99/mo</strong> for the full readiness tracker.
+      You're on the <strong>free plan.</strong> Trading 101, 201 &amp; 301 are already free. Upgrade to Observer at <strong>£4.99/mo</strong> for the full learning path with live data — or jump to Challenger at <strong>£12.99/mo</strong> for the readiness tracker.
     </div>
     <div class="plan-gate-actions">
       <button class="btn-upgrade secondary" onclick="upgradePlan('observer')">Observer £4.99 →</button>
@@ -160,96 +160,98 @@
 <script>
 const PLAN_HIERARCHY = ['free', 'observer', 'challenger', 'funded_ready'];
 
+// Copy is tier-aware: for the top tier (funded_ready) it's ownership language,
+// not a sales pitch; lower tiers describe the tool and note where it unlocks.
 const ALL_FEATURES = [
   {
-    icon: '📖', title: 'Pattern school',
+    icon: '🎓', title: 'Learning Centre',
     desc: {
-      free:         'Learn the 5 core trading patterns with plain-English explainers.',
-      observer:     'Learn the 5 core trading patterns with plain-English explainers.',
-      challenger:   'All 15 patterns with live chart examples and real-time context.',
-      funded_ready: 'All 15 patterns with premium data and advanced entry/exit coaching.',
+      free:         '10 modules and 50+ lessons — start free with Trading 101, 201 & 301, from how markets work to placing a trade and risk.',
+      observer:     'Your learning path: 10 modules and 50+ lessons, from the fundamentals through chart patterns and prop-firm rules.',
+      challenger:   'The full curriculum — 10 modules, 50+ lessons and the complete pattern library, beginner to funded-ready.',
+      funded_ready: 'Your complete curriculum — all 10 modules, 50+ lessons and the full pattern library, unlocked.',
     },
-    action: 'Start learning', minPlan: 'free', link: '/learn',
-  },
-  {
-    icon: '🧮', title: 'Position size calculator',
-    desc: {
-      free:         'Calculate your risk per trade and stop loss size.',
-      observer:     'Calculate your risk per trade and stop loss size.',
-      challenger:   'Full risk management suite with prop firm drawdown limits built in.',
-      funded_ready: 'Full risk management suite with prop firm drawdown limits built in.',
-    },
-    action: 'Open calculator', minPlan: 'free', link: '/calculator',
-  },
-  {
-    icon: '📊', title: 'Live chart',
-    desc: {
-      free:         'Delayed 15-minute price data on key instruments.',
-      observer:     'Delayed 15-minute price data on key instruments.',
-      challenger:   'Real-time price data on all tracked instruments.',
-      funded_ready: 'Premium institutional data feed — fully customisable.',
-    },
-    action: 'View chart', minPlan: 'observer', requiredLabel: 'Observer+', link: '/chart',
+    action: 'Open Learning Centre', minPlan: 'free', link: '/learn',
   },
   {
     icon: '🎯', title: 'Readiness tracker',
     desc: {
-      free:         'Score your trading habits against at least 16 prop firms including FTMO, Apex, Topstep and MyFundedFutures.',
-      observer:     'Score your trading habits against at least 16 prop firms including FTMO, Apex, Topstep and MyFundedFutures.',
-      challenger:   'Full score breakdown per rule across at least 16 firms — updated with every trade.',
-      funded_ready: 'Full score + personalised coaching on exactly what to fix per firm.',
+      free:         'Score your trading against at least 16 prop firms (FTMO, Apex, Topstep, MyFundedFutures and more). Unlocks on Challenger.',
+      observer:     'Score your trading against at least 16 prop firms. Unlocks on Challenger.',
+      challenger:   'Your live score, broken down per rule across at least 16 firms — updated with every trade.',
+      funded_ready: 'Your live readiness score plus personalised coaching on exactly what to fix, per firm.',
     },
     action: 'See my score', minPlan: 'challenger', requiredLabel: 'Challenger+', link: '/tracker',
   },
   {
     icon: '📓', title: 'Sim trade journal',
     desc: {
-      free:         'Log simulated trades and track your win rate and R:R over time.',
-      observer:     'Log simulated trades and track your win rate and R:R over time.',
-      challenger:   'Full journal with win rate, R:R, consistency score and pattern tagging.',
-      funded_ready: 'Full journal with challenge simulation mode — practice against real firm rules.',
+      free:         'Log simulated trades and track your win rate and R:R over time. Unlocks on Challenger.',
+      observer:     'Log simulated trades and track win rate and R:R. Unlocks on Challenger.',
+      challenger:   'Your full journal — win rate, R:R, consistency score and pattern tagging.',
+      funded_ready: 'Your full journal with challenge-simulation mode — practise against real firm rules.',
     },
     action: 'Open journal', minPlan: 'challenger', requiredLabel: 'Challenger+', link: '/journal',
   },
   {
     icon: '🔗', title: 'Connect your account',
     desc: {
-      free:         'Sync your real trades so your readiness score runs on actual fills, not just sim data.',
-      observer:     'Sync your real trades so your readiness score runs on actual fills, not just sim data.',
-      challenger:   'Connect 1 trading account (read-only) — your real trades score themselves against every firm.',
+      free:         'Sync your real trades (read-only) so your score runs on actual fills, not just sim data. Unlocks on Challenger.',
+      observer:     'Sync your real trades (read-only) so your score runs on real fills. Unlocks on Challenger.',
+      challenger:   'Connect a trading account (read-only) — your real trades score themselves against every firm.',
       funded_ready: 'Connect up to 3 accounts (read-only) — real-trade sync plus funded-phase tracking.',
     },
     action: 'Connect account', minPlan: 'challenger', requiredLabel: 'Challenger+', link: '/integrations',
   },
   {
-    icon: '📰', title: 'News sentiment feed',
+    icon: '🧮', title: 'Position size calculator',
     desc: {
-      free:         'AI-tagged market news with bull/bear sentiment scoring.',
-      observer:     'AI-tagged market news with bull/bear sentiment scoring.',
-      challenger:   'AI-tagged market news with bull/bear sentiment scoring.',
-      funded_ready: 'Premium news feed with bull/bear sentiment scoring and ticker context.',
+      free:         'Work out your risk per trade and stop-loss size on any account.',
+      observer:     'Work out your risk per trade and stop-loss size on any account.',
+      challenger:   'Your full risk suite with prop-firm drawdown limits built in.',
+      funded_ready: 'Your full risk suite with every prop-firm drawdown limit built in.',
     },
-    action: 'Read feed', minPlan: 'funded_ready', requiredLabel: 'Funded Trader', link: '/news',
+    action: 'Open calculator', minPlan: 'free', link: '/calculator',
   },
   {
     icon: '🧪', title: 'Challenge Lab',
     desc: {
-      free:         'Advanced 4-week programme covering psychology, news trading, and trade management.',
-      observer:     'Advanced 4-week programme covering psychology, news trading, and trade management.',
-      challenger:   'Full access — psychology, news calendar, advanced trade management, and 30-day sim programme.',
-      funded_ready: 'Full access — psychology, news calendar, advanced trade management, and 30-day sim programme.',
+      free:         'A 4-week programme: psychology, news trading and trade management. Unlocks on Challenger.',
+      observer:     'A 4-week programme: psychology, news trading and trade management. Unlocks on Challenger.',
+      challenger:   'Your full Challenge Lab — psychology, news calendar, trade management and the 30-day sim programme.',
+      funded_ready: 'Your full Challenge Lab — psychology, news calendar, trade management and the 30-day sim programme.',
     },
     action: 'Open Challenge Lab', minPlan: 'challenger', requiredLabel: 'Challenger+', link: '/challenge-lab',
   },
   {
+    icon: '📊', title: 'Live chart',
+    desc: {
+      free:         '15-minute delayed price data on key instruments. Real-time unlocks on Observer.',
+      observer:     'Real-time price data on all tracked instruments.',
+      challenger:   'Real-time price data on all tracked instruments.',
+      funded_ready: 'Your real-time, fully customisable chart with an institutional-grade feed.',
+    },
+    action: 'View chart', minPlan: 'observer', requiredLabel: 'Observer+', link: '/chart',
+  },
+  {
     icon: '📅', title: 'Economic calendar',
     desc: {
-      free:         'Know when high-impact news events are happening before you trade.',
-      observer:     'Know when high-impact news events are happening before you trade.',
-      challenger:   'Full calendar with Tier 1/2/3 impact ratings and prop firm news filter guide.',
-      funded_ready: 'Full calendar with event alerts and position management reminders.',
+      free:         'See high-impact news events before you trade. Full calendar on Observer.',
+      observer:     'Your full calendar with impact ratings and a prop-firm news-filter guide.',
+      challenger:   'Your full calendar with impact ratings and a prop-firm news-filter guide.',
+      funded_ready: 'Your full calendar with event alerts and position-management reminders.',
     },
     action: 'View calendar', minPlan: 'observer', requiredLabel: 'Observer+', link: '/calendar',
+  },
+  {
+    icon: '📰', title: 'News sentiment feed',
+    desc: {
+      free:         'AI-tagged market news with bull/bear sentiment scoring. Unlocks on Funded Trader.',
+      observer:     'AI-tagged market news with bull/bear sentiment scoring. Unlocks on Funded Trader.',
+      challenger:   'AI-tagged market news with bull/bear sentiment scoring. Unlocks on Funded Trader.',
+      funded_ready: 'Your premium news feed — bull/bear sentiment scoring with ticker context.',
+    },
+    action: 'Read feed', minPlan: 'funded_ready', requiredLabel: 'Funded Trader', link: '/news',
   },
 ];
 
@@ -263,7 +265,7 @@ function applyPlan(plan) {
     free:         "You're on the free plan. Upgrade to start tracking your readiness.",
     observer:     "You're learning with delayed data. Upgrade to Challenger to unlock the readiness tracker.",
     challenger:   "You're tracking your readiness in real time. Keep building your edge.",
-    funded_ready: "You're on Funded Trader. Everything is unlocked — let's get you there.",
+    funded_ready: "You're on Funded Trader — every tool is unlocked. This is your full workspace.",
   };
   document.getElementById('welcome-sub').textContent = subMessages[plan] || subMessages.free;
 

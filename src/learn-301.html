@@ -10,14 +10,14 @@
 <meta name="theme-color" content="#0e0e0c">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <title>Trading 301: Risk &amp; the Path to Funded — Free Course — Traxent</title>
-<meta name="description" content="Trading 301: the skills that keep you in the game — risk management, position sizing, stop-losses, drawdown, psychology, demo trading, and an intro to prop firms and funded accounts. Free with a Traxent account.">
+<meta name="description" content="Trading 301: risk management, position sizing, stop-losses, drawdown, psychology, demo trading, and an intro to prop firms and funded accounts. Free with a Traxent account.">
 <link rel="canonical" href="https://traxent.io/learn-301">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
-  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);
+  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);--border2:rgba(14,14,12,.06);
   --surface:#ffffff;--surface2:#f0efe9;--good:#0a6e4f;--bad:#9e1a1a;--warn:#b06000;
   --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
 }
@@ -26,72 +26,11 @@ html{scroll-behavior:smooth;font-size:16px}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.65;-webkit-font-smoothing:antialiased}
 a{color:var(--accent)}
 nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-inner{max-width:1000px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .nav-logo{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
 .nav-logo em{font-style:normal;color:var(--accent)}
-.nav-right{display:flex;align-items:center;gap:8px}
-.nav-link{font-size:13px;color:var(--ink2);text-decoration:none;padding:8px 10px;border-radius:8px}
-.nav-link:hover{background:var(--surface2)}
 .nav-cta{font-size:13px;font-weight:500;color:#fff;background:var(--accent);border-radius:8px;padding:9px 16px;text-decoration:none;white-space:nowrap}
 .nav-cta:hover{background:#085e43}
-.wrap{max-width:800px;margin:0 auto;padding:0 32px}
-.hero{max-width:800px;margin:0 auto;padding:64px 32px 24px}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
-.pill-free{background:var(--accent-light);border:1px solid rgba(10,110,79,.22);color:var(--accent);border-radius:999px;padding:3px 10px;font-size:10px}
-h1{font-family:var(--serif);font-size:50px;line-height:1.05;font-weight:400;letter-spacing:-.01em;margin-bottom:16px}
-.hero-sub{font-size:17px;color:var(--ink2);font-weight:300;max-width:640px}
-.hero-meta{margin-top:18px;font-family:var(--mono);font-size:12px;color:var(--ink3);display:flex;gap:18px;flex-wrap:wrap}
-.toc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin:28px auto 0;max-width:800px}
-.toc-h{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
-.toc ol{margin:0;padding-left:20px;columns:2;column-gap:32px}
-.toc li{font-size:14px;color:var(--ink2);margin-bottom:8px;break-inside:avoid}
-.toc a{color:var(--ink2);text-decoration:none}
-.toc a:hover{color:var(--accent)}
-.lesson{max-width:800px;margin:0 auto;padding:44px 32px 0}
-.lesson-num{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.lesson h2{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1.15;margin-bottom:16px;letter-spacing:-.01em}
-.lesson p{font-size:16px;color:var(--ink2);margin-bottom:16px}
-.lesson strong{color:var(--ink);font-weight:500}
-.lesson ul{margin:0 0 16px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-.lesson ul li{font-size:15px;color:var(--ink2);padding-left:20px;position:relative}
-.lesson ul li::before{content:'—';position:absolute;left:0;color:var(--accent)}
-.callout{background:var(--accent-light);border:1px solid rgba(10,110,79,.18);border-radius:10px;padding:16px 20px;margin:0 0 16px}
-.callout p{font-size:14.5px;margin:0;color:var(--ink2)}
-.divider{max-width:800px;margin:44px auto 0;padding:0 32px}
-.divider hr{border:none;border-top:1px solid var(--border)}
-.quiz{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 30px}
-.quiz-h{font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:6px}
-.quiz-sub{font-size:14px;color:var(--ink3);font-weight:300;margin-bottom:22px}
-.q{margin-bottom:22px}
-.q-text{font-size:15px;font-weight:500;margin-bottom:12px}
-.opt{display:block;width:100%;text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 15px;font-family:var(--sans);font-size:14px;color:var(--ink2);cursor:pointer;margin-bottom:8px;transition:all .15s}
-.opt:hover{border-color:var(--accent)}
-.opt.correct{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:500}
-.opt.wrong{background:#fdeaea;border-color:var(--bad);color:var(--bad)}
-.q-exp{font-size:13.5px;color:var(--ink3);margin-top:6px;display:none}
-.q-exp.show{display:block}
-.sources{max-width:800px;margin:44px auto 0;padding:0 32px}
-.sources h2{font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:8px}
-.sources p.muted{font-size:13px;color:var(--ink3);font-weight:300;margin-bottom:18px}
-.src-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-.src-list li{font-size:14px;color:var(--ink2);padding-left:20px;position:relative}
-.src-list li::before{content:'↗';position:absolute;left:0;color:var(--accent);font-size:12px}
-.src-list a{font-weight:500}
-.bridge{max-width:800px;margin:40px auto 0;padding:0 32px}
-.bridge-card{background:var(--ink);color:#fff;border-radius:16px;padding:32px 34px}
-.bridge-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-mid);margin-bottom:12px}
-.bridge-card h2{font-family:var(--serif);font-size:28px;font-weight:400;line-height:1.15;margin-bottom:12px}
-.bridge-card p{font-size:15px;color:rgba(255,255,255,.7);font-weight:300;margin-bottom:18px}
-.bridge-actions{display:flex;gap:10px;flex-wrap:wrap}
-.bridge-actions a{text-decoration:none;font-size:14px;font-weight:500;padding:12px 22px;border-radius:8px}
-.b-primary{background:var(--accent);color:#fff}
-.b-primary:hover{background:var(--accent-mid)}
-.b-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.28)}
-.b-ghost:hover{background:rgba(255,255,255,.08)}
-footer{border-top:1px solid var(--border);margin-top:56px;padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
-footer a{color:var(--ink3)}
-@media(max-width:640px){h1{font-size:36px}.hero{padding:44px 22px 20px}.lesson{padding:36px 22px 0}.toc ol{columns:1}.bridge-card{padding:24px}}
-/* ── Free-with-account gate (60/40 split) ── */
 .tx-gate{min-height:calc(100vh - 64px);display:grid;grid-template-columns:60% 40%}
 .tx-gate-info{background:var(--ink);color:#fff;padding:64px 56px;display:flex;flex-direction:column;justify-content:center}
 .tx-gate-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-mid);margin-bottom:20px}
@@ -118,6 +57,75 @@ footer a{color:var(--ink3)}
 .tx-gate-signin button{background:none;border:none;color:var(--accent);font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;padding:0;text-decoration:underline}
 .tx-gate-micro{font-size:11.5px;color:var(--ink3);text-align:center;margin-top:18px;line-height:1.5}
 @media(max-width:860px){.tx-gate{grid-template-columns:1fr}.tx-gate-info{padding:44px 26px;order:2}.tx-gate-panel{padding:44px 24px;order:1}.tx-gate-info h2{font-size:32px}}
+.course{max-width:1080px;margin:0 auto;padding:40px 32px 80px;display:grid;grid-template-columns:256px 1fr;gap:48px;align-items:start}
+.sidebar{position:sticky;top:88px}
+.side-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.side-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;margin-bottom:4px}
+.side-meta{font-size:12px;color:var(--ink3);margin-bottom:20px}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);margin-bottom:6px}
+.progress-bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:20px}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .5s ease;width:0}
+.lesson-list{display:flex;flex-direction:column;gap:2px}
+.lesson-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:all .15s;border:1px solid transparent}
+.lesson-item:hover{background:var(--surface);border-color:var(--border)}
+.lesson-item.active{background:var(--surface);border-color:var(--accent)}
+.ldot{width:22px;height:22px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:var(--mono);color:var(--ink3);flex-shrink:0;transition:all .2s}
+.lesson-item.active .ldot{background:var(--accent);color:#fff;border-color:var(--accent)}
+.lesson-item.completed .ldot{background:var(--accent);color:#fff;border-color:var(--accent)}
+.lname{font-size:13px;color:var(--ink)}
+.lesson-item.active .lname{font-weight:500;color:var(--accent)}
+.side-note{margin-top:20px;padding:14px 16px;background:var(--accent-light);border:1px solid rgba(10,110,79,.15);border-radius:8px;font-size:12px;color:var(--ink2);line-height:1.5}
+.side-note a{font-weight:500}
+.lesson-main{min-height:60vh}
+.lesson-hd{margin-bottom:28px}
+.lesson-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.lesson-eyebrow::before{content:'';width:16px;height:1px;background:var(--accent)}
+.lesson-title{font-family:var(--serif);font-size:38px;font-weight:400;line-height:1.1;margin-bottom:14px;letter-spacing:-.01em}
+.lesson-intro{font-size:16px;color:var(--ink2);line-height:1.7;font-weight:300;max-width:640px}
+.lesson-body{max-width:720px}
+.lesson-body p{font-size:15px;color:var(--ink2);line-height:1.8;margin-bottom:16px}
+.lesson-body strong{color:var(--ink);font-weight:500}
+.lesson-body ul{margin:0 0 16px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.lesson-body ul li{font-size:15px;color:var(--ink2);padding-left:20px;position:relative;line-height:1.6}
+.lesson-body ul li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+.figure{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;margin:0 0 24px;text-align:center}
+.figure svg{max-width:100%;height:auto}
+.figure figcaption{font-size:12.5px;color:var(--ink3);margin-top:14px;font-weight:300}
+.callout{background:var(--accent-light);border:1px solid rgba(10,110,79,.18);border-radius:10px;padding:16px 20px;margin:4px 0 16px}
+.callout p{font-size:14.5px;margin:0;color:var(--ink2)}
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:44px;padding-top:26px;border-top:1px solid var(--border)}
+.btn-nav{border:none;border-radius:8px;padding:11px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--sans)}
+.btn-prev{background:var(--surface);border:1px solid var(--border);color:var(--ink2)}
+.btn-prev:hover{border-color:var(--ink)}
+.btn-prev::before{content:'← '}
+.btn-next{background:var(--accent);color:#fff}
+.btn-next:hover{background:#085e43}
+.btn-next::after{content:' →'}
+.nav-info{font-size:12px;color:var(--ink3);font-family:var(--mono)}
+.quiz .q{margin-bottom:22px}
+.q-text{font-size:15px;font-weight:500;margin-bottom:12px}
+.opt{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px 15px;font-family:var(--sans);font-size:14px;color:var(--ink2);cursor:pointer;margin-bottom:8px;transition:all .15s}
+.opt:hover{border-color:var(--accent)}
+.opt.correct{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:500}
+.opt.wrong{background:#fdeaea;border-color:var(--bad);color:var(--bad)}
+.q-exp{font-size:13.5px;color:var(--ink3);margin-top:6px;display:none}
+.q-exp.show{display:block}
+.wrap-links{list-style:none;display:flex;flex-direction:column;gap:10px;margin:8px 0 0}
+.wrap-links li{font-size:14px;color:var(--ink2);padding-left:20px;position:relative}
+.wrap-links li::before{content:'↗';position:absolute;left:0;color:var(--accent);font-size:12px}
+.bridge{background:var(--ink);color:#fff;border-radius:14px;padding:28px 30px;margin-top:24px}
+.bridge .be{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-mid);margin-bottom:10px}
+.bridge h3{font-family:var(--serif);font-size:24px;font-weight:400;margin-bottom:10px}
+.bridge p{font-size:14px;color:rgba(255,255,255,.7);font-weight:300;margin-bottom:18px}
+.bridge-actions{display:flex;gap:10px;flex-wrap:wrap}
+.bridge-actions a{text-decoration:none;font-size:14px;font-weight:500;padding:11px 20px;border-radius:8px}
+.b-primary{background:var(--accent);color:#fff}
+.b-primary:hover{background:var(--accent-mid)}
+.b-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.28)}
+.b-ghost:hover{background:rgba(255,255,255,.08)}
+footer{border-top:1px solid var(--border);margin-top:24px;padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
+footer a{color:var(--ink3)}
+@media(max-width:820px){.course{grid-template-columns:1fr;gap:24px}.sidebar{position:static}.lesson-title{font-size:30px}}
 </style>
 <script src="/config.js" defer></script>
 </head>
@@ -125,15 +133,9 @@ footer a{color:var(--ink3)}
 
 <nav><div class="nav-inner">
   <a href="/" class="nav-logo">trax<em>ent</em></a>
-  <div class="nav-right">
-    <a href="/learn-101" class="nav-link">101</a>
-    <a href="/learn-201" class="nav-link">201</a>
-    <a href="/learn-301" class="nav-link">301</a>
-    <a href="/dashboard" class="nav-cta">Dashboard →</a>
-  </div>
+  <a href="/dashboard" class="nav-cta">Dashboard →</a>
 </div></nav>
 
-<!-- ── Gate: shown to logged-out visitors; lesson content revealed once signed in ── -->
 <section class="tx-gate" id="gate" aria-label="Create your free account to continue">
   <div class="tx-gate-info">
     <div class="tx-gate-eyebrow">Trading 301 · Risk &amp; the path to funded</div>
@@ -162,209 +164,331 @@ footer a{color:var(--ink3)}
 </section>
 
 <div id="lessonContent" style="display:none">
+<div class="course">
+  <aside class="sidebar">
+    <div class="side-eyebrow">Module · Free</div>
+    <div class="side-title">Trading 301: Risk &amp; the Path to Funded</div>
+    <div class="side-meta">7 lessons · quiz · ~28 min</div>
+    <div class="progress-label"><span>Progress</span><span id="prog-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+    <div class="lesson-list" id="lesson-list"></div>
+    <div class="side-note">Finish 301 and you're ready for the paid modules — the firm-by-firm rules and the readiness tracker.</div>
+  </aside>
 
-<section class="hero">
-  <div class="eyebrow"><span class="pill-free">Free · with account</span> Trading 301 · Risk &amp; the path to funded</div>
-  <h1>Staying in the game</h1>
-  <p class="hero-sub">Most people learn <em>entries</em>. The traders who last learn <em>risk</em>. This is the part that separates people who keep an account from people who keep resetting one — and where funded/prop-firm trading finally makes sense.</p>
-  <div class="hero-meta"><span>7 lessons</span><span>~28 min read</span><span>Free with your account</span></div>
-</section>
+  <div>
 
-<div class="toc">
-  <div class="toc-h">What you'll learn</div>
-  <ol>
-    <li><a href="#l1">Why risk management is everything</a></li>
-    <li><a href="#l2">Position sizing &amp; the 1% rule</a></li>
-    <li><a href="#l3">Stop-losses &amp; risk-to-reward</a></li>
-    <li><a href="#l4">Drawdown: how accounts blow up</a></li>
-    <li><a href="#l5">Psychology: FOMO, tilt &amp; revenge</a></li>
-    <li><a href="#l6">Practise first: demo trading</a></li>
-    <li><a href="#l7">Prop firms &amp; funded accounts</a></li>
-  </ol>
-</div>
-
-<article>
-
-  <section class="lesson" id="l1">
-    <div class="lesson-num">Lesson 1</div>
-    <h2>Why risk management is the whole game</h2>
-    <p>Here's the uncomfortable truth: you can be right more often than you're wrong and still lose all your money — if your losses are bigger than your wins. And you can be wrong most of the time and still profit — if you keep your losses small and let your wins run.</p>
-    <p>That's why professionals obsess over <strong>risk</strong>, not predictions. The first job of a trader isn't to make money; it's to <strong>not lose too much</strong>, so you're still around when your edge pays off. Everything else in this module builds on that idea.</p>
-  </section>
-
-  <section class="lesson" id="l2">
-    <div class="lesson-num">Lesson 2</div>
-    <h2>Position sizing and the 1% rule</h2>
-    <p><strong>Position sizing</strong> is deciding how much to risk on a single trade — and it matters more than which trade you pick. A common guideline is the <strong>1% rule</strong>: never risk more than about 1% of your account on any one trade.</p>
-    <p>On a £10,000 account, that's £100 of risk per trade. If your stop-loss is 50 points away and each point is worth £2, that's already £100 — so that's your maximum size. Sizing this way means a losing streak stings but never wipes you out. It's boring, and it's exactly what keeps professionals in business.</p>
-    <div class="callout"><p>Traxent's <strong>position-size calculator</strong> does this maths for you against each prop firm's limits — but doing it by hand a few times builds the instinct.</p></div>
-  </section>
-
-  <section class="lesson" id="l3">
-    <div class="lesson-num">Lesson 3</div>
-    <h2>Stop-losses and risk-to-reward</h2>
-    <p>A <strong>stop-loss</strong> is a pre-set exit that caps your loss if a trade goes against you. Deciding it <em>before</em> you enter — when you're calm — is what stops a small loss becoming a catastrophic one.</p>
-    <p><strong>Risk-to-reward (R:R)</strong> compares what you're risking to what you stand to gain. Risk £100 to make £200 and that's 1:2. With 1:2, you only need to win about a third of your trades to break even. This is the maths behind "cut losses short, let winners run" — it's not a slogan, it's arithmetic.</p>
-  </section>
-
-  <section class="lesson" id="l4">
-    <div class="lesson-num">Lesson 4</div>
-    <h2>Drawdown: how accounts blow up</h2>
-    <p><strong>Drawdown</strong> is how far your account has fallen from its peak. It matters because losses and the gains needed to recover them aren't symmetric:</p>
-    <ul>
-      <li>Lose 10% → you need +11% to get back to even.</li>
-      <li>Lose 50% → you need +100% just to recover.</li>
-      <li>Lose 90% → you need +900%. Practically, you're done.</li>
-    </ul>
-    <p>This is why avoiding deep drawdowns matters more than chasing big wins. It's also exactly what prop firms measure — most will fail your evaluation the moment your drawdown breaches their limit, which is why Traxent scores it so heavily.</p>
-  </section>
-
-  <section class="lesson" id="l5">
-    <div class="lesson-num">Lesson 5</div>
-    <h2>Trading psychology: FOMO, tilt and revenge</h2>
-    <p>Your biggest opponent is usually yourself. Three patterns catch almost everyone:</p>
-    <ul>
-      <li><strong>FOMO</strong> — chasing a move you've already missed, entering late at a bad price.</li>
-      <li><strong>Tilt</strong> — trading emotionally after a loss (or a win), abandoning your plan.</li>
-      <li><strong>Revenge trading</strong> — trying to "win it back" immediately with a bigger, riskier trade.</li>
-    </ul>
-    <p>The fix isn't willpower — it's <strong>rules written down in advance</strong>: your max risk, your daily loss limit, when you stop for the day. A journal that records not just the trade but how you felt is how you spot these patterns and break them.</p>
-  </section>
-
-  <section class="lesson" id="l6">
-    <div class="lesson-num">Lesson 6</div>
-    <h2>Practise first: demo and paper trading</h2>
-    <p><strong>Paper (demo) trading</strong> means placing trades with virtual money in real market conditions. It's the flight simulator of trading: you build habits, test a strategy and learn the platform without risking a penny.</p>
-    <p>Treat it seriously — use a realistic account size and follow your real rules — and it's invaluable. Treat it as a game with infinite money and it teaches bad habits. The goal is to prove, to yourself, that your approach is consistent <em>before</em> real money or a paid evaluation is on the line. This is exactly what Traxent's sim journal and readiness score are built around.</p>
-  </section>
-
-  <section class="lesson" id="l7">
-    <div class="lesson-num">Lesson 7</div>
-    <h2>What are prop firms and funded accounts?</h2>
-    <p>Most new traders don't have much capital — so a 20% year on £1,000 is only £200. <strong>Proprietary trading firms ("prop firms")</strong> solve this: they let you trade <em>their</em> capital and keep a large share of the profits (often 80–90%), so the same skill can earn far more.</p>
-    <p>The catch is you have to prove yourself first. You pay for an <strong>evaluation (a "challenge")</strong> — a demo account with strict rules: hit a profit target without breaching a daily loss limit or a maximum drawdown, often over a minimum number of days. Pass, and you're "funded" and trade for real. Fail, and you've lost the evaluation fee.</p>
-    <p>That's why preparation matters so much: <strong>the rules, not the profit target, are what fail most people</strong> — and they're knowable in advance. This is where the rest of Traxent picks up: the paid modules go deep on each firm's rules, and the readiness tracker scores your real trades against them so you only pay for a challenge when you're genuinely ready.</p>
-  </section>
-
-</article>
-
-<div class="divider"><hr></div>
-
-<div class="wrap" style="padding-top:44px">
-  <div class="quiz">
-    <div class="quiz-h">Quick check</div>
-    <div class="quiz-sub">Four questions. The answer and a short explanation appear as you click.</div>
-
-    <div class="q">
-      <div class="q-text">1. Under the 1% rule, how much would you risk per trade on a £10,000 account?</div>
-      <button class="opt" onclick="pick(this,false)">£1,000</button>
-      <button class="opt" onclick="pick(this,true)">About £100</button>
-      <button class="opt" onclick="pick(this,false)">Your whole account</button>
-      <div class="q-exp">1% of £10,000 is £100 — the maximum you'd risk on any single trade, so a losing streak can't wipe you out.</div>
+    <div class="lesson-main" id="lesson-0">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 301 · Lesson 1</div>
+        <h1 class="lesson-title">Why risk management is the whole game</h1>
+        <p class="lesson-intro">The single idea that separates traders who last from traders who don't. It isn't about being right.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Small controlled losses versus large wins keeping the account rising overall.">
+            <line x1="30" y1="70" x2="430" y2="70" stroke="#d9d7cf" stroke-width="1.5"/>
+            <g fill="#9e1a1a"><rect x="60" y="70" width="16" height="16"/><rect x="150" y="70" width="16" height="14"/><rect x="250" y="70" width="16" height="15"/><rect x="330" y="70" width="16" height="13"/></g>
+            <g fill="#0a6e4f"><rect x="100" y="34" width="16" height="36"/><rect x="200" y="26" width="16" height="44"/><rect x="290" y="40" width="16" height="30"/><rect x="380" y="20" width="16" height="50"/></g>
+            <text x="120" y="120" font-family="Geist,sans-serif" font-size="12" fill="#3a3a36" text-anchor="middle">small losses</text>
+            <text x="330" y="120" font-family="Geist,sans-serif" font-size="12" fill="#0a6e4f" text-anchor="middle">bigger wins → account grows</text>
+          </svg>
+          <figcaption>Keep losses small and let wins run, and you can be wrong often and still win.</figcaption>
+        </figure>
+        <p>Here's the uncomfortable truth: you can be right more often than you're wrong and still lose all your money — if your losses are bigger than your wins. And you can be wrong most of the time and still profit — if you keep your losses small and let your wins run.</p>
+        <p>That's why professionals obsess over <strong>risk</strong>, not predictions. The first job of a trader isn't to make money; it's to <strong>not lose too much</strong>, so you're still around when your edge pays off. Everything else in this module builds on that idea.</p>
+      </div>
+      <div class="lesson-nav"><span></span><span class="nav-info">Lesson 1 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(0)">Next lesson</button></div>
     </div>
 
-    <div class="q">
-      <div class="q-text">2. After a 50% drawdown, what gain do you need to get back to even?</div>
-      <button class="opt" onclick="pick(this,false)">50%</button>
-      <button class="opt" onclick="pick(this,true)">100%</button>
-      <button class="opt" onclick="pick(this,false)">25%</button>
-      <div class="q-exp">Losses and recoveries aren't symmetric — halving your account means you must double what's left (+100%) to recover.</div>
+    <div class="lesson-main" id="lesson-1" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 301 · Lesson 2</div>
+        <h1 class="lesson-title">Position sizing and the 1% rule</h1>
+        <p class="lesson-intro">How much to risk matters more than which trade you pick. Here's the simple guardrail the pros use.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An account bar with only 1 percent at risk on a single trade.">
+            <rect x="40" y="46" width="380" height="30" rx="5" fill="#e8f5f0" stroke="#0a6e4f"/>
+            <rect x="40" y="46" width="18" height="30" rx="5" fill="#9e1a1a"/>
+            <text x="49" y="38" font-family="Geist Mono,monospace" font-size="10" fill="#9e1a1a" text-anchor="middle">1%</text>
+            <text x="240" y="98" font-family="Geist,sans-serif" font-size="12" fill="#3a3a36" text-anchor="middle">£10,000 account · risk £100 max per trade</text>
+          </svg>
+          <figcaption>Risking ~1% per trade means a losing streak stings but never wipes you out.</figcaption>
+        </figure>
+        <p><strong>Position sizing</strong> is deciding how much to risk on a single trade — and it matters more than which trade you pick. A common guideline is the <strong>1% rule</strong>: never risk more than about 1% of your account on any one trade.</p>
+        <p>On a £10,000 account, that's £100 of risk per trade. If your stop-loss is 50 points away and each point is worth £2, that's already £100 — so that's your maximum size. Sizing this way means a losing streak stings but never wipes you out.</p>
+        <div class="callout"><p>Traxent's <strong>position-size calculator</strong> does this maths for you against each prop firm's limits — but doing it by hand a few times builds the instinct.</p></div>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(0)">Previous</button><span class="nav-info">Lesson 2 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(1)">Next lesson</button></div>
     </div>
 
-    <div class="q">
-      <div class="q-text">3. With a 1:2 risk-to-reward, roughly what win rate do you need to break even?</div>
-      <button class="opt" onclick="pick(this,true)">About one third of trades</button>
-      <button class="opt" onclick="pick(this,false)">At least 80% of trades</button>
-      <button class="opt" onclick="pick(this,false)">Exactly 50%</button>
-      <div class="q-exp">If winners are twice the size of losers, winning ~33% of the time breaks even. Good R:R means you don't need to be right often.</div>
+    <div class="lesson-main" id="lesson-2" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 301 · Lesson 3</div>
+        <h1 class="lesson-title">Stop-losses and risk-to-reward</h1>
+        <p class="lesson-intro">Decide your exit before you enter — and make sure the reward is worth the risk.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Risking one unit to make two units, a one to two risk to reward.">
+            <rect x="80" y="55" width="80" height="26" rx="4" fill="#9e1a1a"/>
+            <text x="120" y="73" font-family="Geist,sans-serif" font-size="12" fill="#fff" text-anchor="middle">risk £100</text>
+            <rect x="200" y="42" width="180" height="26" rx="4" fill="#0a6e4f"/>
+            <text x="290" y="60" font-family="Geist,sans-serif" font-size="12" fill="#fff" text-anchor="middle">reward £200</text>
+            <text x="230" y="100" font-family="Geist Mono,monospace" font-size="12" fill="#3a3a36" text-anchor="middle">1 : 2 risk-to-reward</text>
+          </svg>
+          <figcaption>At 1:2, you only need to win about a third of your trades to break even.</figcaption>
+        </figure>
+        <p>A <strong>stop-loss</strong> is a pre-set exit that caps your loss if a trade goes against you. Deciding it <em>before</em> you enter — when you're calm — is what stops a small loss becoming a catastrophic one.</p>
+        <p><strong>Risk-to-reward (R:R)</strong> compares what you're risking to what you stand to gain. Risk £100 to make £200 and that's 1:2. With 1:2, you only need to win about a third of your trades to break even. This is the maths behind "cut losses short, let winners run" — it's not a slogan, it's arithmetic.</p>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(1)">Previous</button><span class="nav-info">Lesson 3 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(2)">Next lesson</button></div>
     </div>
 
-    <div class="q">
-      <div class="q-text">4. What usually fails traders in a prop firm evaluation?</div>
-      <button class="opt" onclick="pick(this,false)">Not hitting the profit target</button>
-      <button class="opt" onclick="pick(this,true)">Breaching a rule like the daily loss or drawdown limit</button>
-      <button class="opt" onclick="pick(this,false)">Trading too few different markets</button>
-      <div class="q-exp">The rules — daily loss, max drawdown, consistency, minimum days — fail most people, and they're knowable in advance. That's exactly what Traxent scores you against.</div>
+    <div class="lesson-main" id="lesson-3" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 301 · Lesson 4</div>
+        <h1 class="lesson-title">Drawdown: how accounts blow up</h1>
+        <p class="lesson-intro">The maths of losses is brutal and non-obvious. Understand it and you'll protect your account by instinct.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Losing 50 percent needs a 100 percent gain to recover.">
+            <text x="70" y="30" font-family="Geist,sans-serif" font-size="12" fill="#9e1a1a" text-anchor="middle">−10%</text>
+            <text x="70" y="48" font-family="Geist Mono,monospace" font-size="11" fill="#0a6e4f" text-anchor="middle">need +11%</text>
+            <text x="230" y="30" font-family="Geist,sans-serif" font-size="12" fill="#9e1a1a" text-anchor="middle">−50%</text>
+            <text x="230" y="48" font-family="Geist Mono,monospace" font-size="11" fill="#0a6e4f" text-anchor="middle">need +100%</text>
+            <text x="390" y="30" font-family="Geist,sans-serif" font-size="12" fill="#9e1a1a" text-anchor="middle">−90%</text>
+            <text x="390" y="48" font-family="Geist Mono,monospace" font-size="11" fill="#0a6e4f" text-anchor="middle">need +900%</text>
+            <line x1="40" y1="70" x2="420" y2="70" stroke="#d9d7cf"/>
+            <polyline points="40,80 130,84 130,110 300,118 300,80 420,60" fill="none" stroke="#9e1a1a" stroke-width="2"/>
+            <text x="230" y="134" font-family="Geist,sans-serif" font-size="11" fill="#3a3a36" text-anchor="middle">deeper losses need exponentially bigger recoveries</text>
+          </svg>
+          <figcaption>Avoiding deep drawdowns matters more than chasing big wins.</figcaption>
+        </figure>
+        <p><strong>Drawdown</strong> is how far your account has fallen from its peak. It matters because losses and the gains needed to recover them aren't symmetric:</p>
+        <ul>
+          <li>Lose 10% → you need +11% to get back to even.</li>
+          <li>Lose 50% → you need +100% just to recover.</li>
+          <li>Lose 90% → you need +900%. Practically, you're done.</li>
+        </ul>
+        <p>This is why avoiding deep drawdowns matters more than chasing big wins. It's also exactly what prop firms measure — most will fail your evaluation the moment your drawdown breaches their limit, which is why Traxent scores it so heavily.</p>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(2)">Previous</button><span class="nav-info">Lesson 4 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(3)">Next lesson</button></div>
     </div>
+
+    <div class="lesson-main" id="lesson-4" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 301 · Lesson 5</div>
+        <h1 class="lesson-title">Psychology: FOMO, tilt and revenge</h1>
+        <p class="lesson-intro">Your biggest opponent isn't the market — it's the person clicking the buttons.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An emotional, erratic decision line versus a calm rule-based line.">
+            <line x1="30" y1="60" x2="430" y2="60" stroke="#d9d7cf"/>
+            <polyline points="30,60 70,30 110,90 150,35 190,88 230,45 270,80" fill="none" stroke="#9e1a1a" stroke-width="2"/>
+            <text x="150" y="18" font-family="Geist,sans-serif" font-size="11" fill="#9e1a1a" text-anchor="middle">emotional trading</text>
+            <polyline points="270,60 320,58 370,60 420,58" fill="none" stroke="#0a6e4f" stroke-width="2.5"/>
+            <text x="360" y="82" font-family="Geist,sans-serif" font-size="11" fill="#0a6e4f" text-anchor="middle">rules kick in</text>
+          </svg>
+          <figcaption>Written rules, not willpower, are what flatten the emotional swings.</figcaption>
+        </figure>
+        <p>Your biggest opponent is usually yourself. Three patterns catch almost everyone:</p>
+        <ul>
+          <li><strong>FOMO</strong> — chasing a move you've already missed, entering late at a bad price.</li>
+          <li><strong>Tilt</strong> — trading emotionally after a loss (or a win), abandoning your plan.</li>
+          <li><strong>Revenge trading</strong> — trying to "win it back" immediately with a bigger, riskier trade.</li>
+        </ul>
+        <p>The fix isn't willpower — it's <strong>rules written down in advance</strong>: your max risk, your daily loss limit, when you stop for the day. A journal that records not just the trade but how you felt is how you spot these patterns and break them.</p>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(3)">Previous</button><span class="nav-info">Lesson 5 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(4)">Next lesson</button></div>
+    </div>
+
+    <div class="lesson-main" id="lesson-5" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 301 · Lesson 6</div>
+        <h1 class="lesson-title">Practise first: demo trading</h1>
+        <p class="lesson-intro">The flight simulator of trading. Use it properly and it's the cheapest lesson you'll ever get.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Practising with virtual money before risking real money.">
+            <rect x="60" y="40" width="150" height="44" rx="8" fill="#e8f5f0" stroke="#0a6e4f"/>
+            <text x="135" y="66" font-family="Geist,sans-serif" font-size="13" fill="#0a6e4f" text-anchor="middle">Demo · virtual £</text>
+            <line x1="215" y1="62" x2="270" y2="62" stroke="#7a7a72" stroke-width="2"/><polygon points="270,62 260,57 260,67" fill="#7a7a72"/>
+            <rect x="280" y="40" width="150" height="44" rx="8" fill="#fff" stroke="#0e0e0c"/>
+            <text x="355" y="66" font-family="Geist,sans-serif" font-size="13" fill="#0e0e0c" text-anchor="middle">Real · when ready</text>
+          </svg>
+          <figcaption>Prove your approach is consistent on demo before real money or a paid evaluation.</figcaption>
+        </figure>
+        <p><strong>Paper (demo) trading</strong> means placing trades with virtual money in real market conditions. It's the flight simulator of trading: you build habits, test a strategy and learn the platform without risking a penny.</p>
+        <p>Treat it seriously — use a realistic account size and follow your real rules — and it's invaluable. Treat it as a game with infinite money and it teaches bad habits. The goal is to prove, to yourself, that your approach is consistent <em>before</em> real money or a paid evaluation is on the line. This is exactly what Traxent's sim journal and readiness score are built around.</p>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(4)">Previous</button><span class="nav-info">Lesson 6 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(5)">Next lesson</button></div>
+    </div>
+
+    <div class="lesson-main" id="lesson-6" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 301 · Lesson 7</div>
+        <h1 class="lesson-title">What are prop firms and funded accounts?</h1>
+        <p class="lesson-intro">The reason all this preparation is worth it — trading serious capital that isn't yours.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A small personal account, an evaluation with rules, then a funded account with the firm's capital.">
+            <rect x="20" y="55" width="80" height="40" rx="6" fill="#f0efe9" stroke="#7a7a72"/>
+            <text x="60" y="80" font-family="Geist,sans-serif" font-size="11" fill="#3a3a36" text-anchor="middle">£1k of yours</text>
+            <line x1="105" y1="75" x2="150" y2="75" stroke="#0a6e4f" stroke-width="2"/><polygon points="150,75 140,70 140,80" fill="#0a6e4f"/>
+            <rect x="155" y="45" width="120" height="60" rx="6" fill="#fff" stroke="#b06000"/>
+            <text x="215" y="70" font-family="Geist,sans-serif" font-size="11" fill="#b06000" text-anchor="middle">Evaluation</text>
+            <text x="215" y="88" font-family="Geist,sans-serif" font-size="10" fill="#7a7a72" text-anchor="middle">pass the rules</text>
+            <line x1="280" y1="75" x2="325" y2="75" stroke="#0a6e4f" stroke-width="2"/><polygon points="325,75 315,70 315,80" fill="#0a6e4f"/>
+            <rect x="330" y="45" width="110" height="60" rx="6" fill="#e8f5f0" stroke="#0a6e4f"/>
+            <text x="385" y="70" font-family="Geist,sans-serif" font-size="11" fill="#0a6e4f" text-anchor="middle">Funded</text>
+            <text x="385" y="88" font-family="Geist,sans-serif" font-size="10" fill="#0a6e4f" text-anchor="middle">firm's capital</text>
+          </svg>
+          <figcaption>Pass a rules-based evaluation and you trade the firm's capital, keeping most of the profit.</figcaption>
+        </figure>
+        <p>Most new traders don't have much capital — so a 20% year on £1,000 is only £200. <strong>Proprietary trading firms ("prop firms")</strong> solve this: they let you trade <em>their</em> capital and keep a large share of the profits (often 80–90%), so the same skill can earn far more.</p>
+        <p>The catch is you have to prove yourself first. You pay for an <strong>evaluation (a "challenge")</strong> — a demo account with strict rules: hit a profit target without breaching a daily loss limit or a maximum drawdown, often over a minimum number of days. Pass, and you're "funded" and trade for real. Fail, and you've lost the evaluation fee.</p>
+        <p>That's why preparation matters so much: <strong>the rules, not the profit target, are what fail most people</strong> — and they're knowable in advance. This is where the rest of Traxent picks up.</p>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(5)">Previous</button><span class="nav-info">Lesson 7 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(6)">Take the quick check</button></div>
+    </div>
+
+    <div class="lesson-main" id="lesson-7" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 301 · Wrap-up</div>
+        <h1 class="lesson-title">Quick check</h1>
+        <p class="lesson-intro">Four questions. The answer and a short explanation appear as you click.</p>
+      </div>
+      <div class="lesson-body quiz">
+        <div class="q">
+          <div class="q-text">1. Under the 1% rule, how much would you risk per trade on a £10,000 account?</div>
+          <button class="opt" onclick="pick(this,false)">£1,000</button>
+          <button class="opt" onclick="pick(this,true)">About £100</button>
+          <button class="opt" onclick="pick(this,false)">Your whole account</button>
+          <div class="q-exp">1% of £10,000 is £100 — the maximum you'd risk on any single trade, so a losing streak can't wipe you out.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">2. After a 50% drawdown, what gain do you need to get back to even?</div>
+          <button class="opt" onclick="pick(this,false)">50%</button>
+          <button class="opt" onclick="pick(this,true)">100%</button>
+          <button class="opt" onclick="pick(this,false)">25%</button>
+          <div class="q-exp">Losses and recoveries aren't symmetric — halving your account means you must double what's left (+100%) to recover.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">3. With a 1:2 risk-to-reward, roughly what win rate do you need to break even?</div>
+          <button class="opt" onclick="pick(this,true)">About one third of trades</button>
+          <button class="opt" onclick="pick(this,false)">At least 80% of trades</button>
+          <button class="opt" onclick="pick(this,false)">Exactly 50%</button>
+          <div class="q-exp">If winners are twice the size of losers, winning ~33% of the time breaks even. Good R:R means you don't need to be right often.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">4. What usually fails traders in a prop firm evaluation?</div>
+          <button class="opt" onclick="pick(this,false)">Not hitting the profit target</button>
+          <button class="opt" onclick="pick(this,true)">Breaching a rule like the daily loss or drawdown limit</button>
+          <button class="opt" onclick="pick(this,false)">Trading too few different markets</button>
+          <div class="q-exp">The rules — daily loss, max drawdown, consistency, minimum days — fail most people, and they're knowable in advance. That's exactly what Traxent scores you against.</div>
+        </div>
+
+        <h3 style="font-family:var(--serif);font-weight:400;font-size:20px;margin:28px 0 8px">Sources &amp; keep learning</h3>
+        <ul class="wrap-links">
+          <li><a href="https://www.investopedia.com/terms/r/riskmanagement.asp" rel="noopener">Investopedia — risk management, position sizing, drawdown &amp; R:R</a></li>
+          <li><a href="https://www.babypips.com/learn/forex/whats-next" rel="noopener">BabyPips — risk management &amp; trading psychology</a></li>
+          <li><a href="https://www.investor.gov/protect-your-investments" rel="noopener">U.S. SEC — protecting your investments &amp; managing risk</a></li>
+          <li><strong>YouTube:</strong> search "risk to reward explained", "position sizing", "what is a prop firm challenge"</li>
+        </ul>
+
+        <div class="bridge">
+          <div class="be">You've got the foundations</div>
+          <h3>Ready for the real thing?</h3>
+          <p>101-301 gave you how markets work, how to trade, and how to manage risk. From here Traxent goes specific: the paid modules decode each prop firm's exact rules, and the readiness tracker scores your real trades against 16+ firms so you know which challenge you're ready for.</p>
+          <div class="bridge-actions">
+            <a href="/learn-module-1" class="b-primary">Continue to Module 4: Trading Fundamentals →</a>
+            <a href="/dashboard" class="b-ghost">Open the readiness tracker</a>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(6)">Previous</button><span class="nav-info">Complete</span><span></span></div>
+    </div>
+
   </div>
 </div>
-
-<div class="sources">
-  <h2>Sources &amp; keep learning</h2>
-  <p class="muted">Independent, reputable places to go deeper — not affiliated with Traxent.</p>
-  <ul class="src-list">
-    <li><a href="https://www.investopedia.com/terms/r/riskmanagement.asp" rel="noopener">Investopedia — risk management, position sizing, drawdown &amp; R:R</a>.</li>
-    <li><a href="https://www.babypips.com/learn/forex/whats-next" rel="noopener">BabyPips — risk management &amp; trading psychology</a>.</li>
-    <li><a href="https://www.investor.gov/protect-your-investments" rel="noopener">U.S. SEC — protecting your investments &amp; managing risk</a>.</li>
-    <li><a href="https://www.khanacademy.org/economics-finance-domain/core-finance" rel="noopener">Khan Academy — Finance &amp; Capital Markets</a>.</li>
-    <li><strong>YouTube:</strong> search "risk to reward explained", "position sizing" or "what is a prop firm challenge" — favour calm, ad-free explainers over hype.</li>
-  </ul>
-</div>
-
-<div class="bridge">
-  <div class="bridge-card">
-    <div class="bridge-eyebrow">You've got the foundations</div>
-    <h2>Ready for the real thing?</h2>
-    <p>101-301 gave you how markets work, how to trade, and how to manage risk. From here, Traxent goes specific: the full modules decode each prop firm's exact rules, and the readiness tracker scores your real trades against 16+ firms so you know precisely which challenge you're ready for — before you pay for one.</p>
-    <div class="bridge-actions">
-      <a href="/learn-module-1" class="b-primary">Continue to Module 4: Trading Fundamentals →</a>
-      <a href="/dashboard" class="b-ghost">Open the readiness tracker</a>
-    </div>
-  </div>
-</div>
-
 </div><!-- /lessonContent -->
 
 <footer>
-  Free foundational course from <a href="/">Traxent</a> — education only, not financial advice. © <span data-tx="copyrightYear">2026</span> <span data-tx="companyName">Akpan Holdings Limited</span>. <a href="/learn-101">101</a> · <a href="/learn-201">201</a> · <a href="/learn-301">301</a> · <a href="/faq">FAQ</a>
+  Free foundational course from <a href="/">Traxent</a> — education only, not financial advice. © <span data-tx="copyrightYear">2026</span> <span data-tx="companyName">Akpan Holdings Limited</span>.
 </footer>
 
-<script>
-function pick(btn, correct){
-  var q = btn.closest('.q');
-  if (q.getAttribute('data-done')) return;
-  q.setAttribute('data-done','1');
-  var opts = q.querySelectorAll('.opt');
-  for (var i=0;i<opts.length;i++){ opts[i].disabled = true; }
-  if (correct){ btn.classList.add('correct'); }
-  else {
-    btn.classList.add('wrong');
-    for (var j=0;j<opts.length;j++){ if (opts[j].getAttribute('onclick').indexOf('true')>-1) opts[j].classList.add('correct'); }
-  }
-  var exp = q.querySelector('.q-exp'); if (exp) exp.classList.add('show');
-}
-</script>
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="/auth.js?v=__BUILD_SHA__"></script>
 <script>
-// ── Free-with-account gate: custom 60/40 screen → Auth0 signup / sign-in ──
-// We do NOT embed the password/2FA form (Auth0 best practice); the buttons open
-// Auth0's hosted signup ('signup') or login screen, pre-filled with the email
-// typed here. Password + any 2FA are handled securely on Auth0's screen.
-(function(){
-  var PATH = '/learn-301';
-  function toAuth(hint){
-    if (typeof auth0Client === 'undefined' || !auth0Client) return;
-    var el = document.getElementById('gate-email');
-    var email = el && el.value ? el.value.trim() : '';
-    var params = { redirect_uri: window.location.origin + PATH };
-    if (hint === 'signup') params.screen_hint = 'signup';
-    if (email) params.login_hint = email;
-    auth0Client.loginWithRedirect({ authorizationParams: params });
+// ── Lesson player (same interaction as the paid modules) ──
+var LESSONS = ['Why risk management is everything','Position sizing & the 1% rule','Stop-losses & risk-to-reward','Drawdown: how accounts blow up','Psychology: FOMO, tilt & revenge','Practise first: demo trading','Prop firms & funded accounts','Quick check'];
+var TOTAL = LESSONS.length;
+var MKEY = 'learn-301';
+function loadDone(){ try { return (JSON.parse(localStorage.getItem('tx_course_progress')||'{}')[MKEY]) || {}; } catch(e){ return {}; } }
+function saveDone(){ try { var a = JSON.parse(localStorage.getItem('tx_course_progress')||'{}'); a[MKEY]=done; localStorage.setItem('tx_course_progress', JSON.stringify(a)); } catch(e){} }
+var done = loadDone();
+function renderList(){
+  var html='';
+  for(var i=0;i<TOTAL;i++){
+    var mark = done[i] ? '✓' : (i===TOTAL-1 ? '✦' : (i+1));
+    html += '<div class="lesson-item" id="nav-'+i+'" onclick="showLesson('+i+')"><div class="ldot" id="dot-'+i+'">'+mark+'</div><div class="lname">'+LESSONS[i]+'</div></div>';
   }
-  var su = document.getElementById('gate-signup'); if (su) su.addEventListener('click', function(){ toAuth('signup'); });
-  var si = document.getElementById('gate-signin'); if (si) si.addEventListener('click', function(){ toAuth('login'); });
-  var inp = document.getElementById('gate-email'); if (inp) inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') toAuth('signup'); });
+  document.getElementById('lesson-list').innerHTML = html;
+}
+function showLesson(i){
+  for(var j=0;j<TOTAL;j++){
+    var el=document.getElementById('lesson-'+j); if(el) el.style.display=(j===i)?'':'none';
+    var nav=document.getElementById('nav-'+j); if(nav){ nav.classList.toggle('active',j===i); nav.classList.toggle('completed',!!done[j]); }
+    var dot=document.getElementById('dot-'+j); if(dot) dot.textContent = done[j] ? '✓' : (j===TOTAL-1 ? '✦' : (j+1));
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateProgress(){
+  var c=0; for(var k in done){ if(done[k]) c++; }
+  var pct=Math.round(c/TOTAL*100);
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+}
+function completeLesson(i){ done[i]=true; saveDone(); updateProgress(); showLesson(Math.min(i+1,TOTAL-1)); }
+function pick(btn,correct){
+  var q=btn.closest('.q'); if(q.getAttribute('data-done'))return; q.setAttribute('data-done','1');
+  var opts=q.querySelectorAll('.opt'); for(var i=0;i<opts.length;i++)opts[i].disabled=true;
+  if(correct){btn.classList.add('correct');}else{btn.classList.add('wrong');for(var j=0;j<opts.length;j++){if(opts[j].getAttribute('onclick').indexOf('true')>-1)opts[j].classList.add('correct');}}
+  var e=q.querySelector('.q-exp'); if(e)e.classList.add('show');
+  done[TOTAL-1]=true; saveDone(); updateProgress();
+  var d=document.getElementById('dot-'+(TOTAL-1)); if(d)d.textContent='✓';
+  var it=document.getElementById('nav-'+(TOTAL-1)); if(it)it.classList.add('completed');
+}
+renderList(); updateProgress(); showLesson(0);
 
+// ── Free-with-account gate → Auth0 signup / sign-in ──
+(function(){
+  var PATH='/learn-301';
+  function toAuth(hint){
+    if(typeof auth0Client==='undefined'||!auth0Client)return;
+    var el=document.getElementById('gate-email'); var email=el&&el.value?el.value.trim():'';
+    var params={redirect_uri:window.location.origin+PATH};
+    if(hint==='signup')params.screen_hint='signup';
+    if(email)params.login_hint=email;
+    auth0Client.loginWithRedirect({authorizationParams:params});
+  }
+  var su=document.getElementById('gate-signup'); if(su)su.addEventListener('click',function(){toAuth('signup');});
+  var si=document.getElementById('gate-signin'); if(si)si.addEventListener('click',function(){toAuth('login');});
+  var inp=document.getElementById('gate-email'); if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter')toAuth('signup');});
   (async function(){
     try{
       await initAuth0();
-      if (await auth0Client.isAuthenticated()){
-        var g = document.getElementById('gate'); if (g) g.style.display = 'none';
-        var c = document.getElementById('lessonContent'); if (c) c.style.display = '';
+      if(await auth0Client.isAuthenticated()){
+        document.getElementById('gate').style.display='none';
+        document.getElementById('lessonContent').style.display='';
       }
-      // else: the gate stays visible so the visitor can sign up or sign in.
-    }catch(e){ /* on error, leave the gate visible */ }
+    }catch(e){}
   })();
 })();
 </script>

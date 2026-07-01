@@ -35,8 +35,14 @@
   };
 
   function dismiss(choice, el) {
+    var prev = readChoice();
     saveChoice(choice);
     if (el && el.parentNode) el.parentNode.removeChild(el);
+    // Withdrawing consent after the pixel had loaded: reload so Meta's pixel
+    // stops immediately (it can't be fully torn down in-page once initialised).
+    if (choice === 'rejected' && prev && prev.choice === 'accepted' && window.fbq) {
+      try { location.reload(); } catch (e) {}
+    }
   }
 
   function render(force) {
@@ -103,6 +109,15 @@
     window.fbq('init', META_PIXEL_ID);
     window.fbq('track', 'PageView');
   }
+
+  // Let any "Cookie settings" control reopen the banner so visitors can change
+  // or withdraw consent at any time (as the privacy policy promises). Add a
+  // trigger anywhere: <a href="#cookie-settings">Cookie settings</a> or any
+  // element with a [data-cookie-settings] attribute.
+  document.addEventListener('click', function (e) {
+    var t = (e.target && e.target.closest) ? e.target.closest('a[href="#cookie-settings"],[data-cookie-settings]') : null;
+    if (t) { e.preventDefault(); render(true); }
+  });
 
   render(false);
   loadMetaPixel(); // returning visitors who already consented

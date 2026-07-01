@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0e0e0c">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>The waitlist is open — Traxent</title>
+<meta name="description" content="The Traxent waitlist is now open. Join free — no card — and lock in your founding-member price for life. The price you see is the price you pay.">
+<meta property="og:title" content="The waitlist is now open — Traxent">
+<meta property="og:description" content="Join free and lock in your founding price for life. No card, no payment — the price you see is the price you pay.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://traxent.io/open">
+<meta property="og:site_name" content="Traxent">
+<meta property="og:image" content="https://traxent.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://traxent.io/open">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
+  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);
+  --surface:#ffffff;--surface2:#f0efe9;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.fade-up{animation:fadeUp .7s ease forwards}
+.fade-up-2{animation:fadeUp .7s .12s ease forwards;opacity:0}
+.fade-up-3{animation:fadeUp .7s .24s ease forwards;opacity:0}
+nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-back{font-size:13px;color:var(--ink3);text-decoration:none}
+.nav-back:hover{color:var(--ink)}
+.hero{max-width:660px;margin:0 auto;padding:88px 32px 72px;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+.eyebrow .live{width:8px;height:8px;border-radius:50%;background:var(--accent-mid);animation:pulse 2s ease infinite}
+h1{font-family:var(--serif);font-size:60px;line-height:1.03;font-weight:400;letter-spacing:-.01em;margin-bottom:22px}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{font-size:17px;color:var(--ink2);font-weight:300;max-width:560px;margin:0 auto 8px}
+.lede strong{color:var(--ink);font-weight:500}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 32px;max-width:520px;margin:34px auto 0;box-shadow:0 16px 48px rgba(14,14,12,.05)}
+.form-row{display:flex;gap:8px}
+.inp{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:13px 16px;font-family:var(--sans);font-size:14px;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}
+.inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(10,110,79,.08)}
+.btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px 22px;font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .15s,transform .1s}
+.btn:hover{background:#085e43}
+.btn:active{transform:scale(.98)}
+.note{font-size:12px;color:var(--ink3);margin-top:10px;display:flex;align-items:center;gap:6px;justify-content:center}
+.note::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease infinite}
+.success{display:none;background:var(--accent-light);border:1px solid rgba(10,110,79,.2);border-radius:8px;padding:16px 20px;font-size:14px;color:var(--accent);font-weight:500;text-align:center}
+.links{margin-top:30px;display:flex;gap:22px;justify-content:center;flex-wrap:wrap;font-size:13px}
+.links a{color:var(--ink2);text-decoration:none;font-weight:500}
+.links a:hover{color:var(--accent)}
+.assure{margin-top:26px;font-size:12.5px;color:var(--ink3);font-weight:300;max-width:460px;margin-left:auto;margin-right:auto}
+footer{border-top:1px solid var(--border);margin-top:40px;padding:28px 32px;text-align:center;font-size:12px;color:var(--ink3)}
+.toast{position:fixed;bottom:32px;right:32px;background:var(--ink);color:#fff;padding:14px 20px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:transform .3s ease,opacity .3s ease;z-index:999;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+@media(max-width:640px){h1{font-size:42px}.hero{padding:56px 22px 48px}.card{padding:22px 20px}}
+</style>
+</head>
+<body>
+
+<nav><div class="nav-inner"><a href="/" class="nav-logo">trax<em>ent</em></a><a href="/waitlist" class="nav-back">What you get →</a></div></nav>
+
+<!-- ── Waitlist OPEN state (revealed at launch via flags.js: waitlistOpen) ── -->
+<section class="hero" id="nowOpen">
+  <div class="eyebrow fade-up"><span class="live" aria-hidden="true"></span>The waitlist is open</div>
+  <h1 class="fade-up-2">The waitlist is now <em>open</em></h1>
+  <p class="lede fade-up-3">Traxent is live and taking founding members. Join free — no card, no payment — and <strong>lock in your founding price for life</strong>. Whatever a plan costs the day you join is the price you keep, protected from every future rise for as long as you stay subscribed. <strong>The price you see is the price you pay.</strong></p>
+
+  <div class="card fade-up-3">
+    <form class="form" id="open-form" onsubmit="joinOpen(event)">
+      <div class="form-row">
+        <input class="inp" type="email" id="open-email" placeholder="your@email.com" autocomplete="email" required>
+        <button class="btn" type="submit">Lock in my price</button>
+      </div>
+      <div class="note">Free to join. No card. Unsubscribe anytime.</div>
+    </form>
+    <div class="success" id="open-success">✓ You're in — your founding price is locked. We'll email your invite shortly.</div>
+  </div>
+
+  <div class="links fade-up-3">
+    <a href="/waitlist">See everything you get →</a>
+    <a href="/#pricing">View plans &amp; prices</a>
+    <a href="/">← Back to home</a>
+  </div>
+  <p class="assure fade-up-3">Joining reserves your founding price — you only ever pay when you choose to upgrade to a paid plan, and never more than the price shown today.</p>
+</section>
+
+<!-- ── Pre-launch state (shown only before the flag flips on) ── -->
+<section class="hero" id="preLaunch" style="display:none">
+  <div class="eyebrow"><span class="live" aria-hidden="true"></span>Opening soon</div>
+  <h1>The waitlist opens<br><em>at midnight</em></h1>
+  <p class="lede">Founding-member sign-ups open at midnight. Come back then to join free and lock in your price for life — the price you see will be the price you pay.</p>
+  <div class="links"><a href="/waitlist">Preview what's coming →</a><a href="/">← Back to home</a></div>
+</section>
+
+<footer>© <span id="yr">2026</span> Traxent™ is provided and licensed by Akpan Holdings Limited. Registered in England &amp; Wales.</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="/flags.js"></script>
+<script>
+(function(){
+  var yr = document.getElementById('yr'); if (yr) yr.textContent = new Date().getFullYear();
+
+  function showToast(msg, ok){
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.borderLeft = (ok === false) ? '3px solid #9e1a1a' : '3px solid #1a9e72';
+    t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 4000);
+  }
+
+  // Reveal the correct state. Default markup shows "now open"; if the launch
+  // flag is not yet on, swap to the pre-launch state instead.
+  var open = document.getElementById('nowOpen');
+  var pre = document.getElementById('preLaunch');
+  TraxentFlags.load().then(function(){
+    if (!TraxentFlags.isEnabled('waitlistOpen')) {
+      open.style.display = 'none';
+      pre.style.display = '';
+    }
+  });
+
+  window.joinOpen = function(e){
+    e.preventDefault();
+    var email = document.getElementById('open-email').value.trim();
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!re.test(email)) { showToast('Please enter a valid email address', false); return; }
+    var q = new URLSearchParams(location.search);
+    fetch('https://formspree.io/f/mlgogjdq', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        email: email, source: 'open-page', ts: new Date().toISOString(),
+        utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '',
+        utm_campaign: q.get('utm_campaign') || '', referrer: document.referrer || ''
+      })
+    }).then(function(r){
+      document.getElementById('open-form').style.display = 'none';
+      document.getElementById('open-success').style.display = 'block';
+      showToast(r.ok ? "You're on the list — invite on its way" : "You're on the list!");
+    }).catch(function(){
+      document.getElementById('open-form').style.display = 'none';
+      document.getElementById('open-success').style.display = 'block';
+      showToast("You're on the list!");
+    });
+  };
+})();
+</script>
+<script src="/consent.js" defer></script>
+</body>
+</html>

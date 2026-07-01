@@ -70,10 +70,14 @@ genuinely needs them:
 {
   "Version": "2012-10-17",
   "Statement": [
-    { "Sid": "Cfn", "Effect": "Allow", "Action": "cloudformation:*",
+    { "Sid": "CfnStacks", "Effect": "Allow", "Action": "cloudformation:*",
       "Resource": [
         "arn:aws:cloudformation:eu-west-2:<ACCOUNT_ID>:stack/traxent-*/*",
+        "arn:aws:cloudformation:eu-west-2:<ACCOUNT_ID>:stack/aws-sam-cli-managed-*/*",
         "arn:aws:cloudformation:eu-west-2:aws:transform/Serverless-2016-10-31" ] },
+    { "Sid": "CfnValidate", "Effect": "Allow",
+      "Action": [ "cloudformation:GetTemplateSummary","cloudformation:ValidateTemplate","cloudformation:ListStacks" ],
+      "Resource": "*" },
     { "Sid": "Lambda", "Effect": "Allow", "Action": "lambda:*",
       "Resource": "arn:aws:lambda:eu-west-2:<ACCOUNT_ID>:function:traxent-*" },
     { "Sid": "Dynamo", "Effect": "Allow", "Action": "dynamodb:*",

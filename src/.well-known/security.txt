@@ -1,4 +1,4 @@
-# Traxent — provided by Akpan Holdings Limited (registered in England & Wales).
+# Traxent — security policy for traxent.io.
 # Vulnerability disclosure contact and policy, per RFC 9116.
 # Full policy: https://traxent.io/security
 

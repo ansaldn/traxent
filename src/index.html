@@ -1026,6 +1026,47 @@ footer {
   </div>
 </nav>
 
+<!-- ── Waitlist-open launch banner (revealed at launch via flags.js: waitlistOpen) ── -->
+<style>
+@keyframes wlo-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.wlo{background:var(--ink);color:#fff}
+.wlo-inner{max-width:1120px;margin:0 auto;padding:22px 40px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.wlo-copy{flex:1;min-width:280px}
+.wlo-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-mid);margin-bottom:8px}
+.wlo-live{width:8px;height:8px;border-radius:50%;background:var(--accent-mid);animation:wlo-pulse 2s ease infinite}
+.wlo-h{font-family:var(--serif);font-size:26px;font-weight:400;line-height:1.15;margin-bottom:6px}
+.wlo-sub{font-size:13.5px;color:rgba(255,255,255,.6);font-weight:300;max-width:600px}
+.wlo-action{min-width:300px}
+.wlo-row{display:flex;gap:8px}
+.wlo-inp{flex:1;background:#fff;border:1px solid transparent;border-radius:8px;padding:12px 14px;font-family:var(--sans);font-size:14px;color:var(--ink);outline:none}
+.wlo-inp:focus{box-shadow:0 0 0 3px rgba(26,158,114,.4)}
+.wlo-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:12px 20px;font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.wlo-btn:hover{background:var(--accent-mid)}
+.wlo-note{font-size:12px;color:rgba(255,255,255,.5);margin-top:8px}
+.wlo-note a{color:rgba(255,255,255,.85);text-decoration:underline}
+.wlo-success{display:none;background:rgba(26,158,114,.15);border:1px solid rgba(26,158,114,.3);border-radius:8px;padding:12px 16px;font-size:13.5px;color:#4ade80;font-weight:500;text-align:center}
+@media(max-width:760px){.wlo-inner{padding:20px 24px}.wlo-h{font-size:22px}}
+</style>
+<section id="wlopen-banner" class="wlo" aria-label="The waitlist is now open">
+  <div class="wlo-inner">
+    <div class="wlo-copy">
+      <div class="wlo-eyebrow"><span class="wlo-live" aria-hidden="true"></span>The waitlist is now open</div>
+      <div class="wlo-h">Founding access is open — lock in your price for life</div>
+      <p class="wlo-sub">Join free — no card, no payment. The price you see today is the price you pay, protected from every future rise for as long as you stay subscribed.</p>
+    </div>
+    <div class="wlo-action">
+      <form class="wlo-form" id="wlopen-form" onsubmit="joinWaitlistOpen(event)">
+        <div class="wlo-row">
+          <input class="wlo-inp" type="email" id="wlopen-email" placeholder="your@email.com" autocomplete="email" required>
+          <button class="wlo-btn" type="submit">Lock in my price</button>
+        </div>
+        <div class="wlo-note">Free · no card · <a href="/waitlist">learn more</a></div>
+      </form>
+      <div class="wlo-success" id="wlopen-success">✓ You're in — your founding price is locked. We'll email your invite.</div>
+    </div>
+  </div>
+</section>
+
 <!-- Hero -->
 <section style="border-bottom: 1px solid var(--border)">
   <div class="hero">
@@ -1040,7 +1081,7 @@ footer {
             <input class="waitlist-input" type="email" id="waitlist-email" placeholder="your@email.com" autocomplete="email">
             <button class="btn-waitlist" onclick="joinWaitlist()">Join waitlist</button>
           </div>
-          <div class="waitlist-note">Early access opens soon — be first in line. Free to join.</div>
+          <div class="waitlist-note">Early access is now open — join free and lock in your price.</div>
           <div class="waitlist-success" id="waitlist-success">
             You're on the list. We'll be in touch before public launch.
           </div>
@@ -1454,6 +1495,39 @@ document.querySelectorAll('.how-card, .firm-card-dark, .plan-card').forEach(el =
 
 // ── INIT ──────────────────────────────────────────────────────────
 renderPricing();
+</script>
+<script src="/flags.js"></script>
+<script>
+// ── Waitlist-open launch banner: reveal via flag; hide until launch instant ──
+(function(){
+  var banner = document.getElementById('wlopen-banner');
+  if (banner) {
+    TraxentFlags.load().then(function(){
+      if (!TraxentFlags.isEnabled('waitlistOpen')) banner.style.display = 'none';
+    });
+  }
+  window.joinWaitlistOpen = function(e){
+    if (e && e.preventDefault) e.preventDefault();
+    var email = (document.getElementById('wlopen-email').value || '').trim();
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!re.test(email)) { showToast('Please enter a valid email address', false); return; }
+    fetch('https://formspree.io/f/mlgogjdq', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ email: email, source: 'home-launch-banner', ts: new Date().toISOString() })
+    }).then(function(r){
+      document.getElementById('wlopen-form').style.display = 'none';
+      document.getElementById('wlopen-success').style.display = 'block';
+      showToast(r.ok ? "You're on the list — invite on its way" : "You're on the list!");
+    }).catch(function(){
+      document.getElementById('wlopen-form').style.display = 'none';
+      document.getElementById('wlopen-success').style.display = 'block';
+      showToast("You're on the list!");
+    });
+  };
+  var inp = document.getElementById('wlopen-email');
+  if (inp) inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') joinWaitlistOpen(e); });
+})();
 </script>
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="auth.js?v=__BUILD_SHA__"></script>

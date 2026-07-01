@@ -237,55 +237,21 @@ Resources:
           - PUT
           - DELETE
           - OPTIONS
+      # Stage-wide throttling — the rate-limit guardrail for this HTTP API.
+      # AWS WAF/WAFv2 cannot attach to API Gateway HTTP APIs (only REST APIs),
+      # so this replaces the per-IP WAF: it caps overall request volume (100 req/s
+      # steady, 200 burst) against abuse/DoS. Raise if you see legitimate 429s.
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 200
+        ThrottlingRateLimit: 100
 
-  # ── Edge protection: AWS WAF on the user-data HTTP API ────────────────────
-  # RateLimitPerIP BLOCKS any single IP exceeding 2000 requests / 5 min (volumetric
-  # abuse + enumeration). The AWS managed common rule set runs in COUNT mode first
-  # (observe-only) so you can watch for false positives in CloudWatch before
-  # switching its OverrideAction from `Count: {}` to `None: {}` to start blocking.
-  # ~$5/mo + a few cents per million requests.
-  ApiWebAcl:
-    Type: AWS::WAFv2::WebACL
-    Properties:
-      Name: traxent-userdata-acl
-      Scope: REGIONAL
-      DefaultAction:
-        Allow: {}
-      VisibilityConfig:
-        SampledRequestsEnabled: true
-        CloudWatchMetricsEnabled: true
-        MetricName: traxent-userdata-acl
-      Rules:
-        - Name: RateLimitPerIP
-          Priority: 0
-          Action:
-            Block: {}
-          Statement:
-            RateBasedStatement:
-              Limit: 2000
-              AggregateKeyType: IP
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: RateLimitPerIP
-        - Name: AWSCommonRules
-          Priority: 1
-          OverrideAction:
-            Count: {}            # observe-only — change to `None: {}` to enforce
-          Statement:
-            ManagedRuleGroupStatement:
-              VendorName: AWS
-              Name: AWSManagedRulesCommonRuleSet
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: AWSCommonRules
-
-  ApiWebAclAssociation:
-    Type: AWS::WAFv2::WebACLAssociation
-    Properties:
-      ResourceArn: !Sub "arn:aws:apigateway:${AWS::Region}::/apis/${UserDataApi}/stages/$default"
-      WebACLArn: !GetAtt ApiWebAcl.Arn
+  # ── Edge protection ───────────────────────────────────────────────────────
+  # NOTE: AWS WAF (WAFv2) does NOT support API Gateway HTTP APIs — only REST APIs,
+  # ALB, AppSync, Cognito, App Runner and Verified Access. The previous ApiWebAcl +
+  # WebACLAssociation targeted this HTTP API and always failed with "The ARN isn't
+  # valid", rolling the whole stack back. Rate limiting is now enforced by the API's
+  # DefaultRouteSettings (see UserDataApi above). To get per-IP WAF later, front the
+  # API with CloudFront and attach a WebACL to the distribution instead.
 
   # ── Alerting: SNS topic + email. Confirm the subscription from your inbox ──
   AlertsTopic:
@@ -338,28 +304,8 @@ Resources:
       AlarmActions:
         - !Ref AlertsTopic
 
-  WafBlockedSpikeAlarm:
-    Type: AWS::CloudWatch::Alarm
-    Properties:
-      AlarmName: traxent-waf-blocked-spike
-      AlarmDescription: WAF is blocking a lot of requests — possible attack in progress.
-      Namespace: AWS/WAFV2
-      MetricName: BlockedRequests
-      Dimensions:
-        - Name: WebACL
-          Value: traxent-userdata-acl
-        - Name: Region
-          Value: !Ref AWS::Region
-        - Name: Rule
-          Value: ALL
-      Statistic: Sum
-      Period: 300
-      EvaluationPeriods: 1
-      Threshold: 500
-      ComparisonOperator: GreaterThanOrEqualToThreshold
-      TreatMissingData: notBreaching
-      AlarmActions:
-        - !Ref AlertsTopic
+  # (WafBlockedSpikeAlarm removed — no WAF is attached to this HTTP API; see the
+  #  Edge protection note above. Throttling 429s surface via API Gateway metrics.)
 
   DynamoThrottleAlarm:
     Type: AWS::CloudWatch::Alarm

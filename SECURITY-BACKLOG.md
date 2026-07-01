@@ -5,7 +5,7 @@ Status as of 2026-06-29.
 Severity: 🔴 High · 🟠 Medium · 🟡 Low · 🟢 baseline.
 
 ## Done / shipped
-- [x] ✅ 🔴 **H1** WAF (per-IP rate limit + AWS managed rules in count mode) on the user-data API
+- [x] ✅ 🔴 **H1** Rate limiting on the user-data API — via **HTTP API stage throttling** (`DefaultRouteSettings`: 100 req/s, 200 burst). NOTE: the earlier WAF WebACL approach was invalid (AWS WAF does **not** support API Gateway HTTP APIs, only REST APIs) and never deployed; removed. Per-IP WAF would require fronting the API with CloudFront (deferred).
 - [x] ✅ 🔴 **H1** API Gateway throttling — in `backend/template.yaml`; lands when the `-v2` payments cutover deploys. Until then apply it to the live API via CLI (`SECURITY-ACTIONS.md` §6 Payments)
 - [x] ✅ 🔴 **H2a** Frontend `deploy.yml` on OIDC; static `AWS_ACCESS_KEY_*` secrets removed
 - [x] 🧩 🟠 **M2** CloudWatch alarms (Lambda errors, **DynamoDB throttle**, WAF blocks) + SNS email + $50 budget — *push `backend/user-data/**`, then confirm the SNS email*

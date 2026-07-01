@@ -17,7 +17,7 @@
 <style>
 :root{
   --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
-  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);
+  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);--border2:rgba(14,14,12,.06);
   --surface:#ffffff;--surface2:#f0efe9;--good:#0a6e4f;--bad:#9e1a1a;--warn:#b06000;
   --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
 }
@@ -26,66 +26,12 @@ html{scroll-behavior:smooth;font-size:16px}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.65;-webkit-font-smoothing:antialiased}
 a{color:var(--accent)}
 nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-inner{max-width:1000px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .nav-logo{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
 .nav-logo em{font-style:normal;color:var(--accent)}
-.nav-right{display:flex;align-items:center;gap:8px}
-.nav-link{font-size:13px;color:var(--ink2);text-decoration:none;padding:8px 10px;border-radius:8px}
-.nav-link:hover{background:var(--surface2)}
 .nav-cta{font-size:13px;font-weight:500;color:#fff;background:var(--accent);border-radius:8px;padding:9px 16px;text-decoration:none;white-space:nowrap}
 .nav-cta:hover{background:#085e43}
-.wrap{max-width:800px;margin:0 auto;padding:0 32px}
-.hero{max-width:800px;margin:0 auto;padding:64px 32px 24px}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
-.pill-free{background:var(--accent-light);border:1px solid rgba(10,110,79,.22);color:var(--accent);border-radius:999px;padding:3px 10px;font-size:10px}
-h1{font-family:var(--serif);font-size:50px;line-height:1.05;font-weight:400;letter-spacing:-.01em;margin-bottom:16px}
-.hero-sub{font-size:17px;color:var(--ink2);font-weight:300;max-width:640px}
-.hero-meta{margin-top:18px;font-family:var(--mono);font-size:12px;color:var(--ink3);display:flex;gap:18px;flex-wrap:wrap}
-.toc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin:28px auto 0;max-width:800px}
-.toc-h{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
-.toc ol{margin:0;padding-left:20px;columns:2;column-gap:32px}
-.toc li{font-size:14px;color:var(--ink2);margin-bottom:8px;break-inside:avoid}
-.toc a{color:var(--ink2);text-decoration:none}
-.toc a:hover{color:var(--accent)}
-.lesson{max-width:800px;margin:0 auto;padding:44px 32px 0}
-.lesson-num{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.lesson h2{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1.15;margin-bottom:16px;letter-spacing:-.01em}
-.lesson p{font-size:16px;color:var(--ink2);margin-bottom:16px}
-.lesson strong{color:var(--ink);font-weight:500}
-.lesson ul{margin:0 0 16px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-.lesson ul li{font-size:15px;color:var(--ink2);padding-left:20px;position:relative}
-.lesson ul li::before{content:'—';position:absolute;left:0;color:var(--accent)}
-.callout{background:var(--accent-light);border:1px solid rgba(10,110,79,.18);border-radius:10px;padding:16px 20px;margin:0 0 16px}
-.callout p{font-size:14.5px;margin:0;color:var(--ink2)}
-.divider{max-width:800px;margin:44px auto 0;padding:0 32px}
-.divider hr{border:none;border-top:1px solid var(--border)}
-.quiz{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 30px}
-.quiz-h{font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:6px}
-.quiz-sub{font-size:14px;color:var(--ink3);font-weight:300;margin-bottom:22px}
-.q{margin-bottom:22px}
-.q-text{font-size:15px;font-weight:500;margin-bottom:12px}
-.opt{display:block;width:100%;text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 15px;font-family:var(--sans);font-size:14px;color:var(--ink2);cursor:pointer;margin-bottom:8px;transition:all .15s}
-.opt:hover{border-color:var(--accent)}
-.opt.correct{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:500}
-.opt.wrong{background:#fdeaea;border-color:var(--bad);color:var(--bad)}
-.q-exp{font-size:13.5px;color:var(--ink3);margin-top:6px;display:none}
-.q-exp.show{display:block}
-.sources{max-width:800px;margin:44px auto 0;padding:0 32px}
-.sources h2{font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:8px}
-.sources p.muted{font-size:13px;color:var(--ink3);font-weight:300;margin-bottom:18px}
-.src-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-.src-list li{font-size:14px;color:var(--ink2);padding-left:20px;position:relative}
-.src-list li::before{content:'↗';position:absolute;left:0;color:var(--accent);font-size:12px}
-.src-list a{font-weight:500}
-.next{max-width:800px;margin:40px auto 0;padding:0 32px}
-.next-card{display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;text-decoration:none;color:inherit;transition:border-color .15s}
-.next-card:hover{border-color:var(--accent)}
-.next-card .nl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
-.next-card .nt{font-family:var(--serif);font-size:22px;font-weight:400}
-.next-card .arrow{font-size:22px;color:var(--accent)}
-footer{border-top:1px solid var(--border);margin-top:56px;padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
-footer a{color:var(--ink3)}
-@media(max-width:640px){h1{font-size:36px}.hero{padding:44px 22px 20px}.lesson{padding:36px 22px 0}.toc ol{columns:1}}
+
 /* ── Free-with-account gate (60/40 split) ── */
 .tx-gate{min-height:calc(100vh - 64px);display:grid;grid-template-columns:60% 40%}
 .tx-gate-info{background:var(--ink);color:#fff;padding:64px 56px;display:flex;flex-direction:column;justify-content:center}
@@ -113,6 +59,75 @@ footer a{color:var(--ink3)}
 .tx-gate-signin button{background:none;border:none;color:var(--accent);font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;padding:0;text-decoration:underline}
 .tx-gate-micro{font-size:11.5px;color:var(--ink3);text-align:center;margin-top:18px;line-height:1.5}
 @media(max-width:860px){.tx-gate{grid-template-columns:1fr}.tx-gate-info{padding:44px 26px;order:2}.tx-gate-panel{padding:44px 24px;order:1}.tx-gate-info h2{font-size:32px}}
+
+/* ── Lesson player (mirrors the paid modules) ── */
+.course{max-width:1080px;margin:0 auto;padding:40px 32px 80px;display:grid;grid-template-columns:256px 1fr;gap:48px;align-items:start}
+.sidebar{position:sticky;top:88px}
+.side-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.side-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;margin-bottom:4px}
+.side-meta{font-size:12px;color:var(--ink3);margin-bottom:20px}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);margin-bottom:6px}
+.progress-bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:20px}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .5s ease;width:0}
+.lesson-list{display:flex;flex-direction:column;gap:2px}
+.lesson-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:all .15s;border:1px solid transparent}
+.lesson-item:hover{background:var(--surface);border-color:var(--border)}
+.lesson-item.active{background:var(--surface);border-color:var(--accent)}
+.ldot{width:22px;height:22px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:var(--mono);color:var(--ink3);flex-shrink:0;transition:all .2s}
+.lesson-item.active .ldot{background:var(--accent);color:#fff;border-color:var(--accent)}
+.lesson-item.completed .ldot{background:var(--accent);color:#fff;border-color:var(--accent)}
+.lname{font-size:13px;color:var(--ink)}
+.lesson-item.active .lname{font-weight:500;color:var(--accent)}
+.side-note{margin-top:20px;padding:14px 16px;background:var(--accent-light);border:1px solid rgba(10,110,79,.15);border-radius:8px;font-size:12px;color:var(--ink2);line-height:1.5}
+.side-note a{font-weight:500}
+
+.lesson-main{min-height:60vh}
+.lesson-hd{margin-bottom:28px}
+.lesson-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.lesson-eyebrow::before{content:'';width:16px;height:1px;background:var(--accent)}
+.lesson-title{font-family:var(--serif);font-size:38px;font-weight:400;line-height:1.1;margin-bottom:14px;letter-spacing:-.01em}
+.lesson-intro{font-size:16px;color:var(--ink2);line-height:1.7;font-weight:300;max-width:640px}
+.lesson-body{max-width:720px}
+.lesson-body p{font-size:15px;color:var(--ink2);line-height:1.8;margin-bottom:16px}
+.lesson-body strong{color:var(--ink);font-weight:500}
+.lesson-body ul{margin:0 0 16px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.lesson-body ul li{font-size:15px;color:var(--ink2);padding-left:20px;position:relative;line-height:1.6}
+.lesson-body ul li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+.figure{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;margin:0 0 24px;text-align:center}
+.figure svg{max-width:100%;height:auto}
+.figure figcaption{font-size:12.5px;color:var(--ink3);margin-top:14px;font-weight:300}
+.callout{background:var(--accent-light);border:1px solid rgba(10,110,79,.18);border-radius:10px;padding:16px 20px;margin:4px 0 16px}
+.callout p{font-size:14.5px;margin:0;color:var(--ink2)}
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:44px;padding-top:26px;border-top:1px solid var(--border)}
+.btn-nav{border:none;border-radius:8px;padding:11px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--sans)}
+.btn-prev{background:var(--surface);border:1px solid var(--border);color:var(--ink2)}
+.btn-prev:hover{border-color:var(--ink)}
+.btn-prev::before{content:'← '}
+.btn-next{background:var(--accent);color:#fff}
+.btn-next:hover{background:#085e43}
+.btn-next::after{content:' →'}
+.nav-info{font-size:12px;color:var(--ink3);font-family:var(--mono)}
+
+/* quiz */
+.quiz .q{margin-bottom:22px}
+.q-text{font-size:15px;font-weight:500;margin-bottom:12px}
+.opt{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px 15px;font-family:var(--sans);font-size:14px;color:var(--ink2);cursor:pointer;margin-bottom:8px;transition:all .15s}
+.opt:hover{border-color:var(--accent)}
+.opt.correct{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:500}
+.opt.wrong{background:#fdeaea;border-color:var(--bad);color:var(--bad)}
+.q-exp{font-size:13.5px;color:var(--ink3);margin-top:6px;display:none}
+.q-exp.show{display:block}
+.wrap-links{list-style:none;display:flex;flex-direction:column;gap:10px;margin:8px 0 0}
+.wrap-links li{font-size:14px;color:var(--ink2);padding-left:20px;position:relative}
+.wrap-links li::before{content:'↗';position:absolute;left:0;color:var(--accent);font-size:12px}
+.bridge{background:var(--ink);color:#fff;border-radius:14px;padding:26px 28px;margin-top:24px}
+.bridge h3{font-family:var(--serif);font-size:22px;font-weight:400;margin-bottom:8px}
+.bridge p{font-size:14px;color:rgba(255,255,255,.7);font-weight:300;margin-bottom:16px}
+.bridge a{background:var(--accent);color:#fff;text-decoration:none;font-size:14px;font-weight:500;padding:11px 20px;border-radius:8px}
+.bridge a:hover{background:var(--accent-mid)}
+footer{border-top:1px solid var(--border);margin-top:24px;padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
+footer a{color:var(--ink3)}
+@media(max-width:820px){.course{grid-template-columns:1fr;gap:24px}.sidebar{position:static}.lesson-title{font-size:30px}}
 </style>
 <script src="/config.js" defer></script>
 </head>
@@ -120,15 +135,10 @@ footer a{color:var(--ink3)}
 
 <nav><div class="nav-inner">
   <a href="/" class="nav-logo">trax<em>ent</em></a>
-  <div class="nav-right">
-    <a href="/learn-101" class="nav-link">101</a>
-    <a href="/learn-201" class="nav-link">201</a>
-    <a href="/learn-301" class="nav-link">301</a>
-    <a href="/dashboard" class="nav-cta">Dashboard →</a>
-  </div>
+  <a href="/dashboard" class="nav-cta">Dashboard →</a>
 </div></nav>
 
-<!-- ── Gate: shown to logged-out visitors; lesson content revealed once signed in ── -->
+<!-- ── Gate: shown to logged-out visitors; the course reveals once signed in ── -->
 <section class="tx-gate" id="gate" aria-label="Create your free account to continue">
   <div class="tx-gate-info">
     <div class="tx-gate-eyebrow">Trading 201 · Placing a trade</div>
@@ -157,211 +167,336 @@ footer a{color:var(--ink3)}
 </section>
 
 <div id="lessonContent" style="display:none">
+<div class="course">
 
-<section class="hero">
-  <div class="eyebrow"><span class="pill-free">Free · with account</span> Trading 201 · Placing a trade</div>
-  <h1>How a trade actually works</h1>
-  <p class="hero-sub">You know what a market is — now here's the mechanics of buying and selling: the order types, the spread you pay, going long or short, and how leverage can help or hurt. Plain English, still no maths degree required.</p>
-  <div class="hero-meta"><span>7 lessons</span><span>~25 min read</span><span>Free with your account</span></div>
-</section>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="side-eyebrow">Module · Free</div>
+    <div class="side-title">Trading 201: Placing a Trade</div>
+    <div class="side-meta">7 lessons · quiz · ~25 min</div>
+    <div class="progress-label"><span>Progress</span><span id="prog-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+    <div class="lesson-list" id="lesson-list"></div>
+    <div class="side-note">This is the same lesson experience paying members get. Finish 201 and continue to <a href="/learn-301">Trading 301</a>.</div>
+  </aside>
 
-<div class="toc">
-  <div class="toc-h">What you'll learn</div>
-  <ol>
-    <li><a href="#l1">Market, limit &amp; stop orders</a></li>
-    <li><a href="#l2">The bid, ask &amp; spread</a></li>
-    <li><a href="#l3">Going long vs short</a></li>
-    <li><a href="#l4">Leverage &amp; margin</a></li>
-    <li><a href="#l5">The real costs of trading</a></li>
-    <li><a href="#l6">What moves prices</a></li>
-    <li><a href="#l7">Getting filled: liquidity &amp; slippage</a></li>
-  </ol>
-</div>
+  <!-- Lessons -->
+  <div>
 
-<article>
-
-  <section class="lesson" id="l1">
-    <div class="lesson-num">Lesson 1</div>
-    <h2>Market, limit and stop orders</h2>
-    <p>An <strong>order</strong> is just an instruction to your broker. The three you'll use most:</p>
-    <ul>
-      <li><strong>Market order</strong> — "buy/sell right now at whatever the current price is." Fast, but you don't control the exact price.</li>
-      <li><strong>Limit order</strong> — "only buy at £10.00 or lower" (or "only sell at £12.00 or higher"). You control the price, but it might never fill if the market doesn't reach it.</li>
-      <li><strong>Stop order</strong> — a trigger. "If the price falls to £9.00, sell me out." Used to cap a loss (a stop-loss) or to enter once a level breaks.</li>
-    </ul>
-    <div class="callout"><p><strong>Rule of thumb:</strong> use limit orders when price matters more than speed, market orders when getting in or out <em>now</em> matters more, and always know where your stop is before you enter.</p></div>
-  </section>
-
-  <section class="lesson" id="l2">
-    <div class="lesson-num">Lesson 2</div>
-    <h2>The bid, the ask and the spread</h2>
-    <p>At any moment there are two prices, not one: the <strong>bid</strong> (the highest price buyers will pay) and the <strong>ask</strong> (the lowest price sellers will accept). The gap between them is the <strong>spread</strong>.</p>
-    <p>When you buy at market you pay the ask; when you sell at market you receive the bid. So the spread is a small, built-in cost of trading — you start every trade slightly "in the red" by the spread. Heavily traded markets (like major currencies or big stocks) have tiny spreads; thin, obscure ones have wide spreads.</p>
-  </section>
-
-  <section class="lesson" id="l3">
-    <div class="lesson-num">Lesson 3</div>
-    <h2>Going long vs going short</h2>
-    <p><strong>Going long</strong> is the familiar one: you buy expecting the price to rise, then sell higher for a profit. Buy low, sell high.</p>
-    <p><strong>Going short</strong> is the mirror image: you profit when the price <em>falls</em>. Your broker effectively lets you sell first at a high price and buy back later at a lower one, pocketing the difference. It's how traders can make money in falling markets — but because a price can (in theory) rise without limit, a short that goes wrong can lose more than you put in, so it needs careful risk control.</p>
-    <div class="callout"><p><strong>Key point:</strong> long = betting up, short = betting down. Prop firms and most trading platforms let you do both.</p></div>
-  </section>
-
-  <section class="lesson" id="l4">
-    <div class="lesson-num">Lesson 4</div>
-    <h2>Leverage and margin, explained simply</h2>
-    <p><strong>Leverage</strong> lets you control a large position with a small amount of your own money. With 10:1 leverage, £1,000 of your cash can control a £10,000 position. The slice of your money set aside to hold that position is called the <strong>margin</strong>.</p>
-    <p>Leverage cuts both ways — it multiplies gains <em>and</em> losses by the same amount. A 5% move in your favour on 10:1 leverage is a 50% gain; a 5% move against you is a 50% loss. This is exactly why beginners blow up: not because they picked wrong, but because they used far too much leverage. Treat it as something to use sparingly, not a shortcut.</p>
-  </section>
-
-  <section class="lesson" id="l5">
-    <div class="lesson-num">Lesson 5</div>
-    <h2>The real costs of trading</h2>
-    <p>Beyond the spread, watch for:</p>
-    <ul>
-      <li><strong>Commission</strong> — a per-trade fee some brokers charge (many are now "zero commission" but earn from the spread instead).</li>
-      <li><strong>Overnight / swap fees</strong> — if you hold a leveraged position overnight, you're often charged a small financing cost each day.</li>
-      <li><strong>Slippage</strong> — the difference between the price you expected and the price you actually got (more on this in Lesson 7).</li>
-    </ul>
-    <p>None of these are huge on a single trade, but they add up over hundreds of trades. Knowing your all-in cost per trade is part of trading like a professional.</p>
-  </section>
-
-  <section class="lesson" id="l6">
-    <div class="lesson-num">Lesson 6</div>
-    <h2>What moves prices</h2>
-    <p>Prices move when the balance of buyers and sellers shifts — and that usually happens because new information arrives. The big drivers:</p>
-    <ul>
-      <li><strong>Company earnings</strong> — quarterly results that beat or miss expectations move individual stocks sharply.</li>
-      <li><strong>Economic data</strong> — inflation, jobs and interest-rate decisions move whole markets and currencies.</li>
-      <li><strong>News &amp; sentiment</strong> — headlines, and simple fear and greed, can move prices even without hard data.</li>
-    </ul>
-    <p>You don't need to predict the news. But you should know when major scheduled events (like a central-bank rate decision) are due, because prices can move violently around them.</p>
-  </section>
-
-  <section class="lesson" id="l7">
-    <div class="lesson-num">Lesson 7</div>
-    <h2>Getting filled: liquidity and slippage</h2>
-    <p><strong>Liquidity</strong> means how easily you can buy or sell without moving the price. A liquid market has lots of buyers and sellers, so your order fills instantly at the price you see. A thin market may not have anyone on the other side at your price.</p>
-    <p><strong>Slippage</strong> is what happens when it doesn't fill exactly: in fast-moving or thin markets, the price you actually get can be a little worse (or occasionally better) than the price you clicked. It's usually tiny in big markets, and larger around news. Using limit orders and trading liquid markets keeps it under control.</p>
-  </section>
-
-</article>
-
-<div class="divider"><hr></div>
-
-<div class="wrap" style="padding-top:44px">
-  <div class="quiz">
-    <div class="quiz-h">Quick check</div>
-    <div class="quiz-sub">Four questions. The answer and a short explanation appear as you click.</div>
-
-    <div class="q">
-      <div class="q-text">1. You want to buy only if the price drops to £10 or below. Which order?</div>
-      <button class="opt" onclick="pick(this,false)">Market order</button>
-      <button class="opt" onclick="pick(this,true)">Limit order</button>
-      <button class="opt" onclick="pick(this,false)">There's no way to do that</button>
-      <div class="q-exp">A limit order lets you set the maximum you'll pay (or minimum you'll accept). It only fills at your price or better.</div>
+    <div class="lesson-main" id="lesson-0">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 201 · Lesson 1</div>
+        <h1 class="lesson-title">Market, limit and stop orders</h1>
+        <p class="lesson-intro">An order is just an instruction to your broker. Three cover almost everything you'll do — and knowing when to use each is the difference between a clean entry and a nasty surprise.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Price line showing a market order at the current price, a limit order below it, and a stop order as a trigger.">
+            <line x1="20" y1="75" x2="440" y2="75" stroke="#d9d7cf" stroke-width="2"/>
+            <polyline points="20,95 90,80 150,88 210,62 280,70 350,50 440,58" fill="none" stroke="#0a6e4f" stroke-width="2.5"/>
+            <circle cx="350" cy="50" r="6" fill="#0a6e4f"/>
+            <text x="350" y="34" font-family="Geist Mono,monospace" font-size="11" fill="#0e0e0c" text-anchor="middle">Market · now</text>
+            <line x1="120" y1="112" x2="440" y2="112" stroke="#1a9e72" stroke-width="1.5" stroke-dasharray="5 4"/>
+            <text x="120" y="126" font-family="Geist Mono,monospace" font-size="11" fill="#1a9e72">Limit · buy lower</text>
+            <line x1="120" y1="34" x2="300" y2="34" stroke="#b06000" stroke-width="1.5" stroke-dasharray="5 4"/>
+            <text x="120" y="28" font-family="Geist Mono,monospace" font-size="11" fill="#b06000">Stop · trigger</text>
+          </svg>
+          <figcaption>Market fills now; limit waits for your price; stop fires when a level is hit.</figcaption>
+        </figure>
+        <ul>
+          <li><strong>Market order</strong> — "buy/sell right now at whatever the current price is." Fast, but you don't control the exact price.</li>
+          <li><strong>Limit order</strong> — "only buy at £10.00 or lower" (or "only sell at £12.00 or higher"). You control the price, but it might never fill if the market doesn't reach it.</li>
+          <li><strong>Stop order</strong> — a trigger. "If the price falls to £9.00, sell me out." Used to cap a loss (a stop-loss) or to enter once a level breaks.</li>
+        </ul>
+        <div class="callout"><p><strong>Rule of thumb:</strong> use limit orders when price matters more than speed, market orders when getting in or out <em>now</em> matters more, and always know where your stop is before you enter.</p></div>
+      </div>
+      <div class="lesson-nav"><span></span><span class="nav-info">Lesson 1 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(0)">Next lesson</button></div>
     </div>
 
-    <div class="q">
-      <div class="q-text">2. What is the "spread"?</div>
-      <button class="opt" onclick="pick(this,true)">The gap between the bid and the ask price</button>
-      <button class="opt" onclick="pick(this,false)">A tax on profits</button>
-      <button class="opt" onclick="pick(this,false)">The number of shares you own</button>
-      <div class="q-exp">The spread is the difference between the highest price buyers will pay and the lowest sellers will accept — a small built-in cost of every trade.</div>
+    <div class="lesson-main" id="lesson-1" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 201 · Lesson 2</div>
+        <h1 class="lesson-title">The bid, the ask and the spread</h1>
+        <p class="lesson-intro">There isn't one price — there are always two. The gap between them is a small cost you pay on every single trade.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bid price and a higher ask price with the gap between them labelled as the spread.">
+            <rect x="70" y="60" width="90" height="60" rx="6" fill="#e8f5f0" stroke="#0a6e4f"/>
+            <text x="115" y="52" font-family="Geist Mono,monospace" font-size="11" fill="#0a6e4f" text-anchor="middle">BID £9.98</text>
+            <text x="115" y="96" font-family="Geist,sans-serif" font-size="12" fill="#3a3a36" text-anchor="middle">buyers pay</text>
+            <rect x="300" y="40" width="90" height="80" rx="6" fill="#fff" stroke="#9e1a1a"/>
+            <text x="345" y="32" font-family="Geist Mono,monospace" font-size="11" fill="#9e1a1a" text-anchor="middle">ASK £10.02</text>
+            <text x="345" y="86" font-family="Geist,sans-serif" font-size="12" fill="#3a3a36" text-anchor="middle">sellers want</text>
+            <line x1="160" y1="90" x2="300" y2="90" stroke="#7a7a72" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <text x="230" y="82" font-family="Geist Mono,monospace" font-size="11" fill="#0e0e0c" text-anchor="middle">spread £0.04</text>
+          </svg>
+          <figcaption>Buy at the ask, sell at the bid — you start each trade down by the spread.</figcaption>
+        </figure>
+        <p>At any moment there are two prices, not one: the <strong>bid</strong> (the highest price buyers will pay) and the <strong>ask</strong> (the lowest price sellers will accept). The gap between them is the <strong>spread</strong>.</p>
+        <p>When you buy at market you pay the ask; when you sell at market you receive the bid. So the spread is a small, built-in cost of trading — you start every trade slightly "in the red" by the spread. Heavily traded markets (like major currencies or big stocks) have tiny spreads; thin, obscure ones have wide spreads.</p>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(0)">Previous</button><span class="nav-info">Lesson 2 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(1)">Next lesson</button></div>
     </div>
 
-    <div class="q">
-      <div class="q-text">3. On 10:1 leverage, a 5% move against your position means roughly what?</div>
-      <button class="opt" onclick="pick(this,false)">A 5% loss</button>
-      <button class="opt" onclick="pick(this,false)">A 0.5% loss</button>
-      <button class="opt" onclick="pick(this,true)">A 50% loss</button>
-      <div class="q-exp">Leverage multiplies both gains and losses. 10× a 5% move is 50% — which is why over-leverage blows up accounts.</div>
+    <div class="lesson-main" id="lesson-2" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 201 · Lesson 3</div>
+        <h1 class="lesson-title">Going long vs going short</h1>
+        <p class="lesson-intro">You can profit whether a price rises or falls. Here's how both directions work — and why one of them needs extra care.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An upward green arrow labelled long and a downward red arrow labelled short.">
+            <line x1="90" y1="120" x2="150" y2="40" stroke="#0a6e4f" stroke-width="3"/>
+            <polygon points="150,40 138,54 158,58" fill="#0a6e4f"/>
+            <text x="120" y="138" font-family="Geist Mono,monospace" font-size="12" fill="#0a6e4f" text-anchor="middle">LONG · buy, price up</text>
+            <line x1="310" y1="40" x2="370" y2="120" stroke="#9e1a1a" stroke-width="3"/>
+            <polygon points="370,120 356,112 376,106" fill="#9e1a1a"/>
+            <text x="340" y="138" font-family="Geist Mono,monospace" font-size="12" fill="#9e1a1a" text-anchor="middle">SHORT · sell, price down</text>
+          </svg>
+          <figcaption>Long = betting up. Short = betting down.</figcaption>
+        </figure>
+        <p><strong>Going long</strong> is the familiar one: you buy expecting the price to rise, then sell higher for a profit. Buy low, sell high.</p>
+        <p><strong>Going short</strong> is the mirror image: you profit when the price <em>falls</em>. Your broker effectively lets you sell first at a high price and buy back later at a lower one, pocketing the difference. It's how traders can make money in falling markets — but because a price can (in theory) rise without limit, a short that goes wrong can lose more than you put in, so it needs careful risk control.</p>
+        <div class="callout"><p><strong>Key point:</strong> prop firms and most trading platforms let you do both — being able to go short is what lets skilled traders profit in down markets too.</p></div>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(1)">Previous</button><span class="nav-info">Lesson 3 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(2)">Next lesson</button></div>
     </div>
 
-    <div class="q">
-      <div class="q-text">4. "Going short" means you profit when…</div>
-      <button class="opt" onclick="pick(this,false)">The price rises</button>
-      <button class="opt" onclick="pick(this,true)">The price falls</button>
-      <button class="opt" onclick="pick(this,false)">Nothing happens</button>
-      <div class="q-exp">Short = betting the price will fall. You sell high first and buy back lower, keeping the difference.</div>
+    <div class="lesson-main" id="lesson-3" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 201 · Lesson 4</div>
+        <h1 class="lesson-title">Leverage and margin, simply</h1>
+        <p class="lesson-intro">Leverage is the feature that makes small accounts interesting — and the one that wipes most of them out. Both, for the same reason.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A small margin of one thousand pounds controlling a ten thousand pound position at ten to one leverage.">
+            <rect x="40" y="70" width="60" height="40" rx="5" fill="#e8f5f0" stroke="#0a6e4f"/>
+            <text x="70" y="94" font-family="Geist Mono,monospace" font-size="11" fill="#0a6e4f" text-anchor="middle">£1k</text>
+            <text x="70" y="128" font-family="Geist,sans-serif" font-size="11" fill="#7a7a72" text-anchor="middle">your margin</text>
+            <text x="150" y="96" font-family="Geist Mono,monospace" font-size="16" fill="#0e0e0c" text-anchor="middle">×10</text>
+            <rect x="210" y="40" width="210" height="70" rx="6" fill="#fff" stroke="#0e0e0c"/>
+            <text x="315" y="80" font-family="Geist Mono,monospace" font-size="15" fill="#0e0e0c" text-anchor="middle">£10,000 position</text>
+            <text x="315" y="128" font-family="Geist,sans-serif" font-size="11" fill="#7a7a72" text-anchor="middle">gains AND losses ×10</text>
+          </svg>
+          <figcaption>10:1 leverage: £1,000 controls £10,000 — and multiplies every move by ten.</figcaption>
+        </figure>
+        <p><strong>Leverage</strong> lets you control a large position with a small amount of your own money. With 10:1 leverage, £1,000 of your cash can control a £10,000 position. The slice of your money set aside to hold that position is called the <strong>margin</strong>.</p>
+        <p>Leverage cuts both ways — it multiplies gains <em>and</em> losses by the same amount. A 5% move in your favour on 10:1 leverage is a 50% gain; a 5% move against you is a 50% loss. This is exactly why beginners blow up: not because they picked wrong, but because they used far too much leverage. Treat it as something to use sparingly, not a shortcut.</p>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(2)">Previous</button><span class="nav-info">Lesson 4 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(3)">Next lesson</button></div>
     </div>
+
+    <div class="lesson-main" id="lesson-4" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 201 · Lesson 5</div>
+        <h1 class="lesson-title">The real costs of trading</h1>
+        <p class="lesson-intro">Each cost is tiny. Across hundreds of trades, they decide whether a strategy is actually profitable.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three small stacked costs: spread, commission and overnight fees.">
+            <rect x="60" y="90" width="100" height="26" rx="4" fill="#0a6e4f"/>
+            <text x="110" y="108" font-family="Geist,sans-serif" font-size="12" fill="#fff" text-anchor="middle">Spread</text>
+            <rect x="60" y="60" width="70" height="26" rx="4" fill="#1a9e72"/>
+            <text x="95" y="78" font-family="Geist,sans-serif" font-size="12" fill="#fff" text-anchor="middle">Commission</text>
+            <rect x="60" y="30" width="55" height="26" rx="4" fill="#b06000"/>
+            <text x="88" y="48" font-family="Geist,sans-serif" font-size="11" fill="#fff" text-anchor="middle">Overnight</text>
+            <text x="300" y="78" font-family="Geist,sans-serif" font-size="13" fill="#3a3a36" text-anchor="middle">= your all-in cost</text>
+            <text x="300" y="98" font-family="Geist,sans-serif" font-size="13" fill="#3a3a36" text-anchor="middle">per trade</text>
+          </svg>
+          <figcaption>Know your total cost per trade — it's part of trading like a professional.</figcaption>
+        </figure>
+        <p>Beyond the spread, watch for:</p>
+        <ul>
+          <li><strong>Commission</strong> — a per-trade fee some brokers charge (many are now "zero commission" but earn from the spread instead).</li>
+          <li><strong>Overnight / swap fees</strong> — if you hold a leveraged position overnight, you're often charged a small financing cost each day.</li>
+          <li><strong>Slippage</strong> — the difference between the price you expected and the price you actually got (next lesson but one).</li>
+        </ul>
+        <p>None of these are huge on a single trade, but they add up over hundreds of trades.</p>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(3)">Previous</button><span class="nav-info">Lesson 5 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(4)">Next lesson</button></div>
+    </div>
+
+    <div class="lesson-main" id="lesson-5" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 201 · Lesson 6</div>
+        <h1 class="lesson-title">What moves prices</h1>
+        <p class="lesson-intro">You don't need to predict the news — but you do need to know when it's coming.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A price line jumping sharply upward at the moment a news event lands.">
+            <polyline points="20,110 80,100 140,104 200,96 240,98" fill="none" stroke="#0a6e4f" stroke-width="2.5"/>
+            <polyline points="240,98 250,55 320,48 400,40" fill="none" stroke="#0a6e4f" stroke-width="2.5"/>
+            <path d="M243 40 l10 -18 l-6 14 l10 -2 l-14 20 l4 -14 z" fill="#b06000"/>
+            <text x="250" y="132" font-family="Geist Mono,monospace" font-size="11" fill="#b06000" text-anchor="middle">news lands</text>
+          </svg>
+          <figcaption>Scheduled events (like a rate decision) can move prices fast — know when they're due.</figcaption>
+        </figure>
+        <p>Prices move when the balance of buyers and sellers shifts — and that usually happens because new information arrives. The big drivers:</p>
+        <ul>
+          <li><strong>Company earnings</strong> — quarterly results that beat or miss expectations move individual stocks sharply.</li>
+          <li><strong>Economic data</strong> — inflation, jobs and interest-rate decisions move whole markets and currencies.</li>
+          <li><strong>News &amp; sentiment</strong> — headlines, and simple fear and greed, can move prices even without hard data.</li>
+        </ul>
+        <p>You don't need to predict the news. But you should know when major scheduled events (like a central-bank rate decision) are due, because prices can move violently around them.</p>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(4)">Previous</button><span class="nav-info">Lesson 6 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(5)">Next lesson</button></div>
+    </div>
+
+    <div class="lesson-main" id="lesson-6" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 201 · Lesson 7</div>
+        <h1 class="lesson-title">Getting filled: liquidity and slippage</h1>
+        <p class="lesson-intro">The price you click and the price you get aren't always the same. Here's why — and how to keep the gap tiny.</p>
+      </div>
+      <div class="lesson-body">
+        <figure class="figure">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Expected fill price and a slightly worse actual fill price a small distance away.">
+            <line x1="60" y1="75" x2="400" y2="75" stroke="#d9d7cf" stroke-width="2"/>
+            <circle cx="180" cy="75" r="6" fill="#1a9e72"/>
+            <text x="180" y="58" font-family="Geist Mono,monospace" font-size="11" fill="#1a9e72" text-anchor="middle">expected</text>
+            <circle cx="240" cy="75" r="6" fill="#b06000"/>
+            <text x="252" y="104" font-family="Geist Mono,monospace" font-size="11" fill="#b06000" text-anchor="middle">actual fill</text>
+            <line x1="186" y1="90" x2="234" y2="90" stroke="#7a7a72" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <text x="210" y="126" font-family="Geist,sans-serif" font-size="11" fill="#7a7a72" text-anchor="middle">slippage</text>
+          </svg>
+          <figcaption>In liquid markets the gap is tiny; it widens in thin markets and around news.</figcaption>
+        </figure>
+        <p><strong>Liquidity</strong> means how easily you can buy or sell without moving the price. A liquid market has lots of buyers and sellers, so your order fills instantly at the price you see. A thin market may not have anyone on the other side at your price.</p>
+        <p><strong>Slippage</strong> is what happens when it doesn't fill exactly: in fast-moving or thin markets, the price you actually get can be a little worse (or occasionally better) than the price you clicked. It's usually tiny in big markets, and larger around news. Using limit orders and trading liquid markets keeps it under control.</p>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(5)">Previous</button><span class="nav-info">Lesson 7 of 7</span><button class="btn-nav btn-next" onclick="completeLesson(6)">Take the quick check</button></div>
+    </div>
+
+    <div class="lesson-main" id="lesson-7" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Trading 201 · Wrap-up</div>
+        <h1 class="lesson-title">Quick check</h1>
+        <p class="lesson-intro">Four questions. The answer and a short explanation appear as you click.</p>
+      </div>
+      <div class="lesson-body quiz">
+        <div class="q">
+          <div class="q-text">1. You want to buy only if the price drops to £10 or below. Which order?</div>
+          <button class="opt" onclick="pick(this,false)">Market order</button>
+          <button class="opt" onclick="pick(this,true)">Limit order</button>
+          <button class="opt" onclick="pick(this,false)">There's no way to do that</button>
+          <div class="q-exp">A limit order lets you set the maximum you'll pay (or minimum you'll accept). It only fills at your price or better.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">2. What is the "spread"?</div>
+          <button class="opt" onclick="pick(this,true)">The gap between the bid and the ask price</button>
+          <button class="opt" onclick="pick(this,false)">A tax on profits</button>
+          <button class="opt" onclick="pick(this,false)">The number of shares you own</button>
+          <div class="q-exp">The spread is the difference between the highest price buyers will pay and the lowest sellers will accept — a small built-in cost of every trade.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">3. On 10:1 leverage, a 5% move against your position means roughly what?</div>
+          <button class="opt" onclick="pick(this,false)">A 5% loss</button>
+          <button class="opt" onclick="pick(this,false)">A 0.5% loss</button>
+          <button class="opt" onclick="pick(this,true)">A 50% loss</button>
+          <div class="q-exp">Leverage multiplies both gains and losses. 10× a 5% move is 50% — which is why over-leverage blows up accounts.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">4. "Going short" means you profit when…</div>
+          <button class="opt" onclick="pick(this,false)">The price rises</button>
+          <button class="opt" onclick="pick(this,true)">The price falls</button>
+          <button class="opt" onclick="pick(this,false)">Nothing happens</button>
+          <div class="q-exp">Short = betting the price will fall. You sell high first and buy back lower, keeping the difference.</div>
+        </div>
+
+        <h3 style="font-family:var(--serif);font-weight:400;font-size:20px;margin:28px 0 8px">Sources &amp; keep learning</h3>
+        <ul class="wrap-links">
+          <li><a href="https://www.investopedia.com/terms/o/order.asp" rel="noopener">Investopedia — order types, spread, leverage &amp; margin</a></li>
+          <li><a href="https://www.babypips.com/learn/forex" rel="noopener">BabyPips — School of Pipsology</a> (free course on spreads, leverage &amp; orders)</li>
+          <li><a href="https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/types-orders" rel="noopener">U.S. SEC — types of orders</a></li>
+          <li><strong>YouTube:</strong> search "market vs limit order", "what is leverage in trading", "long vs short explained"</li>
+        </ul>
+
+        <div class="bridge">
+          <h3>Next: Trading 301</h3>
+          <p>You can place a trade. Now learn the part that keeps you in the game — risk, psychology, and the path to a funded account.</p>
+          <a href="/learn-301">Continue to Trading 301 →</a>
+        </div>
+      </div>
+      <div class="lesson-nav"><button class="btn-nav btn-prev" onclick="showLesson(6)">Previous</button><span class="nav-info">Complete</span><span></span></div>
+    </div>
+
   </div>
 </div>
-
-<div class="sources">
-  <h2>Sources &amp; keep learning</h2>
-  <p class="muted">Independent, reputable places to go deeper — not affiliated with Traxent.</p>
-  <ul class="src-list">
-    <li><a href="https://www.investopedia.com/terms/o/order.asp" rel="noopener">Investopedia — order types, spread, leverage &amp; margin</a>.</li>
-    <li><a href="https://www.babypips.com/learn/forex" rel="noopener">BabyPips — School of Pipsology</a> — the classic free course on spreads, leverage and orders (forex-focused, but the mechanics apply everywhere).</li>
-    <li><a href="https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/types-orders" rel="noopener">U.S. SEC — Types of orders</a>.</li>
-    <li><a href="https://www.khanacademy.org/economics-finance-domain/core-finance" rel="noopener">Khan Academy — Finance &amp; Capital Markets</a>.</li>
-    <li><strong>YouTube:</strong> search "market vs limit order", "what is leverage in trading" or "long vs short explained" — look for reputable, ad-free explainers.</li>
-  </ul>
-</div>
-
-<div class="next">
-  <a href="/learn-301" class="next-card">
-    <div>
-      <div class="nl">Next · Free with account</div>
-      <div class="nt">Trading 301: Risk &amp; the path to funded</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-</div>
-
 </div><!-- /lessonContent -->
 
 <footer>
-  Free foundational course from <a href="/">Traxent</a> — education only, not financial advice. © <span data-tx="copyrightYear">2026</span> <span data-tx="companyName">Akpan Holdings Limited</span>. <a href="/learn-101">101</a> · <a href="/learn-201">201</a> · <a href="/learn-301">301</a> · <a href="/faq">FAQ</a>
+  Free foundational course from <a href="/">Traxent</a> — education only, not financial advice. © <span data-tx="copyrightYear">2026</span> <span data-tx="companyName">Akpan Holdings Limited</span>.
 </footer>
 
-<script>
-function pick(btn, correct){
-  var q = btn.closest('.q');
-  if (q.getAttribute('data-done')) return;
-  q.setAttribute('data-done','1');
-  var opts = q.querySelectorAll('.opt');
-  for (var i=0;i<opts.length;i++){ opts[i].disabled = true; }
-  if (correct){ btn.classList.add('correct'); }
-  else {
-    btn.classList.add('wrong');
-    for (var j=0;j<opts.length;j++){ if (opts[j].getAttribute('onclick').indexOf('true')>-1) opts[j].classList.add('correct'); }
-  }
-  var exp = q.querySelector('.q-exp'); if (exp) exp.classList.add('show');
-}
-</script>
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="/auth.js?v=__BUILD_SHA__"></script>
 <script>
-// ── Free-with-account gate: custom 60/40 screen → Auth0 signup / sign-in ──
-// We do NOT embed the password/2FA form (Auth0 best practice); the buttons open
-// Auth0's hosted signup ('signup') or login screen, pre-filled with the email
-// typed here. Password + any 2FA are handled securely on Auth0's screen.
-(function(){
-  var PATH = '/learn-201';
-  function toAuth(hint){
-    if (typeof auth0Client === 'undefined' || !auth0Client) return;
-    var el = document.getElementById('gate-email');
-    var email = el && el.value ? el.value.trim() : '';
-    var params = { redirect_uri: window.location.origin + PATH };
-    if (hint === 'signup') params.screen_hint = 'signup';
-    if (email) params.login_hint = email;
-    auth0Client.loginWithRedirect({ authorizationParams: params });
+// ── Lesson player (same interaction as the paid modules) ──
+var LESSONS = ['Market, limit & stop orders','The bid, ask & spread','Going long vs short','Leverage & margin','The real costs of trading','What moves prices','Getting filled','Quick check'];
+var TOTAL = LESSONS.length;
+var done = {};
+function renderList(){
+  var html = '';
+  for (var i=0;i<TOTAL;i++){
+    var mark = done[i] ? '✓' : (i===TOTAL-1 ? '✦' : (i+1));
+    html += '<div class="lesson-item" id="nav-'+i+'" onclick="showLesson('+i+')"><div class="ldot" id="dot-'+i+'">'+mark+'</div><div class="lname">'+LESSONS[i]+'</div></div>';
   }
-  var su = document.getElementById('gate-signup'); if (su) su.addEventListener('click', function(){ toAuth('signup'); });
-  var si = document.getElementById('gate-signin'); if (si) si.addEventListener('click', function(){ toAuth('login'); });
-  var inp = document.getElementById('gate-email'); if (inp) inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') toAuth('signup'); });
+  document.getElementById('lesson-list').innerHTML = html;
+}
+function showLesson(i){
+  for (var j=0;j<TOTAL;j++){
+    var el = document.getElementById('lesson-'+j); if (el) el.style.display = (j===i)?'':'none';
+    var nav = document.getElementById('nav-'+j); if (nav) nav.classList.toggle('active', j===i);
+    var dot = document.getElementById('dot-'+j); if (dot) dot.textContent = done[j] ? '✓' : (j===TOTAL-1 ? '✦' : (j+1));
+    var item = document.getElementById('nav-'+j); if (item) item.classList.toggle('completed', !!done[j]);
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateProgress(){
+  var c=0; for (var k in done){ if(done[k]) c++; }
+  var pct = Math.round(c/TOTAL*100);
+  document.getElementById('prog-pct').textContent = pct+'%';
+  document.getElementById('prog-fill').style.width = pct+'%';
+}
+function completeLesson(i){ done[i]=true; updateProgress(); showLesson(Math.min(i+1,TOTAL-1)); }
+function pick(btn,correct){
+  var q=btn.closest('.q'); if(q.getAttribute('data-done'))return; q.setAttribute('data-done','1');
+  var opts=q.querySelectorAll('.opt'); for(var i=0;i<opts.length;i++)opts[i].disabled=true;
+  if(correct){btn.classList.add('correct');}else{btn.classList.add('wrong');for(var j=0;j<opts.length;j++){if(opts[j].getAttribute('onclick').indexOf('true')>-1)opts[j].classList.add('correct');}}
+  var e=q.querySelector('.q-exp'); if(e)e.classList.add('show');
+  done[TOTAL-1]=true; updateProgress();
+  var d=document.getElementById('dot-'+(TOTAL-1)); if(d)d.textContent='✓';
+  var it=document.getElementById('nav-'+(TOTAL-1)); if(it)it.classList.add('completed');
+}
+renderList(); showLesson(0);
 
+// ── Free-with-account gate → Auth0 signup / sign-in ──
+(function(){
+  var PATH='/learn-201';
+  function toAuth(hint){
+    if(typeof auth0Client==='undefined'||!auth0Client)return;
+    var el=document.getElementById('gate-email'); var email=el&&el.value?el.value.trim():'';
+    var params={redirect_uri:window.location.origin+PATH};
+    if(hint==='signup')params.screen_hint='signup';
+    if(email)params.login_hint=email;
+    auth0Client.loginWithRedirect({authorizationParams:params});
+  }
+  var su=document.getElementById('gate-signup'); if(su)su.addEventListener('click',function(){toAuth('signup');});
+  var si=document.getElementById('gate-signin'); if(si)si.addEventListener('click',function(){toAuth('login');});
+  var inp=document.getElementById('gate-email'); if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter')toAuth('signup');});
   (async function(){
     try{
       await initAuth0();
-      if (await auth0Client.isAuthenticated()){
-        var g = document.getElementById('gate'); if (g) g.style.display = 'none';
-        var c = document.getElementById('lessonContent'); if (c) c.style.display = '';
+      if(await auth0Client.isAuthenticated()){
+        document.getElementById('gate').style.display='none';
+        document.getElementById('lessonContent').style.display='';
       }
-      // else: the gate stays visible so the visitor can sign up or sign in.
-    }catch(e){ /* on error, leave the gate visible */ }
+    }catch(e){}
   })();
 })();
 </script>

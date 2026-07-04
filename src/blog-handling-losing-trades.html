@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- ============================================================= -->
+<!-- DRAFT — internal review copy for David. NOT for publication.   -->
+<!-- Remove the .draft-banner div and this comment before going live.-->
+<!-- Byline is Traxent (in-house). Do NOT relabel as a pro trader.  -->
+<!-- ============================================================= -->
+<head>
+<script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; form-action 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0e0e0c">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>How to Handle Losing Trades (Without Blowing Your Evaluation) | Traxent</title>
+<meta name="description" content="A practical playbook for handling losing trades: why losses are the job, how to take one cleanly, how to avoid the tilt spiral, and how to protect the drawdown that keeps your prop-firm evaluation alive.">
+<meta name="keywords" content="how to handle losing trades, dealing with trading losses, tilt trading, trading drawdown, prop firm daily loss, trading discipline">
+<link rel="canonical" href="https://traxent.io/blog-handling-losing-trades">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:site_name" content="Traxent">
+<meta property="og:title" content="How to Handle Losing Trades (Without Blowing Your Evaluation)">
+<meta property="og:description" content="Why losses are the job — and a practical playbook for taking one cleanly, avoiding the tilt spiral, and protecting your evaluation drawdown.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://traxent.io/blog-handling-losing-trades">
+<meta property="og:image" content="https://traxent.io/og-image.png">
+<meta property="article:published_time" content="2026-07-04">
+<meta property="article:modified_time" content="2026-07-04">
+<meta property="article:section" content="Psychology">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Handle Losing Trades (Without Blowing Your Evaluation)">
+<meta name="twitter:description" content="Losses are the job. A practical playbook for taking one cleanly and protecting your evaluation drawdown.">
+<meta name="twitter:image" content="https://traxent.io/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Handle Losing Trades (Without Blowing Your Evaluation)",
+  "description": "A practical playbook for handling losing trades: why losses are normal, how to take one cleanly, how to avoid the tilt spiral, and how to protect the drawdown that keeps a prop-firm evaluation alive.",
+  "image": "https://traxent.io/og-image.png",
+  "datePublished": "2026-07-04",
+  "dateModified": "2026-07-04",
+  "author": { "@type": "Organization", "name": "Traxent", "url": "https://traxent.io" },
+  "publisher": { "@type": "Organization", "name": "Traxent", "url": "https://traxent.io", "logo": { "@type": "ImageObject", "url": "https://traxent.io/icons/icon-512.png" } },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://traxent.io/blog-handling-losing-trades" },
+  "articleSection": "Psychology",
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Is it normal to have lots of losing trades?","acceptedAnswer":{"@type":"Answer","text":"Yes. Many profitable strategies win less than half the time and still make money because winners are larger than losers. A run of losses is a normal feature of trading, not a sign the system is broken. What matters is that each loss is small and controlled."}},
+{"@type":"Question","name":"How do I stop tilting after a loss?","acceptedAnswer":{"@type":"Answer","text":"Decide in advance what a loss means and what you'll do next: keep risk fixed, honour a hard daily stop, and step away from the screen after a set number of losses. Tilt happens when you make decisions while emotional, so the fix is to pre-commit to the decisions before emotion arrives and remove your ability to override them."}},
+{"@type":"Question","name":"How many losses should end my trading day?","acceptedAnswer":{"@type":"Answer","text":"A common approach is a hard daily stop expressed in money or a maximum number of losing trades, set well inside the prop firm's daily loss limit. For example, stop for the day at a 2 to 3 percent loss when the firm's limit is 5 percent. The exact number is personal, but it must be decided before the session and honoured without exception."}},
+{"@type":"Question","name":"Why do losing trades matter more in a prop firm evaluation?","acceptedAnswer":{"@type":"Answer","text":"Because evaluations have hard drawdown and daily loss limits. In a personal account an oversized loss is expensive; in an evaluation it can end the challenge outright. Handling losses cleanly is therefore not just good psychology, it is how you keep the evaluation alive."}}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
+  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);--border2:rgba(14,14,12,.06);
+  --surface:#ffffff;--surface2:#f0efe9;--good:#0a6e4f;--bad:#9e1a1a;--warn:#b06000;--pro:#5b4bc4;--pro-light:rgba(91,75,196,.1);
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',-apple-system,sans-serif;--mono:'Geist Mono',monospace;
+}
+@media(prefers-color-scheme:dark){:root{--bg:#0e0e0c;--ink:#f2f1ec;--ink2:#c9c8c2;--ink3:#8f8e87;--accent:#1a9e72;--accent-light:rgba(26,158,114,.12);--border:rgba(255,255,255,.12);--border2:rgba(255,255,255,.06);--surface:#161613;--surface2:#1d1d19;--pro:#a99cf0;--pro-light:rgba(169,156,240,.14)}}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.draft-banner{background:var(--warn);color:#fff;text-align:center;font-size:13px;font-weight:500;padding:9px 16px;font-family:var(--mono)}
+nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+@media(prefers-color-scheme:dark){nav{background:rgba(14,14,12,.9)}}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-cta{font-size:13px;font-weight:500;color:#fff;background:var(--accent);border-radius:8px;padding:9px 16px;text-decoration:none;white-space:nowrap}
+.nav-cta:hover{background:#085e43}
+.wrap{max-width:760px;margin:0 auto;padding:32px 24px 40px}
+.crumb{font-size:13px;color:var(--ink3);margin-bottom:20px}
+.crumb a{color:var(--ink3);text-decoration:none}.crumb a:hover{color:var(--accent)}
+.post-top{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.cat{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);border-radius:999px;padding:4px 10px}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;padding:4px 10px;display:inline-flex;align-items:center;gap:5px;font-weight:500}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%}
+.badge.traxent{color:var(--accent);background:var(--accent-light)}
+.badge.traxent::before{background:var(--accent)}
+.badge.pro{color:var(--pro);background:var(--pro-light)}
+.badge.pro::before{background:var(--pro)}
+h1{font-family:var(--serif);font-size:44px;font-weight:400;letter-spacing:-.01em;line-height:1.08;margin-bottom:16px}
+.lede{font-size:19px;color:var(--ink2);font-weight:300;line-height:1.6;margin-bottom:26px}
+.byline{display:flex;align-items:center;gap:12px;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.avatar{width:42px;height:42px;border-radius:50%;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:14px;font-family:var(--mono);font-weight:500;flex-shrink:0}
+.by-who{font-size:14px;color:var(--ink);font-weight:500;line-height:1.3}
+.by-role{font-size:12.5px;color:var(--ink3)}
+.by-meta{margin-left:auto;font-size:12.5px;color:var(--ink3);text-align:right;font-family:var(--mono)}
+.share{display:flex;gap:8px;margin-left:14px}
+.share a,.share button{font-family:var(--mono);font-size:11px;color:var(--ink2);background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:6px 10px;text-decoration:none;cursor:pointer}
+.share a:hover,.share button:hover{border-color:var(--accent);color:var(--accent)}
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:28px 0}
+.toc-h{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
+.toc ol{list-style:none;counter-reset:toc;display:flex;flex-direction:column;gap:7px}
+.toc li{counter-increment:toc}
+.toc a{color:var(--ink2);text-decoration:none;font-size:14.5px;display:flex;gap:10px}
+.toc a::before{content:counter(toc,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--accent);padding-top:3px}
+.toc a:hover{color:var(--accent)}
+.body{margin-top:8px}
+.body h2{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1.15;margin:44px 0 14px;scroll-margin-top:80px}
+.body h3{font-size:19px;font-weight:500;margin:26px 0 8px;color:var(--ink)}
+.body p{color:var(--ink2);margin-bottom:16px;font-size:16.5px}
+.body strong{color:var(--ink);font-weight:600}
+.body ul,.body ol{margin:0 0 18px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.body ul li,.body ol li{color:var(--ink2);font-size:16px;padding-left:26px;position:relative;line-height:1.6}
+.body ul li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+.body ol{counter-reset:li}
+.body ol li{counter-increment:li}
+.body ol li::before{content:counter(li);position:absolute;left:0;color:var(--accent);font-family:var(--mono);font-size:13px;font-weight:500;top:2px}
+.callout{background:var(--accent-light);border:1px solid rgba(10,110,79,.18);border-left:3px solid var(--accent);border-radius:10px;padding:16px 20px;margin:22px 0}
+.callout p{margin:0;font-size:15px}
+.callout .k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:6px}
+.cta-box{background:var(--ink);color:#fff;border-radius:16px;padding:28px 30px;margin:36px 0}
+.cta-box h3{font-family:var(--serif);font-size:24px;font-weight:400;margin-bottom:8px;color:#fff}
+.cta-box p{font-size:15px;color:rgba(255,255,255,.72);font-weight:300;margin-bottom:18px}
+.cta-box a{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-size:14.5px;font-weight:500;padding:12px 22px;border-radius:9px;margin-right:10px}
+.cta-box a.alt{background:transparent;border:1px solid rgba(255,255,255,.3)}
+.cta-box a:hover{background:var(--accent-mid)}
+.faq{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:16px 0}
+.faq-item{border-bottom:1px solid var(--border)}.faq-item:last-child{border-bottom:none}
+.faq-q{padding:16px 20px;cursor:pointer;font-size:15.5px;color:var(--ink);background:var(--surface);display:flex;justify-content:space-between;gap:14px;user-select:none;font-weight:500}
+.faq-q:hover{background:var(--surface2)}
+.faq-a{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;background:var(--surface)}
+.faq-item.open .faq-a{max-height:600px;padding:0 20px 18px}
+.faq-a p{font-size:14.5px;margin:0}
+.author-card{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin:40px 0}
+.author-card .avatar{width:52px;height:52px;font-size:16px}
+.author-card .ac-name{font-size:16px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.author-card .ac-role{font-size:13px;color:var(--ink3);margin:2px 0 8px}
+.author-card .ac-bio{font-size:14px;color:var(--ink2);font-weight:300;line-height:1.6}
+.related{margin:40px 0}
+.related-h{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.related-grid a{display:block;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-decoration:none;color:var(--ink);font-size:15px;font-weight:500;line-height:1.35}
+.related-grid a:hover{border-color:var(--accent)}
+.related-grid span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.prevnext{display:flex;justify-content:space-between;gap:14px;margin:36px 0 0;border-top:1px solid var(--border);padding-top:22px;font-size:14px}
+.prevnext a{color:var(--accent);text-decoration:none;max-width:48%}
+.prevnext .nx{margin-left:auto;text-align:right}
+.disclaim{margin-top:40px;padding-top:20px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink3);line-height:1.6}
+footer{border-top:1px solid var(--border);padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
+footer a{color:var(--ink3);text-decoration:none;margin:0 8px}
+footer a:hover{color:var(--accent)}
+@media(max-width:640px){h1{font-size:34px}.body h2{font-size:25px}.nav-inner{padding:0 20px}.wrap{padding:24px 20px 32px}.by-meta{margin-left:0;text-align:left;width:100%}.share{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="draft-banner">● DRAFT — internal review copy for David. Not published. Remove this banner before going live.</div>
+<nav><div class="nav-inner">
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <a href="/" class="nav-cta">Check my readiness</a>
+</div></nav>
+
+<article class="wrap">
+  <div class="crumb"><a href="/">Home</a> › <a href="/blog">Blog</a> › How to handle losing trades</div>
+  <div class="post-top"><span class="cat">Psychology</span><span class="badge traxent">Traxent</span></div>
+  <h1>How to Handle Losing Trades (Without Blowing Your Evaluation)</h1>
+  <p class="lede">Losing trades aren't the exception in trading — they're the job. Every strategy loses; the only question is whether your losses stay small and controlled or spiral into the one bad day that ends an account. Here's a practical playbook for taking a loss cleanly and protecting the drawdown that keeps your evaluation alive.</p>
+
+  <div class="byline">
+    <span class="avatar">TX</span>
+    <div>
+      <div class="by-who">Traxent Team</div>
+      <div class="by-role">Traxent in-house education team</div>
+    </div>
+    <div class="by-meta">Published 4 Jul 2026 · Updated 4 Jul 2026<br>8 min read</div>
+    <div class="share">
+      <a href="https://twitter.com/intent/tweet?text=How%20to%20Handle%20Losing%20Trades&url=https://traxent.io/blog-handling-losing-trades" target="_blank" rel="noopener">Share</a>
+      <button type="button" class="copy-link" data-url="https://traxent.io/blog-handling-losing-trades">Copy link</button>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-h">In this article</div>
+    <ol>
+      <li><a href="#normal">Losses are the job, not the exception</a></li>
+      <li><a href="#spiral">The tilt spiral: how one loss becomes ten</a></li>
+      <li><a href="#before">Before the trade: decide what a loss means</a></li>
+      <li><a href="#moment">In the moment: how to take a loss cleanly</a></li>
+      <li><a href="#after">After a losing day: the reset routine</a></li>
+      <li><a href="#streak">Losing streak, or a broken system?</a></li>
+      <li><a href="#evaluation">The evaluation angle: protect the drawdown</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </nav>
+
+  <div class="body">
+    <h2 id="normal">Losses are the job, not the exception</h2>
+    <p>Most new traders carry a hidden belief that a good trader wins almost every trade. It's the opposite. Plenty of profitable strategies win <strong>less than half the time</strong> and still make money, because the winners are bigger than the losers. If your system has a positive expectancy, a string of losses isn't a malfunction — it's the normal texture of the thing.</p>
+    <p>Internalising this changes how a loss feels. A loss taken exactly to plan isn't a mistake to be ashamed of or avenged; it's a cost of doing business, already budgeted for. The traders who last don't lose less often than everyone else — they've just made peace with losing small, on purpose, again and again.</p>
+    <div class="callout"><span class="k">Reframe</span><p>The goal is not to avoid losing trades. It's to make sure <strong>no single loss can hurt you</strong> — and that's a position-sizing decision, made before you ever click buy.</p></div>
+
+    <h2 id="spiral">The tilt spiral: how one loss becomes ten</h2>
+    <p>A single planned loss is harmless. The danger is the chain reaction it can trigger. The spiral usually runs like this:</p>
+    <ol>
+      <li>You take a normal loss, but it stings more than it should.</li>
+      <li>You want it back <em>now</em>, so you take a trade that isn't really a setup.</li>
+      <li>That one loses too, so you increase size to make it back faster.</li>
+      <li>Now you're down more than a normal day, emotional, and making decisions at your worst.</li>
+      <li>One oversized "make it all back" trade later, the day — or the evaluation — is gone.</li>
+    </ol>
+    <p>Notice that only the first loss came from the market. Every loss after it came from <em>you</em> — from the reaction, not the trade. This is why handling losses is really about handling the ten minutes <em>after</em> a loss, not the loss itself. (For the deeper driver behind the spiral, see <a href="/blog-ego-in-trading">Ego in Trading: The Silent Account Killer</a>.)</p>
+
+    <h2 id="before">Before the trade: decide what a loss means</h2>
+    <p>The best time to handle a loss is before you're in one, while you're calm. Three decisions, made in advance, do most of the work:</p>
+    <ul>
+      <li><strong>Fixed risk per trade.</strong> If every trade risks the same small fraction of the account (say 0.5%), a loss is a known, survivable quantity. You can lose many in a row and still be fine.</li>
+      <li><strong>A pre-placed stop.</strong> Set the stop when you enter, based on the chart, not on how much you're willing to feel. The stop is your pre-agreed definition of "I was wrong here" — decided by the calm version of you.</li>
+      <li><strong>A hard daily stop.</strong> A maximum loss for the day — in money or number of losing trades — at which you close the platform. This is the single most important circuit-breaker for the tilt spiral.</li>
+    </ul>
+    <p>Write these numbers down before the session. A loss that fits inside numbers you chose in advance is not an emergency; it's the plan working.</p>
+
+    <h2 id="moment">In the moment: how to take a loss cleanly</h2>
+    <p>When a trade goes against you and hits its stop, the skill is to make it a <em>non-event</em>. A simple sequence helps:</p>
+    <ol>
+      <li><strong>Let the stop do its job.</strong> Don't cancel it, don't "give it room." The stop was the honest decision; honour it.</li>
+      <li><strong>Log it immediately.</strong> Record the trade and, crucially, <em>why</em> you took it and whether you followed your plan. A loss that followed the plan gets marked as a good trade — that label matters.</li>
+      <li><strong>Breathe and reset.</strong> Take thirty seconds away from the screen. The urge to immediately re-enter is the spiral knocking.</li>
+      <li><strong>Ask one question:</strong> "Is my next action a setup, or a reaction?" If you can't point to a genuine setup, there is no next trade.</li>
+    </ol>
+    <p>Grading the decision rather than the result is the whole game here. A disciplined loss is a win for your process; an undisciplined win is a loss for it.</p>
+
+    <h2 id="after">After a losing day: the reset routine</h2>
+    <p>Some days you'll hit your daily stop. The professional response is boring on purpose: you stop, and you don't touch the platform again that day. The account is protected precisely because you decided this in advance and didn't renegotiate it while emotional.</p>
+    <p>Then build a short reset routine so the day doesn't bleed into the next:</p>
+    <ul>
+      <li><strong>Review, don't re-litigate.</strong> Look at each trade against your plan. Were they valid setups traded correctly? If yes, a red day of good decisions needs no changes.</li>
+      <li><strong>Separate process from outcome.</strong> A losing day where you followed every rule is a success you should be able to feel good about. That's not spin — it's the only sustainable scorecard.</li>
+      <li><strong>Come back the same size.</strong> Do not open the next session hunting to "win yesterday back." The account has no memory; neither should your position sizing.</li>
+    </ul>
+
+    <h2 id="streak">Losing streak, or a broken system?</h2>
+    <p>Not every run of losses is just variance — occasionally something really has changed. The skill is telling the two apart without overreacting to normal noise, because the wrong response (tearing up a working strategy after five bad trades) does more damage than the streak itself. A few honest questions separate signal from noise:</p>
+    <ul>
+      <li><strong>Are the losses inside your normal range?</strong> If your average loss is around 1R and nothing is blowing past it, a losing run is almost certainly variance, not a broken edge.</li>
+      <li><strong>Did you actually follow the plan?</strong> A streak of well-executed trades that happened to lose is completely different from a streak of improvised ones. Grade execution before you blame the strategy.</li>
+      <li><strong>Has the market regime changed?</strong> A strategy built for trending conditions will bleed in a choppy, range-bound market. That's a context problem, not a discipline problem — and it calls for trading less, not sizing up.</li>
+      <li><strong>What does the sample actually say?</strong> Ten trades tell you almost nothing; a hundred logged trades tell you plenty. Judge a system on data, not on your last bad afternoon.</li>
+    </ul>
+    <p>The whole point is to respond to <em>evidence</em>, not emotion. If the losses are in-range and well-executed, change nothing and keep your size small until the run passes. If a real sample genuinely shows the edge has decayed, that's a reason to step back to the demo and rebuild — not to force it back on a paid evaluation where a rebuild attempt can breach a drawdown.</p>
+
+    <h2 id="evaluation">The evaluation angle: protect the drawdown</h2>
+    <p>Everything above matters double in a prop-firm evaluation, because there the cost of a mishandled loss isn't just money — it's the whole challenge. Evaluations enforce a <strong>maximum drawdown</strong> and usually a <strong>daily loss limit</strong>, and a single tilt sequence can breach either one and end the evaluation regardless of how well you'd traded otherwise.</p>
+    <p>So set your personal daily stop <em>well inside</em> the firm's limit — for example, stop at a 2–3% loss when the firm allows 5% — and never trade into the last third of your maximum drawdown. Different firms measure this differently (static vs trailing vs end-of-day drawdown), which changes how much a bad loss actually costs you; the <a href="/compare">firm comparison</a> and breakdowns like <a href="/firm-ftmo">FTMO</a> and <a href="/firm-topstep">Topstep</a> show exactly how each one works.</p>
+    <p>The most reliable way to know your loss-handling is good enough for an evaluation is to measure it. Traxent scores your real trades against each firm's published drawdown and daily-loss rules, so you can see whether your worst days would have survived the challenge — before you pay for one.</p>
+    <div class="cta-box">
+      <h3>Would your worst day survive an evaluation?</h3>
+      <p>Log your trades and Traxent scores them against real prop-firm drawdown and daily-loss rules — so you find out on a demo, not on a paid challenge.</p>
+      <a href="/">Check my readiness</a>
+      <a href="/blog-how-to-get-funded-prop-firm" class="alt">Read: How to get funded</a>
+    </div>
+
+    <h2 id="faq">Frequently asked questions</h2>
+    <div class="faq">
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span>Is it normal to have lots of losing trades?</span><span>+</span></div><div class="faq-a"><p>Yes. Many profitable strategies win less than half the time and still make money because winners are larger than losers. A run of losses is a normal feature of trading, not a broken system — as long as each loss is small and controlled.</p></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span>How do I stop tilting after a loss?</span><span>+</span></div><div class="faq-a"><p>Decide in advance what a loss means and what you'll do next: keep risk fixed, honour a hard daily stop, and step away after a set number of losses. Tilt comes from deciding while emotional, so pre-commit to the decisions before emotion arrives and remove your ability to override them.</p></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span>How many losses should end my day?</span><span>+</span></div><div class="faq-a"><p>Use a hard daily stop in money or a maximum number of losing trades, set well inside the firm's daily loss limit — e.g. stop at 2–3% when the limit is 5%. The exact number is personal, but decide it before the session and honour it without exception.</p></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span>Why do losses matter more in an evaluation?</span><span>+</span></div><div class="faq-a"><p>Evaluations have hard drawdown and daily loss limits. In a personal account an oversized loss is expensive; in an evaluation it can end the challenge outright. Handling losses cleanly is how you keep the evaluation alive.</p></div></div>
+    </div>
+
+    <div class="author-card">
+      <span class="avatar">TX</span>
+      <div>
+        <div class="ac-name">Traxent Team <span class="badge traxent">Traxent</span></div>
+        <div class="ac-role">Traxent in-house education team</div>
+        <p class="ac-bio">The Traxent education team writes about prop-firm evaluations, trading psychology and risk — the same rules we bake into Traxent's readiness engine. Educational content only; never financial advice.</p>
+      </div>
+    </div>
+
+    <div class="related">
+      <div class="related-h">Keep reading</div>
+      <div class="related-grid">
+        <a href="/blog-ego-in-trading"><span>Psychology</span>Ego in Trading: The Silent Account Killer</a>
+        <a href="/blog-how-to-get-funded-prop-firm"><span>Getting funded</span>How to Get Funded by a Prop Firm: A Step-by-Step Guide</a>
+        <a href="/compare"><span>Tool</span>Compare at least 16 prop firms side by side</a>
+      </div>
+    </div>
+
+    <div class="prevnext">
+      <a href="/blog-ego-in-trading">← Ego in Trading: The Silent Account Killer</a>
+      <a class="nx" href="/blog">All posts →</a>
+    </div>
+
+    <p class="disclaim">This article is educational and does not constitute financial, investment or trading advice. It describes general risk and psychology concepts, not a recommendation to trade. Traxent is an independent education and readiness tool, is not a broker, prop firm or fund, and is not affiliated with any firm named here. Trading involves substantial risk of loss; never risk money you cannot afford to lose.</p>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Home</a><a href="/blog">Blog</a><a href="/firms">Prop firms</a><a href="/compare">Compare</a><a href="/faq">FAQ</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  Array.prototype.forEach.call(document.querySelectorAll('.copy-link'), function (btn) {
+    btn.addEventListener('click', function () {
+      var url = btn.getAttribute('data-url');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () {
+          var t = btn.textContent; btn.textContent = 'Copied ✓';
+          setTimeout(function () { btn.textContent = t; }, 1600);
+        }).catch(function () {});
+      }
+    });
+  });
+})();
+</script>
+<script src="/consent.js?v=__BUILD_SHA__" defer></script>
+</body>
+</html>

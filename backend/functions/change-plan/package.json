@@ -7,7 +7,7 @@
   "description": "Traxent change-plan (POST /change-plan): upgrade/downgrade an existing Stripe subscription with proration — charges only the difference, no new checkout.",
   "dependencies": {
     "@aws-sdk/client-ssm": "^3.1018.0",
-    "aws-jwt-verify": "^4.0.1",
+    "aws-jwt-verify": "^5.2.1",
     "stripe": "^21.0.1"
   }
 }

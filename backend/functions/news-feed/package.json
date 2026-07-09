@@ -10,6 +10,6 @@
   "description": "Sentiment-tagged market news feed for the Traxent /news page (Funded Trader tier).",
   "dependencies": {
     "@aws-sdk/client-ssm": "^3.1019.0",
-    "aws-jwt-verify": "^4.0.1"
+    "aws-jwt-verify": "^5.2.1"
   }
 }

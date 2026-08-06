@@ -39,48 +39,24 @@ table match the enterprise page.
 
 ---
 
-# 🟠 DO — in this order
+# 🟠 DO — all mine now; nothing left in your court but the checks below
 
-## Week 1
+## Week 2 — mine to build
 
-### 1. Auth0 — 15 missing callback URLs
-
-M2M `delete:users`, SMTP→Resend and the branded templates are **done**
-(confirmed 2026-08-06). What's left is the callback list.
-
-`auth.js:186` sends people back to `origin + pathname` after login, so **every
-gated page needs its own entry**. Missing one breaks login-return on that page
-only — which is exactly why it goes unnoticed until a member complains.
-
-Paste this into *Applications → Traxent SPA → Allowed Callback URLs*:
-
-```
-https://traxent.io/account,https://traxent.io/calendar,https://traxent.io/challenge-lab,https://traxent.io/integrations,https://traxent.io/journal,https://traxent.io/learn,https://traxent.io/learn-module-1,https://traxent.io/learn-module-2,https://traxent.io/learn-module-3,https://traxent.io/learn-module-4,https://traxent.io/learn-module-5,https://traxent.io/learn-module-6,https://traxent.io/learn-module-7,https://traxent.io/news,https://traxent.io/tracker
-```
-
-Then T3 below confirms it.
-
-### 2. Stripe live keys
-
-`sk_live_`, the three live price IDs and the live `whsec_` into SSM. Confirm
-with T4, then take one real £4.99 payment end to end and refund it.
-
-## Week 2
-
-### 7. Account activity stats are fake
+### 1. Account activity stats are fake
 
 `account.html:551` reads localStorage keys the journal never writes, so a paying
 member sees `0 / 0 / —` on a new device. The user-data API already has the real
 numbers. Small — I'll do it.
 
-### 8. News feed
+### 2. News feed
 
 Set `/traxent/news/alphavantage_key` (until then the endpoint returns an empty
 feed — it's sold as "Advanced news sentiment engine" on Funded). Then retarget
 `topics=` in `backend/functions/news-feed/index.mjs` from US equities to
 futures/forex/indices, which is what your audience actually trades.
 
-### 9. Stale copy
+### 3. Stale copy
 
 - `waitlist.html` lists "News sentiment feed" under "coming soon". It's live.
 - `risk-register.md:26` says the deploy uses long-lived AWS keys. It's been on
@@ -122,15 +98,6 @@ Sign out, then paste each of these directly into a fresh tab:
 
 **Pass:** login, then you land on **that page**.
 **Fail:** an Auth0 callback error → that URL is missing from Allowed Callbacks.
-
-## T4. Is Stripe in live mode?
-
-```bash
-aws ssm get-parameter --name /traxent/stripe/secret_key --with-decryption \
-  --profile traxent --region eu-west-2 --query 'Parameter.Value' --output text | cut -c1-7
-```
-
-**Pass:** `sk_live`. **Fail:** `sk_test` — you'd take no real money.
 
 ## T5. Does a live signup actually send an invite?
 

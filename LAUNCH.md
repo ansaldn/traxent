@@ -108,29 +108,21 @@ node export-subscribers.mjs --count --profile traxent
 
 ## Week 2
 
-### 7. GDPR erasure spans two systems — I'll build this
-
-`deleteSubscriber()` exists in `marketing.mjs` and is called from nowhere. An
-Art. 17 request currently leaves the subscriber row and the Resend contact
-behind. Small.
-
-### 8. Account activity stats are fake
+### 7. Account activity stats are fake
 
 `account.html:551` reads localStorage keys the journal never writes, so a paying
 member sees `0 / 0 / —` on a new device. The user-data API already has the real
 numbers. Small — I'll do it.
 
-### 9. News feed
+### 8. News feed
 
 Set `/traxent/news/alphavantage_key` (until then the endpoint returns an empty
 feed — it's sold as "Advanced news sentiment engine" on Funded). Then retarget
 `topics=` in `backend/functions/news-feed/index.mjs` from US equities to
 futures/forex/indices, which is what your audience actually trades.
 
-### 10. Stale copy
+### 9. Stale copy
 
-- `faq.html` says the blog is "coming soon". It exists.
-- The blog isn't linked from any navigation — sitemap only.
 - `waitlist.html` lists "News sentiment feed" under "coming soon". It's live.
 - `risk-register.md:26` says the deploy uses long-lived AWS keys. It's been on
   OIDC for weeks — this **understates** your posture in the document an auditor

@@ -1,0 +1,38 @@
+# SAM deploy defaults for the user-data stack.
+#
+# Without this file, a bare `sam deploy` fails with:
+#   Error: Missing option '--stack-name'
+#
+# The stack name MUST stay `traxent-user-data` — that is the stack CI deploys
+# (.github/workflows/deploy-infra.yml) and the one that already owns the live
+# DynamoDB table, Lambdas and HTTP API (gqway1e53f). Deploying under any other
+# name would create a second, parallel set of resources.
+#
+# Deliberately NO `profile` key here. CI authenticates from environment
+# credentials and has no named profile; if you use one locally, pass it on the
+# command line instead:
+#
+#   sam deploy --profile traxent
+#
+# Check you're pointed at the right account first — you have several:
+#
+#   aws sts get-caller-identity --profile traxent --region eu-west-2
+
+version = 0.1
+
+[default.global.parameters]
+stack_name = "traxent-user-data"
+region = "eu-west-2"
+
+[default.build.parameters]
+cached = true
+parallel = true
+
+[default.deploy.parameters]
+capabilities = "CAPABILITY_IAM"
+confirm_changeset = true
+resolve_s3 = true
+fail_on_empty_changeset = false
+
+[default.sync.parameters]
+watch = false

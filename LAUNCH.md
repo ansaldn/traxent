@@ -43,68 +43,27 @@ table match the enterprise page.
 
 ## Week 1
 
-### 1. Resend sending domain — **start today, longest lead time**
+### 1. Auth0 — 15 missing callback URLs
 
-Nothing else in email works until this is done, and DNS takes time to settle.
-Full steps in `backend/marketing/README.md` §1. In short:
+M2M `delete:users`, SMTP→Resend and the branded templates are **done**
+(confirmed 2026-08-06). What's left is the callback list.
 
-- resend.com/domains → add `traxent.io`, region **EU (Ireland)**
-- Copy its DNS records into Cloudflare, all **DNS only (grey cloud)**
-- Enter names as `send`, not `send.traxent.io` — Cloudflare appends the domain
-- **Do not touch the root MX** — that's your inbound mail to Gmail
-- Verify, then store the key:
-  ```bash
-  aws ssm put-parameter --name /traxent/resend/api_key --value "$(pbpaste)" \
-    --type SecureString --overwrite --profile traxent --region eu-west-2
-  ```
+`auth.js:186` sends people back to `origin + pathname` after login, so **every
+gated page needs its own entry**. Missing one breaks login-return on that page
+only — which is exactly why it goes unnoticed until a member complains.
 
-Until this is live, the prelaunch invite email and the Stripe welcome email are
-both silent no-ops. They fail safely — but they fail.
+Paste this into *Applications → Traxent SPA → Allowed Callback URLs*:
 
-### 2. Auth0 — three things, each a hard failure
-
-- **M2M app with `delete:users`** → SSM. Without it **account deletion returns
-  500**, which is an App Store 5.1.1 requirement and will fail review.
-- **Allowed Callback URLs** for every gated deep link: `/dashboard`, `/journal`,
-  `/tracker`, `/news`, `/learn-module-1` … `-7`, `/learn-201`, `/learn-301`,
-  `/home`, `/admin`. Missing ones break login-return on that page only, which is
-  why it's easy to miss.
-- **Custom SMTP → Resend**, and enable both branded templates from `auth0/`.
-
-### 3. Stripe live keys
-
-`sk_live_`, the three live price IDs, and the live `whsec_` into SSM. Test one
-real £4.99 purchase end to end and refund it.
-
-### 4. Deploy the payments stack
-
-Not automatic — `backend/template.yaml` changed for the marketing sync and the
-new 7-day trial.
-
-```bash
-cd backend && sam build && sam deploy --stack-name traxent-backend \
-  --profile traxent --resolve-s3 --capabilities CAPABILITY_IAM --region eu-west-2
+```
+https://traxent.io/account,https://traxent.io/calendar,https://traxent.io/challenge-lab,https://traxent.io/integrations,https://traxent.io/journal,https://traxent.io/learn,https://traxent.io/learn-module-1,https://traxent.io/learn-module-2,https://traxent.io/learn-module-3,https://traxent.io/learn-module-4,https://traxent.io/learn-module-5,https://traxent.io/learn-module-6,https://traxent.io/learn-module-7,https://traxent.io/news,https://traxent.io/tracker
 ```
 
-### 5. Resend webhook
+Then T3 below confirms it.
 
-`resend.com/webhooks` → the `ResendWebhookUrl` stack output. Events:
-`contact.updated`, `contact.deleted`, `email.bounced`, `email.complained`,
-`suppression.added`, `suppression.removed`. Then:
+### 2. Stripe live keys
 
-```bash
-aws ssm put-parameter --name /traxent/resend/webhook_secret --value "$(pbpaste)" \
-  --type SecureString --overwrite --profile traxent --region eu-west-2
-```
-
-### 6. Migrate the Formspree list, then close that account
-
-```bash
-cd backend/marketing
-node import-waitlist.mjs waitlist.csv --dry-run --profile traxent
-node import-waitlist.mjs waitlist.csv --profile traxent
-node export-subscribers.mjs --count --profile traxent
-```
+`sk_live_`, the three live price IDs and the live `whsec_` into SSM. Confirm
+with T4, then take one real £4.99 payment end to end and refund it.
 
 ## Week 2
 
@@ -173,17 +132,14 @@ aws ssm get-parameter --name /traxent/stripe/secret_key --with-decryption \
 
 **Pass:** `sk_live`. **Fail:** `sk_test` — you'd take no real money.
 
-## T5. Does the whole email chain work?
+## T5. Does a live signup actually send an invite?
 
-```bash
-cd backend/marketing && node test-send.mjs davidansa00@gmail.com --profile traxent
-```
+The domain is verified and `test-send.mjs` works — that half is proven. What
+hasn't been exercised is the path through the deployed Lambda.
 
-Then in Gmail: **⋮ → Show original**. **Pass:** SPF, DKIM and DMARC all say
-PASS, and it's in the inbox. **Fail on any one:** DNS isn't finished.
-
-Then a live signup: enter an address on the home page. **Pass:** an invite
-arrives within a minute.
+Enter an address on the home page. **Pass:** the invite arrives within a minute.
+**Fail:** check CloudWatch for `traxent-subscribe` — most likely the deployed
+function can't read `/traxent/resend/api_key`.
 
 ## T6. Does the launch flip actually work?
 

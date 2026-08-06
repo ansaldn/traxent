@@ -1,5 +1,8 @@
 # Traxent — Security Actions You Run (OIDC + console steps)
 
+> **Status lives in [`LAUNCH.md`](LAUNCH.md).** This file explains *how* to do
+> a thing; LAUNCH.md says whether it still needs doing.
+
 Companion to `SECURITY-AUDIT.md`. The code/IaC changes are already committed; this file is the
 things **only you can do** (IAM, GitHub settings, Auth0/Stripe dashboards, the CDN hash).
 

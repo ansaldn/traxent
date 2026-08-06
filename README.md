@@ -1,5 +1,9 @@
 # Traxent
 
+**→ [`LAUNCH.md`](LAUNCH.md) is the single source of truth for what still needs doing.**
+Anything finished has been deleted from it rather than ticked, so if it isn't
+there, it's done.
+
 Trading education platform — track your path to funded.
 
 ## Development

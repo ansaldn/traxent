@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- ============================================================= -->
+<!-- DRAFT — internal review copy for David. NOT for publication.   -->
+<!-- Remove the .draft-banner div and this comment before going live.-->
+<!-- Byline is Traxent (in-house). Do NOT relabel as a pro trader.  -->
+<!-- ============================================================= -->
+<head>
+<script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; form-action 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0e0e0c">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>Ego in Trading: The Silent Account Killer | Traxent</title>
+<meta name="description" content="Ego is the most expensive habit in trading — it hides as confidence and blows evaluations through oversizing, revenge trades and refusing to take a loss. Here's how to spot it and the systems that beat it.">
+<meta name="keywords" content="ego in trading, trading psychology, revenge trading, why traders fail, discipline in trading, prop firm psychology">
+<link rel="canonical" href="https://traxent.io/blog-ego-in-trading">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:site_name" content="Traxent">
+<meta property="og:title" content="Ego in Trading: The Silent Account Killer">
+<meta property="og:description" content="Ego hides as confidence and blows evaluations through oversizing, revenge and refusing to take a loss. How to spot it — and the systems that beat it.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://traxent.io/blog-ego-in-trading">
+<meta property="og:image" content="https://traxent.io/og-image.png">
+<meta property="article:published_time" content="2026-07-04">
+<meta property="article:modified_time" content="2026-07-04">
+<meta property="article:section" content="Psychology">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ego in Trading: The Silent Account Killer">
+<meta name="twitter:description" content="Ego hides as confidence and quietly blows evaluations. How to spot it and the systems that beat it.">
+<meta name="twitter:image" content="https://traxent.io/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Ego in Trading: The Silent Account Killer",
+  "description": "Why ego is the most expensive habit in trading, the five ways it blows prop-firm evaluations, and the systems that beat it.",
+  "image": "https://traxent.io/og-image.png",
+  "datePublished": "2026-07-04",
+  "dateModified": "2026-07-04",
+  "author": { "@type": "Organization", "name": "Traxent", "url": "https://traxent.io" },
+  "publisher": { "@type": "Organization", "name": "Traxent", "url": "https://traxent.io", "logo": { "@type": "ImageObject", "url": "https://traxent.io/icons/icon-512.png" } },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://traxent.io/blog-ego-in-trading" },
+  "articleSection": "Psychology",
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How does ego cause traders to lose money?","acceptedAnswer":{"@type":"Answer","text":"Ego turns trading into a contest about being right instead of a process about managing risk. It shows up as oversizing after a win, revenge trading after a loss, refusing to take a stop, and moving stops to avoid being wrong. Each of these breaks position sizing or risk limits, which is what actually drains an account or breaches an evaluation."}},
+{"@type":"Question","name":"What is revenge trading?","acceptedAnswer":{"@type":"Answer","text":"Revenge trading is entering a trade primarily to win back a recent loss, usually larger and less planned than normal. It is ego trying to get even with the market. Because size goes up and discipline goes down, revenge trades are a leading cause of blown daily loss limits in prop-firm evaluations."}},
+{"@type":"Question","name":"How do I stop letting ego affect my trading?","acceptedAnswer":{"@type":"Answer","text":"Separate your identity from any single trade. Pre-commit to a fixed risk per trade and a hard daily stop, journal the reason for every entry, and judge yourself on whether you followed your plan rather than whether the trade won. An objective scorecard, such as a readiness score against firm rules, replaces the ego's story with data."}},
+{"@type":"Question","name":"Is confidence bad in trading?","acceptedAnswer":{"@type":"Answer","text":"No. Healthy confidence is trust in a tested process. The problem is ego, which is confidence attached to being right on a specific trade. Confidence lets you take a valid setup; ego makes you defend a losing one. The difference is whether you can be wrong quickly and cheaply."}}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
+  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);--border2:rgba(14,14,12,.06);
+  --surface:#ffffff;--surface2:#f0efe9;--good:#0a6e4f;--bad:#9e1a1a;--warn:#b06000;--pro:#5b4bc4;--pro-light:rgba(91,75,196,.1);
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',-apple-system,sans-serif;--mono:'Geist Mono',monospace;
+}
+@media(prefers-color-scheme:dark){:root{--bg:#0e0e0c;--ink:#f2f1ec;--ink2:#c9c8c2;--ink3:#8f8e87;--accent:#1a9e72;--accent-light:rgba(26,158,114,.12);--border:rgba(255,255,255,.12);--border2:rgba(255,255,255,.06);--surface:#161613;--surface2:#1d1d19;--pro:#a99cf0;--pro-light:rgba(169,156,240,.14)}}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.draft-banner{background:var(--warn);color:#fff;text-align:center;font-size:13px;font-weight:500;padding:9px 16px;font-family:var(--mono)}
+nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+@media(prefers-color-scheme:dark){nav{background:rgba(14,14,12,.9)}}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-cta{font-size:13px;font-weight:500;color:#fff;background:var(--accent);border-radius:8px;padding:9px 16px;text-decoration:none;white-space:nowrap}
+.nav-cta:hover{background:#085e43}
+.wrap{max-width:760px;margin:0 auto;padding:32px 24px 40px}
+.crumb{font-size:13px;color:var(--ink3);margin-bottom:20px}
+.crumb a{color:var(--ink3);text-decoration:none}.crumb a:hover{color:var(--accent)}
+.post-top{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.cat{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);border-radius:999px;padding:4px 10px}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;padding:4px 10px;display:inline-flex;align-items:center;gap:5px;font-weight:500}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%}
+.badge.traxent{color:var(--accent);background:var(--accent-light)}
+.badge.traxent::before{background:var(--accent)}
+.badge.pro{color:var(--pro);background:var(--pro-light)}
+.badge.pro::before{background:var(--pro)}
+h1{font-family:var(--serif);font-size:44px;font-weight:400;letter-spacing:-.01em;line-height:1.08;margin-bottom:16px}
+.lede{font-size:19px;color:var(--ink2);font-weight:300;line-height:1.6;margin-bottom:26px}
+.byline{display:flex;align-items:center;gap:12px;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.avatar{width:42px;height:42px;border-radius:50%;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:14px;font-family:var(--mono);font-weight:500;flex-shrink:0}
+.by-who{font-size:14px;color:var(--ink);font-weight:500;line-height:1.3}
+.by-role{font-size:12.5px;color:var(--ink3)}
+.by-meta{margin-left:auto;font-size:12.5px;color:var(--ink3);text-align:right;font-family:var(--mono)}
+.share{display:flex;gap:8px;margin-left:14px}
+.share a,.share button{font-family:var(--mono);font-size:11px;color:var(--ink2);background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:6px 10px;text-decoration:none;cursor:pointer}
+.share a:hover,.share button:hover{border-color:var(--accent);color:var(--accent)}
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:28px 0}
+.toc-h{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
+.toc ol{list-style:none;counter-reset:toc;display:flex;flex-direction:column;gap:7px}
+.toc li{counter-increment:toc}
+.toc a{color:var(--ink2);text-decoration:none;font-size:14.5px;display:flex;gap:10px}
+.toc a::before{content:counter(toc,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--accent);padding-top:3px}
+.toc a:hover{color:var(--accent)}
+.body{margin-top:8px}
+.body h2{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1.15;margin:44px 0 14px;scroll-margin-top:80px}
+.body h3{font-size:19px;font-weight:500;margin:26px 0 8px;color:var(--ink)}
+.body p{color:var(--ink2);margin-bottom:16px;font-size:16.5px}
+.body strong{color:var(--ink);font-weight:600}
+.body ul,.body ol{margin:0 0 18px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.body ul li,.body ol li{color:var(--ink2);font-size:16px;padding-left:26px;position:relative;line-height:1.6}
+.body ul li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+.body ol{counter-reset:li}
+.body ol li{counter-increment:li}
+.body ol li::before{content:counter(li);position:absolute;left:0;color:var(--accent);font-family:var(--mono);font-size:13px;font-weight:500;top:2px}
+.callout{background:var(--accent-light);border:1px solid rgba(10,110,79,.18);border-left:3px solid var(--accent);border-radius:10px;padding:16px 20px;margin:22px 0}
+.callout p{margin:0;font-size:15px}
+.callout .k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:6px}
+.cta-box{background:var(--ink);color:#fff;border-radius:16px;padding:28px 30px;margin:36px 0}
+.cta-box h3{font-family:var(--serif);font-size:24px;font-weight:400;margin-bottom:8px;color:#fff}
+.cta-box p{font-size:15px;color:rgba(255,255,255,.72);font-weight:300;margin-bottom:18px}
+.cta-box a{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-size:14.5px;font-weight:500;padding:12px 22px;border-radius:9px;margin-right:10px}
+.cta-box a.alt{background:transparent;border:1px solid rgba(255,255,255,.3)}
+.cta-box a:hover{background:var(--accent-mid)}
+.faq{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:16px 0}
+.faq-item{border-bottom:1px solid var(--border)}.faq-item:last-child{border-bottom:none}
+.faq-q{padding:16px 20px;cursor:pointer;font-size:15.5px;color:var(--ink);background:var(--surface);display:flex;justify-content:space-between;gap:14px;user-select:none;font-weight:500}
+.faq-q:hover{background:var(--surface2)}
+.faq-a{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;background:var(--surface)}
+.faq-item.open .faq-a{max-height:600px;padding:0 20px 18px}
+.faq-a p{font-size:14.5px;margin:0}
+.author-card{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin:40px 0}
+.author-card .avatar{width:52px;height:52px;font-size:16px}
+.author-card .ac-name{font-size:16px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.author-card .ac-role{font-size:13px;color:var(--ink3);margin:2px 0 8px}
+.author-card .ac-bio{font-size:14px;color:var(--ink2);font-weight:300;line-height:1.6}
+.related{margin:40px 0}
+.related-h{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.related-grid a{display:block;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-decoration:none;color:var(--ink);font-size:15px;font-weight:500;line-height:1.35}
+.related-grid a:hover{border-color:var(--accent)}
+.related-grid span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.prevnext{display:flex;justify-content:space-between;gap:14px;margin:36px 0 0;border-top:1px solid var(--border);padding-top:22px;font-size:14px}
+.prevnext a{color:var(--accent);text-decoration:none;max-width:48%}
+.prevnext .nx{margin-left:auto;text-align:right}
+.disclaim{margin-top:40px;padding-top:20px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink3);line-height:1.6}
+footer{border-top:1px solid var(--border);padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
+footer a{color:var(--ink3);text-decoration:none;margin:0 8px}
+footer a:hover{color:var(--accent)}
+@media(max-width:640px){h1{font-size:34px}.body h2{font-size:25px}.nav-inner{padding:0 20px}.wrap{padding:24px 20px 32px}.by-meta{margin-left:0;text-align:left;width:100%}.share{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="draft-banner">● DRAFT — internal review copy for David. Not published. Remove this banner before going live.</div>
+<nav><div class="nav-inner">
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <a href="/" class="nav-cta">Check my readiness</a>
+</div></nav>
+
+<article class="wrap">
+  <div class="crumb"><a href="/">Home</a> › <a href="/blog">Blog</a> › Ego in trading</div>
+  <div class="post-top"><span class="cat">Psychology</span><span class="badge traxent">Traxent</span></div>
+  <h1>Ego in Trading: The Silent Account Killer</h1>
+  <p class="lede">The most expensive mistakes in trading are rarely technical. They're your ego quietly defending itself — and unlike a bad indicator, ego disguises itself as confidence, conviction and "just being patient." Here's how it drains accounts, why it's lethal inside a prop-firm evaluation, and the systems that beat it.</p>
+
+  <div class="byline">
+    <span class="avatar">TX</span>
+    <div>
+      <div class="by-who">Traxent Team</div>
+      <div class="by-role">Traxent in-house education team</div>
+    </div>
+    <div class="by-meta">Published 4 Jul 2026 · Updated 4 Jul 2026<br>8 min read</div>
+    <div class="share">
+      <a href="https://twitter.com/intent/tweet?text=Ego%20in%20Trading%3A%20The%20Silent%20Account%20Killer&url=https://traxent.io/blog-ego-in-trading" target="_blank" rel="noopener">Share</a>
+      <button type="button" class="copy-link" data-url="https://traxent.io/blog-ego-in-trading">Copy link</button>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-h">In this article</div>
+    <ol>
+      <li><a href="#why">Why ego is the silent killer</a></li>
+      <li><a href="#faces">The five faces of ego at the screen</a></li>
+      <li><a href="#evaluation">Why ego is lethal in an evaluation</a></li>
+      <li><a href="#process">Ego vs process: the real shift</a></li>
+      <li><a href="#systems">Systems that beat ego</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </nav>
+
+  <div class="body">
+    <h2 id="why">Why ego is the silent killer</h2>
+    <p>Most trading education is about being <em>right</em> — better setups, cleaner charts, a sharper edge. But the traders who blow up are usually not the ones who can't find a trade. They're the ones who can't be <strong>wrong</strong> cheaply. That inability is ego, and it's silent because it never announces itself. It arrives dressed as conviction ("I know this is going to bounce"), as patience ("I'll give it a bit more room"), or as confidence after a win ("I've got the read today"). Every one of those sentences has cost traders their accounts.</p>
+    <p>The market is one of the few arenas that gives you constant, unarguable feedback about whether you were right — in money, in real time. For a certain kind of person that's intoxicating, and the P&amp;L stops being a scorecard for a <em>process</em> and becomes a scorecard for the <em>self</em>. Once that switch flips, you're no longer trading the market; you're defending your self-image with a position size.</p>
+    <div class="callout"><span class="k">The core problem</span><p>Ego turns trading into a referendum on whether <strong>you</strong> are right, when the only question that matters is whether the <strong>process</strong> was followed. Those are completely different games, and only one of them is survivable.</p></div>
+
+    <h2 id="faces">The five faces of ego at the screen</h2>
+    <p>Ego rarely looks like arrogance. More often it looks like these five ordinary-seeming decisions.</p>
+    <h3>1. Needing to be right</h3>
+    <p>You take a trade, it goes against you, and instead of accepting the loss you start building a case for why you're <em>actually</em> right and the market is wrong. You add to the loser to "improve your average." This is ego refusing to update, and averaging into a losing position is the single fastest way to turn a small, planned loss into an account-ending one.</p>
+    <h3>2. Revenge trading</h3>
+    <p>You take a loss, and the next trade isn't about a setup — it's about getting even. Size goes up, standards go down, and you enter something you'd never take on a calm day. Revenge trading is ego trying to settle a score with an entity (the market) that doesn't know you exist.</p>
+    <h3>3. Sizing up after a win</h3>
+    <p>A couple of green trades and suddenly you "deserve" to press. You double your size on the next idea because you're "in the zone." But your edge didn't double — only your risk did. Winning streaks feel like skill and are often just variance; ego can't tell the difference.</p>
+    <h3>4. Refusing to take the stop</h3>
+    <p>Price hits your stop and you cancel it, because taking it would mean admitting you were wrong. The stop was the one honest decision you made before ego got involved — and you just deleted it.</p>
+    <h3>5. Moving the goalposts</h3>
+    <p>You widen a stop, or turn a losing day-trade into a "long-term investment," or invent a new reason to stay in. Every one of these is the same move: changing the rules mid-game so you never have to record a loss.</p>
+
+    <h2 id="evaluation">Why ego is lethal in an evaluation</h2>
+    <p>In a personal account, ego is expensive. In a prop-firm evaluation, it's fatal — because evaluations are built precisely to punish the behaviours ego produces. Consider how the five faces map onto the rules that end challenges:</p>
+    <ul>
+      <li><strong>Revenge trading → the daily loss limit.</strong> One oversized tilt sequence can breach a 5% daily loss and end the evaluation in an afternoon, no matter how good the rest of your month was.</li>
+      <li><strong>Sizing up after a win → the trailing drawdown.</strong> Pressing size right after your equity peaks is the exact moment a trailing or end-of-day drawdown is tightest. Give back that inflated open profit and you breach.</li>
+      <li><strong>Refusing the stop → the maximum drawdown.</strong> One trade held past its stop "on principle" can do more damage than a week of disciplined losses.</li>
+      <li><strong>Needing to be right → the consistency rule.</strong> Ego wants the one huge day that proves you're a genius. That day is exactly what a consistency rule is designed to disqualify.</li>
+    </ul>
+    <p>This is why two traders with the same strategy get opposite results. The rules don't test whether you can win; they test whether your ego can be kept out of the decisions. If you want to see how each firm's specific limits would interact with your habits, the <a href="/compare">firm comparison</a> and individual breakdowns like <a href="/firm-ftmo">FTMO</a>, <a href="/firm-topstep">Topstep</a> and <a href="/firm-apex-trader-funding">Apex</a> lay them out.</p>
+
+    <h2 id="process">Ego vs process: the real shift</h2>
+    <p>The cure for ego isn't to care less. It's to move what you care about. Instead of measuring yourself by whether a trade won, measure yourself by whether you <strong>followed your plan</strong>. A losing trade taken exactly to plan is a <em>good</em> trade. A winning trade taken on impulse, with no stop and double size, is a <em>bad</em> trade that happened to pay — and it's teaching you a habit that will eventually cost far more than it made.</p>
+    <p>This reframing is subtle but total. It separates your identity from any single outcome, which is the only stable place to trade from. The market can take your money; it cannot take a decision you made correctly. Professionals aren't ego-free — they've just built a firewall between "I was wrong on this trade" and "I am a failure." One is a data point; the other is a spiral.</p>
+    <h3>Confidence vs ego: the tell</h3>
+    <p>Healthy confidence and ego can feel identical in the moment, so use a simple test: <strong>can you be wrong quickly and cheaply?</strong> Confidence takes a valid setup, sets a stop, and accepts the stop without argument if it hits. Ego takes the trade to prove a point, then starts negotiating with the stop the moment the market disagrees. Confidence is attached to your <em>process</em>, so it survives a loss intact; ego is attached to the <em>outcome</em>, so it needs the trade to win to stay whole. A practical signal: if a single losing trade makes you feel personally diminished rather than mildly annoyed, that's ego talking — and it's a cue to shrink size and slow down, not to push harder to "get it back."</p>
+    <div class="callout"><span class="k">Reframe</span><p>Grade the <strong>decision</strong>, not the <strong>result</strong>. A disciplined loss is a win for your process; an undisciplined win is a loss for it.</p></div>
+
+    <h2 id="systems">Systems that beat ego</h2>
+    <p>You can't willpower your way out of ego in the heat of a losing trade — the moment you're emotional is the moment your judgement is worst. The answer is to make the decisions <em>before</em> emotion arrives and then remove your ability to override them.</p>
+    <ol>
+      <li><strong>Fixed risk per trade.</strong> Decide your risk (say 0.5% of the account) once, in advance, and never change it mid-session. Fixed size makes "pressing after a win" and "revenge sizing" impossible by construction.</li>
+      <li><strong>A hard daily stop.</strong> A loss figure at which you close the platform, full stop. It's the circuit-breaker for revenge trading — you can't tilt if you're not at the screen.</li>
+      <li><strong>Pre-committed entries and exits.</strong> Write the stop and target before you enter. Moving a stop then becomes a visible rule-break, not a vague "adjustment."</li>
+      <li><strong>A journal with reasons, not just results.</strong> Record <em>why</em> you entered every trade. Ego hates being written down; a journal turns "I had a feeling" into evidence you can confront later.</li>
+      <li><strong>An objective scorecard.</strong> Replace the ego's story ("I'm basically ready") with data. This is exactly what Traxent's readiness score does — it grades your real trades against each firm's published rules, so "am I ready?" gets a number instead of a feeling.</li>
+    </ol>
+    <div class="cta-box">
+      <h3>Trade the plan, not the ego</h3>
+      <p>Log your trades and let Traxent score them against real prop-firm rules — an objective mirror for the habits ego hides. Free to start.</p>
+      <a href="/">Check my readiness</a>
+      <a href="/learn-101" class="alt">Start with Trading 101</a>
+    </div>
+
+    <h2 id="faq">Frequently asked questions</h2>
+    <div class="faq">
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span>How does ego actually cause losses?</span><span>+</span></div><div class="faq-a"><p>Ego turns trading into a contest about being right instead of a process about managing risk. It shows up as oversizing after a win, revenge trading after a loss, refusing to take a stop, and moving stops. Each breaks position sizing or a risk limit — which is what actually drains an account or breaches an evaluation.</p></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span>What is revenge trading?</span><span>+</span></div><div class="faq-a"><p>Entering a trade mainly to win back a recent loss, usually larger and less planned than normal. It's ego trying to get even with the market. Because size goes up and discipline goes down, it's a leading cause of blown daily loss limits in evaluations.</p></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span>How do I stop ego affecting my trading?</span><span>+</span></div><div class="faq-a"><p>Separate your identity from any single trade. Pre-commit to fixed risk and a hard daily stop, journal the reason for every entry, and judge yourself on whether you followed your plan — not whether the trade won. An objective scorecard replaces the ego's story with data.</p></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')"><span>Is confidence bad in trading?</span><span>+</span></div><div class="faq-a"><p>No. Healthy confidence is trust in a tested process. Ego is confidence attached to being right on one specific trade. Confidence lets you take a valid setup; ego makes you defend a losing one. The difference is whether you can be wrong quickly and cheaply.</p></div></div>
+    </div>
+
+    <div class="author-card">
+      <span class="avatar">TX</span>
+      <div>
+        <div class="ac-name">Traxent Team <span class="badge traxent">Traxent</span></div>
+        <div class="ac-role">Traxent in-house education team</div>
+        <p class="ac-bio">The Traxent education team writes about prop-firm evaluations, trading psychology and risk — the same rules we bake into Traxent's readiness engine. Educational content only; never financial advice.</p>
+      </div>
+    </div>
+
+    <div class="related">
+      <div class="related-h">Keep reading</div>
+      <div class="related-grid">
+        <a href="/blog-handling-losing-trades"><span>Psychology</span>How to Handle Losing Trades Without Blowing Your Evaluation</a>
+        <a href="/blog-how-to-get-funded-prop-firm"><span>Getting funded</span>How to Get Funded by a Prop Firm: A Step-by-Step Guide</a>
+        <a href="/compare"><span>Tool</span>Compare at least 16 prop firms side by side</a>
+      </div>
+    </div>
+
+    <div class="prevnext">
+      <a href="/blog-how-to-get-funded-prop-firm">← How to Get Funded by a Prop Firm</a>
+      <a class="nx" href="/blog-handling-losing-trades">Next: How to Handle Losing Trades →</a>
+    </div>
+
+    <p class="disclaim">This article is educational and does not constitute financial, investment or trading advice. It describes general psychology and risk concepts, not a recommendation to trade. Traxent is an independent education and readiness tool, is not a broker, prop firm or fund, and is not affiliated with any firm named here. Trading involves substantial risk of loss; never risk money you cannot afford to lose.</p>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Home</a><a href="/blog">Blog</a><a href="/firms">Prop firms</a><a href="/compare">Compare</a><a href="/faq">FAQ</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  Array.prototype.forEach.call(document.querySelectorAll('.copy-link'), function (btn) {
+    btn.addEventListener('click', function () {
+      var url = btn.getAttribute('data-url');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () {
+          var t = btn.textContent; btn.textContent = 'Copied ✓';
+          setTimeout(function () { btn.textContent = t; }, 1600);
+        }).catch(function () {});
+      }
+    });
+  });
+})();
+</script>
+<script src="/consent.js?v=__BUILD_SHA__" defer></script>
+</body>
+</html>

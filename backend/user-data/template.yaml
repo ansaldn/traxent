@@ -387,9 +387,13 @@ Resources:
           AUTH0_AUDIENCE: !Ref Auth0Audience
           ALLOWED_ORIGIN: !Ref AllowedOrigin
           STRIPE_KEY_PARAM: /traxent/stripe/key_delete_account
+          SUBSCRIBERS_TABLE: !Ref SubscribersTable
+          RESEND_KEY_PARAM: /traxent/resend/api_key
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref UserDataTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SubscribersTable
         - Statement:
             - Effect: Allow
               Action: ssm:GetParameter

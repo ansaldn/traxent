@@ -46,6 +46,21 @@ Parameters:
       mirrored into. Must match SEGMENT_NAME in
       backend/marketing/campaign.config.mjs, or the broadcast will go out to a
       different list from the one being populated.
+  EmailFrom:
+    Type: String
+    Default: Traxent <hello@traxent.io>
+    Description: From address for the instant invite email. The domain must be verified in Resend.
+  EmailReplyTo:
+    Type: String
+    Default: hello@traxent.io
+    Description: Reply-To for the instant invite email.
+  PostalAddress:
+    Type: String
+    Default: Akpan Holdings Limited registered office, 167-169 Great Portland Street, London, W1W 5PF, United Kingdom
+    Description: >
+      Sender's registered address, shown in the invite footer. Not legally
+      required on a transactional email the way it is on marketing, but inbox
+      providers treat a complete sender identity as a positive signal.
 
 Resources:
 
@@ -131,6 +146,9 @@ Resources:
           ALLOWED_ORIGIN: !Ref AllowedOrigin
           RESEND_KEY_PARAM: /traxent/resend/api_key
           RESEND_SEGMENT_NAME: !Ref ResendSegmentName
+          EMAIL_FROM: !Ref EmailFrom
+          EMAIL_REPLY_TO: !Ref EmailReplyTo
+          POSTAL_ADDRESS: !Ref PostalAddress
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref SubscribersTable

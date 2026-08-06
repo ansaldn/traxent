@@ -17,6 +17,11 @@
 //   · per-IP throttle, 10 signups per rolling hour, enforced in DynamoDB
 //   · API-wide stage throttling (100 rps / 200 burst) from the HttpApi config
 //
+// During prelaunch every accepted signup also triggers an INSTANT invite email
+// (invite-email.mjs) linking straight to /signup. That is transactional — the
+// direct response to an action they just took — and separate from the marketing
+// broadcast in backend/marketing/, which goes to the historical waitlist.
+//
 // Privacy: responses are deliberately identical whether or not the address is
 // already on the list, so the endpoint can't be used to enumerate subscribers.
 //
@@ -25,15 +30,66 @@
 //   ALLOWED_ORIGIN        CORS origin (default https://traxent.io)
 //   RESEND_KEY_PARAM      SSM path for the Resend API key
 //   RESEND_SEGMENT_NAME   Resend segment to mirror contacts into
+//   EMAIL_FROM            From address for the instant invite
+//   EMAIL_REPLY_TO        Reply-To for the instant invite
+//   POSTAL_ADDRESS        Sender's registered address, shown in the footer
 
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 import { classifyEmail } from './email.mjs';
+import { sendInvite } from './invite-email.mjs';
 
 const TABLE = process.env.SUBSCRIBERS_TABLE;
 const RESEND_KEY_PARAM = process.env.RESEND_KEY_PARAM || '/traxent/resend/api_key';
 const SEGMENT_NAME = process.env.RESEND_SEGMENT_NAME || 'Traxent waitlist';
+const EMAIL_FROM = process.env.EMAIL_FROM || 'Traxent <hello@traxent.io>';
+const REPLY_TO = process.env.EMAIL_REPLY_TO || 'hello@traxent.io';
+const POSTAL_ADDRESS = process.env.POSTAL_ADDRESS || '';
+
+// Don't send a second invite within this window. Someone double-submitting the
+// form, or coming back an hour later, should not get two identical emails —
+// that reads as broken and costs deliverability reputation.
+const INVITE_COOLDOWN_MS = 30 * 60 * 1000;
+
+// Statuses that must never receive mail, however they arrived here.
+const NEVER_EMAIL = new Set(['complained', 'bounced']);
+
+/**
+ * Fire the instant invite. Best-effort by design: the subscriber row is
+ * already saved by the time this runs, so a send failure is logged and the
+ * caller still returns success. Records lastInviteAt so the cooldown works.
+ */
+async function maybeSendInvite(email, source, existing) {
+  try {
+    if (existing && NEVER_EMAIL.has(existing.status)) return;
+    if (existing?.lastInviteAt && Date.now() - Date.parse(existing.lastInviteAt) < INVITE_COOLDOWN_MS) {
+      console.log('invite skipped (cooldown):', email);
+      return;
+    }
+    const key = await resendKey();
+    if (!key) { console.warn('invite skipped: no Resend key in SSM'); return; }
+
+    const result = await sendInvite(key, {
+      to: email, from: EMAIL_FROM, replyTo: REPLY_TO, source,
+      postalAddress: POSTAL_ADDRESS,
+    });
+
+    await ddb.send(new UpdateCommand({
+      TableName: TABLE,
+      Key: { email },
+      UpdateExpression: 'SET lastInviteAt = :n, inviteCount = if_not_exists(inviteCount, :z) + :one, lastInviteError = :e',
+      ExpressionAttributeValues: {
+        ':n': new Date().toISOString(), ':z': 0, ':one': 1,
+        ':e': result.sent ? null : (result.reason ?? 'unknown'),
+      },
+    }));
+
+    if (!result.sent) console.error('invite send failed:', email, result.reason);
+  } catch (e) {
+    console.error('invite send threw (non-fatal):', e.message);
+  }
+}
 
 // The exact wording shown beneath each signup form, recorded against every
 // record so you can prove precisely what a person agreed to and when. The text
@@ -108,27 +164,54 @@ async function segmentId(key) {
   return (_segmentId = body.id);
 }
 
-/** Push the contact to Resend. Never throws — failure is recorded, not fatal. */
+/**
+ * Push the contact to Resend. Never throws — failure is recorded, not fatal.
+ *
+ * Uses the current global POST /contacts endpoint with `segments: [{ id }]`,
+ * falling back to the legacy audience-scoped route on older accounts.
+ *
+ * Custom properties must already exist on the Resend account, otherwise the
+ * whole write fails with 422 "One or more properties do not exist". We retry
+ * without them rather than lose the contact — the metadata is nice to have,
+ * the subscriber is not. Run `ensureContactProperties()` from
+ * backend/marketing/resend.mjs once to create them for good.
+ */
 async function mirrorToResend(record) {
   try {
     const key = await resendKey();
     if (!key) return { synced: false, error: 'no api key in SSM' };
-    const c = await collectionName(key);
     const sid = await segmentId(key);
-    const res = await fetch(`https://api.resend.com/${c}/${sid}/contacts`, {
+
+    const base = { email: record.email, unsubscribed: false };
+    const props = Object.fromEntries(Object.entries({
+      signup_source: record.source || 'unknown',
+      signup_date: record.createdAt,
+      consent_basis: `waitlist signup (${CONSENT_VERSION})`,
+      utm_campaign: record.utmCampaign || '',
+    }).filter(([, v]) => v !== '' && v != null));
+
+    const post = async (body, path) => fetch(`https://api.resend.com${path}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: record.email,
-        unsubscribed: false,
-        properties: {
-          signup_source: record.source || 'unknown',
-          signup_date: record.createdAt,
-          consent_basis: `waitlist signup (${CONSENT_VERSION})`,
-          utm_campaign: record.utmCampaign || '',
-        },
-      }),
+      body: JSON.stringify(body),
     });
+
+    const attempt = async (withProps) => {
+      const body = withProps ? { ...base, properties: props } : base;
+      let res = await post({ ...body, segments: [{ id: sid }] }, '/contacts');
+      if (res.status === 404 || res.status === 405) {
+        const c = await collectionName(key);
+        res = await post(body, `/${c}/${sid}/contacts`);
+      }
+      return res;
+    };
+
+    let res = await attempt(true);
+    if (res.status === 400 || res.status === 422) {
+      console.warn('resend: properties rejected, retrying without them');
+      res = await attempt(false);
+    }
+
     if (!res.ok) return { synced: false, error: `resend ${res.status}: ${(await res.text()).slice(0, 200)}` };
     const body = await res.json();
     return { synced: true, contactId: body?.id ?? null };
@@ -282,6 +365,9 @@ export const handler = async (event) => {
     } catch (e) {
       console.error('subscribe: update failed', e);
     }
+    // They asked again, so send the link again — subject to the cooldown, so a
+    // double-submit or a quick second visit doesn't produce two identical mails.
+    await maybeSendInvite(email, record.source, existing);
     return json(200, { ok: true, status: 'subscribed' });
   }
 
@@ -319,6 +405,11 @@ export const handler = async (event) => {
     console.error('subscribe: sync-status update failed', e);
   }
   if (!mirror.synced) console.error('subscribe: resend mirror failed', email, mirror.error);
+
+  // The instant invite. This is the prelaunch flow: someone hands over their
+  // address and gets a link to create an account within seconds, rather than
+  // waiting for a broadcast. Best-effort — the signup is already saved.
+  await maybeSendInvite(email, record.source, null);
 
   return json(200, { ok: true, status: 'subscribed' });
 };

@@ -17,6 +17,9 @@ Allow: /firms
 Allow: /firm-
 Allow: /learn-101
 Allow: /founding-terms
+Allow: /blog
+Allow: /blog-
+Allow: /feed.xml
 
 # Authenticated application surface — keep out of the index.
 Disallow: /home

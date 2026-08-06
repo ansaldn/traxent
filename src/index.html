@@ -24,6 +24,11 @@
   })();
 </script>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<!-- Launch state: must load in <head> so gated sections are hidden before
+     they paint. flags.js fetches /flags.json; launch-state.js turns that
+     into the current phase and reveals matching [data-launch] blocks. -->
+<script src="/flags.js?v=__BUILD_SHA__"></script>
+<script src="/launch-state.js?v=__BUILD_SHA__"></script>
 <!-- PWA manifest -->
 <link rel="manifest" href="/manifest.json">
  
@@ -1032,13 +1037,17 @@ footer {
       <a href="#readiness">Readiness</a>
       <a href="#pricing">Pricing</a>
       <a href="#" id="nav-signin" onclick="handleAuthClick(event)">Sign in</a>
-      <a href="/waitlist" id="nav-waitlist" class="nav-cta">Join waitlist</a>
+      <!-- Prelaunch: the CTA collects an email and sends an instant invite.
+           From 24 Aug (flags.json → fullLaunch) it becomes Sign up, pointing
+           straight at account creation, with Sign in still beside it above. -->
+      <a href="/signup" id="nav-waitlist" class="nav-cta" data-launch="prelaunch">Join prelaunch</a>
+      <a href="/signup" id="nav-signup" class="nav-cta" data-launch="launched">Sign up</a>
       <a href="/dashboard" id="nav-dashboard" class="nav-cta" style="display:none">Dashboard →</a>
     </div>
   </div>
 </nav>
 
-<!-- ── Waitlist-open launch banner (revealed at launch via flags.js: waitlistOpen) ── -->
+<!-- ── Launch-state banners. Visibility is set by data-launch (launch-state.js). ── -->
 <style>
 @keyframes wlo-pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .wlo{background:var(--ink);color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}
@@ -1059,30 +1068,47 @@ footer {
 .wlo-success{display:none;background:rgba(26,158,114,.15);border:1px solid rgba(26,158,114,.3);border-radius:8px;padding:14px 18px;font-size:14px;color:#4ade80;font-weight:500;text-align:center}
 @media(max-width:640px){.wlo-inner{padding:54px 24px}.wlo-h{font-size:32px}}
 </style>
-<section id="wlopen-banner" class="wlo" aria-label="The waitlist is now open">
+<!-- PRELAUNCH: hand over an email, get an invite in your inbox within seconds. -->
+<section id="wlopen-banner" class="wlo" aria-label="Prelaunch is open" data-launch="prelaunch">
   <div class="wlo-inner">
     <div class="wlo-copy">
-      <div class="wlo-eyebrow"><span class="wlo-live" aria-hidden="true"></span>The waitlist is now open</div>
+      <div class="wlo-eyebrow"><span class="wlo-live" aria-hidden="true"></span>Prelaunch is open</div>
       <div class="wlo-h">Founding access is open — lock in your price for life</div>
-      <p class="wlo-sub">Join free — no card, no payment. The price you see today is the price you pay, protected from every future rise for as long as you stay subscribed.</p>
+      <p class="wlo-sub">Enter your email and we'll send your invite straight away. Free, no card. The price you see today is the price you pay, protected from every future rise for as long as you stay subscribed.</p>
     </div>
     <div class="wlo-action">
       <form class="wlo-form" id="wlopen-form">
         <div class="wlo-row">
           <input class="wlo-inp" type="email" id="wlopen-email" placeholder="your@email.com" autocomplete="email" required>
-          <button class="wlo-btn" type="submit">Lock in my price</button>
+          <button class="wlo-btn" type="submit">Send my invite</button>
         </div>
         <!-- Bot trap — see the note in waitlist.html. -->
         <input type="text" id="wlopen-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
                style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-        <div class="wlo-note">Free · no card · unsubscribe anytime · <a href="/waitlist">learn more</a> · <a href="/founding-terms">price-lock terms</a></div>
+        <div class="wlo-note">Free · no card · unsubscribe anytime · <a href="/signup">or create an account now</a> · <a href="/founding-terms">price-lock terms</a></div>
       </form>
-      <div class="wlo-success" id="wlopen-success">✓ You're in — your founding price is locked. We'll email your invite.</div>
+      <div class="wlo-success" id="wlopen-success">✓ Check your inbox — your invite is on its way. It should arrive within a minute.</div>
     </div>
   </div>
 </section>
 
-
+<!-- LAUNCHED: no more email capture. Straight to account creation.
+     Revealed automatically by flags.json → fullLaunch on 24 Aug. -->
+<section class="wlo" aria-label="Traxent is live" data-launch="launched">
+  <div class="wlo-inner">
+    <div class="wlo-copy">
+      <div class="wlo-eyebrow"><span class="wlo-live" aria-hidden="true"></span>Traxent is live</div>
+      <div class="wlo-h">Start free — and lock in today's price for life</div>
+      <p class="wlo-sub">Create your account in about a minute. No card to start. Whatever a plan costs the day you subscribe is the price you keep, for as long as you stay subscribed.</p>
+    </div>
+    <div class="wlo-action">
+      <div class="wlo-row">
+        <a class="wlo-btn" href="/signup" style="text-decoration:none;display:inline-block;text-align:center">Create your free account</a>
+      </div>
+      <div class="wlo-note">Free to start · no card · <a href="/#pricing">see plans</a> · <a href="/founding-terms">price-lock terms</a></div>
+    </div>
+  </div>
+</section>
 
 <!-- How it works -->
 <section class="section" id="how">
@@ -1171,7 +1197,13 @@ footer {
       <p class="hero-body fade-up-3">Traxent tracks your trading habits against the real rules of FTMO, Apex, MyFundedFutures, and FundedNext — so you fix what's wrong before you pay for a challenge.</p>
 
       <div id="waitlist" class="fade-up-4">
-        <div class="waitlist-form" id="waitlist-form">
+        <!-- Launched: the hero stops asking for an email and just sends people
+             to create an account. Same visual slot, different job. -->
+        <div data-launch="launched" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <a href="/signup" class="btn-waitlist" style="text-decoration:none;display:inline-block">Create your free account</a>
+          <a href="#" onclick="handleAuthClick(event)" style="font-size:14px;color:var(--ink2);text-decoration:none;font-weight:500">or sign in →</a>
+        </div>
+        <div class="waitlist-form" id="waitlist-form" data-launch="prelaunch">
           <div class="waitlist-input-row">
             <input class="waitlist-input" type="email" id="waitlist-email" placeholder="your@email.com" autocomplete="email">
             <button class="btn-waitlist">Join waitlist</button>
@@ -1517,16 +1549,12 @@ document.querySelectorAll('.how-card, .firm-card-dark, .plan-card').forEach(el =
 // ── INIT ──────────────────────────────────────────────────────────
 renderPricing();
 </script>
-<script src="/flags.js?v=__BUILD_SHA__"></script>
 <script>
 // ── Waitlist-open launch banner: reveal via flag; hide until launch instant ──
 (function(){
-  var banner = document.getElementById('wlopen-banner');
-  if (banner) {
-    TraxentFlags.load().then(function(){
-      if (!TraxentFlags.isEnabled('waitlistOpen')) banner.style.display = 'none';
-    });
-  }
+  // Visibility of this banner is handled declaratively by data-launch, applied
+  // in launch-state.js. No manual flag check here — two systems setting the
+  // same display property is how you get a flicker or a stuck panel.
   // Signup handled by /subscribe.js — success is only ever shown once the
   // server confirms the address was stored.
   window.joinWaitlistOpen = TraxentSubscribe.wire({
@@ -1564,11 +1592,22 @@ window.addEventListener('load', async () => {
   }
   const signin   = document.getElementById('nav-signin');
   const waitlist = document.getElementById('nav-waitlist');
+  const signup   = document.getElementById('nav-signup');
   const dash     = document.getElementById('nav-dashboard');
   if (isAuthenticated) {
+    // A signed-in member needs neither Sign in nor Sign up. Both launch-state
+    // CTAs are hidden here and re-hidden after TraxentLaunch reveals them,
+    // otherwise the flag pass would put Sign up back on screen.
     if (signin)   signin.style.display = 'none';
     if (waitlist) waitlist.style.display = 'none';
+    if (signup)   signup.style.display = 'none';
     if (dash)     dash.style.display = '';
+    if (window.TraxentLaunch) {
+      TraxentLaunch.ready().then(function () {
+        if (waitlist) waitlist.style.display = 'none';
+        if (signup)   signup.style.display = 'none';
+      });
+    }
   }
 });
 </script>

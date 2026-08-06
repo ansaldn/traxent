@@ -1,13 +1,31 @@
 {
   "_comment": "Client-side feature flags. Each flag is { enabled: bool, launchAt: ISO-8601-UTC string or null }. A flag is ON if enabled===true, OR if launchAt is set and that UTC time is now in the past. This file IS deployed (it lives in src/), so treat it as PUBLIC — never gate anything secret on a client flag; use it for soft reveals only. See src/flags.js for the helper and SCHEDULED-RELEASES.md for usage.",
+
+  "_lifecycle": "The site moves through three states, each a superset of the last. prelaunchOpen is on now; fullLaunch flips itself on automatically at the launchAt below — nothing needs deploying that morning. Both flags stay in the file afterwards so the transition is auditable and reversible: set fullLaunch.launchAt to null to roll back to prelaunch without a code change.",
+
+  "prelaunchOpen": {
+    "_note": "Prelaunch. Home page captures an email and sends an immediate invite to create an account. Replaced waitlistOpen on 2026-08-06 — the flow no longer holds people on a list, it invites them straight in.",
+    "enabled": true,
+    "launchAt": null
+  },
+
+  "fullLaunch": {
+    "_note": "Full launch. Nav CTA becomes 'Sign up' with 'Sign in' beside it, and the home hero switches from email capture to direct account creation. 2026-08-24T07:00:00Z = 08:00 BST, Monday morning — deliberately a Monday so a full working week follows any problem.",
+    "enabled": false,
+    "launchAt": "2026-08-24T07:00:00Z"
+  },
+
   "waitlistOpen": {
+    "_note": "DEPRECATED 2026-08-06, superseded by prelaunchOpen. Left in place because older cached pages may still reference it; remove once fullLaunch has been live for a while.",
     "enabled": false,
     "launchAt": "2026-06-30T23:00:00Z"
   },
+
   "newDashboardBanner": {
     "enabled": false,
     "launchAt": null
   },
+
   "summerPromo2099": {
     "enabled": false,
     "launchAt": "2099-06-01T09:00:00Z"

@@ -61,6 +61,19 @@ jobs:
           fi
           echo "HTML integrity check passed — all pages end in </html> with balanced <script> tags."
 
+      - name: Reject cloud-sync conflict copies
+        run: |
+          # OneDrive/iCloud append " 2" to a filename when they can't resolve a
+          # conflict. Anything left in src/ gets published — traxent.io/privacy 2.html
+          # is a real thing that would otherwise go live and confuse crawlers.
+          found=$(find src -name "* 2.*" -o -name "* copy.*" | head -20)
+          if [ -n "$found" ]; then
+            echo "::error::Cloud-sync conflict copies found in src/ — delete them before deploying:"
+            echo "$found"
+            exit 1
+          fi
+          echo "No sync-conflict files in src/."
+
       - name: Deploy to S3
         run: |
           # Pass 1: upload everything (and handle deletions) with a long,
@@ -84,6 +97,7 @@ jobs:
             --include "consent.js" \
             --include "flags.js" \
             --include "subscribe.js" \
+            --include "launch-state.js" \
             --cache-control "no-cache"
 
       - name: Invalidate CloudFront cache

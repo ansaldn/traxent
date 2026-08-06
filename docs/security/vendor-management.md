@@ -36,7 +36,7 @@ Before relying on a vendor that touches personal data or production systems:
 | **Auth0 (Okta)** | Authentication & identity management (login, MFA, account management). **We never store passwords.** | Email, name, Auth0 user id (`sub`), authentication/login metadata | SOC 2 Type II, ISO/IEC 27001, ISO 27017/27018 | **Okta/Auth0 DPA**; SOC 2 + ISO 27001 reports from the **Okta trust portal**; confirm tenant region & data residency |
 | **Stripe** | Subscription billing & payment processing. **Card data never reaches Traxent.** | Email, name, Stripe customer/subscription IDs; **Stripe** holds the card data | **PCI-DSS Level 1**, SOC 1/2, ISO/IEC 27001 | **Stripe DPA**; PCI **AOC** and SOC 2 from Stripe's docs/trust portal. Note: Stripe is an **independent controller** for payment-processing/AML obligations |
 | **Plausible Analytics** | **Cookieless**, privacy-friendly web analytics (aggregated; no advertising/cross-site tracking) | No cookies; aggregated, non-identifying usage data (EU-hosted) | EU-hosted; GDPR-focused (verify current attestations) | **Plausible DPA**; confirm EU data hosting and that no personal data / no cookies are used |
-| **Formspree** | Waitlist email capture (form submissions) | Email addresses (and any fields submitted on the waitlist form) | Verify current security posture/attestations | **Formspree DPA**; confirm retention, sub-processors and transfer mechanism |
+| **Resend** | Transactional and marketing email delivery; mailing-list contacts and suppression list | Email addresses, signup source, campaign engagement | Verify current security posture/attestations | **Resend DPA**; confirm retention, sub-processors and transfer mechanism (EU region selected) |
 | **GitHub (Microsoft)** | Source code hosting and CI/CD (GitHub Actions; OIDC to AWS) | Source code & IaC (no customer personal data should be stored in the repo); Actions metadata | SOC 1/2, ISO/IEC 27001 | **GitHub DPA** (Microsoft Products & Services DPA); SOC 2 + ISO 27001 from the **Microsoft/GitHub trust portal** |
 
 ### Supporting / indirect services (track, lower data exposure)
@@ -49,7 +49,7 @@ Before relying on a vendor that touches personal data or production systems:
 - **Users → Stripe** (via Stripe-hosted checkout) for payment; Traxent stores only non-card metadata.
 - **App data** persists in **DynamoDB** (`eu-west-2`), encrypted at rest with PITR.
 - **Analytics** is collected cookieless by **Plausible** (aggregated, non-identifying).
-- **Waitlist** submissions go to **Formspree**.
+- **Waitlist** submissions go to our own API and are stored in **DynamoDB** (`TraxentSubscribers`, eu-west-2), then mirrored to **Resend** for delivery and unsubscribe handling. Formspree was retired on 2026-08-06.
 - **Code/deploys** flow through **GitHub** → AWS via OIDC.
 
 ## 5. Ongoing review

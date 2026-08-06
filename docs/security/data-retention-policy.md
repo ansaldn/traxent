@@ -34,7 +34,7 @@ To satisfy the UK GDPR **storage-limitation** principle: we keep personal data o
 | Application / security logs (incl. IP) | CloudWatch | Short, bounded period (recommend ≤ 90 days unless needed for an active investigation) | Legitimate interests (security) |
 | CloudTrail / audit logs *(when enabled)* | S3 (access-locked) | Retain ≥ 1 year for audit/forensics | Security/assurance |
 | Aggregated, cookieless analytics | Plausible | May be retained indefinitely (non-identifying) | Not personal data |
-| Waitlist email captures | Formspree | Until the waitlist purpose is fulfilled or the person unsubscribes/requests deletion | Consent / legitimate interests |
+| Waitlist / marketing subscribers | DynamoDB `TraxentSubscribers` (eu-west-2), mirrored to Resend | Until the person unsubscribes or requests deletion; unsubscribe and complaint records are kept indefinitely as suppression evidence | Consent (recorded per signup: timestamp, IP, and the exact wording shown) |
 | Backups (DynamoDB PITR) | AWS (managed) | Per PITR window (see §5) | Resilience |
 | Financial/tax records (invoices) | Stripe / accounting | As required by UK tax law (typically ~6 years) | **Legal obligation** |
 | This security documentation | Repo (`docs/security/`) | Indefinite; superseded versions retained for audit trail | Accountability |

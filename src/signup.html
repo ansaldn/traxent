@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0e0e0c">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>Create your Traxent account</title>
+<meta name="description" content="Create a free Traxent account. No card required. Learn to trade across 10 modules, connect your real trading account read-only, and see which prop firm challenge you'd pass before you pay for one.">
+<meta property="og:title" content="Create your Traxent account">
+<meta property="og:description" content="Free to start, no card. Learn to trade, then score your real trades against at least 16 prop firms' published rules.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://traxent.io/signup">
+<meta property="og:site_name" content="Traxent">
+<meta property="og:image" content="https://traxent.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://traxent.io/signup">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
+  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);
+  --surface:#ffffff;--surface2:#f0efe9;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.fade-up{animation:fadeUp .7s ease forwards}
+.fade-up-2{animation:fadeUp .7s .12s ease forwards;opacity:0}
+.fade-up-3{animation:fadeUp .7s .24s ease forwards;opacity:0}
+nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-back{font-size:13px;color:var(--ink3);text-decoration:none}
+.nav-back:hover{color:var(--ink)}
+.hero{max-width:680px;margin:0 auto;padding:72px 32px 56px;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+.eyebrow .live{width:8px;height:8px;border-radius:50%;background:var(--accent-mid);animation:pulse 2s ease infinite}
+h1{font-family:var(--serif);font-size:54px;line-height:1.05;font-weight:400;letter-spacing:-.01em;margin-bottom:20px}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{font-size:17px;color:var(--ink2);font-weight:300;max-width:540px;margin:0 auto}
+.lede strong{color:var(--ink);font-weight:500}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:30px 32px;max-width:520px;margin:34px auto 0;box-shadow:0 16px 48px rgba(14,14,12,.05);text-align:left}
+.btn{display:block;width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:15px 22px;font-family:var(--sans);font-size:15px;font-weight:500;cursor:pointer;transition:background .15s,transform .1s}
+.btn:hover{background:#085e43}
+.btn:active{transform:scale(.99)}
+.btn:disabled{opacity:.6;cursor:default}
+.consent{display:flex;gap:11px;align-items:flex-start;margin:0 0 20px;cursor:pointer}
+.consent input{margin-top:2px;width:17px;height:17px;flex:none;accent-color:var(--accent);cursor:pointer}
+.consent-text{font-size:13px;color:var(--ink2);line-height:1.55}
+.consent-text span{display:block;color:var(--ink3);font-size:12.5px;margin-top:2px}
+.note{font-size:12.5px;color:var(--ink3);margin-top:14px;text-align:center;line-height:1.6}
+.signin{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);text-align:center;font-size:13.5px;color:var(--ink3)}
+.signin a{font-weight:500;text-decoration:none}
+.signin a:hover{text-decoration:underline}
+.gets{max-width:520px;margin:36px auto 0;text-align:left}
+.gets-title{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;text-align:center}
+.get{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--border)}
+.get:last-child{border-bottom:none}
+.get-tick{color:var(--accent);font-size:14px;line-height:1.5;flex:none}
+.get-body{font-size:14px;color:var(--ink2);line-height:1.55}
+.get-body b{color:var(--ink);font-weight:500}
+.links{margin-top:32px;display:flex;gap:22px;justify-content:center;flex-wrap:wrap;font-size:13px}
+.links a{color:var(--ink2);text-decoration:none;font-weight:500}
+.links a:hover{color:var(--accent)}
+.assure{margin-top:26px;font-size:12.5px;color:var(--ink3);font-weight:300;max-width:470px;margin-left:auto;margin-right:auto;text-align:center}
+footer{border-top:1px solid var(--border);margin-top:44px;padding:28px 32px;text-align:center;font-size:12px;color:var(--ink3)}
+.toast{position:fixed;bottom:32px;right:32px;background:var(--ink);color:#fff;padding:14px 20px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:transform .3s ease,opacity .3s ease;z-index:999;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+@media(max-width:640px){h1{font-size:40px}.hero{padding:52px 22px 44px}.card{padding:24px 20px}}
+</style>
+</head>
+<body>
+
+<nav><div class="nav-inner"><a href="/" class="nav-logo">trax<em>ent</em></a><a href="/#pricing" class="nav-back">Plans &amp; prices →</a></div></nav>
+
+<section class="hero">
+  <div class="eyebrow fade-up"><span class="live" aria-hidden="true"></span>Prelaunch is open</div>
+  <h1 class="fade-up-2">Create your <em>free</em> account</h1>
+  <p class="lede fade-up-3">No card, no payment. Start with the free foundations, and if you upgrade later you <strong>lock in today's price for as long as you stay subscribed</strong>.</p>
+
+  <div class="card fade-up-3">
+    <!-- Unticked by default, deliberately. A pre-ticked box is not valid
+         consent under UK GDPR, and this is the only lawful route onto the
+         marketing list for someone on a free account — they aren't a customer,
+         so soft opt-in doesn't apply to them. -->
+    <label class="consent" for="signup-marketing">
+      <input type="checkbox" id="signup-marketing">
+      <span class="consent-text">
+        Email me about new features, lessons and founding-member offers.
+        <span>A few emails a month at most. Unsubscribe any time from your account page.</span>
+      </span>
+    </label>
+
+    <button class="btn" type="button" id="signup-btn">Create my free account</button>
+    <div class="note">Takes about a minute. You'll set a password on the next screen.</div>
+
+    <div class="signin">
+      Already have an account? <a href="#" id="signin-link">Sign in</a>
+    </div>
+  </div>
+
+  <div class="gets fade-up-3">
+    <div class="gets-title">What you get, free</div>
+    <div class="get"><span class="get-tick" aria-hidden="true">✓</span><span class="get-body"><b>Trading 101, 201 and 301</b> — three full courses from the very beginning, no prior knowledge assumed</span></div>
+    <div class="get"><span class="get-tick" aria-hidden="true">✓</span><span class="get-body"><b>Position size calculator</b> and the pattern school explainers</span></div>
+    <div class="get"><span class="get-tick" aria-hidden="true">✓</span><span class="get-body"><b>Your progress saved</b> across every device you sign in on</span></div>
+    <div class="get"><span class="get-tick" aria-hidden="true">✓</span><span class="get-body"><b>Your founding price reserved</b> — upgrade whenever you're ready, at today's price</span></div>
+  </div>
+
+  <p class="assure fade-up-3">Paid plans add live data, the readiness tracker, and real-trade sync from MetaTrader 4 &amp; 5, cTrader or TradingView — read-only, scored against at least 16 prop firms' published rules.</p>
+
+  <div class="links fade-up-3">
+    <a href="/#pricing">See plans &amp; prices</a>
+    <a href="/founding-terms">Price-lock terms →</a>
+    <a href="/learn-101">Try Trading 101 free →</a>
+    <a href="/">← Back to home</a>
+  </div>
+</section>
+
+<footer>© <span id="yr">2026</span> Traxent™ is provided and licensed by Akpan Holdings Limited. Registered in England &amp; Wales. Educational platform — not financial advice.</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
+<script src="/auth.js?v=__BUILD_SHA__"></script>
+<script>
+(function () {
+  var yr = document.getElementById('yr'); if (yr) yr.textContent = new Date().getFullYear();
+
+  function showToast(msg, ok) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.borderLeft = (ok === false) ? '3px solid #9e1a1a' : '3px solid #1a9e72';
+    t.classList.add('show');
+    setTimeout(function () { t.classList.remove('show'); }, 4000);
+  }
+
+  var btn = document.getElementById('signup-btn');
+  var box = document.getElementById('signup-marketing');
+  var busy = false;
+
+  async function go(signUpMode) {
+    if (busy) return;
+    busy = true;
+    btn.disabled = true;
+    var label = btn.textContent;
+    btn.textContent = 'Taking you there…';
+    try {
+      await initAuth0();
+
+      // Someone already signed in doesn't need the form at all.
+      if (await auth0Client.isAuthenticated()) {
+        window.location.href = '/home';
+        return;
+      }
+
+      // Park the consent choice so it survives the redirect to Auth0. It is
+      // only written to the API once they come back authenticated.
+      setPendingMarketingOptIn(signUpMode && box.checked);
+
+      if (signUpMode) await signup();
+      else await login();
+    } catch (e) {
+      console.error('auth redirect failed:', e);
+      showToast("Couldn't open the signup form — please try again.", false);
+      btn.disabled = false;
+      btn.textContent = label;
+      busy = false;
+    }
+  }
+
+  btn.addEventListener('click', function () { go(true); });
+  document.getElementById('signin-link').addEventListener('click', function (e) {
+    e.preventDefault();
+    go(false);
+  });
+
+  // Returning members shouldn't sit on a signup page. Checked quietly on load;
+  // a failure here is harmless and leaves the page usable.
+  window.addEventListener('load', async function () {
+    try {
+      await initAuth0();
+      if (await auth0Client.isAuthenticated()) window.location.replace('/home');
+    } catch (e) { /* not signed in, or Auth0 unreachable */ }
+  });
+})();
+</script>
+<script src="/consent.js?v=__BUILD_SHA__" defer></script>
+</body>
+</html>

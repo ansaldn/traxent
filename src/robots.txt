@@ -11,6 +11,7 @@ Allow: /privacy
 Allow: /terms
 Allow: /waitlist
 Allow: /open
+Allow: /signup
 Allow: /security
 Allow: /firms
 Allow: /firm-

@@ -50,7 +50,7 @@ This folder is Traxent's internal **Information Security Management System (ISMS
 | [`data-retention-policy.md`](data-retention-policy.md) | What we keep, how long, and how it is deleted. |
 | [`incident-response-plan.md`](incident-response-plan.md) | Severities, roles, step-by-step response, comms, post-mortem, breach trigger. |
 | [`vulnerability-disclosure-policy.md`](vulnerability-disclosure-policy.md) | Mirrors the public `security.txt` / `/security` page; good-faith safe harbour. |
-| [`vendor-management.md`](vendor-management.md) | Sub-processor register (AWS, Auth0, Stripe, Plausible, Formspree, GitHub) with data shared, certifications and DPA links to obtain. |
+| [`vendor-management.md`](vendor-management.md) | Sub-processor register (AWS, Auth0, Stripe, Plausible, Resend, GitHub) with data shared, certifications and DPA links to obtain. |
 | [`business-continuity-backup.md`](business-continuity-backup.md) | Backups (DynamoDB PITR), recovery objectives, IaC redeploy. |
 | [`secure-development-policy.md`](secure-development-policy.md) | Code review, IaC, secrets in SSM, dependency hygiene, branch protection. |
 | [`risk-register.md`](risk-register.md) | Live register of risks with likelihood, impact, mitigation and owner. |

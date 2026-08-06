@@ -17,7 +17,7 @@ backend/**/*.zip
 # can't resolve a conflict. These are stale snapshots, never wanted, and files
 # under src/ would otherwise be uploaded straight to the live site by
 # `aws s3 sync src/` — traxent.io/privacy 2.html and friends.
-* 2.*
-* 2
+* [0-9].*
+* [0-9]
 *[0-9] copy.*
 * copy.*

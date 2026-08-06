@@ -564,18 +564,6 @@ Resources:
             ApiId: !Ref UserDataApi
             Path: /admin/metrics
             Method: GET
-        MarketingPref:
-          Type: HttpApi
-          Properties:
-            ApiId: !Ref UserDataApi
-            Path: /user/marketing
-            Method: GET
-        MarketingSet:
-          Type: HttpApi
-          Properties:
-            ApiId: !Ref UserDataApi
-            Path: /user/marketing
-            Method: POST
 
   UserDataApi:
     Type: AWS::Serverless::HttpApi

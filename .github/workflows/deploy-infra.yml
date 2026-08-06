@@ -56,6 +56,12 @@ jobs:
         working-directory: backend/user-data
         run: sam build
 
+      - name: Check for duplicate API routes
+        working-directory: backend/user-data
+        run: |
+          pip install pyyaml --quiet
+          python3 check-routes.py template.yaml
+
       - name: SAM deploy
         working-directory: backend/user-data
         run: |

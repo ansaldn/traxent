@@ -96,6 +96,7 @@ jobs:
             --include "config.js" \
             --include "consent.js" \
             --include "flags.js" \
+            --include "flags.json" \
             --include "subscribe.js" \
             --include "launch-state.js" \
             --cache-control "no-cache"

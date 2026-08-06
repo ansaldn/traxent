@@ -340,6 +340,46 @@ Resources:
             Name: traxent-reconcile-marketing-nightly
             Description: Reconcile TraxentSubscribers with Resend.
 
+  # The weekly readiness report the Challenger tier has been sold on.
+  #
+  # Monday 07:00 UTC: a trading week is Mon-Fri, so Monday morning is the point
+  # where last week is complete and this week can still be changed.
+  #
+  # Only sends to members whose marketing-list status is `subscribed` — this is
+  # a recurring email, so an unsubscribe has to actually stop it. Idempotent per
+  # ISO week, and one member's failure never ends the run.
+  ReadinessDigestFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-readiness-digest
+      Handler: index.handler
+      CodeUri: functions/readiness-digest/
+      Timeout: 900
+      MemorySize: 512
+      Environment:
+        Variables:
+          USER_DATA_TABLE: !Ref UserDataTable
+          SUBSCRIBERS_TABLE: !Ref SubscribersTable
+          RESEND_KEY_PARAM: /traxent/resend/api_key
+          EMAIL_FROM: !Ref EmailFrom
+          POSTAL_ADDRESS: !Ref PostalAddress
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref UserDataTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SubscribersTable
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/resend/*"
+      Events:
+        Weekly:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 7 ? * MON *)
+            Name: traxent-readiness-digest-weekly
+            Description: Weekly readiness report to Challenger and Funded Trader members.
+
   UserDataFunction:
     Type: AWS::Serverless::Function
     Properties:

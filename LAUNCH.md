@@ -26,11 +26,6 @@ it does."* The four connector-dependent features are marked "coming soon".
 **You are pursuing (c) in parallel** — cTrader developer credentials. The day the
 first connector is live: flip `paidPlansOpen`, un-dim those features.
 
-## D2 — Weekly readiness report: BUILDING NOW
-
-Decided: build it rather than drop it. Marked "coming soon" on the pricing page
-until it ships.
-
 ## D4. Enterprise features listed without qualification
 
 `/enterprise` honestly marks white-label and data-logging "on request". The

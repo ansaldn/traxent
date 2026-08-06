@@ -13,56 +13,23 @@ Three sections: **do**, **check**, **decide**. Nothing else.
 
 # 🔴 DECIDE — needs you, not code
 
-## D1. Real-trade sync is sold and does not exist
+## D1 — RESOLVED: launching free-only
 
-The single biggest exposure. It is named on five surfaces:
+Decided 2026-08-06. The site launches on 24 Aug with **free accounts only**.
+Challenger and Funded Trader open when real-trade sync exists, gated by
+`paidPlansOpen` in `flags.json` — one flag flip, no deploy.
 
-| Where | Claim |
-|---|---|
-| `src/index.html` Challenger £12.99 | "Connect 1 trading account (real-trade sync)" · "the core Traxent experience" |
-| `src/index.html` Funded £29.99 | "Connect up to 3 trading accounts" · "Multi-account sync" |
-| `src/signup.html` | "real-trade sync from MetaTrader 4 & 5, cTrader or TradingView" |
-| `src/dashboard.html` | "Connect up to 3 accounts (read-only)" |
-| **Learn module 10** | Teaches paying users to "connect it read-only so your real trades score themselves" |
+Prices stay visible so the founding price-lock still works; the card reads
+*"Opens when trade sync goes live — join free now and this price is yours when
+it does."* The four connector-dependent features are marked "coming soon".
 
-Reality: `backend/integrations/` is a README and one normaliser. No OAuth, no
-ingest, no route. `src/integrations.html:136` has `var live = false` hard-coded
-for all five providers; "Notify me" is a JavaScript `alert()`.
+**You are pursuing (c) in parallel** — cTrader developer credentials. The day the
+first connector is live: flip `paidPlansOpen`, un-dim those features.
 
-**This cannot be true by 24 August** — cTrader, Tradovate and Rithmic each need
-approved developer credentials, and the approval is the long pole, not the code.
+## D2 — Weekly readiness report: BUILDING NOW
 
-**Pick one:**
-
-- **(a) Relabel.** Move it to "coming soon" in the pricing feature lists, drop
-  it from `signup.html`, and add a note to module 10. Honest, ~1 hour, and the
-  tiers still stand up on education + readiness scoring.
-- **(b) Delay the paid tiers.** Launch free-only on 24 Aug, open paid plans when
-  the first connector is live.
-- **(c) Ship one connector first.** cTrader has the cleanest OAuth. Needs you to
-  register a developer account and get credentials approved — start today and it
-  is still unlikely by the 24th.
-
-Tell me which and I'll do it.
-
-## D2. "Weekly readiness report email" — same problem, smaller
-
-Sold on Challenger (`index.html`) and shown **unlocked** on `account.html:468`.
-Doesn't exist — your only scheduled Lambda is the marketing reconcile.
-
-Either I build it (medium — a scheduled Lambda over data you already store) or
-it comes off the feature list. It's a genuinely good retention feature, so my
-suggestion is build it, after launch, and mark it "coming soon" until then.
-
-## D3. Three blog posts marked DRAFT are live to Google
-
-`blog-ego-in-trading`, `blog-handling-losing-trades`,
-`blog-how-to-get-funded-prop-firm` each carry
-`<!-- DRAFT — NOT for publication -->` **and** `robots: index, follow`, are in
-`sitemap.xml`, and are declared published in `blog.html` JSON-LD.
-
-Publish them (I remove the banners) or de-list them. They're shipping either way
-on every deploy right now.
+Decided: build it rather than drop it. Marked "coming soon" on the pricing page
+until it ships.
 
 ## D4. Enterprise features listed without qualification
 

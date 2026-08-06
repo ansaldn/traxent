@@ -1,7 +1,44 @@
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import Stripe from 'stripe';
 import { sendWelcomeEmail } from './email.mjs';
+import { upsertSubscriber, BASIS } from './marketing.mjs';
 const ssm = new SSMClient({ region: 'eu-west-2' });
+const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-2' }), {
+  marshallOptions: { removeUndefinedValues: true },
+});
+const SUBSCRIBERS_TABLE = process.env.SUBSCRIBERS_TABLE || 'TraxentSubscribers';
+
+// Wording shown at checkout. Soft opt-in under UK PECR reg 22(3) is only valid
+// if the customer was given a simple way to refuse AT THE POINT OF SALE, not
+// just later — so this string must actually appear on the checkout page, and
+// must be updated here in step if the copy changes.
+const CHECKOUT_MARKETING_NOTICE =
+  'We\'ll email you about Traxent features and offers. You can turn this off any time from your account page.';
+
+const PLAN_LABELS = { observer: 'Observer', challenger: 'Challenger', funded_ready: 'Funded Trader' };
+
+// Add the customer to the marketing list under soft opt-in. Never throws —
+// a marketing-list problem must never break plan provisioning.
+async function syncCustomerToMarketing(session, plan) {
+  try {
+    const email = session.customer_details?.email || session.customer_email;
+    if (!email) return;
+    const result = await upsertSubscriber(ddb, SUBSCRIBERS_TABLE, {
+      email,
+      consentBasis: BASIS.SOFT_OPT_IN,
+      plan: PLAN_LABELS[plan] || plan || 'unknown',
+      name: session.customer_details?.name || undefined,
+      source: 'stripe-checkout',
+      consentText: CHECKOUT_MARKETING_NOTICE,
+      consentVersion: '2026-08-06',
+    });
+    console.log('marketing sync:', email, '→', result);
+  } catch (e) {
+    console.error('marketing sync (non-fatal):', e.message);
+  }
+}
 async function getParam(name) {
   const res = await ssm.send(new GetParameterCommand({ Name: name, WithDecryption: true }));
   return res.Parameter.Value;
@@ -59,6 +96,10 @@ export const handler = async (event) => {
           const toEmail = s.customer_details?.email || s.customer_email;
           if (resendKey && toEmail) await sendWelcomeEmail(resendKey, toEmail, s.metadata.plan);
         } catch (e) { console.error('welcome email (non-fatal):', e.message); }
+        // Soft opt-in: a paying customer goes on the marketing list, recorded
+        // under a WEAKER basis than waitlist consent. They can switch it off on
+        // /account, which is the refusal route PECR requires.
+        await syncCustomerToMarketing(s, s.metadata.plan);
         break;
       }
       case 'customer.subscription.updated': {
@@ -68,12 +109,32 @@ export const handler = async (event) => {
         if (!plan || s.status !== 'active') break;
         await removeAllPlanRoles(token, auth0Domain, s.metadata.auth0_user_id, roleIds);
         await assignRole(token, auth0Domain, s.metadata.auth0_user_id, roleIds[plan]);
+        // Keep the `plan` contact property current so broadcasts can segment on
+        // tier. This only updates an existing row — it never adds anyone.
+        try {
+          const cust = await stripe.customers.retrieve(s.customer);
+          if (cust?.email) {
+            await upsertSubscriber(ddb, SUBSCRIBERS_TABLE, {
+              email: cust.email, plan: PLAN_LABELS[plan] || plan, source: 'stripe-subscription-updated',
+            });
+          }
+        } catch (e) { console.error('plan sync (non-fatal):', e.message); }
         break;
       }
       case 'customer.subscription.deleted': {
         const s = stripeEvent.data.object;
         if (!s.metadata?.auth0_user_id) break;
         await removeAllPlanRoles(token, auth0Domain, s.metadata.auth0_user_id, roleIds);
+        // Cancelling a subscription is NOT an unsubscribe — they may still want
+        // the emails. Downgrade the plan property and leave status alone.
+        try {
+          const cust = await stripe.customers.retrieve(s.customer);
+          if (cust?.email) {
+            await upsertSubscriber(ddb, SUBSCRIBERS_TABLE, {
+              email: cust.email, plan: 'free', source: 'stripe-subscription-deleted',
+            });
+          }
+        } catch (e) { console.error('plan sync (non-fatal):', e.message); }
         break;
       }
     }

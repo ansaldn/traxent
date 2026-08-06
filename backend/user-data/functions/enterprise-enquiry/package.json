@@ -1,0 +1,13 @@
+{
+  "name": "enterprise-enquiry",
+  "version": "1.0.0",
+  "main": "index.mjs",
+  "type": "module",
+  "license": "ISC",
+  "description": "Traxent enterprise sales enquiries (POST /enterprise/enquiry): captures qualified leads from /enterprise into DynamoDB and notifies the alerts topic.",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.700.0",
+    "@aws-sdk/lib-dynamodb": "^3.700.0",
+    "@aws-sdk/client-sns": "^3.700.0"
+  }
+}

@@ -1,5 +1,8 @@
 # Traxent — Email Build-out (Zoho mailboxes + Resend sending + Auth0 branding)
 
+> **Status lives in [`LAUNCH.md`](LAUNCH.md).** This file explains *how* to do
+> a thing; LAUNCH.md says whether it still needs doing.
+
 What this gives you:
 - **Receiving** real mailboxes at `@traxent.io` (security@, hello@, no-reply@, you@…) via **Zoho Mail Lite** (£1/user/mo).
 - **Sending** app + marketing email programmatically via **Resend** — branded, authenticated, deliverable.

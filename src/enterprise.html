@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.execute-api.eu-west-2.amazonaws.com https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0e0e0c">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>Traxent for teams — bulk seats, SSO and SCIM</title>
+<meta name="description" content="Traxent for trading firms, prop firms and training academies. Bulk seats, SAML/OIDC single sign-on, SCIM user provisioning and a dedicated account manager. Talk to us about your requirements.">
+<meta property="og:title" content="Traxent for teams — bulk seats, SSO and SCIM">
+<meta property="og:description" content="Roll Traxent out across your desk or academy. Bulk seats, SSO, SCIM provisioning and a named contact.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://traxent.io/enterprise">
+<meta property="og:site_name" content="Traxent">
+<meta property="og:image" content="https://traxent.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://traxent.io/enterprise">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f6f2;--ink:#0e0e0c;--ink2:#3a3a36;--ink3:#7a7a72;--accent:#0a6e4f;
+  --accent-light:#e8f5f0;--accent-mid:#1a9e72;--border:rgba(14,14,12,0.1);
+  --surface:#ffffff;--surface2:#f0efe9;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .7s ease forwards}
+.fade-up-2{animation:fadeUp .7s .12s ease forwards;opacity:0}
+nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-back{font-size:13px;color:var(--ink3);text-decoration:none}
+.nav-back:hover{color:var(--ink)}
+.wrap{max-width:940px;margin:0 auto;padding:0 32px}
+.hero{padding:72px 0 8px;text-align:center}
+.eyebrow{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+h1{font-family:var(--serif);font-size:52px;line-height:1.06;font-weight:400;letter-spacing:-.01em;margin-bottom:18px}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{font-size:17px;color:var(--ink2);font-weight:300;max-width:600px;margin:0 auto}
+h2{font-family:var(--serif);font-size:30px;font-weight:400;margin-bottom:8px;letter-spacing:-.01em}
+.sec{padding:52px 0}
+.sec-sub{color:var(--ink2);font-weight:300;margin-bottom:26px;max-width:620px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 24px}
+.card h3{font-size:15px;font-weight:500;margin-bottom:6px;display:flex;align-items:center;gap:9px}
+.card p{font-size:14px;color:var(--ink2);line-height:1.6;font-weight:300}
+.pill{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
+.pill-now{background:var(--accent-light);color:var(--accent)}
+.pill-soon{background:#f5efe2;color:#8a6412}
+.form-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:30px 32px;max-width:640px;margin:0 auto;box-shadow:0 16px 48px rgba(14,14,12,.05)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{margin-bottom:16px}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.req{color:var(--accent)}
+input[type=text],input[type=email],input[type=tel],select,textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 13px;font-family:var(--sans);font-size:14px;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(10,110,79,.08)}
+textarea{resize:vertical;min-height:88px}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+.check{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:400;color:var(--ink2);cursor:pointer;padding:7px 10px;border:1px solid var(--border);border-radius:8px;transition:border-color .15s,background .15s}
+.check:hover{border-color:var(--accent-mid)}
+.check input{width:16px;height:16px;accent-color:var(--accent);flex:none;cursor:pointer}
+.btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:14px 22px;font-family:var(--sans);font-size:15px;font-weight:500;cursor:pointer;transition:background .15s,transform .1s}
+.btn:hover{background:#085e43}
+.btn:active{transform:scale(.99)}
+.btn:disabled{opacity:.6;cursor:default}
+.note{font-size:12.5px;color:var(--ink3);margin-top:12px;text-align:center;line-height:1.6}
+.success{display:none;background:var(--accent-light);border:1px solid rgba(10,110,79,.2);border-radius:10px;padding:22px 24px;font-size:15px;color:var(--accent);font-weight:500;text-align:center;max-width:640px;margin:0 auto}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+footer{border-top:1px solid var(--border);margin-top:52px;padding:28px 32px;text-align:center;font-size:12px;color:var(--ink3)}
+.toast{position:fixed;bottom:32px;right:32px;background:var(--ink);color:#fff;padding:14px 20px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:transform .3s,opacity .3s;z-index:999;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+@media(max-width:640px){h1{font-size:38px}.hero{padding:52px 0 4px}.row{grid-template-columns:1fr}.form-card{padding:24px 20px}}
+</style>
+</head>
+<body>
+
+<nav><div class="nav-inner"><a href="/" class="nav-logo">trax<em>ent</em></a><a href="/#pricing" class="nav-back">Plans &amp; prices →</a></div></nav>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow fade-up">Traxent for teams</div>
+    <h1 class="fade-up-2">Roll Traxent out across your <em>desk</em></h1>
+    <p class="lede fade-up-2">For prop firms, trading desks and training academies who want structured education and readiness scoring for everyone, managed centrally rather than seat by seat.</p>
+  </section>
+
+  <section class="sec">
+    <h2>What's included</h2>
+    <p class="sec-sub">Marked honestly. "Available now" means it works today; "on request" means it's built and switched on when a customer needs it, which is how we'd rather do it than leave things running unused.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Bulk seats <span class="pill pill-now">Available now</span></h3>
+        <p>One agreement covering your whole team, billed together rather than per person. Add and remove people as your desk changes.</p>
+      </div>
+      <div class="card">
+        <h3>SCIM provisioning <span class="pill pill-now">Available now</span></h3>
+        <p>Connect Okta, Entra ID or JumpCloud and accounts are created when someone joins and deactivated the day they leave. Standard SCIM 2.0 — no manual offboarding.</p>
+      </div>
+      <div class="card">
+        <h3>Single sign-on <span class="pill pill-soon">On request</span></h3>
+        <p>SAML 2.0 or OIDC against your existing identity provider. Your people sign in with the credentials they already have, under your own MFA and session policy.</p>
+      </div>
+      <div class="card">
+        <h3>Third-party data logging <span class="pill pill-soon">On request</span></h3>
+        <p>Export activity and readiness data into your own warehouse or compliance tooling, on a schedule you set.</p>
+      </div>
+      <div class="card">
+        <h3>White label <span class="pill pill-soon">On request</span></h3>
+        <p>Your branding on the learning experience for academies presenting Traxent as part of their own programme.</p>
+      </div>
+      <div class="card">
+        <h3>Named contact and SLA <span class="pill pill-now">Available now</span></h3>
+        <p>A person rather than a ticket queue, and a written response-time commitment sized to your deployment.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Where your data sits</h2>
+    <p class="sec-sub">
+      Everything runs in AWS <strong>eu-west-2 (London)</strong>. Traxent is education and analytics software — it is not a broker, holds no client money and executes no trades. Trading account connections are <strong>read-only</strong>.
+      Our <a href="/security">security page</a> is honest about what we have and haven't certified, and the <a href="/privacy">privacy policy</a> lists every sub-processor.
+    </p>
+  </section>
+
+  <section class="sec" id="talk">
+    <h2 style="text-align:center">Tell us what you need</h2>
+    <p class="sec-sub" style="text-align:center;margin-left:auto;margin-right:auto">We'll come back within one working day. If it's easier, email <a href="mailto:hello@traxent.io">hello@traxent.io</a> directly.</p>
+
+    <div class="form-card" id="ent-card">
+      <form id="ent-form" novalidate>
+        <div class="row">
+          <div class="field">
+            <label for="ent-name">Your name <span class="req">*</span></label>
+            <input type="text" id="ent-name" autocomplete="name" maxlength="120" required>
+          </div>
+          <div class="field">
+            <label for="ent-company">Organisation <span class="req">*</span></label>
+            <input type="text" id="ent-company" autocomplete="organization" maxlength="200" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="ent-email">Work email <span class="req">*</span></label>
+            <input type="email" id="ent-email" autocomplete="email" maxlength="254" required>
+          </div>
+          <div class="field">
+            <label for="ent-phone">Phone <span style="color:var(--ink3);font-weight:400">(optional)</span></label>
+            <input type="tel" id="ent-phone" autocomplete="tel" maxlength="40">
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="ent-seats">Roughly how many people?</label>
+            <select id="ent-seats">
+              <option value="">Select…</option>
+              <option value="1-10">1–10</option>
+              <option value="11-50">11–50</option>
+              <option value="51-200">51–200</option>
+              <option value="201-500">201–500</option>
+              <option value="500+">500+</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="ent-timeline">When are you looking to start?</label>
+            <select id="ent-timeline">
+              <option value="">Select…</option>
+              <option value="immediately">Immediately</option>
+              <option value="1-3-months">In 1–3 months</option>
+              <option value="3-6-months">In 3–6 months</option>
+              <option value="exploring">Just exploring</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>What matters most to you?</label>
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="needs" value="bulk-seats"> Bulk seats</label>
+            <label class="check"><input type="checkbox" name="needs" value="sso"> Single sign-on</label>
+            <label class="check"><input type="checkbox" name="needs" value="scim"> SCIM provisioning</label>
+            <label class="check"><input type="checkbox" name="needs" value="data-logging"> Data logging</label>
+            <label class="check"><input type="checkbox" name="needs" value="white-label"> White label</label>
+            <label class="check"><input type="checkbox" name="needs" value="sla"> SLA</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="ent-message">Anything else we should know?</label>
+          <textarea id="ent-message" maxlength="2000" placeholder="Your setup, which identity provider you use, anything you need us to work around."></textarea>
+        </div>
+
+        <input type="text" id="ent-website" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <button class="btn" type="submit" id="ent-submit">Send enquiry</button>
+        <div class="note">We'll only use these details to respond to your enquiry. See our <a href="/privacy">privacy policy</a>.</div>
+      </form>
+    </div>
+
+    <div class="success" id="ent-success">
+      ✓ Thanks — that's with us. We'll come back to you within one working day.
+    </div>
+  </section>
+</div>
+
+<footer>© <span id="yr">2026</span> Traxent™ is provided and licensed by Akpan Holdings Limited. Registered in England &amp; Wales. Educational platform — not financial advice.</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  var API = 'https://gqway1e53f.execute-api.eu-west-2.amazonaws.com';
+  var yr = document.getElementById('yr'); if (yr) yr.textContent = new Date().getFullYear();
+
+  function toast(msg, ok) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.borderLeft = (ok === false) ? '3px solid #9e1a1a' : '3px solid #1a9e72';
+    t.classList.add('show');
+    setTimeout(function () { t.classList.remove('show'); }, 5000);
+  }
+
+  var form = document.getElementById('ent-form');
+  var btn = document.getElementById('ent-submit');
+  var busy = false;
+  var EMAIL_RE = /^[^\s@,;:<>()[\]\\"]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/i;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (busy) return;
+
+    var val = function (id) { return (document.getElementById(id).value || '').trim(); };
+    var name = val('ent-name'), company = val('ent-company'), email = val('ent-email');
+
+    if (!name)    { toast('Please tell us your name.', false); document.getElementById('ent-name').focus(); return; }
+    if (!company) { toast('Please tell us your organisation.', false); document.getElementById('ent-company').focus(); return; }
+    if (!EMAIL_RE.test(email)) { toast('Please enter a valid work email address.', false); document.getElementById('ent-email').focus(); return; }
+
+    var needs = [].slice.call(document.querySelectorAll('input[name="needs"]:checked')).map(function (c) { return c.value; });
+    var q = new URLSearchParams(location.search);
+
+    busy = true; btn.disabled = true; btn.textContent = 'Sending…';
+
+    fetch(API + '/enterprise/enquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name: name, company: company, email: email,
+        phone: val('ent-phone'), seats: val('ent-seats'), timeline: val('ent-timeline'),
+        needs: needs, message: val('ent-message'),
+        website: val('ent-website'),
+        referrer: document.referrer || '',
+        utm_source: q.get('utm_source') || '', utm_campaign: q.get('utm_campaign') || ''
+      })
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (b) {
+        if (r.ok && b.ok) {
+          document.getElementById('ent-card').style.display = 'none';
+          document.getElementById('ent-success').style.display = 'block';
+          document.getElementById('talk').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+        // Never claim it sent when it didn't — same rule as the signup forms.
+        toast(b.message || "Couldn't send that just now. Please email hello@traxent.io.", false);
+        busy = false; btn.disabled = false; btn.textContent = 'Send enquiry';
+      });
+    }).catch(function () {
+      toast("Couldn't reach us — check your connection, or email hello@traxent.io.", false);
+      busy = false; btn.disabled = false; btn.textContent = 'Send enquiry';
+    });
+  });
+})();
+</script>
+<script src="/consent.js?v=__BUILD_SHA__" defer></script>
+</body>
+</html>

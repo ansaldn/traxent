@@ -7,6 +7,8 @@
 //   1. Cancel any active Stripe subscription IMMEDIATELY (not at period end).
 //   2. Delete every DynamoDB item for the user (progress, trades, firms).
 //   3. Delete the Auth0 user via the Management API.
+//   4. Erase them from the marketing list and Resend (UK GDPR Art. 17 —
+//      erasure has to reach every system, not just the one they were looking at).
 //
 // NOTE: App Store subscriptions CANNOT be cancelled server-side (Apple rule);
 // the iOS app warns the user to cancel in Settings before deleting.
@@ -22,11 +24,47 @@
 
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, QueryCommand, BatchWriteCommand } from '@aws-sdk/lib-dynamodb';
+import { deleteSubscriber } from './marketing.mjs';
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 import { JwtRsaVerifier } from 'aws-jwt-verify';
 import Stripe from 'stripe';
 
 const TABLE = process.env.TABLE_NAME;
+const SUBSCRIBERS_TABLE = process.env.SUBSCRIBERS_TABLE || 'TraxentSubscribers';
+const RESEND_KEY_PARAM = process.env.RESEND_KEY_PARAM || '/traxent/resend/api_key';
+
+/**
+ * UK GDPR Art. 17 erasure has to reach every system holding the person, not
+ * just the one they were looking at. Deleting the Auth0 user and their
+ * progress but leaving them on the mailing list means they keep receiving
+ * marketing from a company that told them it had deleted them — which is the
+ * complaint, not the bug.
+ *
+ * Best-effort and last: the account deletion itself must not fail because
+ * Resend was briefly unavailable. Failures are logged loudly so they can be
+ * cleaned up by hand.
+ */
+async function eraseFromMarketing(email) {
+  if (!email) return;
+  try {
+    await deleteSubscriber(ddb, SUBSCRIBERS_TABLE, email);
+    console.log('erasure: removed subscriber row for', email);
+  } catch (e) {
+    console.error('ERASURE INCOMPLETE — subscriber row remains for', email, e.message);
+  }
+  try {
+    const key = await getParam(RESEND_KEY_PARAM);
+    if (!key) { console.warn('erasure: no Resend key, contact not deleted for', email); return; }
+    const res = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email.toLowerCase())}`, {
+      method: 'DELETE', headers: { Authorization: `Bearer ${key}` },
+    });
+    // 404 means they were never mirrored across — that's a clean result.
+    if (res.ok || res.status === 404) console.log('erasure: Resend contact cleared for', email);
+    else console.error('ERASURE INCOMPLETE — Resend', res.status, 'for', email);
+  } catch (e) {
+    console.error('ERASURE INCOMPLETE — Resend contact remains for', email, e.message);
+  }
+}
 const ISSUER = process.env.AUTH0_ISSUER || 'https://auth.traxent.io/';
 const AUDIENCES = (process.env.AUTH0_AUDIENCE || '').split(',').map(s => s.trim()).filter(Boolean);
 
@@ -154,6 +192,9 @@ export const handler = async (event) => {
     await cancelStripe(sub, payload.email);
     await purgeUserData(sub);
     await deleteAuth0User(sub);
+    // Last, and deliberately outside the failure path above: an erasure that
+    // misses the mailing list is the one the person actually notices.
+    await eraseFromMarketing(payload.email);
     console.log('Account deleted:', sub);
     return json(204, null);
   } catch (e) {

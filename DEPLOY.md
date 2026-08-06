@@ -1,5 +1,8 @@
 # Traxent — Deploy & Operations Guide
 
+> **Status lives in [`LAUNCH.md`](LAUNCH.md).** This file explains *how* to do
+> a thing; LAUNCH.md says whether it still needs doing.
+
 This guide covers everything built in this work session and exactly what to do to ship
 it. Work top-to-bottom; each section says whether it is **automatic** (just push) or a
 **one-time manual step**.

@@ -1,5 +1,8 @@
 # Traxent — Closing the Cloudflare Security Insights
 
+> **Status lives in [`LAUNCH.md`](LAUNCH.md).** This file explains *how* to do
+> a thing; LAUNCH.md says whether it still needs doing.
+
 Triage of the 10 active insights (export `…SecurityInsights_20260630`). "Close" in Cloudflare = either
 **fix** (the rescan clears it) or **Archive** (for accepted exceptions / false positives).
 

@@ -1036,6 +1036,7 @@ footer {
       <a href="#how">How it works</a>
       <a href="#readiness">Readiness</a>
       <a href="#pricing">Pricing</a>
+      <a href="/blog">Blog</a>
       <a href="#" id="nav-signin" onclick="handleAuthClick(event)">Sign in</a>
       <!-- Prelaunch: the CTA collects an email and sends an instant invite.
            From 24 Aug (flags.json → fullLaunch) it becomes Sign up, pointing
@@ -1174,7 +1175,7 @@ footer {
 <section class="section" id="pricing">
   <div class="section-label">Pricing</div>
   <h2 class="section-title">Start for less than<br>a cup of coffee</h2>
-  <p class="section-sub">No annual lock-in. Cancel any month. Every plan includes a 7-day free trial.</p>
+  <p class="section-sub">Free to start today. Paid plans open when trade sync goes live — join now and lock in the price you see. No annual lock-in, cancel any month, and every paid plan starts with a 7-day free trial.</p>
 
   <div class="pricing-toggle-wrap">
     <div class="currency-toggle">
@@ -1395,7 +1396,7 @@ const plans = [
     ],
     btn: 'Start free trial',
     btnClass: 'plan-btn-outline',
-    btnHref: '/waitlist',
+    btnHref: '/signup',
     featured: false,
   },
   {
@@ -1409,14 +1410,14 @@ const plans = [
       'Live price data — real time',
       'All 15 pattern signals',
       'Prop firm readiness tracker',
-      'Connect 1 trading account (real-trade sync)',
-      'Retroactive “would your last 90 days have passed?”',
+      { text: 'Connect 1 trading account (real-trade sync) — coming soon', dim: true },
+      { text: 'Retroactive “would your last 90 days have passed?” — coming soon', dim: true },
       'Readiness score vs at least 16 firms',
       'Weekly readiness report email',
     ],
     btn: 'Start 7-day free trial',
     btnClass: 'plan-btn-solid',
-    btnHref: '/waitlist',
+    btnHref: '/signup',
     featured: true,
   },
   {
@@ -1428,7 +1429,7 @@ const plans = [
     desc: 'Own the funded phase. Multi-account sync, funded-capital tracking and the Go-Live onboarding for active traders.',
     features: [
       'Everything in Challenger',
-      'Connect up to 3 trading accounts',
+      { text: 'Connect up to 3 trading accounts — coming soon', dim: true },
       'Funded-phase tracking (payout readiness + drawdown discipline)',
       'Go-Live onboarding (Module 7)',
       'Advanced news sentiment engine',
@@ -1437,7 +1438,7 @@ const plans = [
     ],
     btn: 'Start 7-day free trial',
     btnClass: 'plan-btn-outline',
-    btnHref: '/waitlist',
+    btnHref: '/signup',
     featured: false,
   },
   {
@@ -1458,7 +1459,7 @@ const plans = [
     ],
     btn: 'Get in touch',
     btnClass: 'plan-btn-outline',
-    btnHref: 'mailto:hello@traxent.io?subject=Enterprise enquiry',
+    btnHref: '/enterprise',
     featured: false,
   }  
 ];
@@ -1489,7 +1490,30 @@ function renderPricing() {
       : `<div class="plan-price"><span class="plan-price-val">${sym}${price}</span><span class="plan-price-mo">${p.suffix}</span></div><div class="plan-price-alt">${alt}</div>`;
     const noteBlock = isEnterprise
       ? `<div class="plan-note">Flexible billing · Volume discounts</div>`
-      : `<div class="plan-note">No card required · Cancel anytime</div>`;
+      : `<div class="plan-note">Cancel anytime<br>
+         <span style="font-size:11.5px;color:var(--ink3);font-weight:300;display:block;margin-top:5px;line-height:1.5">
+           We'll email you about Traxent features and offers. You can turn this
+           off any time from your <a href="/account" style="color:var(--ink3);text-decoration:underline">account page</a>.
+         </span></div>`;
+    // Paid plans are gated separately from launch. Until real-trade sync
+    // exists, Challenger and Funded Trader can't honestly be sold — their
+    // headline feature doesn't work. Prices stay on screen because the
+    // founding price-lock depends on people seeing them; only the ability to
+    // buy is withheld.
+    const paidOpen = !window.TraxentLaunch || TraxentLaunch.paidPlansOpen();
+    const gated = !paidOpen && !isEnterprise;
+
+    const cta = gated
+      ? `<a href="/signup" class="plan-btn ${p.btnClass}">Create free account</a>`
+      : `<a href="${p.btnHref}" class="plan-btn ${p.btnClass}">${p.btn}</a>`;
+
+    const gateNote = gated
+      ? `<div class="plan-note" style="color:var(--accent);font-weight:500">
+           Opens when trade sync goes live — join free now and this price is
+           yours when it does.
+         </div>`
+      : noteBlock;
+
     return `
       <div class="plan-card ${p.featured ? 'featured' : ''}">
         ${p.featured ? '<div class="plan-badge">MOST POPULAR</div>' : ''}
@@ -1498,12 +1522,16 @@ function renderPricing() {
         <div class="plan-desc">${p.desc}</div>
         <div class="plan-divider"></div>
         <ul class="plan-features">${feats}</ul>
-        <a href="${p.btnHref}" class="plan-btn ${p.btnClass}">${p.btn}</a>
-        ${noteBlock}
+        ${cta}
+        ${gateNote}
       </div>
     `;
   }).join('');
 }
+
+// Pricing paints before flags.json arrives, so render again once we know
+// whether paid plans are open. Cheap — it's a single innerHTML swap.
+if (window.TraxentLaunch) TraxentLaunch.ready().then(function () { renderPricing(); });
 
 // ── WAITLIST ──────────────────────────────────────────────────────
 // Handled by /subscribe.js, which posts to our own API. It only reveals the

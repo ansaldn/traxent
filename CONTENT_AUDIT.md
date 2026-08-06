@@ -1,5 +1,8 @@
 # Traxent — Content & Product Audit
 
+> **Status lives in [`LAUNCH.md`](LAUNCH.md).** This file explains *how* to do
+> a thing; LAUNCH.md says whether it still needs doing.
+
 Based on a logged-in walk-through of the live site (Funded Trader account) plus the codebase.
 Overall: the product is in strong shape — the tracker, learn path, calculator, challenge lab,
 and news feed all work and the writing is consistent and on-brand. Below is what's working,

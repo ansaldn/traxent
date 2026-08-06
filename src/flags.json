@@ -15,6 +15,12 @@
     "launchAt": "2026-08-24T07:00:00Z"
   },
 
+  "paidPlansOpen": {
+    "_note": "Paid subscriptions. Deliberately SEPARATE from fullLaunch: the site launches on 24 Aug with free accounts only, because real-trade sync — the stated core of Challenger and Funded Trader — depends on broker credentials that will not be approved by then. Selling a tier whose headline feature does not work is the thing we are avoiding. Flip this to true (or set launchAt) the day the first connector is live, and the pricing page becomes purchasable with nothing else to deploy.",
+    "enabled": false,
+    "launchAt": null
+  },
+
   "waitlistOpen": {
     "_note": "DEPRECATED 2026-08-06, superseded by prelaunchOpen. Left in place because older cached pages may still reference it; remove once fullLaunch has been live for a while.",
     "enabled": false,

@@ -12,6 +12,7 @@ Allow: /terms
 Allow: /waitlist
 Allow: /open
 Allow: /signup
+Allow: /enterprise
 Allow: /security
 Allow: /firms
 Allow: /firm-

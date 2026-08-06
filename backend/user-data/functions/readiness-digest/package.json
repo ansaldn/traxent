@@ -1,0 +1,13 @@
+{
+  "name": "readiness-digest",
+  "version": "1.0.0",
+  "main": "index.mjs",
+  "type": "module",
+  "license": "ISC",
+  "description": "Weekly readiness report email — the Challenger-tier feature the pricing page promises. Scheduled Lambda that summarises each member's week from TraxentUserData and sends it via Resend.",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.700.0",
+    "@aws-sdk/lib-dynamodb": "^3.700.0",
+    "@aws-sdk/client-ssm": "^3.700.0"
+  }
+}

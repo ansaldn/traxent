@@ -1,0 +1,12 @@
+{
+  "name": "scim",
+  "version": "1.0.0",
+  "main": "index.mjs",
+  "type": "module",
+  "license": "ISC",
+  "description": "Traxent SCIM 2.0 provisioning endpoint (RFC 7643/7644). Lets an enterprise customer's identity provider create, update and deactivate Traxent users automatically from their own directory.",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.700.0",
+    "@aws-sdk/lib-dynamodb": "^3.700.0"
+  }
+}

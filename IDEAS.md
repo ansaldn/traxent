@@ -1,5 +1,8 @@
 # Traxent — Ideas & Roadmap
 
+> **Status lives in [`LAUNCH.md`](LAUNCH.md).** This file explains *how* to do
+> a thing; LAUNCH.md says whether it still needs doing.
+
 Two parts: (1) what I built this session beyond the brief, and (2) a prioritized list of
 new ideas — several spec'd enough to build directly. Scored by **value** (to users/revenue)
 and **effort**.

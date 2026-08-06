@@ -81,7 +81,13 @@ function mapSentiment(label, score) {
 // Default provider: Alpha Vantage NEWS_SENTIMENT. Returns our normalised shape.
 async function fetchProvider(key) {
   const url = 'https://www.alphavantage.co/query?function=NEWS_SENTIMENT'
-    + '&topics=financial_markets,economy_macro,finance'
+    // Was financial_markets,economy_macro,finance — which returns US single-
+    // stock coverage (JPMorgan earnings, REIT filings) to an audience trading
+    // index futures, FX and metals. Alpha Vantage has no futures/FX topic, so
+    // the closest honest targeting is macro + monetary policy: the releases
+    // that actually move ES, NQ and the dollar. Single-stock noise is then
+    // filtered below.
+    + '&topics=economy_macro,economy_monetary,economy_fiscal,financial_markets'
     + '&sort=LATEST&limit=50&apikey=' + encodeURIComponent(key);
   const r = await fetch(url);
   const data = await r.json();
@@ -89,6 +95,14 @@ async function fetchProvider(key) {
   if (!Array.isArray(data.feed)) {
     return { articles: [], providerNote: data.Information || data.Note || data['Error Message'] || null };
   }
+  // Drop the categories that are noise for a futures/FX audience. These
+  // phrases are what the US-equity coverage looks like — class actions,
+  // insider filings, dividend notices — and none of it helps someone deciding
+  // whether they're ready for a funded challenge.
+  const NOISE = /class action|Form 144|form 4 filing|dividend declar|stock split|analyst (?:upgrade|downgrade)|price target|shareholder (?:alert|lawsuit)|investor alert|earnings call transcript/i;
+
+  const seenTitles = new Set();
+
   const articles = data.feed.map((item) => ({
     title: item.title,
     url: item.url,
@@ -98,7 +112,18 @@ async function fetchProvider(key) {
     sentiment: mapSentiment(item.overall_sentiment_label, Number(item.overall_sentiment_score)),
     score: Number(item.overall_sentiment_score),
     tickers: (item.ticker_sentiment || []).slice(0, 4).map((t) => t.ticker),
-  }));
+  }))
+  // Alpha Vantage syndicates the same story across several outlets, so the
+  // same headline can appear four or five times in one response and fill the
+  // feed. Keep the first of each.
+  .filter((a) => {
+    if (!a.title) return false;
+    if (NOISE.test(a.title) || NOISE.test(a.summary || '')) return false;
+    const k = a.title.trim().toLowerCase();
+    if (seenTitles.has(k)) return false;
+    seenTitles.add(k);
+    return true;
+  });
   return { articles, providerNote: null };
 }
 

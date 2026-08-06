@@ -7,7 +7,8 @@ This file replaces the scattered TODO lists. Completed work has been **deleted,
 not ticked** — if it isn't here, it's done. Where the state is genuinely
 unknown, there's a test below rather than a guess.
 
-Three sections: **do**, **check**, **decide**. Nothing else.
+Two sections left: **decide** (yours) and **check** (yours). The build
+queue is empty.
 
 ---
 
@@ -18,32 +19,6 @@ Three sections: **do**, **check**, **decide**. Nothing else.
 `/enterprise` honestly marks white-label and data-logging "on request". The
 homepage pricing table lists them as plain Enterprise features. Make the pricing
 table match the enterprise page.
-
----
-
-# 🟠 DO — all mine now; nothing left in your court but the checks below
-
-## Week 2 — mine to build
-
-### 1. Account activity stats are fake
-
-`account.html:551` reads localStorage keys the journal never writes, so a paying
-member sees `0 / 0 / —` on a new device. The user-data API already has the real
-numbers. Small — I'll do it.
-
-### 2. News feed — key in hand, retarget after
-
-Store the key (see the chat for the exact command), then I retarget `topics=` in
-`backend/functions/news-feed/index.mjs` from US equities to futures, forex and
-indices. The current feed returns JPMorgan and REIT stories to an audience that
-trades futures — the endpoint works, it is simply pointed at the wrong market.
-
-### 3. Stale copy
-
-- `waitlist.html` lists "News sentiment feed" under "coming soon". It's live.
-- `risk-register.md:26` says the deploy uses long-lived AWS keys. It's been on
-  OIDC for weeks — this **understates** your posture in the document an auditor
-  reads first.
 
 ---
 

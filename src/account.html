@@ -548,10 +548,17 @@ async function initAccount() {
       document.getElementById('danger-section').style.display = 'block';
     }
 
-    // Activity stats — placeholder until journal is wired to DB
-    document.getElementById('stat-lessons').textContent = localStorage.getItem('traxent_lessons_completed') || '0';
-    document.getElementById('stat-trades').textContent = localStorage.getItem('traxent_trades_logged') || '0';
-    document.getElementById('stat-score').textContent = localStorage.getItem('traxent_best_score') || '—';
+    // Activity stats.
+    //
+    // These used to read localStorage keys — traxent_lessons_completed and
+    // friends — that nothing in the app ever writes. So every member saw
+    // 0 / 0 / — regardless of what they'd actually done, and a paying member
+    // on a new device saw an account page that said they'd done nothing.
+    //
+    // TraxentData.sync() pulls the real record from the user-data API, which
+    // has had all three numbers all along. Fired without awaiting so a slow
+    // API can't hold up the page; the cells show — until it lands.
+    loadActivityStats();
 
     // Hide loading
     document.getElementById('loading').style.display = 'none';
@@ -736,6 +743,35 @@ async function cancelSubscription() {
     showToast('Something went wrong — email hello@traxent.io and we will cancel for you.', false);
     hideCancelModal();
     if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = 'Yes, cancel'; }
+  }
+}
+
+// ── Activity stats ─────────────────────────────────────────────────────────
+async function loadActivityStats() {
+  var lessons = document.getElementById('stat-lessons');
+  var trades  = document.getElementById('stat-trades');
+  var score   = document.getElementById('stat-score');
+  try {
+    var state = await TraxentData.sync();
+    if (!state) throw new Error('no state');
+
+    // Progress is a map of lessonKey -> true. Falsy values are lessons that
+    // were started and not finished, so they don't count.
+    var done = Object.values(state.progress || {}).filter(Boolean).length;
+    lessons.textContent = String(done);
+    trades.textContent  = String((state.trades || []).length);
+
+    // Best readiness score is derived, not stored — take the highest across
+    // the firms they track. Shows — rather than 0 when nothing is scored yet,
+    // because 0 would read as "you scored zero" rather than "no score yet".
+    var best = (state.firms || []).reduce(function (m, f) {
+      var v = Number(f && f.score);
+      return Number.isFinite(v) && v > m ? v : m;
+    }, 0);
+    score.textContent = best > 0 ? best + '%' : '—';
+  } catch (e) {
+    console.warn('activity stats unavailable:', e);
+    lessons.textContent = trades.textContent = score.textContent = '—';
   }
 }
 

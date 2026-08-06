@@ -26,61 +26,39 @@ table match the enterprise page.
 
 Run these and tell me the results. Each is a single command or a single click.
 
-## T1. Is the payments API actually under IaC?
-
-Two docs disagree: `SECURITY-ACTIONS.md` says the import runbook is incomplete,
-`SECURITY-BACKLOG.md` says it was resolved by adoption.
-
-```bash
-aws cloudformation describe-stack-resources --stack-name traxent-backend \
-  --profile traxent --region eu-west-2 \
-  --query "StackResources[?ResourceType=='AWS::ApiGateway::RestApi'].[LogicalResourceId,PhysicalResourceId]" \
-  --output table
-```
-
-**Pass:** one row, PhysicalResourceId `da579ew81m`.
-**Fail:** empty, or a different id — the console API was never adopted and a
-`sam deploy` would create a second one.
-
-## T2. Does account deletion work?
+## T1. Does account deletion work?
 
 Sign in on the live site → `/account` → delete account. **Pass:** the account
 goes and you're signed out. **Fail:** a 500, which means item 2 above.
 
-## T3. Spot-check one deep link
+## T2. Does the launch flip look right?
 
-All 15 callback URLs are in (confirmed 2026-08-06). One check is enough to prove
-the pattern works — if `/account` returns cleanly, the rest will too.
+The old instructions here were wrong: they used top-level `await`, which is a
+syntax error in Safari's console, and then called `location.reload()`, which
+would have thrown the override away anyway. Replaced with a proper test hook.
 
-Sign out, paste `https://traxent.io/account` into a fresh tab. **Pass:** login,
-then you land on the account page. **Fail:** an Auth0 callback error.
-
-## T5. Does a live signup actually send an invite?
-
-The domain is verified and `test-send.mjs` works — that half is proven. What
-hasn't been exercised is the path through the deployed Lambda.
-
-Enter an address on the home page. **Pass:** the invite arrives within a minute.
-**Fail:** check CloudWatch for `traxent-subscribe` — most likely the deployed
-function can't read `/traxent/resend/api_key`.
-
-## T6. Does the launch flip actually work?
-
-Don't wait until the 24th to find out. In your browser console on traxent.io:
+On traxent.io, in the console:
 
 ```js
-// Pretend it's launch morning
-TraxentFlags._reset();
-await TraxentFlags.load('data:application/json,{"fullLaunch":{"enabled":true}}');
-location.reload();
+TraxentLaunch.preview('launched')
 ```
 
-Simpler and safer: temporarily set `fullLaunch.enabled` to `true` in
-`src/flags.json`, deploy, look at the site, set it back. **Pass:** nav shows
-**Sign up** with **Sign in** beside it, the hero and banner stop asking for an
-email. **Do this at least a week before launch.**
+**Pass:** nav becomes **Sign up** with **Sign in** beside it, the hero and
+banner stop asking for an email and offer account creation, and the pricing
+cards still say "Opens when trade sync goes live" (paid plans are a separate
+flag, so they stay shut).
 
-## T7. iOS — for your developer conversation
+Then put it back:
+
+```js
+TraxentLaunch.preview()
+```
+
+Local and visual only — it touches nothing on the server and a reload resets it
+regardless. Worth doing on `/`, `/open` and `/waitlist`, which all carry gated
+blocks.
+
+## T3. iOS — for your developer conversation
 
 Confirm with them:
 

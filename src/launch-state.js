@@ -34,6 +34,7 @@
 
   var _state = null;
   var _promise = null;
+  var _realState = null;   // the flag-derived state, so preview() can restore it
 
   // The default when we can't tell.
   //
@@ -114,7 +115,7 @@
       if (_promise) return _promise;
       _promise = Promise.resolve(global.TraxentFlags ? global.TraxentFlags.load() : null)
         .then(function (loaded) {
-          _state = compute(loaded);
+          _state = _realState = compute(loaded);
           if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function () { apply(_state); });
           } else {
@@ -152,6 +153,28 @@
     paidPlansOpen: function () {
       var flags = global.TraxentFlags;
       return !!(flags && flags.isEnabled('paidPlansOpen'));
+    },
+
+    /**
+     * Test hook: render the page as a given state, without touching flags.json.
+     *
+     *   TraxentLaunch.preview('launched')   // see 24 August today
+     *   TraxentLaunch.preview()             // back to the real state
+     *
+     * Purely visual and purely local — it changes nothing on the server and
+     * survives only until reload. The point is to check the launch morning
+     * looks right well before the launch morning, without deploying a flag
+     * change to the live site and hoping you remember to put it back.
+     */
+    preview: function (state) {
+      // No argument restores the REAL state, cached when the flags resolved.
+      // Recomputing here can't work — flags.js keeps its map private, so
+      // compute() would see undefined and answer FALLBACK, which only looks
+      // correct while FALLBACK happens to match reality.
+      var next = state || _realState;
+      _state = next || FALLBACK;
+      apply(_state);
+      return _state;
     },
   };
 

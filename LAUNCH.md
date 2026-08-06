@@ -13,20 +13,7 @@ Three sections: **do**, **check**, **decide**. Nothing else.
 
 # 🔴 DECIDE — needs you, not code
 
-## D1 — RESOLVED: launching free-only
-
-Decided 2026-08-06. The site launches on 24 Aug with **free accounts only**.
-Challenger and Funded Trader open when real-trade sync exists, gated by
-`paidPlansOpen` in `flags.json` — one flag flip, no deploy.
-
-Prices stay visible so the founding price-lock still works; the card reads
-*"Opens when trade sync goes live — join free now and this price is yours when
-it does."* The four connector-dependent features are marked "coming soon".
-
-**You are pursuing (c) in parallel** — cTrader developer credentials. The day the
-first connector is live: flip `paidPlansOpen`, un-dim those features.
-
-## D4. Enterprise features listed without qualification
+## D1. Enterprise features listed without qualification
 
 `/enterprise` honestly marks white-label and data-logging "on request". The
 homepage pricing table lists them as plain Enterprise features. Make the pricing
@@ -44,12 +31,12 @@ table match the enterprise page.
 member sees `0 / 0 / —` on a new device. The user-data API already has the real
 numbers. Small — I'll do it.
 
-### 2. News feed
+### 2. News feed — key in hand, retarget after
 
-Set `/traxent/news/alphavantage_key` (until then the endpoint returns an empty
-feed — it's sold as "Advanced news sentiment engine" on Funded). Then retarget
-`topics=` in `backend/functions/news-feed/index.mjs` from US equities to
-futures/forex/indices, which is what your audience actually trades.
+Store the key (see the chat for the exact command), then I retarget `topics=` in
+`backend/functions/news-feed/index.mjs` from US equities to futures, forex and
+indices. The current feed returns JPMorgan and REIT stories to an audience that
+trades futures — the endpoint works, it is simply pointed at the wrong market.
 
 ### 3. Stale copy
 
@@ -85,14 +72,13 @@ aws cloudformation describe-stack-resources --stack-name traxent-backend \
 Sign in on the live site → `/account` → delete account. **Pass:** the account
 goes and you're signed out. **Fail:** a 500, which means item 2 above.
 
-## T3. Do gated deep links survive login?
+## T3. Spot-check one deep link
 
-Sign out, then paste each of these directly into a fresh tab:
-`/dashboard`, `/journal`, `/tracker`, `/news`, `/learn-module-1`, `/learn-201`,
-`/learn-301`, `/admin`.
+All 15 callback URLs are in (confirmed 2026-08-06). One check is enough to prove
+the pattern works — if `/account` returns cleanly, the rest will too.
 
-**Pass:** login, then you land on **that page**.
-**Fail:** an Auth0 callback error → that URL is missing from Allowed Callbacks.
+Sign out, paste `https://traxent.io/account` into a fresh tab. **Pass:** login,
+then you land on the account page. **Fail:** an Auth0 callback error.
 
 ## T5. Does a live signup actually send an invite?
 

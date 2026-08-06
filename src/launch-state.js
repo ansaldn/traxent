@@ -79,13 +79,27 @@
     return 'preview';
   }
 
-  /** Reveal every [data-launch] element whose list includes the current state. */
+  /**
+   * Reveal every [data-launch] element whose list includes the current state.
+   *
+   * Shows by setting data-launch-show, NOT by clearing style.display.
+   *
+   * The first version did `style.display = show ? '' : 'none'`. Setting it to
+   * '' removes the inline declaration — which hands the cascade straight back
+   * to the injected `[data-launch]{display:none}` rule below, so the element
+   * stayed hidden. That silently removed the signup form from the homepage.
+   *
+   * An attribute works where an inline style can't, because the element then
+   * uses its own natural display value (flex, block, inline-block) rather than
+   * one this code has to guess.
+   */
   function apply(state) {
     var nodes = document.querySelectorAll('[data-launch]');
     for (var i = 0; i < nodes.length; i++) {
       var want = (nodes[i].getAttribute('data-launch') || '').split(/\s+/);
       var show = want.indexOf(state) !== -1;
-      nodes[i].style.display = show ? '' : 'none';
+      if (show) nodes[i].setAttribute('data-launch-show', '');
+      else nodes[i].removeAttribute('data-launch-show');
       // Belt and braces: hidden content is also removed from the a11y tree and
       // from tab order, so a screen reader never announces the wrong phase.
       if (show) nodes[i].removeAttribute('aria-hidden');
@@ -145,7 +159,7 @@
   // phase. Injected rather than living in each page's stylesheet so a page can
   // never forget it.
   var style = document.createElement('style');
-  style.textContent = '[data-launch]{display:none}';
+  style.textContent = '[data-launch]:not([data-launch-show]){display:none}';
   (document.head || document.documentElement).appendChild(style);
 
   global.TraxentLaunch = TraxentLaunch;

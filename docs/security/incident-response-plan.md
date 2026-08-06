@@ -57,7 +57,7 @@ Incidents may surface from: **CloudWatch alarms + SNS alerts**, AWS GuardDuty/Se
 - **Internal:** keep the incident timeline current; brief any stakeholders.
 - **Customers:** if customer data or availability is materially affected, notify clearly, honestly and without undue delay — what happened, what data was involved, what we have done, and what they should do.
 - **Regulator (ICO):** see §7.
-- **Vendors:** engage the relevant provider (AWS, Auth0, Stripe, GitHub, Plausible, Formspree) and report through their security channels if their platform is implicated.
+- **Vendors:** engage the relevant provider (AWS, Auth0, Stripe, GitHub, Plausible, Resend) and report through their security channels if their platform is implicated.
 - **Public/researchers:** coordinate disclosure per `vulnerability-disclosure-policy.md`.
 - **Tone:** factual, no speculation, no blame; do not over- or under-state.
 

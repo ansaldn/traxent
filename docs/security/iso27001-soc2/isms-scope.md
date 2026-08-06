@@ -31,7 +31,7 @@
 | **Acquirers / investors** | A documented, honest security posture that survives technical and legal diligence. |
 | **Enterprise customers** | A recognised assurance artifact — ISO 27001 certificate (UK/EU) or SOC 2 report (US). |
 | **ICO (supervisory authority)** | UK GDPR / DPA 2018 compliance; 72-hour breach notification; lawful processing; data-subject rights. |
-| **Sub-processors** (AWS, Auth0, Stripe, Plausible, Formspree, GitHub) | Correct, authorised use of their services under their terms and DPAs. |
+| **Sub-processors** (AWS, Auth0, Stripe, Plausible, Resend, GitHub) | Correct, authorised use of their services under their terms and DPAs. |
 | **Payment ecosystem** (Stripe) | No card data handled outside Stripe; PCI obligations met by inheritance. |
 
 ## 3. Scope of the ISMS (Clause 4.3)
@@ -42,13 +42,13 @@
 - The **backend API** — AWS Lambda + API Gateway + DynamoDB in `eu-west-2`, including all functions under `backend/functions/` and `backend/user-data/functions/`.
 - **Identity** via Auth0 (`auth.traxent.io` tenant).
 - **Payments** integration with Stripe (checkout, subscription lifecycle, webhook) — Traxent's integration code, **not** Stripe's card environment.
-- **Analytics** via Plausible (cookieless) and **contact intake** via Formspree.
+- **Analytics** via Plausible (cookieless) and **email delivery** via Resend.
 - **Source control & CI/CD** — GitHub repository `ansaldn/traxent` and its GitHub Actions deploy pipelines (OIDC to AWS for backend/infra).
 - **Secrets management** — AWS SSM Parameter Store (SecureString).
 - The **iOS application** insofar as it consumes the in-scope backend API and stores tokens on-device.
 - The **information security management activities** themselves — this documentation pack, the risk register, and the review cadence.
 
-**Boundaries & interfaces:** the trust boundary is the authenticated AWS API; every request crossing it is verified server-side against an Auth0-issued token. External interfaces are Auth0 (auth), Stripe (payments), Plausible (analytics), Formspree (contact), and the Alpha Vantage news source (read-only, no personal data).
+**Boundaries & interfaces:** the trust boundary is the authenticated AWS API; every request crossing it is verified server-side against an Auth0-issued token. External interfaces are Auth0 (auth), Stripe (payments), Plausible (analytics), Resend (email delivery), and the Alpha Vantage news source (read-only, no personal data).
 
 ## 4. Exclusions and inherited scope (Clause 4.3 justification)
 

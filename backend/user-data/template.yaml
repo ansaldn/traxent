@@ -129,6 +129,111 @@ Resources:
       SSESpecification:
         SSEEnabled: true
 
+  # ── Enterprise ────────────────────────────────────────────────────────────
+  # One table, two record shapes, distinguished by the `pk` prefix:
+  #
+  #   ORG#<orgId>      an enterprise customer: seats, domain, SSO connection,
+  #                    hashed SCIM token, status
+  #   LEAD#<uuid>      an inbound sales enquiry from /enterprise
+  #   ORG#<orgId>      sk=USER#<scimId>  a SCIM-provisioned user in that org
+  #
+  # Single table because these are always queried together by org, and because
+  # a second table for a handful of enterprise records is cost and ceremony for
+  # nothing. The GSI exists so SCIM can resolve a bearer token to an org in one
+  # lookup, and so leads can be listed by date without a scan.
+  EnterpriseTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: TraxentEnterprise
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+        - AttributeName: lookupKey
+          AttributeType: S
+        - AttributeName: createdAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        # Resolves a SCIM token hash, an SSO connection id, or an email domain
+        # to its organisation. Only records that set lookupKey are projected.
+        - IndexName: LookupIndex
+          KeySchema:
+            - AttributeName: lookupKey
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      SSESpecification:
+        SSEEnabled: true
+
+  # SCIM 2.0 provisioning (RFC 7643 / 7644). Identity providers — Okta, Entra
+  # ID, JumpCloud — call this to create, update and deactivate users when
+  # someone joins or leaves the customer's directory.
+  #
+  # Authenticated by a per-organisation bearer token, NOT Auth0: the IdP is a
+  # machine with no user session. The token is stored only as a SHA-256 hash,
+  # so a leak of this table doesn't hand over provisioning rights.
+  ScimFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-scim
+      Handler: index.handler
+      CodeUri: functions/scim/
+      Timeout: 15
+      Environment:
+        Variables:
+          ENTERPRISE_TABLE: !Ref EnterpriseTable
+          USER_DATA_TABLE: !Ref UserDataTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref EnterpriseTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UserDataTable
+      Events:
+        ScimRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /scim/v2/{proxy+}
+            Method: ANY
+
+  # Inbound enterprise enquiries from /enterprise. Public, same abuse controls
+  # as /subscribe. Notifies the alerts topic so a lead can't sit unseen.
+  EnterpriseEnquiryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-enterprise-enquiry
+      Handler: index.handler
+      CodeUri: functions/enterprise-enquiry/
+      Timeout: 15
+      Environment:
+        Variables:
+          ENTERPRISE_TABLE: !Ref EnterpriseTable
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+          ALERTS_TOPIC_ARN: !Ref AlertsTopic
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref EnterpriseTable
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt AlertsTopic.TopicName
+      Events:
+        Enquiry:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /enterprise/enquiry
+            Method: POST
+
   # PUBLIC endpoint — no Auth0 token, by necessity: the people signing up don't
   # have accounts yet. Protected by a honeypot field, strict server-side address
   # validation, a per-IP hourly cap enforced in DynamoDB, and the API's stage

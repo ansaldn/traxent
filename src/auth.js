@@ -37,6 +37,9 @@ async function initAuth0() {
   if (window.location.search.includes('code=')) {
     await auth0Client.handleRedirectCallback();
     window.history.replaceState({}, document.title, window.location.pathname);
+    // A marketing opt-in ticked on /signup can only be saved once we have a
+    // token, which is here — the first moment after Auth0 hands the user back.
+    await applyPendingMarketingOptIn();
   }
 
   // Keep the member-hint cookie in sync with the real session on every page load,
@@ -54,6 +57,68 @@ async function login() {
       redirect_uri: window.location.origin + '/home',
     }
   });
+}
+
+// Sign up — same Auth0 flow as login(), but `screen_hint: 'signup'` opens the
+// Universal Login page on the "Create account" tab instead of "Log in". Sending
+// someone who has never had an account to a login form is a needless drop-off.
+//
+// `redirect_uri` is /home, which is already in Auth0's Allowed Callback URLs —
+// /signup itself never needs to be registered there.
+async function signup() {
+  await auth0Client.loginWithRedirect({
+    authorizationParams: {
+      redirect_uri: window.location.origin + '/home',
+      screen_hint: 'signup',
+    }
+  });
+}
+
+// ── Pending marketing opt-in ────────────────────────────────────────────────
+// The consent checkbox lives on our /signup page, but Auth0 owns the form that
+// follows, so the choice has to survive a full-page redirect. It's parked in
+// sessionStorage (cleared when the tab closes, never sent anywhere until the
+// user is actually authenticated) and applied on the way back.
+//
+// Only ever writes `subscribed: true`. An unticked box means "don't add me",
+// which is already the default — there is nothing to record, and a stray false
+// must never overwrite an existing preference.
+const PENDING_MARKETING_KEY = 'tx_pending_marketing';
+
+function setPendingMarketingOptIn(optedIn) {
+  try {
+    if (optedIn) sessionStorage.setItem(PENDING_MARKETING_KEY, '1');
+    else sessionStorage.removeItem(PENDING_MARKETING_KEY);
+  } catch (e) { /* private mode */ }
+}
+
+async function applyPendingMarketingOptIn() {
+  let pending = null;
+  try { pending = sessionStorage.getItem(PENDING_MARKETING_KEY); } catch (e) { return; }
+  if (pending !== '1') return;
+
+  // Clear first: if the request fails we do NOT want to retry forever on every
+  // subsequent page load. The account page toggle is the recovery path.
+  try { sessionStorage.removeItem(PENDING_MARKETING_KEY); } catch (e) {}
+
+  try {
+    const token = await authBearerToken();
+    if (!token) return;
+    // userdata.js isn't loaded on every page (the signup page doesn't need it),
+    // so fall back to the same HTTP API base it would have given us. Referenced
+    // via `window.` throughout — a bare `TraxentData` would throw wherever the
+    // script isn't present.
+    const base = (window.TraxentData && typeof window.TraxentData.apiBase === 'function')
+      ? window.TraxentData.apiBase()
+      : 'https://gqway1e53f.execute-api.eu-west-2.amazonaws.com';
+    await fetch(base + '/user/marketing', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ subscribed: true }),
+    });
+  } catch (e) {
+    console.warn('marketing opt-in could not be saved:', e);
+  }
 }
 
 // Logout

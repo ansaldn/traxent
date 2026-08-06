@@ -95,13 +95,37 @@ async function getParam(name) {
   return res.Parameter.Value;
 }
 
+/**
+ * A failure we can name.
+ *
+ * The handler used to catch everything and return a bare `deletion_failed`,
+ * which is how account deletion sat broken across two rounds of fixing: the
+ * response, the browser console and the CloudWatch line all said the same
+ * uninformative thing, so there was nothing to act on. `step` is safe to send
+ * to the client — it names a stage of our own pipeline, not an internal
+ * message, credential or user identifier.
+ */
+class StepError extends Error {
+  constructor(step, message) { super(message); this.step = step; }
+}
+
 // 1 ── Stripe: cancel everything attached to this Auth0 sub, effective now.
+//
+// Two failure modes, deliberately treated differently:
+//
+//   · No key, or no customer found — proceed. Most users never paid, and a
+//     free user must not be trapped in an undeletable account because a
+//     billing parameter is missing. App Store 5.1.1(v) is not optional.
+//   · A customer WAS found and cancelling failed — stop. Deleting the identity
+//     of someone with a live subscription leaves them being charged for an
+//     account that no longer exists, and with no way to sign in and cancel.
+//     That is worse than a failed deletion they can retry.
 async function cancelStripe(sub, email) {
   let stripe;
   try {
     stripe = new Stripe(await getParam(process.env.STRIPE_KEY_PARAM || '/traxent/stripe/secret_key'));
-  } catch {
-    console.warn('Stripe key not configured — skipping billing cancellation');
+  } catch (e) {
+    console.warn('Stripe key not configured — skipping billing cancellation:', e.message);
     return;
   }
   // Customers are findable by the auth0_sub metadata set at checkout; fall
@@ -112,15 +136,31 @@ async function cancelStripe(sub, email) {
   if (safeEmail) queries.push(`email:'${safeEmail}'`);
   const seen = new Set();
   for (const query of queries) {
-    const customers = await stripe.customers.search({ query });
+    let customers;
+    try {
+      customers = await stripe.customers.search({ query });
+    } catch (e) {
+      // A restricted key without customer-read, or search not enabled on the
+      // account. We cannot prove the user has no subscription, but we also
+      // cannot prove they have one — and blocking every deletion on a lookup
+      // permission is the wrong trade. Log loudly and carry on.
+      console.error('BILLING CHECK FAILED — could not search Stripe customers:', e.message);
+      continue;
+    }
     for (const customer of customers.data) {
       if (seen.has(customer.id)) continue;
       seen.add(customer.id);
       const subs = await stripe.subscriptions.list({ customer: customer.id, status: 'active' });
       for (const s of subs.data) {
-        await stripe.subscriptions.cancel(s.id, {
-          cancellation_details: { comment: 'Account deleted by user' },
-        });
+        try {
+          await stripe.subscriptions.cancel(s.id, {
+            cancellation_details: { comment: 'Account deleted by user' },
+          });
+        } catch (e) {
+          // Found a live subscription and could not stop it. Refuse to go
+          // further — see the note above cancelStripe.
+          throw new StepError('billing', `could not cancel subscription ${s.id}: ${e.message}`);
+        }
         console.log('Cancelled Stripe subscription', s.id);
       }
     }
@@ -151,12 +191,31 @@ async function purgeUserData(sub) {
 }
 
 // 3 ── Auth0: delete the identity via the Management API.
+// Auth0 answers failures with a JSON body that names the actual problem
+// ("Grant type not allowed", "Insufficient scope"). Throwing on the status
+// code alone discards exactly the sentence that would have explained it.
+async function auth0Error(res) {
+  let detail = '';
+  try {
+    const body = await res.text();
+    detail = body ? ' — ' + body.slice(0, 300) : '';
+  } catch { /* body already consumed or unreadable */ }
+  return detail;
+}
+
 async function deleteAuth0User(sub) {
   const domain = new URL(ISSUER).hostname;
-  const [clientId, clientSecret] = await Promise.all([
-    getParam('/traxent/auth0/m2m_client_id'),
-    getParam('/traxent/auth0/m2m_client_secret'),
-  ]);
+
+  let clientId, clientSecret;
+  try {
+    [clientId, clientSecret] = await Promise.all([
+      getParam('/traxent/auth0/m2m_client_id'),
+      getParam('/traxent/auth0/m2m_client_secret'),
+    ]);
+  } catch (e) {
+    throw new StepError('auth0_credentials', 'could not read m2m credentials from SSM: ' + e.message);
+  }
+
   const tokenRes = await fetch(`https://${domain}/oauth/token`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -167,15 +226,24 @@ async function deleteAuth0User(sub) {
       audience: `https://${domain}/api/v2/`,
     }),
   });
-  if (!tokenRes.ok) throw new Error('Auth0 management token request failed: ' + tokenRes.status);
+  if (!tokenRes.ok) {
+    throw new StepError('auth0_token',
+      `management token request failed: ${tokenRes.status}${await auth0Error(tokenRes)}`);
+  }
   const { access_token } = await tokenRes.json();
 
   const delRes = await fetch(
     `https://${domain}/api/v2/users/${encodeURIComponent(sub)}`,
     { method: 'DELETE', headers: { Authorization: `Bearer ${access_token}` } },
   );
+  // 404 = already gone, which is the state we wanted.
   if (!delRes.ok && delRes.status !== 404) {
-    throw new Error('Auth0 user deletion failed: ' + delRes.status);
+    // The likeliest cause of a 403 here is the m2m application not being
+    // granted `delete:users` on the Management API. It is a separate scope
+    // from the read:users / update:users the other functions need, so an app
+    // that works everywhere else can still fail on exactly this call.
+    throw new StepError('auth0_delete',
+      `user deletion failed: ${delRes.status}${await auth0Error(delRes)}`);
   }
 }
 
@@ -195,7 +263,7 @@ export const handler = async (event) => {
 
   try {
     await cancelStripe(sub, payload.email);
-    await purgeUserData(sub);
+    await purgeUserData(sub).catch((e) => { throw new StepError('data_purge', e.message); });
     await deleteAuth0User(sub);
     // Last, and deliberately outside the failure path above: an erasure that
     // misses the mailing list is the one the person actually notices.
@@ -203,7 +271,15 @@ export const handler = async (event) => {
     console.log('Account deleted:', sub);
     return json(204, null);
   } catch (e) {
-    console.error('delete-account failed for', sub, e);
-    return json(500, { error: 'deletion_failed', message: 'Deletion failed — please retry. Nothing further is charged while this is unresolved.' });
+    const step = e.step || 'unknown';
+    // One greppable line carrying the step and the underlying message. What
+    // was here before logged the error object alone, which in CloudWatch
+    // rendered as a stack trace with no indication of which stage produced it.
+    console.error(`DELETE-ACCOUNT FAILED step=${step} sub=${sub}: ${e.message}`, e);
+    return json(500, {
+      error: 'deletion_failed',
+      step,
+      message: 'Deletion failed — please retry. Nothing further is charged while this is unresolved.',
+    });
   }
 };

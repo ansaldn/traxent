@@ -31,7 +31,17 @@ async function apiFetch(path, opts) {
       (opts && opts.headers) || {}
     ),
   }));
-  if (!res.ok) throw new Error('userdata-api-' + res.status);
+  if (!res.ok) {
+    // Keep the message shape ('userdata-api-<status>') that existing callers
+    // match on, but carry the parsed body too. Without this the account page
+    // could only ever say "something went wrong": the API's own explanation of
+    // which step failed was read off the wire and thrown away one line before
+    // anyone could see it.
+    const err = new Error('userdata-api-' + res.status);
+    err.status = res.status;
+    try { err.body = await res.json(); } catch { err.body = null; }
+    throw err;
+  }
   return res.status === 204 ? null : res.json();
 }
 

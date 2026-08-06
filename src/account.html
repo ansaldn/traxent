@@ -420,10 +420,26 @@ async function deleteAccount() {
     showToast('Your account has been deleted.');
     setTimeout(() => { try { logout(); } catch (e) { window.location.href = '/'; } }, 1200);
   } catch (err) {
-    console.error('Account deletion error:', err);
+    // The old handler showed "deletion isn't available yet" for every failure.
+    // That copy was stale — deletion IS built — and worse, it hid the reason:
+    // the API returns which step failed, and it was being discarded here. If
+    // this ever fires again, the console line below is the thing to send on.
+    console.error('Account deletion failed:',
+      'status=' + (err.status || 'n/a'),
+      'step=' + ((err.body && err.body.step) || 'n/a'),
+      err);
     hideDeleteModal();
     if (btn) { btn.disabled = false; btn.textContent = 'Delete forever'; }
-    showToast('Account deletion isn\'t available yet — please email hello@traxent.io.', false);
+    // Billing is the one failure with a specific, actionable meaning for the
+    // user: we found a live subscription and could not stop it, so we stopped
+    // rather than delete an account that is still being charged.
+    const step = err.body && err.body.step;
+    showToast(
+      step === 'billing'
+        ? 'We couldn\'t cancel your subscription, so we\'ve stopped rather than delete an account that\'s still being billed. Email hello@traxent.io and we\'ll sort it.'
+        : 'Deletion failed — nothing was charged. Please try again, or email hello@traxent.io.',
+      false,
+    );
   }
 }
 

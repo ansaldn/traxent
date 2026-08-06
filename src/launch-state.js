@@ -90,6 +90,20 @@
 
     /** True once accounts are the primary call to action. */
     launched: function () { return _state === 'launched'; },
+
+    /**
+     * Whether paid plans can actually be bought.
+     *
+     * Separate from the launch state on purpose. The site goes live on 24 Aug
+     * with free accounts; the paid tiers open when real-trade sync exists,
+     * because that feature is what Challenger and Funded Trader are sold on.
+     * Selling a plan whose headline feature doesn't work is worse than not
+     * selling it yet.
+     */
+    paidPlansOpen: function () {
+      var flags = global.TraxentFlags;
+      return !!(flags && flags.isEnabled('paidPlansOpen'));
+    },
   };
 
   // Hide gated content until we know the state — prevents a flash of the wrong

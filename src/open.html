@@ -5,10 +5,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.execute-api.eu-west-2.amazonaws.com https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<!-- Launch state: must load in <head> so gated sections are hidden before
+     they paint. flags.js fetches /flags.json; launch-state.js turns that
+     into the current phase and reveals matching [data-launch] blocks. -->
+<script src="/flags.js?v=__BUILD_SHA__"></script>
+<script src="/launch-state.js?v=__BUILD_SHA__"></script>
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0e0e0c">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
-<title>The waitlist is open — Traxent</title>
+<title>Prelaunch is open — Traxent</title>
 <meta name="description" content="The Traxent waitlist is now open. Join free — no card — and lock in your founding-member price for life. The price you see is the price you pay.">
 <meta property="og:title" content="The waitlist is now open — Traxent">
 <meta property="og:description" content="Join free and lock in your founding price for life. No card, no payment — the price you see is the price you pay.">
@@ -74,24 +79,24 @@ footer{border-top:1px solid var(--border);margin-top:40px;padding:28px 32px;text
 
 <nav><div class="nav-inner"><a href="/" class="nav-logo">trax<em>ent</em></a><a href="/waitlist" class="nav-back">What you get →</a></div></nav>
 
-<!-- ── Waitlist OPEN state (revealed at launch via flags.js: waitlistOpen) ── -->
+<!-- ── Live state (prelaunch or launched) — resolved by launch-state.js ── -->
 <section class="hero" id="nowOpen">
-  <div class="eyebrow fade-up"><span class="live" aria-hidden="true"></span>The waitlist is open</div>
-  <h1 class="fade-up-2">The waitlist is now <em>open</em></h1>
-  <p class="lede fade-up-3">Traxent is live and taking founding members. Join free — no card, no payment — and <strong>lock in your founding price for life</strong>. Whatever a plan costs the day you join is the price you keep, protected from every future rise for as long as you stay subscribed. <strong>The price you see is the price you pay.</strong></p>
+  <div class="eyebrow fade-up"><span class="live" aria-hidden="true"></span>Prelaunch is open</div>
+  <h1 class="fade-up-2">Prelaunch is now <em>open</em></h1>
+  <p class="lede fade-up-3">Traxent is live and taking founding members. Enter your email and we'll send your invite straight away — free, no card — and <strong>lock in your founding price for life</strong>. Whatever a plan costs the day you join is the price you keep, protected from every future rise for as long as you stay subscribed. <strong>The price you see is the price you pay.</strong></p>
 
   <div class="card fade-up-3">
     <form class="form" id="open-form">
       <div class="form-row">
         <input class="inp" type="email" id="open-email" placeholder="your@email.com" autocomplete="email" required>
-        <button class="btn" type="submit">Lock in my price</button>
+        <button class="btn" type="submit">Send my invite</button>
       </div>
       <!-- Bot trap — see the note in waitlist.html. -->
       <input type="text" id="open-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
              style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <div class="note">Free to join. No card. Unsubscribe anytime.</div>
     </form>
-    <div class="success" id="open-success">✓ You're in — your founding price is locked. We'll email your invite shortly.</div>
+    <div class="success" id="open-success">✓ Check your inbox — your invite is on its way. It should arrive within a minute.</div>
   </div>
 
   <div class="links fade-up-3">
@@ -107,8 +112,8 @@ footer{border-top:1px solid var(--border);margin-top:40px;padding:28px 32px;text
 <!-- ── Pre-launch state (shown only before the flag flips on) ── -->
 <section class="hero" id="preLaunch" style="display:none">
   <div class="eyebrow"><span class="live" aria-hidden="true"></span>Opening soon</div>
-  <h1>The waitlist opens<br><em>at midnight</em></h1>
-  <p class="lede">Founding-member sign-ups open at midnight. Come back then to join free and lock in your price for life — the price you see will be the price you pay.</p>
+  <h1>Prelaunch opens<br><em>shortly</em></h1>
+  <p class="lede">Founding-member sign-ups open shortly. Come back then to join free and lock in your price for life — the price you see will be the price you pay.</p>
   <div class="links"><a href="/waitlist">Preview what's coming →</a><a href="/">← Back to home</a></div>
 </section>
 
@@ -117,7 +122,6 @@ footer{border-top:1px solid var(--border);margin-top:40px;padding:28px 32px;text
 <div class="toast" id="toast"></div>
 
 <script src="/subscribe.js?v=__BUILD_SHA__"></script>
-<script src="/flags.js?v=__BUILD_SHA__"></script>
 <script>
 (function(){
   var yr = document.getElementById('yr'); if (yr) yr.textContent = new Date().getFullYear();
@@ -132,12 +136,22 @@ footer{border-top:1px solid var(--border);margin-top:40px;padding:28px 32px;text
 
   // Reveal the correct state. Default markup shows "now open"; if the launch
   // flag is not yet on, swap to the pre-launch state instead.
+  // Three phases now, resolved centrally by launch-state.js.
   var open = document.getElementById('nowOpen');
   var pre = document.getElementById('preLaunch');
-  TraxentFlags.load().then(function(){
-    if (!TraxentFlags.isEnabled('waitlistOpen')) {
-      open.style.display = 'none';
-      pre.style.display = '';
+  TraxentLaunch.ready().then(function (state) {
+    var live = state === 'prelaunch' || state === 'launched';
+    open.style.display = live ? '' : 'none';
+    pre.style.display  = live ? 'none' : '';
+    if (state === 'launched') {
+      // Once accounts are the main event, stop asking for an email here and
+      // send people straight to signup.
+      var card = document.querySelector('.card');
+      if (card) card.innerHTML =
+        '<a class="btn" href="/signup" style="display:block;text-align:center;text-decoration:none">Create your free account</a>' +
+        '<div class="note">Free to start. No card. About a minute.</div>';
+      var h = document.querySelector('h1');
+      if (h) h.innerHTML = 'Traxent is <em>live</em>';
     }
   });
 

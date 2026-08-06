@@ -120,7 +120,22 @@ export const handler = async (event) => {
       cancel_url: 'https://traxent.io/dashboard.html',
       customer: customer.id,
       metadata: { auth0_user_id: userId, plan },
-      subscription_data: { metadata: { auth0_user_id: userId, plan } }
+      subscription_data: {
+        metadata: { auth0_user_id: userId, plan },
+        // The pricing page has been advertising "a 7-day free trial" on every
+        // plan (src/index.html) while this code charged immediately. Matching
+        // the code to the public claim, rather than quietly withdrawing the
+        // claim, is both the honest and the lower-risk direction under UK
+        // consumer protection rules.
+        //
+        // The card IS still collected up front — which is why the old
+        // "No card required" line has been removed from the pricing page
+        // rather than left standing. To make that claim true instead, add
+        // `payment_method_collection: 'if_required'` here; expect materially
+        // more trial signups and materially more churn, so decide it
+        // deliberately rather than as a side effect.
+        trial_period_days: 7,
+      }
     });
 
     return { statusCode: 200, headers, body: JSON.stringify({ url: session.url }) };

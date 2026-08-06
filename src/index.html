@@ -1001,31 +1001,33 @@ footer {
 </head>
 <body>
 
-<!-- Live ticker -->
+<!-- Prop-firm rule ticker.
+     The six price rows that used to lead this (ES1! 5,234.75 +0.43% and
+     friends) were HARDCODED INVENTED NUMBERS presented as live quotes, on a
+     site whose entire proposition is that it tells traders the truth about
+     their numbers. Removed rather than wired to a feed: Alpha Vantage's free
+     tier gives delayed quotes on a 25/day limit, so an honest version would
+     have to be labelled "delayed" and would still be a decoration.
+
+     What's left is real — these are the firms' own published rules, the same
+     ones tracker.html scores against. -->
 <div class="ticker-wrap" aria-hidden="true">
   <div class="ticker-track" id="ticker">
-    <div class="ticker-item"><span class="dot"></span>ES1! <span class="val">5,234.75 +0.43%</span></div>
-    <div class="ticker-item">NQ1! <span class="val">18,342.50 +0.61%</span></div>
-    <div class="ticker-item">SPY <span class="val">523.18 +0.38%</span></div>
-    <div class="ticker-item">AAPL <span class="val neg">211.45 −0.22%</span></div>
-    <div class="ticker-item">NVDA <span class="val">875.30 +1.12%</span></div>
-    <div class="ticker-item">VIX <span class="val">18.4</span></div>
-    <div class="ticker-item">FTMO <span class="val">5% DDL · 10% max DD</span></div>
+    <div class="ticker-item"><span class="dot"></span>FTMO <span class="val">5% DDL · 10% max DD</span></div>
     <div class="ticker-item">Apex <span class="val">30% consistency rule</span></div>
     <div class="ticker-item">MFFU <span class="val">3% EOD drawdown</span></div>
     <div class="ticker-item">FundedNext <span class="val">5 min trading days</span></div>
+    <div class="ticker-item">Topstep <span class="val">Trailing max drawdown</span></div>
+    <div class="ticker-item">Goat Funded <span class="val">5% DDL · 10% static DD</span></div>
     <!-- duplicate for seamless loop -->
-    <div class="ticker-item"><span class="dot"></span>ES1! <span class="val">5,234.75 +0.43%</span></div>
-    <div class="ticker-item">NQ1! <span class="val">18,342.50 +0.61%</span></div>
-    <div class="ticker-item">SPY <span class="val">523.18 +0.38%</span></div>
-    <div class="ticker-item">AAPL <span class="val neg">211.45 −0.22%</span></div>
-    <div class="ticker-item">NVDA <span class="val">875.30 +1.12%</span></div>
-    <div class="ticker-item">VIX <span class="val">18.4</span></div>
-    <div class="ticker-item">FTMO <span class="val">5% DDL · 10% max DD</span></div>
+    <div class="ticker-item"><span class="dot"></span>FTMO <span class="val">5% DDL · 10% max DD</span></div>
     <div class="ticker-item">Apex <span class="val">30% consistency rule</span></div>
     <div class="ticker-item">MFFU <span class="val">3% EOD drawdown</span></div>
     <div class="ticker-item">FundedNext <span class="val">5 min trading days</span></div>
+    <div class="ticker-item">Topstep <span class="val">Trailing max drawdown</span></div>
+    <div class="ticker-item">Goat Funded <span class="val">5% DDL · 10% static DD</span></div>
   </div>
+</div>
 </div>
 
 <!-- Nav -->
@@ -1445,15 +1447,16 @@ const plans = [
     name: 'Enterprise',
     gbp: null, usd: null,
     suffix: '',
-    altGbp: 'Bulk seats · SSO · SCIM',
-    altUsd: 'Bulk seats · SSO · SCIM',
-    desc: 'For trading firms, training academies and bulk licences. Includes SSO, SCIM, third-party data logging and a dedicated account manager.',
+    altGbp: 'Bulk seats · SCIM · SSO on request',
+    altUsd: 'Bulk seats · SCIM · SSO on request',
+    desc: 'For trading firms, training academies and bulk licences. SCIM provisioning and bulk seats work today; SSO, white label and data logging are switched on per customer.',
     features: [
       'Everything in Funded Trader',
       'Bulk user seats',
-      'SSO + SCIM integration',
-      'Third-party data logging',
-      'White label option',
+      'SCIM provisioning (Okta, Entra ID, JumpCloud)',
+      { text: 'SAML / OIDC single sign-on — on request', dim: true },
+      { text: 'Third-party data logging — on request', dim: true },
+      { text: 'White label — on request', dim: true },
       'Dedicated account manager',
       'Custom SLA',
     ],

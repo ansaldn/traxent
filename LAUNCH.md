@@ -3,39 +3,76 @@
 **Launch: Monday 24 August 2026, 08:00 BST.** It flips itself — `fullLaunch` in
 `src/flags.json`. Nothing needs deploying that morning.
 
-This file replaces the scattered TODO lists. Completed work has been **deleted,
-not ticked** — if it isn't here, it's done. Where the state is genuinely
-unknown, there's a test below rather than a guess.
+Completed work is **deleted, not ticked** — if it isn't here, it's done. Where
+the state is genuinely unknown there's a test below rather than a guess.
 
-Two sections left: **decide** (yours) and **check** (yours). The build
-queue is empty.
+Everything on main is pushed and deployed. The build queue is empty. What's
+left is **two judgement calls, three checks, and some tidying.**
+
+*Last verified against the repo on 2026-08-06.*
 
 ---
 
 # 🔴 DECIDE — needs you, not code
 
-## D1. Enterprise features listed without qualification
+## D1. The news feed works, but is it showing the right news?
 
-`/enterprise` honestly marks white-label and data-logging "on request". The
-homepage pricing table lists them as plain Enterprise features. Make the pricing
-table match the enterprise page.
+Confirmed live: 50 stories, sentiment tags, filters, `FUNDED TRADER` gate all
+working. The key in SSM is being read correctly.
+
+The remaining question is editorial, not technical. The top stories are Royal
+Caribbean earnings, an ADM dividend hike, and a PPL Corporation stock outlook.
+Traxent's audience trades **index futures, FX and metals** — none of those three
+stories helps anyone decide whether they're ready for a funded challenge.
+
+That's the `financial_markets` topic doing it. Alpha Vantage has no futures or FX
+topic, so the options are:
+
+| Option | Result |
+|---|---|
+| **Drop `financial_markets`** | Macro + monetary + fiscal only. Fewer stories, but every one is a rate decision, a CPI print, a central-bank speech — things that actually move ES and the dollar. Risk: on a quiet week the feed could look thin. |
+| **Keep it** | 50 stories always, but most are single-stock US equity coverage your audience doesn't trade. |
+| **Keep it and filter harder** | Extend the noise regex to drop anything whose only tickers are single equities. More code, and it'll misfire occasionally. |
+
+My read: **drop it.** A feed of ten genuinely relevant macro stories is worth
+more to a futures trader than fifty stories about cruise lines, and a thin
+honest feed is easier to defend than a full irrelevant one. But this is a
+product call about what your users want to read, so it's yours. One line in
+`backend/functions/news-feed/index.mjs:90` either way.
+
+## D2. When do paid plans open?
+
+`paidPlansOpen` is `false`, deliberately — the site launches on 24 August with
+**free accounts only**, because real-trade sync is what Challenger and Funded
+Trader are sold on and no broker connector exists yet.
+
+Nothing to do before launch. But know that this is a flag flip and nothing else:
+the day the first connector is live, set it true and the pricing page becomes
+purchasable with no deploy. Until then the cards say *"Opens when trade sync
+goes live — join free now and this price is yours when it does."*
+
+Worth deciding roughly when you're telling founding members that is, since
+they'll ask.
 
 ---
 
 # 🔵 CHECK — state unknown, here's how to find out
 
-Run these and tell me the results. Each is a single command or a single click.
+## T1. Does account deletion work now?
 
-## T1. Does account deletion work?
+The 500 was `delete-account` reading `/traxent/auth0/mgmt_client_id`, a
+parameter that was never created. Fixed to `m2m_*` in `954a294` and deployed —
+but **not retested since**.
 
-Sign in on the live site → `/account` → delete account. **Pass:** the account
-goes and you're signed out. **Fail:** a 500, which means item 2 above.
+Sign in on the live site → `/account` → delete account.
+
+**Pass:** the account goes and you're signed out. **Fail:** a 500 — send me the
+CloudWatch line and I'll take it from there.
+
+This one matters beyond the website: App Store guideline 5.1.1 requires in-app
+account deletion, and the iOS app calls the same endpoint.
 
 ## T2. Does the launch flip look right?
-
-The old instructions here were wrong: they used top-level `await`, which is a
-syntax error in Safari's console, and then called `location.reload()`, which
-would have thrown the override away anyway. Replaced with a proper test hook.
 
 On traxent.io, in the console:
 
@@ -45,8 +82,8 @@ TraxentLaunch.preview('launched')
 
 **Pass:** nav becomes **Sign up** with **Sign in** beside it, the hero and
 banner stop asking for an email and offer account creation, and the pricing
-cards still say "Opens when trade sync goes live" (paid plans are a separate
-flag, so they stay shut).
+cards still say "Opens when trade sync goes live" — paid plans are a separate
+flag, so they stay shut.
 
 Then put it back:
 
@@ -54,7 +91,7 @@ Then put it back:
 TraxentLaunch.preview()
 ```
 
-Local and visual only — it touches nothing on the server and a reload resets it
+Local and visual only — it touches nothing on the server, and a reload resets it
 regardless. Worth doing on `/`, `/open` and `/waitlist`, which all carry gated
 blocks.
 
@@ -72,7 +109,24 @@ Confirm with them:
 - **Known gap:** the iOS app syncs progress and firm selections but **not paper
   trades**. `waitlist.html` promises "full sim-journal sync on iPhone" — check
   whether that's still 4–8 weeks away before founding members read it.
-- Account deletion must work in-app (App Store 5.1.1) — this is T2 on iOS too.
+- Account deletion must work in-app — same endpoint as T1, same guideline 5.1.1.
+
+---
+
+# 🟡 TIDYING — no rush, but it's cluttering the repo
+
+You asked to close all branches and work out of main. Locally that's done —
+`main` is the only branch and the working tree is clean. The **remote** still
+has 34 branches:
+
+| Branches | What to do |
+|---|---|
+| **31 dependabot** | These are dependency bumps GitHub opened on its own. Most are Stripe and AWS SDK minor versions. Worth merging in a batch **after** launch, not during launch week — a surprise SDK change on 23 August is the last thing you need. |
+| `chore/md-action-items`, `feat/iso27001-soc2-readiness` | Fully merged into main, 0 unique commits. Safe to delete on GitHub whenever. |
+| `feat/blog` | 2 commits not in main, but they're a **stale snapshot** — the marketing tooling in them already exists in main in a later form. Nothing to salvage. Safe to delete. |
+
+Say the word and I'll delete the three merged ones; I've left them alone because
+deleting someone's branches without asking is a bad habit for me to have.
 
 ---
 
@@ -85,10 +139,12 @@ Confirm with them:
 | S3 → CloudFront OAC | `SECURITY-ACTIONS.md` carries a **STOP** — doing the lock-down first 403s the whole site. |
 | iOS certificate pinning | Needs a real pin from the iOS build. |
 | Stripe webhook idempotency | After the payments cutover settles. |
+| Payments CloudFormation import | Template is ready with `DeletionPolicy: Retain`; the console import is a clickOps job with no deadline attached. |
 | Edge member-redirect | Built, dormant, and the client-side fallback already removes the flash. Enhancement, not a fix. |
 | SOC 2 / ISO 27001 | Correctly **not** claimed anywhere. See `docs/security/COMPLIANCE-ROADMAP.md`. |
 | Cloudflare Turnstile | Honeypot + per-IP cap is proportionate until junk signups actually appear. |
 | Seat enforcement, SSO plan inheritance | No enterprise customer yet. See `docs/ENTERPRISE.md`. |
+| Broker connectors (MT4/5, cTrader, TradingView) | Blocked on broker approval, not on code. Drives D2. |
 
 ---
 

@@ -16,8 +16,13 @@
 // Env vars: TABLE_NAME, AUTH0_ISSUER, AUTH0_AUDIENCE (comma-separated —
 // SPA + iOS Native client IDs), ALLOWED_ORIGIN. SSM params:
 //   /traxent/stripe/secret_key
-//   /traxent/auth0/mgmt_client_id
-//   /traxent/auth0/mgmt_client_secret
+//   /traxent/auth0/m2m_client_id      ) the SAME m2m app the Stripe webhook,
+//   /traxent/auth0/m2m_client_secret  ) account-update and admin-metrics use.
+//
+// This function used to read mgmt_client_id / mgmt_client_secret — names no
+// other function used and which were never created in SSM. getParam threw, and
+// every deletion returned a 500. Account deletion is an App Store 5.1.1
+// requirement, so this would have failed review.
 //
 // SCHEMA NOTE: adapted to the deployed TraxentUserData table, whose primary key
 // is (userId HASH, sk RANGE). (The original draft assumed a pk="USER#sub" design.)
@@ -149,8 +154,8 @@ async function purgeUserData(sub) {
 async function deleteAuth0User(sub) {
   const domain = new URL(ISSUER).hostname;
   const [clientId, clientSecret] = await Promise.all([
-    getParam('/traxent/auth0/mgmt_client_id'),
-    getParam('/traxent/auth0/mgmt_client_secret'),
+    getParam('/traxent/auth0/m2m_client_id'),
+    getParam('/traxent/auth0/m2m_client_secret'),
   ]);
   const tokenRes = await fetch(`https://${domain}/oauth/token`, {
     method: 'POST',

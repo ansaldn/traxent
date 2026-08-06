@@ -58,19 +58,55 @@ they'll ask.
 
 # 🔵 CHECK — state unknown, here's how to find out
 
-## T1. Does account deletion work now?
+## T1. Account deletion — still failing
 
-The 500 was `delete-account` reading `/traxent/auth0/mgmt_client_id`, a
-parameter that was never created. Fixed to `m2m_*` in `954a294` and deployed —
-but **not retested since**.
+The `m2m_*` parameter fix was real but wasn't the whole problem. Deletion still
+doesn't work, and the reason it has taken two rounds is that **nothing in the
+system was saying what went wrong**: the Lambda caught every error and returned
+a bare `deletion_failed`, and the account page showed "deletion isn't available
+yet" no matter what came back. Both now name the failing step.
 
-Sign in on the live site → `/account` → delete account.
+### Step 1 — check Auth0 scopes first (30 seconds, no deploy)
 
-**Pass:** the account goes and you're signed out. **Fail:** a 500 — send me the
-CloudWatch line and I'll take it from there.
+The most likely cause, and it costs nothing to rule out. Auth0 Dashboard →
+**Applications** → the M2M app → **APIs** tab → **Auth0 Management API** →
+expand **Permissions**.
 
-This one matters beyond the website: App Store guideline 5.1.1 requires in-app
-account deletion, and the iOS app calls the same endpoint.
+`delete:users` must be ticked. It is a **separate scope** from the
+`read:users` / `update:users` that `account-update` and the Stripe webhook use —
+so an app that works everywhere else in Traxent will still fail on this one
+call, with a 403 that the old code reported as an anonymous 500.
+
+If it isn't ticked: tick it, save, and retest. No deploy needed — the scope is
+granted on Auth0's side.
+
+### Step 2 — if that wasn't it, read the step name
+
+Deploy the current main, then retry the deletion. The browser console now prints:
+
+```
+Account deletion failed: status=500 step=auth0_delete …
+```
+
+Or from CloudWatch:
+
+```bash
+aws logs tail /aws/lambda/traxent-delete-account --since 15m \
+  --filter-pattern "DELETE-ACCOUNT FAILED" --profile traxent --region eu-west-2
+```
+
+| `step=` | What it means |
+|---|---|
+| `billing` | Found a live Stripe subscription and couldn't cancel it. Deletion stopped on purpose — deleting an account that's still being charged is worse than failing. |
+| `data_purge` | DynamoDB. Permissions or table name. |
+| `auth0_credentials` | The m2m id/secret couldn't be read from SSM. |
+| `auth0_token` | Client-credentials grant refused. The log carries Auth0's own sentence. |
+| `auth0_delete` | The delete call itself — this is the `delete:users` scope in Step 1. |
+
+Send me the step and I'll go straight to it rather than guessing again.
+
+This matters beyond the website: App Store 5.1.1 requires in-app account
+deletion, and the iOS app calls this same endpoint.
 
 ## T2. Does the launch flip look right?
 
@@ -122,11 +158,17 @@ has 34 branches:
 | Branches | What to do |
 |---|---|
 | **31 dependabot** | These are dependency bumps GitHub opened on its own. Most are Stripe and AWS SDK minor versions. Worth merging in a batch **after** launch, not during launch week — a surprise SDK change on 23 August is the last thing you need. |
-| `chore/md-action-items`, `feat/iso27001-soc2-readiness` | Fully merged into main, 0 unique commits. Safe to delete on GitHub whenever. |
+| `chore/md-action-items`, `feat/iso27001-soc2-readiness` | Fully merged into main, 0 unique commits. Safe to delete. |
 | `feat/blog` | 2 commits not in main, but they're a **stale snapshot** — the marketing tooling in them already exists in main in a later form. Nothing to salvage. Safe to delete. |
 
-Say the word and I'll delete the three merged ones; I've left them alone because
-deleting someone's branches without asking is a bad habit for me to have.
+**Deleting the three — one command, in Terminal, from the repo folder:**
+
+```bash
+cd ~/Documents/traxent-web && git push origin --delete chore/md-action-items feat/iso27001-soc2-readiness feat/blog
+```
+
+I can't run this myself — pushing needs your GitHub credentials, which the
+sandbox I work in deliberately doesn't have.
 
 ---
 

@@ -103,7 +103,7 @@
 | Information deletion / retention | A.8.10, A.5.33 | C1.2 | Retention schedule + self-service erasure within 30 days | Implemented | [`../data-retention-policy.md`](../data-retention-policy.md) |
 | Data classification | A.5.12, A.5.13 | C1.1 | Classification scheme; admin metrics are counts-only (no PII leaves the boundary) | Implemented | [`admin-metrics/index.mjs`](../../../backend/user-data/functions/admin-metrics/index.mjs) header |
 | Privacy / UK GDPR | A.5.34 | (Privacy P-series) | Lawful bases, DSR, DPIA, 72-h breach trigger | Implemented | [`../data-protection-policy.md`](../data-protection-policy.md) |
-| Vendor / sub-processor management | A.5.19–A.5.22, A.5.23 | CC9.2 | Register of AWS/Auth0/Stripe/Plausible/Formspree/GitHub; **collect DPAs + current certs = Owner-action** | Partial | [`../vendor-management.md`](../vendor-management.md) |
+| Vendor / sub-processor management | A.5.19–A.5.22, A.5.23 | CC9.2 | Register of AWS/Auth0/Stripe/Plausible/Resend/GitHub; **collect DPAs + current certs = Owner-action** | Partial | [`../vendor-management.md`](../vendor-management.md) |
 | Physical & environmental security | A.7.1–A.7.14 | CC6.4 | No in-scope facilities; inherited from AWS | Inherited | [`isms-scope.md`](isms-scope.md) §4 |
 
 ## H. Incident management & disclosure

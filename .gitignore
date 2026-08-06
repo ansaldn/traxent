@@ -9,3 +9,6 @@ traxent.code-workspace
 # AWS SAM / Lambda build artifacts
 .aws-sam/
 backend/**/*.zip
+
+# Claude Code local session config
+.claude/

@@ -4,7 +4,7 @@
 <script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.execute-api.eu-west-2.amazonaws.com https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0e0e0c">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -81,17 +81,21 @@ footer{border-top:1px solid var(--border);margin-top:40px;padding:28px 32px;text
   <p class="lede fade-up-3">Traxent is live and taking founding members. Join free — no card, no payment — and <strong>lock in your founding price for life</strong>. Whatever a plan costs the day you join is the price you keep, protected from every future rise for as long as you stay subscribed. <strong>The price you see is the price you pay.</strong></p>
 
   <div class="card fade-up-3">
-    <form class="form" id="open-form" onsubmit="joinOpen(event)">
+    <form class="form" id="open-form">
       <div class="form-row">
         <input class="inp" type="email" id="open-email" placeholder="your@email.com" autocomplete="email" required>
         <button class="btn" type="submit">Lock in my price</button>
       </div>
+      <!-- Bot trap — see the note in waitlist.html. -->
+      <input type="text" id="open-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
+             style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <div class="note">Free to join. No card. Unsubscribe anytime.</div>
     </form>
     <div class="success" id="open-success">✓ You're in — your founding price is locked. We'll email your invite shortly.</div>
   </div>
 
   <div class="links fade-up-3">
+    <a href="/signup">Create your account →</a>
     <a href="/waitlist">See everything you get →</a>
     <a href="/#pricing">View plans &amp; prices</a>
     <a href="/founding-terms">Price-lock terms →</a>
@@ -112,6 +116,7 @@ footer{border-top:1px solid var(--border);margin-top:40px;padding:28px 32px;text
 
 <div class="toast" id="toast"></div>
 
+<script src="/subscribe.js?v=__BUILD_SHA__"></script>
 <script src="/flags.js?v=__BUILD_SHA__"></script>
 <script>
 (function(){
@@ -136,30 +141,16 @@ footer{border-top:1px solid var(--border);margin-top:40px;padding:28px 32px;text
     }
   });
 
-  window.joinOpen = function(e){
-    e.preventDefault();
-    var email = document.getElementById('open-email').value.trim();
-    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!re.test(email)) { showToast('Please enter a valid email address', false); return; }
-    var q = new URLSearchParams(location.search);
-    fetch('https://formspree.io/f/mlgogjdq', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        email: email, source: 'open-page', ts: new Date().toISOString(),
-        utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '',
-        utm_campaign: q.get('utm_campaign') || '', referrer: document.referrer || ''
-      })
-    }).then(function(r){
-      document.getElementById('open-form').style.display = 'none';
-      document.getElementById('open-success').style.display = 'block';
-      showToast(r.ok ? "You're on the list — invite on its way" : "You're on the list!");
-    }).catch(function(){
-      document.getElementById('open-form').style.display = 'none';
-      document.getElementById('open-success').style.display = 'block';
-      showToast("You're on the list!");
-    });
-  };
+  // Signup handled by /subscribe.js — posts to our own API, captures UTM
+  // attribution, and only reveals success once the server confirms storage.
+  window.joinOpen = TraxentSubscribe.wire({
+    formId: 'open-form',
+    inputId: 'open-email',
+    successId: 'open-success',
+    honeypotId: 'open-website',
+    source: 'open-page',
+    toast: showToast
+  });
 })();
 </script>
 <script src="/consent.js?v=__BUILD_SHA__" defer></script>

@@ -23,7 +23,7 @@
     } catch (e) {}
   })();
 </script>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://formspree.io https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; form-action 'self' https://formspree.io; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <!-- PWA manifest -->
 <link rel="manifest" href="/manifest.json">
  
@@ -992,6 +992,7 @@ footer {
 }
 </style>
 <script src="/config.js" defer></script>
+<script src="/subscribe.js?v=__BUILD_SHA__"></script>
 </head>
 <body>
 
@@ -1066,12 +1067,15 @@ footer {
       <p class="wlo-sub">Join free — no card, no payment. The price you see today is the price you pay, protected from every future rise for as long as you stay subscribed.</p>
     </div>
     <div class="wlo-action">
-      <form class="wlo-form" id="wlopen-form" onsubmit="joinWaitlistOpen(event)">
+      <form class="wlo-form" id="wlopen-form">
         <div class="wlo-row">
           <input class="wlo-inp" type="email" id="wlopen-email" placeholder="your@email.com" autocomplete="email" required>
           <button class="wlo-btn" type="submit">Lock in my price</button>
         </div>
-        <div class="wlo-note">Free · no card · <a href="/waitlist">learn more</a> · <a href="/founding-terms">price-lock terms</a></div>
+        <!-- Bot trap — see the note in waitlist.html. -->
+        <input type="text" id="wlopen-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
+               style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+        <div class="wlo-note">Free · no card · unsubscribe anytime · <a href="/waitlist">learn more</a> · <a href="/founding-terms">price-lock terms</a></div>
       </form>
       <div class="wlo-success" id="wlopen-success">✓ You're in — your founding price is locked. We'll email your invite.</div>
     </div>
@@ -1167,15 +1171,18 @@ footer {
       <p class="hero-body fade-up-3">Traxent tracks your trading habits against the real rules of FTMO, Apex, MyFundedFutures, and FundedNext — so you fix what's wrong before you pay for a challenge.</p>
 
       <div id="waitlist" class="fade-up-4">
-        <div class="waitlist-form">
+        <div class="waitlist-form" id="waitlist-form">
           <div class="waitlist-input-row">
             <input class="waitlist-input" type="email" id="waitlist-email" placeholder="your@email.com" autocomplete="email">
-            <button class="btn-waitlist" onclick="joinWaitlist()">Join waitlist</button>
+            <button class="btn-waitlist">Join waitlist</button>
           </div>
-          <div class="waitlist-note">Early access is now open — join free and lock in your price.</div>
-          <div class="waitlist-success" id="waitlist-success">
-            You're on the list. We'll be in touch before public launch.
-          </div>
+          <!-- Bot trap — see the note in waitlist.html. Off-screen, never filled by a human. -->
+          <input type="text" id="waitlist-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
+                 style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          <div class="waitlist-note">Free to join. No spam. Unsubscribe anytime.</div>
+        </div>
+        <div class="waitlist-success" id="waitlist-success">
+          You're on the list. We'll be in touch before public launch.
         </div>
       </div>
 
@@ -1467,41 +1474,17 @@ function renderPricing() {
 }
 
 // ── WAITLIST ──────────────────────────────────────────────────────
-function joinWaitlist() {
-  const email = document.getElementById('waitlist-email').value.trim();
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!re.test(email)) {
-    showToast('Please enter a valid email address', false);
-    return;
-  }
-  const ENDPOINT = 'https://formspree.io/f/mlgogjdq';
-  fetch(ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify({ email, source: 'waitlist-hero', ts: new Date().toISOString() })
-  })
-  .then(r => {
-    if (r.ok) {
-      document.querySelector('.waitlist-input-row').style.display = 'none';
-      document.querySelector('.waitlist-note').style.display = 'none';
-      document.getElementById('waitlist-success').style.display = 'block';
-      showToast("You're on the list — we'll be in touch soon");
-    } else {
-      showToast('Something went wrong — please try again', false);
-    }
-  })
-  .catch(() => {
-    // Fallback — show success anyway for demo
-    document.querySelector('.waitlist-input-row').style.display = 'none';
-    document.querySelector('.waitlist-note').style.display = 'none';
-    document.getElementById('waitlist-success').style.display = 'block';
-    showToast("You're on the list!");
-  });
-}
-
-// Allow Enter key on email input
-document.getElementById('waitlist-email').addEventListener('keydown', e => {
-  if (e.key === 'Enter') joinWaitlist();
+// Handled by /subscribe.js, which posts to our own API. It only reveals the
+// success state once the server confirms the address was stored — the previous
+// version showed success even when the request failed, silently losing people.
+// Enter-key handling and the in-flight button state come from wire().
+const joinWaitlist = TraxentSubscribe.wire({
+  formId: 'waitlist-form',
+  inputId: 'waitlist-email',
+  successId: 'waitlist-success',
+  honeypotId: 'waitlist-website',
+  source: 'waitlist-hero',
+  toast: showToast
 });
 
 // ── TOAST ─────────────────────────────────────────────────────────
@@ -1544,27 +1527,16 @@ renderPricing();
       if (!TraxentFlags.isEnabled('waitlistOpen')) banner.style.display = 'none';
     });
   }
-  window.joinWaitlistOpen = function(e){
-    if (e && e.preventDefault) e.preventDefault();
-    var email = (document.getElementById('wlopen-email').value || '').trim();
-    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!re.test(email)) { showToast('Please enter a valid email address', false); return; }
-    fetch('https://formspree.io/f/mlgogjdq', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ email: email, source: 'home-launch-banner', ts: new Date().toISOString() })
-    }).then(function(r){
-      document.getElementById('wlopen-form').style.display = 'none';
-      document.getElementById('wlopen-success').style.display = 'block';
-      showToast(r.ok ? "You're on the list — invite on its way" : "You're on the list!");
-    }).catch(function(){
-      document.getElementById('wlopen-form').style.display = 'none';
-      document.getElementById('wlopen-success').style.display = 'block';
-      showToast("You're on the list!");
-    });
-  };
-  var inp = document.getElementById('wlopen-email');
-  if (inp) inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') joinWaitlistOpen(e); });
+  // Signup handled by /subscribe.js — success is only ever shown once the
+  // server confirms the address was stored.
+  window.joinWaitlistOpen = TraxentSubscribe.wire({
+    formId: 'wlopen-form',
+    inputId: 'wlopen-email',
+    successId: 'wlopen-success',
+    honeypotId: 'wlopen-website',
+    source: 'home-launch-banner',
+    toast: showToast
+  });
 })();
 </script>
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>

@@ -38,6 +38,14 @@ Parameters:
       EVERYONE — set this to your own Auth0 user id (shown as "Account ID" on the
       /account page) to grant yourself access.
     NoEcho: true
+  ResendSegmentName:
+    Type: String
+    Default: Traxent waitlist
+    Description: >
+      Name of the Resend segment (formerly "audience") that new signups are
+      mirrored into. Must match SEGMENT_NAME in
+      backend/marketing/campaign.config.mjs, or the broadcast will go out to a
+      different list from the one being populated.
 
 Resources:
 
@@ -60,6 +68,154 @@ Resources:
         PointInTimeRecoveryEnabled: true
       SSESpecification:
         SSEEnabled: true
+
+  # ── Marketing / waitlist subscribers ──────────────────────────────────────
+  # The system of record for the mailing list, replacing Formspree. Resend is a
+  # mirror we push to and receive events from; this table is the truth, and the
+  # only place the consent evidence (timestamp, IP, wording shown) is stored.
+  #
+  # Partition key is the lowercased email itself — one row per person, so a
+  # duplicate signup is an idempotent overwrite rather than a duplicate record.
+  #
+  # StatusIndex exists so exports and counts can Query by status instead of
+  # Scanning the whole table. Rate-limit counter rows deliberately carry neither
+  # `status` nor `createdAt`, so DynamoDB never projects them into the index.
+  SubscribersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: TraxentSubscribers
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: createdAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: StatusIndex
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      # Expires the per-IP rate-limit counters. Subscriber rows never set
+      # `expiresAt`, so they are never touched by the TTL sweeper.
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      SSESpecification:
+        SSEEnabled: true
+
+  # PUBLIC endpoint — no Auth0 token, by necessity: the people signing up don't
+  # have accounts yet. Protected by a honeypot field, strict server-side address
+  # validation, a per-IP hourly cap enforced in DynamoDB, and the API's stage
+  # throttling. Reads the Resend key from SSM to mirror each contact across.
+  SubscribeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-subscribe
+      Handler: index.handler
+      CodeUri: functions/subscribe/
+      Timeout: 15
+      Environment:
+        Variables:
+          SUBSCRIBERS_TABLE: !Ref SubscribersTable
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+          RESEND_KEY_PARAM: /traxent/resend/api_key
+          RESEND_SEGMENT_NAME: !Ref ResendSegmentName
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SubscribersTable
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/resend/*"
+      Events:
+        Subscribe:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /subscribe
+            Method: POST
+
+  # Receives Resend's unsubscribe / bounce / complaint / suppression events so
+  # this table stays accurate. Public route, authenticated purely by the Svix
+  # signature (verified in functions/resend-webhook/svix.mjs).
+  ResendWebhookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-resend-webhook
+      Handler: index.handler
+      CodeUri: functions/resend-webhook/
+      Timeout: 15
+      Environment:
+        Variables:
+          SUBSCRIBERS_TABLE: !Ref SubscribersTable
+          RESEND_WEBHOOK_SECRET_PARAM: /traxent/resend/webhook_secret
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SubscribersTable
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/resend/*"
+      Events:
+        ResendWebhook:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /webhooks/resend
+            Method: POST
+
+  # Nightly reconciliation between this table and Resend.
+  #
+  # The live sync paths (subscribe, Stripe checkout, the account toggle) are
+  # fast but lossy — one failed API call and the two systems disagree silently.
+  # This job makes the live path trustworthy: it pushes anything still flagged
+  # `resendSynced: false`, suppresses contacts that should be, clears contacts
+  # left behind by an email change, and emails a summary ONLY when something
+  # needed fixing. It never auto-resubscribes anyone; those are reported for a
+  # human instead.
+  ReconcileMarketingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-reconcile-marketing
+      Handler: index.handler
+      CodeUri: functions/reconcile-marketing/
+      Timeout: 300
+      MemorySize: 512
+      Environment:
+        Variables:
+          SUBSCRIBERS_TABLE: !Ref SubscribersTable
+          RESEND_KEY_PARAM: /traxent/resend/api_key
+          RESEND_SEGMENT_NAME: !Ref ResendSegmentName
+          ALERTS_TOPIC_ARN: !Ref AlertsTopic
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SubscribersTable
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt AlertsTopic.TopicName
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/resend/*"
+      Events:
+        Nightly:
+          Type: Schedule
+          Properties:
+            # 03:15 UTC — after the day's activity, before anyone is awake to
+            # send a broadcast off a stale list.
+            Schedule: cron(15 3 * * ? *)
+            Name: traxent-reconcile-marketing-nightly
+            Description: Reconcile TraxentSubscribers with Resend.
 
   UserDataFunction:
     Type: AWS::Serverless::Function
@@ -166,7 +322,10 @@ Resources:
           AUTH0_ISSUER: !Ref Auth0Issuer
           AUTH0_AUDIENCE: !Ref Auth0Audience
           ALLOWED_ORIGIN: !Ref AllowedOrigin
+          SUBSCRIBERS_TABLE: !Ref SubscribersTable
       Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SubscribersTable
         - Statement:
             - Effect: Allow
               Action: ssm:GetParameter
@@ -183,6 +342,23 @@ Resources:
           Properties:
             ApiId: !Ref UserDataApi
             Path: /user/password-reset
+            Method: POST
+        # The customer's own marketing opt-out. Soft opt-in under UK PECR is
+        # only lawful if refusing is simple, so this route is a legal
+        # requirement of emailing customers, not a nice-to-have. Both methods
+        # are declared explicitly rather than ANY, so they take precedence over
+        # the data function's greedy ANY /user/{proxy+}.
+        MarketingGet:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/marketing
+            Method: GET
+        MarketingSet:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/marketing
             Method: POST
 
   # Admin-only aggregate metrics dashboard (GET /admin/metrics). Returns COUNTS
@@ -221,6 +397,18 @@ Resources:
             ApiId: !Ref UserDataApi
             Path: /admin/metrics
             Method: GET
+        MarketingPref:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/marketing
+            Method: GET
+        MarketingSet:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/marketing
+            Method: POST
 
   UserDataApi:
     Type: AWS::Serverless::HttpApi
@@ -265,6 +453,29 @@ Resources:
       TopicArn: !Ref AlertsTopic
       Protocol: email
       Endpoint: davidansa00@gmail.com
+
+  # A signup that errors is a person lost for good — they saw a failure and
+  # will not come back. Alarm tighter than the other functions.
+  SubscribeErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: traxent-subscribe-errors
+      AlarmDescription: >
+        Waitlist signups are failing. Every one of these is a lost subscriber —
+        check CloudWatch logs for traxent-subscribe.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref SubscribeFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 3
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+        - !Ref AlertsTopic
 
   UserDataErrorsAlarm:
     Type: AWS::CloudWatch::Alarm
@@ -357,6 +568,18 @@ Outputs:
   ApiBaseUrl:
     Description: Base URL for the user-data API. Put this in src/userdata.js (USERDATA_API).
     Value: !Sub "https://${UserDataApi}.execute-api.${AWS::Region}.amazonaws.com"
+  SubscribeUrl:
+    Description: Public waitlist signup endpoint. Used by src/subscribe.js.
+    Value: !Sub "https://${UserDataApi}.execute-api.${AWS::Region}.amazonaws.com/subscribe"
+  ResendWebhookUrl:
+    Description: >
+      Paste this into Resend → Webhooks as the endpoint URL, subscribed to
+      contact.updated, contact.deleted, email.bounced, email.complained,
+      suppression.added and suppression.removed. Then store the signing secret
+      it gives you in SSM at /traxent/resend/webhook_secret.
+    Value: !Sub "https://${UserDataApi}.execute-api.${AWS::Region}.amazonaws.com/webhooks/resend"
+  SubscribersTableName:
+    Value: !Ref SubscribersTable
   NewsApiUrl:
     Description: News feed endpoint (Funded tier) = ApiBaseUrl + /news.
     Value: !Sub "https://${UserDataApi}.execute-api.${AWS::Region}.amazonaws.com/news"

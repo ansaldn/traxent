@@ -21,7 +21,7 @@ This policy sets out how **Akpan Holdings Limited** (the **data controller**) ha
 ## 2. Roles: controller and processors
 
 - **Controller:** **Akpan Holdings Limited** — determines the purposes and means of processing personal data through Traxent.
-- **Processors / sub-processors:** third parties that process personal data **on our behalf and on our instructions**, each under a Data Processing Agreement (DPA). Our current sub-processors are **AWS, Auth0, Stripe, Plausible, Formspree and GitHub** — see `vendor-management.md` for the register, the data shared with each, and DPA status. Where a provider is an independent controller for part of the relationship (e.g. **Stripe** as a payment institution), that is noted in the register.
+- **Processors / sub-processors:** third parties that process personal data **on our behalf and on our instructions**, each under a Data Processing Agreement (DPA). Our current sub-processors are **AWS, Auth0, Stripe, Plausible, Resend and GitHub** — see `vendor-management.md` for the register, the data shared with each, and DPA status. Where a provider is an independent controller for part of the relationship (e.g. **Stripe** as a payment institution), that is noted in the register.
 
 ## 3. Data protection principles
 

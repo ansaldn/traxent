@@ -16,9 +16,16 @@
 // assigns plan roles. Password reset uses the public Authentication API (no scope).
 
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { getSubscriber, upsertSubscriber, migrateSubscriberEmail, setMarketingPreference } from './marketing.mjs';
 import { JwtRsaVerifier } from 'aws-jwt-verify';
 
 const ssm = new SSMClient({});
+const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}), {
+  marshallOptions: { removeUndefinedValues: true },
+});
+const SUBSCRIBERS_TABLE = process.env.SUBSCRIBERS_TABLE || 'TraxentSubscribers';
 
 const ISSUER = process.env.AUTH0_ISSUER || 'https://auth.traxent.io/';
 const AUDIENCES = (process.env.AUTH0_AUDIENCE
@@ -36,7 +43,7 @@ const verifier = JwtRsaVerifier.create({
 const headers = {
   'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGIN || 'https://traxent.io',
   'Access-Control-Allow-Headers': 'Content-Type,Authorization',
-  'Access-Control-Allow-Methods': 'POST,OPTIONS',
+  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
   'Content-Type': 'application/json',
 };
 const json = (statusCode, body) => ({ statusCode, headers, body: JSON.stringify(body) });
@@ -109,6 +116,52 @@ export const handler = async (event) => {
       return json(200, { success: true, message: 'Password reset email sent.' });
     }
 
+    // ── Marketing preference (the customer's own opt-out) ─────────────────
+    // Soft opt-in under PECR is only lawful if refusing is simple. This is that
+    // route: the account page reads and writes it, and the change reaches
+    // Resend immediately rather than waiting for the nightly reconcile — a
+    // delayed unsubscribe is exactly the failure that gets complaints.
+    if (path.endsWith('/marketing')) {
+      const method = httpMethod(event);
+
+      if (method === 'GET') {
+        const rec = await getSubscriber(ddb, SUBSCRIBERS_TABLE, auth.email);
+        return json(200, {
+          subscribed: rec ? rec.status === 'subscribed' : false,
+          status: rec?.status ?? 'not-on-list',
+          // A complaint or hard bounce can't be undone from the UI.
+          locked: rec ? ['complained', 'bounced'].includes(rec.status) : false,
+          basis: rec?.consentBasis ?? null,
+        });
+      }
+
+      if (method === 'POST') {
+        let body;
+        try { body = JSON.parse(event.body || '{}'); } catch { return json(400, { error: 'Invalid request body' }); }
+        if (typeof body.subscribed !== 'boolean') return json(400, { error: 'Expected { subscribed: true | false }' });
+
+        const result = await setMarketingPreference(ddb, SUBSCRIBERS_TABLE, auth.email, body.subscribed);
+
+        // Push straight to Resend so the suppression takes effect now. If this
+        // fails the DynamoDB record is still correct and reconcile will retry,
+        // so we don't surface the error to the user.
+        try {
+          const key = await getParam('/traxent/resend/api_key');
+          if (key) {
+            await fetch(`https://api.resend.com/contacts/${encodeURIComponent(auth.email.toLowerCase())}`, {
+              method: 'PATCH',
+              headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ unsubscribed: result.status !== 'subscribed' }),
+            });
+          }
+        } catch (e) { console.warn('resend preference push (non-fatal):', e.message); }
+
+        return json(200, { success: true, subscribed: result.status === 'subscribed', status: result.status });
+      }
+
+      return json(405, { error: 'Method not allowed' });
+    }
+
     // ── Profile update (name / email) via Management API ──
     if (path.endsWith('/profile')) {
       let body;
@@ -153,6 +206,28 @@ export const handler = async (event) => {
           });
         } catch (e) { console.warn('verification-email job failed (non-fatal):', e); }
       }
+
+      // Keep the marketing record in step with the account.
+      //
+      // The email migration is the important half: without it the old address
+      // is orphaned on the list, so they keep getting mail at an address their
+      // account no longer knows about AND the unsubscribe toggle above — which
+      // looks up by the *new* address — can't switch it off. That is a broken
+      // opt-out, so this runs even though it wasn't on the original brief.
+      try {
+        if (emailChanged) {
+          const moved = await migrateSubscriberEmail(ddb, SUBSCRIBERS_TABLE, auth.email, patch.email);
+          console.log('marketing email migration:', auth.email, '→', patch.email, ':', moved);
+        }
+        if (patch.name) {
+          // Only ever updates an existing row — changing your name does not put
+          // you on the marketing list.
+          const target = patch.email || auth.email;
+          if (await getSubscriber(ddb, SUBSCRIBERS_TABLE, target)) {
+            await upsertSubscriber(ddb, SUBSCRIBERS_TABLE, { email: target, name: patch.name, source: 'account-page' });
+          }
+        }
+      } catch (e) { console.error('marketing sync (non-fatal):', e.message); }
 
       return json(200, { success: true, name: patch.name ?? null, email: patch.email ?? null, emailChanged });
     }

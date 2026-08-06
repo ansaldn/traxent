@@ -31,10 +31,11 @@ const NETWORK_ONLY = [
   '/checkout',
   '/cancel',
   '/webhooks',
+  '/subscribe',      // waitlist signups — must never be served from cache
+  '/signup',         // account creation — always fresh, never a cached shell
   'auth0.com',
   'stripe.com',
-  'tradingview.com',
-  'formspree.io'
+  'tradingview.com'
 ];
 
 // Install — cache core assets

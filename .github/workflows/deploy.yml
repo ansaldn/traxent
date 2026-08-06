@@ -83,6 +83,7 @@ jobs:
             --include "config.js" \
             --include "consent.js" \
             --include "flags.js" \
+            --include "subscribe.js" \
             --cache-control "no-cache"
 
       - name: Invalidate CloudFront cache

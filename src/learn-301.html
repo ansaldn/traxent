@@ -366,36 +366,106 @@ footer a{color:var(--ink3)}
       <div class="lesson-hd">
         <div class="lesson-eyebrow">Trading 301 · Wrap-up</div>
         <h1 class="lesson-title">Quick check</h1>
-        <p class="lesson-intro">Four questions. The answer and a short explanation appear as you click.</p>
+        <p class="lesson-intro">Five questions, drawn fresh from a larger bank on every attempt. Score 75% or higher to complete the module — a retake deals a new paper.</p>
       </div>
       <div class="lesson-body quiz">
         <div class="q">
-          <div class="q-text">1. Under the 1% rule, how much would you risk per trade on a £10,000 account?</div>
+          <div class="q-text">Under the 1% rule, how much would you risk per trade on a £10,000 account?</div>
           <button class="opt" onclick="pick(this,false)">£1,000</button>
           <button class="opt" onclick="pick(this,true)">About £100</button>
           <button class="opt" onclick="pick(this,false)">Your whole account</button>
           <div class="q-exp">1% of £10,000 is £100 — the maximum you'd risk on any single trade, so a losing streak can't wipe you out.</div>
         </div>
         <div class="q">
-          <div class="q-text">2. After a 50% drawdown, what gain do you need to get back to even?</div>
+          <div class="q-text">After a 50% drawdown, what gain do you need to get back to even?</div>
           <button class="opt" onclick="pick(this,false)">50%</button>
           <button class="opt" onclick="pick(this,true)">100%</button>
           <button class="opt" onclick="pick(this,false)">25%</button>
           <div class="q-exp">Losses and recoveries aren't symmetric — halving your account means you must double what's left (+100%) to recover.</div>
         </div>
         <div class="q">
-          <div class="q-text">3. With a 1:2 risk-to-reward, roughly what win rate do you need to break even?</div>
+          <div class="q-text">With a 1:2 risk-to-reward, roughly what win rate do you need to break even?</div>
           <button class="opt" onclick="pick(this,true)">About one third of trades</button>
           <button class="opt" onclick="pick(this,false)">At least 80% of trades</button>
           <button class="opt" onclick="pick(this,false)">Exactly 50%</button>
           <div class="q-exp">If winners are twice the size of losers, winning ~33% of the time breaks even. Good R:R means you don't need to be right often.</div>
         </div>
         <div class="q">
-          <div class="q-text">4. What usually fails traders in a prop firm evaluation?</div>
+          <div class="q-text">What usually fails traders in a prop firm evaluation?</div>
           <button class="opt" onclick="pick(this,false)">Not hitting the profit target</button>
           <button class="opt" onclick="pick(this,true)">Breaching a rule like the daily loss or drawdown limit</button>
           <button class="opt" onclick="pick(this,false)">Trading too few different markets</button>
           <div class="q-exp">The rules — daily loss, max drawdown, consistency, minimum days — fail most people, and they're knowable in advance. That's exactly what Traxent scores you against.</div>
+        </div>
+
+                <div class="q">
+          <div class="q-text">Using the 1% rule on a £25,000 account, your maximum risk per trade is…</div>
+          <button class="opt" onclick="pick(this,false)">£25</button>
+          <button class="opt" onclick="pick(this,true)">£250</button>
+          <button class="opt" onclick="pick(this,false)">£2,500</button>
+          <button class="opt" onclick="pick(this,false)">£1,000</button>
+          <div class="q-exp">1% of £25,000 = £250. The point: any single loss is survivable and forgettable.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">After a 10% drawdown, what gain gets you back to break-even?</div>
+          <button class="opt" onclick="pick(this,false)">10%</button>
+          <button class="opt" onclick="pick(this,true)">About 11%</button>
+          <button class="opt" onclick="pick(this,false)">Exactly 12.5%</button>
+          <button class="opt" onclick="pick(this,false)">20%</button>
+          <div class="q-exp">From 90p in the pound you need about +11% to reach 100 again. The deeper the hole, the steeper the climb out.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">At 1:3 risk-to-reward, roughly what win rate breaks even?</div>
+          <button class="opt" onclick="pick(this,true)">25%</button>
+          <button class="opt" onclick="pick(this,false)">33%</button>
+          <button class="opt" onclick="pick(this,false)">50%</button>
+          <button class="opt" onclick="pick(this,false)">75%</button>
+          <div class="q-exp">Winners pay 3× losses, so winning 1 in 4 breaks even. Bigger reward ratios buy you a lower required win rate.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">When should your stop-loss be decided?</div>
+          <button class="opt" onclick="pick(this,true)">Before entering the trade, while you're calm</button>
+          <button class="opt" onclick="pick(this,false)">After the trade moves against you</button>
+          <button class="opt" onclick="pick(this,false)">Only when the broker demands it</button>
+          <div class="q-exp">Deciding your exit in advance is the whole discipline — mid-trade decisions are made by a stressed brain.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">Chasing a move that has already run without you, entering late at a poor price, is called…</div>
+          <button class="opt" onclick="pick(this,false)">Revenge trading</button>
+          <button class="opt" onclick="pick(this,true)">FOMO</button>
+          <button class="opt" onclick="pick(this,false)">Averaging in</button>
+          <button class="opt" onclick="pick(this,false)">Scalping</button>
+          <div class="q-exp">Fear of missing out drags you in after the opportunity — late, extended, and badly priced.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">What makes demo (paper) trading genuinely useful rather than a game?</div>
+          <button class="opt" onclick="pick(this,false)">Using an unrealistically large balance</button>
+          <button class="opt" onclick="pick(this,true)">Treating it seriously — realistic size, your real rules, honest review</button>
+          <button class="opt" onclick="pick(this,false)">Taking maximum leverage since it's free</button>
+          <button class="opt" onclick="pick(this,false)">Trading every market at once</button>
+          <div class="q-exp">Demo builds real habits only if you trade it like real money — realistic size, real rules, honest journalling.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">In a prop firm evaluation, what are you actually paying for?</div>
+          <button class="opt" onclick="pick(this,false)">A share of the firm's profits</button>
+          <button class="opt" onclick="pick(this,true)">An assessed attempt to prove you can trade their capital within their rules</button>
+          <button class="opt" onclick="pick(this,false)">Guaranteed funding</button>
+          <button class="opt" onclick="pick(this,false)">Trading signals</button>
+          <div class="q-exp">The fee buys the evaluation itself — pass its rules and you trade the firm's capital; fail and the fee is spent.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">Most prop firm evaluations fail people on…</div>
+          <button class="opt" onclick="pick(this,false)">Missing the profit target</button>
+          <button class="opt" onclick="pick(this,true)">Breaching rules like daily loss limits or maximum drawdown</button>
+          <button class="opt" onclick="pick(this,false)">Trading too few instruments</button>
+          <button class="opt" onclick="pick(this,false)">Using stop-losses</button>
+          <div class="q-exp">The rules, not the target, are the killer — which is why rule-discipline is the core skill Traxent scores.</div>
+        </div>
+
+        <div id="quiz-result" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin:6px 0 20px;text-align:center">
+          <div id="qr-pct" style="font-family:var(--serif);font-size:40px;line-height:1"></div>
+          <div id="qr-msg" style="font-size:14px;color:var(--ink2);margin:10px 0 14px"></div>
+          <button id="qr-retake" type="button" class="btn-nav btn-next" onclick="startPaper()">Retake — fresh questions</button>
         </div>
 
         <h3 style="font-family:var(--serif);font-weight:400;font-size:20px;margin:28px 0 8px">Sources &amp; keep learning</h3>
@@ -429,6 +499,7 @@ footer a{color:var(--ink3)}
 
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="/auth.js?v=__BUILD_SHA__"></script>
+<script src="/userdata.js?v=__BUILD_SHA__"></script>
 <script>
 // ── Lesson player (same interaction as the paid modules) ──
 var LESSONS = ['Why risk management is everything','Position sizing & the 1% rule','Stop-losses & risk-to-reward','Drawdown: how accounts blow up','Psychology: FOMO, tilt & revenge','Practise first: demo trading','Prop firms & funded accounts','Quick check'];
@@ -460,16 +531,59 @@ function updateProgress(){
   document.getElementById('prog-fill').style.width=pct+'%';
 }
 function completeLesson(i){ done[i]=true; saveDone(); updateProgress(); showLesson(Math.min(i+1,TOTAL-1)); }
-function pick(btn,correct){
-  var q=btn.closest('.q'); if(q.getAttribute('data-done'))return; q.setAttribute('data-done','1');
-  var opts=q.querySelectorAll('.opt'); for(var i=0;i<opts.length;i++)opts[i].disabled=true;
-  if(correct){btn.classList.add('correct');}else{btn.classList.add('wrong');for(var j=0;j<opts.length;j++){if(opts[j].getAttribute('onclick').indexOf('true')>-1)opts[j].classList.add('correct');}}
-  var e=q.querySelector('.q-exp'); if(e)e.classList.add('show');
-  done[TOTAL-1]=true; saveDone(); updateProgress();
-  var d=document.getElementById('dot-'+(TOTAL-1)); if(d)d.textContent='✓';
-  var it=document.getElementById('nav-'+(TOTAL-1)); if(it)it.classList.add('completed');
+// ── Quiz test mode (matches iOS): each attempt samples 5 questions from the
+// bank and shuffles question order AND answer positions. Pass mark 75% — the
+// quiz (and so the module) only completes on a pass; a retake is a fresh paper.
+var QUIZ_KEY = 'l301-quiz';
+var qActive = [], qAnswered = 0, qRight = 0;
+function qShuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function startPaper(){
+  var all = Array.prototype.slice.call(document.querySelectorAll('.quiz .q'));
+  if (!all.length) return;
+  qAnswered = 0; qRight = 0;
+  var res = document.getElementById('quiz-result'); if (res) res.style.display = 'none';
+  all.forEach(function(qEl){
+    qEl.style.display = 'none'; qEl.removeAttribute('data-done');
+    var exp = qEl.querySelector('.q-exp'); if (exp) exp.classList.remove('show');
+    var opts = Array.prototype.slice.call(qEl.querySelectorAll('.opt'));
+    opts.forEach(function(o){ o.disabled = false; o.classList.remove('correct','wrong'); });
+    qShuffle(opts).forEach(function(o){ qEl.insertBefore(o, exp); });
+  });
+  qActive = qShuffle(all.slice()).slice(0, Math.min(5, all.length));
+  var anchor = document.getElementById('quiz-result');
+  qActive.forEach(function(qEl){ anchor.parentNode.insertBefore(qEl, anchor); qEl.style.display = ''; });
 }
-renderList(); updateProgress(); showLesson(0);
+function pick(btn, correct){
+  var qEl = btn.closest('.q');
+  if (qEl.getAttribute('data-done')) return;
+  qEl.setAttribute('data-done','1');
+  var opts = qEl.querySelectorAll('.opt');
+  for (var i=0;i<opts.length;i++){ opts[i].disabled = true; }
+  if (correct){ btn.classList.add('correct'); qRight++; }
+  else { btn.classList.add('wrong'); for (var j=0;j<opts.length;j++){ if (opts[j].getAttribute('onclick').indexOf('true')>-1) opts[j].classList.add('correct'); } }
+  var e = qEl.querySelector('.q-exp'); if (e) e.classList.add('show');
+  qAnswered++;
+  if (qAnswered >= qActive.length) finishPaper();
+}
+function finishPaper(){
+  var pct = Math.round(qRight / qActive.length * 100), pass = pct >= 75;
+  var res = document.getElementById('quiz-result');
+  document.getElementById('qr-pct').textContent = pct + '%';
+  document.getElementById('qr-pct').style.color = pass ? 'var(--accent)' : 'var(--bad)';
+  document.getElementById('qr-msg').textContent = pass
+    ? 'Passed — ' + qRight + ' of ' + qActive.length + ' correct. Module complete.'
+    : qRight + ' of ' + qActive.length + ' correct. You need 75% to pass — retake for a fresh set of questions.';
+  document.getElementById('qr-retake').style.display = pass ? 'none' : '';
+  res.style.display = '';
+  res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (pass){
+    done[TOTAL-1] = true; saveDone(); updateProgress();
+    var d = document.getElementById('dot-'+(TOTAL-1)); if (d) d.textContent = '\u2713';
+    var it = document.getElementById('nav-'+(TOTAL-1)); if (it) it.classList.add('completed');
+    try { if (window.TraxentData) TraxentData.markLesson(QUIZ_KEY); } catch(e){}
+  }
+}
+updateProgress(); showLesson(0); startPaper();
 
 // ── Free-with-account gate → Auth0 signup / sign-in ──
 (function(){

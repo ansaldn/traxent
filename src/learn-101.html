@@ -331,36 +331,106 @@ footer a{color:var(--ink3)}
       <div class="lesson-hd">
         <div class="lesson-eyebrow">Trading 101 · Wrap-up</div>
         <h1 class="lesson-title">Quick check</h1>
-        <p class="lesson-intro">Four questions. The answer and a short explanation appear as you click.</p>
+        <p class="lesson-intro">Five questions, drawn fresh from a larger bank on every attempt. Score 75% or higher to complete the module — a retake deals a new paper.</p>
       </div>
       <div class="lesson-body quiz">
         <div class="q">
-          <div class="q-text">1. When you buy a share of a listed company, what do you own?</div>
+          <div class="q-text">When you buy a share of a listed company, what do you own?</div>
           <button class="opt" onclick="pick(this,false)">A loan the company must repay you</button>
           <button class="opt" onclick="pick(this,true)">A small piece of ownership in the company</button>
           <button class="opt" onclick="pick(this,false)">A guaranteed monthly income</button>
           <div class="q-exp">A share is part-ownership — you own a slice of the business and its future profits, not a loan or guaranteed income.</div>
         </div>
         <div class="q">
-          <div class="q-text">2. What is an IPO?</div>
+          <div class="q-text">What is an IPO?</div>
           <button class="opt" onclick="pick(this,true)">The first time a company sells shares to the public</button>
           <button class="opt" onclick="pick(this,false)">A tax charged when you sell a share</button>
           <button class="opt" onclick="pick(this,false)">A type of chart pattern</button>
           <div class="q-exp">IPO = Initial Public Offering: a company "goes public" and lists its shares on an exchange for the first time.</div>
         </div>
         <div class="q">
-          <div class="q-text">3. What sets a share's price at any given moment?</div>
+          <div class="q-text">What sets a share's price at any given moment?</div>
           <button class="opt" onclick="pick(this,false)">The government sets it each morning</button>
           <button class="opt" onclick="pick(this,false)">The company chooses its own price</button>
           <button class="opt" onclick="pick(this,true)">What a buyer will pay and a seller will accept</button>
           <div class="q-exp">Price is just the meeting point of supply and demand — the last agreed price between a buyer and a seller.</div>
         </div>
         <div class="q">
-          <div class="q-text">4. Which of these tracks many companies at once?</div>
+          <div class="q-text">Which of these tracks many companies at once?</div>
           <button class="opt" onclick="pick(this,false)">A single stock ticker</button>
           <button class="opt" onclick="pick(this,true)">An index, like the S&amp;P 500 or FTSE 100</button>
           <button class="opt" onclick="pick(this,false)">A forex pair</button>
           <div class="q-exp">An index is a basket of many companies, used as a health-check on a whole market.</div>
+        </div>
+
+                <div class="q">
+          <div class="q-text">What is a dividend?</div>
+          <button class="opt" onclick="pick(this,false)">A fee you pay to own shares</button>
+          <button class="opt" onclick="pick(this,true)">A share of company profits paid out to shareholders</button>
+          <button class="opt" onclick="pick(this,false)">The price difference between two exchanges</button>
+          <div class="q-exp">Dividends are profit distributions — one of the two ways shares reward owners (the other is the share price rising).</div>
+        </div>
+        <div class="q">
+          <div class="q-text">Where does the money go when you buy shares of a listed company on an exchange?</div>
+          <button class="opt" onclick="pick(this,false)">To the company itself</button>
+          <button class="opt" onclick="pick(this,true)">To the investor selling you their shares</button>
+          <button class="opt" onclick="pick(this,false)">To the stock exchange</button>
+          <button class="opt" onclick="pick(this,false)">To the government</button>
+          <div class="q-exp">After the IPO, shares trade investor-to-investor. The company only raised money at the IPO itself.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">Which of these is a stock exchange?</div>
+          <button class="opt" onclick="pick(this,false)">The FTSE 100</button>
+          <button class="opt" onclick="pick(this,true)">Nasdaq</button>
+          <button class="opt" onclick="pick(this,false)">GBP/USD</button>
+          <button class="opt" onclick="pick(this,false)">The S&P 500</button>
+          <div class="q-exp">Nasdaq is an exchange. The FTSE 100 and S&P 500 are indices (baskets), and GBP/USD is a forex pair.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">Why do prices sometimes 'gap' at the market open?</div>
+          <button class="opt" onclick="pick(this,false)">The exchange resets prices overnight</button>
+          <button class="opt" onclick="pick(this,true)">News arrived while the market was closed, so the first trades reprice instantly</button>
+          <button class="opt" onclick="pick(this,false)">Traders forget the previous close</button>
+          <button class="opt" onclick="pick(this,false)">Charts malfunction overnight</button>
+          <div class="q-exp">Prices can only change while the market is open — overnight news shows up as a jump at the next open.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">What do market makers do?</div>
+          <button class="opt" onclick="pick(this,false)">Set official prices for the government</button>
+          <button class="opt" onclick="pick(this,true)">Stand ready to buy and sell so orders can fill quickly</button>
+          <button class="opt" onclick="pick(this,false)">Predict where prices will go</button>
+          <button class="opt" onclick="pick(this,false)">Regulate the exchanges</button>
+          <div class="q-exp">Market makers provide liquidity — they're always willing to buy or sell, which keeps markets flowing.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">Which market is open 24 hours, 5 days a week?</div>
+          <button class="opt" onclick="pick(this,false)">The London Stock Exchange</button>
+          <button class="opt" onclick="pick(this,true)">Forex (currencies)</button>
+          <button class="opt" onclick="pick(this,false)">The New York Stock Exchange</button>
+          <div class="q-exp">FX trades around the clock across global sessions during the week. Stock exchanges keep set hours.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">An index like the S&P 500 is best described as…</div>
+          <button class="opt" onclick="pick(this,false)">One giant company</button>
+          <button class="opt" onclick="pick(this,true)">A basket tracking many companies at once</button>
+          <button class="opt" onclick="pick(this,false)">A type of currency</button>
+          <button class="opt" onclick="pick(this,false)">A trading strategy</button>
+          <button class="opt" onclick="pick(this,false)">A broker</button>
+          <div class="q-exp">An index bundles many companies into one number — a health-check on a whole market.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">You own 100 of a company's 1,000,000 shares. What fraction of the company is yours?</div>
+          <button class="opt" onclick="pick(this,false)">1%</button>
+          <button class="opt" onclick="pick(this,true)">0.01%</button>
+          <button class="opt" onclick="pick(this,false)">0.1%</button>
+          <button class="opt" onclick="pick(this,false)">10%</button>
+          <div class="q-exp">100 ÷ 1,000,000 = 0.0001 = 0.01%. Small — but it's real ownership, with real rights.</div>
+        </div>
+
+        <div id="quiz-result" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin:6px 0 20px;text-align:center">
+          <div id="qr-pct" style="font-family:var(--serif);font-size:40px;line-height:1"></div>
+          <div id="qr-msg" style="font-size:14px;color:var(--ink2);margin:10px 0 14px"></div>
+          <button id="qr-retake" type="button" class="btn-nav btn-next" onclick="startPaper()">Retake — fresh questions</button>
         </div>
 
         <h3 style="font-family:var(--serif);font-weight:400;font-size:20px;margin:28px 0 8px">Sources &amp; keep learning</h3>
@@ -417,16 +487,59 @@ function updateProgress(){
   document.getElementById('prog-fill').style.width=pct+'%';
 }
 function completeLesson(i){ done[i]=true; saveDone(); updateProgress(); showLesson(Math.min(i+1,TOTAL-1)); }
-function pick(btn,correct){
-  var q=btn.closest('.q'); if(q.getAttribute('data-done'))return; q.setAttribute('data-done','1');
-  var opts=q.querySelectorAll('.opt'); for(var i=0;i<opts.length;i++)opts[i].disabled=true;
-  if(correct){btn.classList.add('correct');}else{btn.classList.add('wrong');for(var j=0;j<opts.length;j++){if(opts[j].getAttribute('onclick').indexOf('true')>-1)opts[j].classList.add('correct');}}
-  var e=q.querySelector('.q-exp'); if(e)e.classList.add('show');
-  done[TOTAL-1]=true; saveDone(); updateProgress();
-  var d=document.getElementById('dot-'+(TOTAL-1)); if(d)d.textContent='✓';
-  var it=document.getElementById('nav-'+(TOTAL-1)); if(it)it.classList.add('completed');
+// ── Quiz test mode (matches iOS): each attempt samples 5 questions from the
+// bank and shuffles question order AND answer positions. Pass mark 75% — the
+// quiz (and so the module) only completes on a pass; a retake is a fresh paper.
+var QUIZ_KEY = 'l101-quiz';
+var qActive = [], qAnswered = 0, qRight = 0;
+function qShuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function startPaper(){
+  var all = Array.prototype.slice.call(document.querySelectorAll('.quiz .q'));
+  if (!all.length) return;
+  qAnswered = 0; qRight = 0;
+  var res = document.getElementById('quiz-result'); if (res) res.style.display = 'none';
+  all.forEach(function(qEl){
+    qEl.style.display = 'none'; qEl.removeAttribute('data-done');
+    var exp = qEl.querySelector('.q-exp'); if (exp) exp.classList.remove('show');
+    var opts = Array.prototype.slice.call(qEl.querySelectorAll('.opt'));
+    opts.forEach(function(o){ o.disabled = false; o.classList.remove('correct','wrong'); });
+    qShuffle(opts).forEach(function(o){ qEl.insertBefore(o, exp); });
+  });
+  qActive = qShuffle(all.slice()).slice(0, Math.min(5, all.length));
+  var anchor = document.getElementById('quiz-result');
+  qActive.forEach(function(qEl){ anchor.parentNode.insertBefore(qEl, anchor); qEl.style.display = ''; });
 }
-renderList(); updateProgress(); showLesson(0);
+function pick(btn, correct){
+  var qEl = btn.closest('.q');
+  if (qEl.getAttribute('data-done')) return;
+  qEl.setAttribute('data-done','1');
+  var opts = qEl.querySelectorAll('.opt');
+  for (var i=0;i<opts.length;i++){ opts[i].disabled = true; }
+  if (correct){ btn.classList.add('correct'); qRight++; }
+  else { btn.classList.add('wrong'); for (var j=0;j<opts.length;j++){ if (opts[j].getAttribute('onclick').indexOf('true')>-1) opts[j].classList.add('correct'); } }
+  var e = qEl.querySelector('.q-exp'); if (e) e.classList.add('show');
+  qAnswered++;
+  if (qAnswered >= qActive.length) finishPaper();
+}
+function finishPaper(){
+  var pct = Math.round(qRight / qActive.length * 100), pass = pct >= 75;
+  var res = document.getElementById('quiz-result');
+  document.getElementById('qr-pct').textContent = pct + '%';
+  document.getElementById('qr-pct').style.color = pass ? 'var(--accent)' : 'var(--bad)';
+  document.getElementById('qr-msg').textContent = pass
+    ? 'Passed — ' + qRight + ' of ' + qActive.length + ' correct. Module complete.'
+    : qRight + ' of ' + qActive.length + ' correct. You need 75% to pass — retake for a fresh set of questions.';
+  document.getElementById('qr-retake').style.display = pass ? 'none' : '';
+  res.style.display = '';
+  res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (pass){
+    done[TOTAL-1] = true; saveDone(); updateProgress();
+    var d = document.getElementById('dot-'+(TOTAL-1)); if (d) d.textContent = '\u2713';
+    var it = document.getElementById('nav-'+(TOTAL-1)); if (it) it.classList.add('completed');
+    try { if (window.TraxentData) TraxentData.markLesson(QUIZ_KEY); } catch(e){}
+  }
+}
+updateProgress(); showLesson(0); startPaper();
 </script>
 <script src="/consent.js" defer></script>
 </body>

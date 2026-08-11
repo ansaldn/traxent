@@ -31,6 +31,7 @@
 <style id="auth-gate-style">body{visibility:hidden}</style>
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="/auth.js?v=__BUILD_SHA__"></script>
+<script src="/userdata.js?v=__BUILD_SHA__"></script>
 <script>requireMinPlan('free');</script>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -711,12 +712,53 @@ const QUESTIONS = [
   { text: "In an uptrend, which pattern do you expect to see in price movement?", options: ["Lower highs and lower lows","Higher highs and higher lows","Price moving sideways between two levels","Randomly alternating peaks and troughs"], correct: 1, fb: { c: "Correct. An uptrend is defined by higher highs and higher lows — each peak above the previous, each pullback stopping above the previous low.", w: "Not quite. An uptrend is identified by higher highs and higher lows. Lower highs and lower lows describe a downtrend." } },
   { text: "You have a £5,000 account and want to risk 1% on a trade. Your stop loss is 20 points away. What is your position size in £ per point?", options: ["£5 per point","£10 per point","£2.50 per point","£50 per point"], correct: 2, fb: { c: "Correct. 1% of £5,000 = £50 risk. £50 ÷ 20 points = £2.50 per point. If stopped out, you lose exactly £50.", w: "Check the maths. 1% of £5,000 = £50. Stop is 20 points away. £50 ÷ 20 = £2.50 per point." } },
   { text: "A trader has a risk to reward ratio of 1:3. What is the minimum win rate they need to be profitable?", options: ["50% — they need to win more than they lose","40% — slightly below even","25% — they only need to win 1 in 4 trades","75% — high win rate required for this ratio"], correct: 2, fb: { c: "Correct. At 1:3 R:R, each win earns 3x what each loss costs. Win 1, lose 3, you break even. That means 25% win rate is the break-even point.", w: "At a 1:3 R:R, if you win 1 trade and lose 3, you break even (1×3 = 3×1). So 25% win rate is the minimum needed." } },
-  { text: "What is the most common reason traders fail prop firm challenges?", options: ["Their trading strategy is not profitable enough","The profit targets are set too high by the firms","Poor risk management and emotional trading after losses","Lack of access to quality market data"], correct: 2, fb: { c: "Correct. Most failures come from behaviour — overtrading, revenge trading after a loss, or taking oversized positions to chase a target. Not strategy.", w: "While strategy matters, the primary cause of failures is behavioural — emotional decisions after losses, not strategy failure." } }
+  { text: "What is the most common reason traders fail prop firm challenges?", options: ["Their trading strategy is not profitable enough","The profit targets are set too high by the firms","Poor risk management and emotional trading after losses","Lack of access to quality market data"], correct: 2, fb: { c: "Correct. Most failures come from behaviour — overtrading, revenge trading after a loss, or taking oversized positions to chase a target. Not strategy.", w: "While strategy matters, the primary cause of failures is behavioural — emotional decisions after losses, not strategy failure." } },
+  {"text": "Why do prop firms set a daily loss limit at all?", "options": ["To cap how much profit a trader can make in one day", "To protect their capital from a trader having one catastrophic day", "To encourage traders to trade more frequently"], "correct": 1, "fb": {"c": "Correct. The firm's capital is on the line — a daily loss limit stops one terrible day from doing serious damage.", "w": "Think about whose money is at risk. The limit exists to protect the firm's capital from a single runaway day."}},
+  {"text": "A market keeps bouncing between a clear ceiling and a clear floor without progressing. What is this called?", "options": ["An uptrend", "A downtrend", "A ranging market", "A breakout"], "correct": 2, "fb": {"c": "Correct. Price oscillating between support and resistance with no direction is a range.", "w": "When price bounces between the same two levels without making progress, it's ranging — not trending."}},
+  {"text": "You risk £50 on a trade with a stop 25 points away. What is your position size per point?", "options": ["£2 per point", "£4 per point", "£25 per point", "£0.50 per point"], "correct": 0, "fb": {"c": "Correct. £50 ÷ 25 points = £2 per point.", "w": "Divide the cash risk by the stop distance: £50 ÷ 25 = £2 per point."}},
+  {"text": "Which of these best describes a funded trader's ongoing deal with a prop firm?", "options": ["Keep 100% of profits but pay a monthly fee", "Keep the majority of profits, with the firm taking a small share", "Salary plus bonuses set by the firm", "Keep 25% of profits, the firm keeps 75%"], "correct": 1, "fb": {"c": "Correct. Typical splits give the trader 80-90% of profits; the firm keeps the rest.", "w": "Funded traders usually keep the lion's share — often 80-90% — while the firm takes the remainder."}},
+  {"text": "FTMO's evaluation uses a static maximum drawdown. What does 'static' mean here?", "options": ["The limit trails your equity peak upward as you profit", "The limit is measured from your starting balance and never moves", "The limit resets at the start of each trading day", "The limit only applies during news events"], "correct": 1, "fb": {"c": "Correct. A static drawdown is anchored to the starting balance — profits don't drag the floor up behind you.", "w": "Static means fixed from the starting balance. A limit that follows your equity peak is a TRAILING drawdown."}, "firms": ["ftmo"]},
+  {"text": "Apex Trader Funding uses a trailing drawdown. Why is that generally harder to manage than a static one?", "options": ["It only counts closed trades", "The floor rises with your equity peak, so early profits can be given back and still breach it", "It is always a larger percentage than static limits"], "correct": 1, "fb": {"c": "Correct. As your equity climbs, the drawdown floor climbs with it — give back early gains and you can fail while still above your starting balance.", "w": "Trailing means the floor follows your equity peak up. That's what catches traders out after a strong start."}, "firms": ["apex-trader-funding"]},
+  {"text": "Which habit most directly prepares you for ANY firm's evaluation, regardless of its specific rules?", "options": ["Trading only during the London session", "Maximising trade frequency to hit targets faster", "Consistent risk per trade with a hard stop on every position", "Focusing on one instrument forever"], "correct": 2, "fb": {"c": "Correct. Fixed risk plus a hard stop keeps you inside daily loss and drawdown limits automatically — the rules most evaluations fail people on.", "w": "The universal preparation is risk discipline: consistent risk per trade and a hard stop, which keeps you inside every firm's loss limits."}}
 ];
+
+// ── Test mode (matches iOS): every attempt samples up to 5 questions from the
+// bank and shuffles BOTH question order and answer positions, so a retake is a
+// fresh paper — this is a test of knowledge, not a memorisable sequence.
+let PAPER = [];
+function buildPaper(bank){
+  const qs = bank.slice();
+  for (let i=qs.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [qs[i],qs[j]]=[qs[j],qs[i]]; }
+  // Personalisation: if the user tracks specific firms, bias the paper toward
+  // questions tagged with those firms' rules (up to 2 of the 5 slots) while
+  // keeping the rest general — their modules shape understanding of THEIR
+  // firms' rules as well as what other firms expect. Tags are web-side only:
+  // the extractor strips unknown fields, so modules.json is unaffected.
+  let tracked = [];
+  try { tracked = (window.TraxentData ? TraxentData.getFirms() : []) || []; } catch(e){}
+  let pool = qs;
+  if (tracked.length) {
+    const isRel = function(q){ return (q.firms || []).some(function(f){ return tracked.indexOf(f) !== -1; }); };
+    const rel = qs.filter(isRel), gen = qs.filter(function(q){ return !isRel(q); });
+    pool = rel.slice(0, 2).concat(gen);
+    for (let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  }
+  return pool.slice(0, Math.min(5, qs.length)).map(function(q){
+    const srcOpts = q.options || q.o;
+    const correctIdx = (q.correct !== undefined) ? q.correct : q.c;
+    const opts = srcOpts.map(function(text, idx){ return { text: text, ok: idx === correctIdx }; });
+    for (let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+    const texts = opts.map(function(o){ return o.text; });
+    const ci = opts.findIndex(function(o){ return o.ok; });
+    return { text: q.text || q.t, t: q.text || q.t, options: texts, o: texts, correct: ci, c: ci, fb: q.fb };
+  });
+}
+
 
 let curQ = 0, selOpt = null, answered = false, score = 0;
 
 function initQuiz() {
+  PAPER = buildPaper(QUESTIONS);
   curQ = 0; score = 0; selOpt = null; answered = false;
   document.getElementById('quiz-questions').style.display = 'block';
   document.getElementById('quiz-result').style.display = 'none';
@@ -724,16 +766,16 @@ function initQuiz() {
 }
 
 function renderDots() {
-  document.getElementById('q-dots').innerHTML = QUESTIONS.map((_,i) =>
+  document.getElementById('q-dots').innerHTML = PAPER.map((_,i) =>
     `<div class="q-dot ${i<curQ?'done':i===curQ?'active':''}"></div>`).join('');
 }
 
 function renderQ() {
-  const q = QUESTIONS[curQ];
-  const L = ['A','B','C','D'];
+  const q = PAPER[curQ];
+  const L = ['A','B','C','D','E'];
   document.getElementById('q-wrap').innerHTML = `
     <div class="q-card">
-      <div class="q-num">Question ${curQ+1} of ${QUESTIONS.length}</div>
+      <div class="q-num">Question ${curQ+1} of ${PAPER.length}</div>
       <div class="q-text">${q.text}</div>
       <div class="q-options">
         ${q.options.map((o,i)=>`<div class="q-opt" id="qo${i}" onclick="selQ(${i})"><div class="q-letter">${L[i]}</div><div class="q-opt-text">${o}</div></div>`).join('')}
@@ -756,7 +798,7 @@ function selQ(i) {
 function submitQ() {
   if (selOpt === null || answered) return;
   answered = true;
-  const q = QUESTIONS[curQ];
+  const q = PAPER[curQ];
   const ok = selOpt === q.correct;
   if (ok) score++;
   document.querySelectorAll('.q-opt').forEach((o,i) => {
@@ -769,26 +811,26 @@ function submitQ() {
   fb.innerHTML = `<strong>${ok?'✓ Correct':'✗ Not quite'}</strong> — ${ok?q.fb.c:q.fb.w}`;
   document.getElementById('q-submit').style.display = 'none';
   document.getElementById('q-next').style.display = 'block';
-  document.getElementById('q-next').textContent = curQ < QUESTIONS.length-1 ? 'Next →' : 'See results →';
+  document.getElementById('q-next').textContent = curQ < PAPER.length-1 ? 'Next →' : 'See results →';
 }
 
 function nextQ() {
   curQ++;
-  if (curQ >= QUESTIONS.length) { showResult(); return; }
+  if (curQ >= PAPER.length) { showResult(); return; }
   renderDots(); renderQ();
 }
 
 function showResult() {
   document.getElementById('quiz-questions').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'block';
-  const pct = Math.round((score/QUESTIONS.length)*100);
-  const pass = pct >= 80;
+  const pct = Math.round((score/PAPER.length)*100);
+  const pass = pct >= 75;
   document.getElementById('result-pct').textContent = pct+'%';
   document.getElementById('result-pct').className = `result-pct ${pass?'pass':'fail'}`;
   document.getElementById('result-lbl').textContent = pass ? 'Module 1 passed' : 'Not quite — try again';
   document.getElementById('result-msg').textContent = pass
-    ? `You answered ${score} of ${QUESTIONS.length} correctly. Solid grasp of the fundamentals. Module 2 — Chart Patterns — is now unlocked.`
-    : `You answered ${score} of ${QUESTIONS.length} correctly. Review the lessons and try again — these fundamentals underpin everything that follows.`;
+    ? `You answered ${score} of ${PAPER.length} correctly. Solid grasp of the fundamentals. Module 2 — Chart Patterns — is now unlocked.`
+    : `You answered ${score} of ${PAPER.length} correctly. Review the lessons and try again — these fundamentals underpin everything that follows.`;
   if (pass) {
     document.getElementById('result-cta').style.display = 'inline-block';
     completed[3] = true;
@@ -797,6 +839,7 @@ function showResult() {
     updateProgress();
     setTimeout(() => document.getElementById('completion-banner').classList.add('show'), 500);
     localStorage.setItem('traxent_m1_complete', 'true');
+    try { if (window.TraxentData) TraxentData.markLesson('l1-quiz'); } catch(e){}
   }
 }
 

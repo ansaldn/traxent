@@ -380,36 +380,106 @@ footer a{color:var(--ink3)}
       <div class="lesson-hd">
         <div class="lesson-eyebrow">Trading 201 · Wrap-up</div>
         <h1 class="lesson-title">Quick check</h1>
-        <p class="lesson-intro">Four questions. The answer and a short explanation appear as you click.</p>
+        <p class="lesson-intro">Five questions, drawn fresh from a larger bank on every attempt. Score 75% or higher to complete the module — a retake deals a new paper.</p>
       </div>
       <div class="lesson-body quiz">
         <div class="q">
-          <div class="q-text">1. You want to buy only if the price drops to £10 or below. Which order?</div>
+          <div class="q-text">You want to buy only if the price drops to £10 or below. Which order?</div>
           <button class="opt" onclick="pick(this,false)">Market order</button>
           <button class="opt" onclick="pick(this,true)">Limit order</button>
           <button class="opt" onclick="pick(this,false)">There's no way to do that</button>
           <div class="q-exp">A limit order lets you set the maximum you'll pay (or minimum you'll accept). It only fills at your price or better.</div>
         </div>
         <div class="q">
-          <div class="q-text">2. What is the "spread"?</div>
+          <div class="q-text">What is the "spread"?</div>
           <button class="opt" onclick="pick(this,true)">The gap between the bid and the ask price</button>
           <button class="opt" onclick="pick(this,false)">A tax on profits</button>
           <button class="opt" onclick="pick(this,false)">The number of shares you own</button>
           <div class="q-exp">The spread is the difference between the highest price buyers will pay and the lowest sellers will accept — a small built-in cost of every trade.</div>
         </div>
         <div class="q">
-          <div class="q-text">3. On 10:1 leverage, a 5% move against your position means roughly what?</div>
+          <div class="q-text">On 10:1 leverage, a 5% move against your position means roughly what?</div>
           <button class="opt" onclick="pick(this,false)">A 5% loss</button>
           <button class="opt" onclick="pick(this,false)">A 0.5% loss</button>
           <button class="opt" onclick="pick(this,true)">A 50% loss</button>
           <div class="q-exp">Leverage multiplies both gains and losses. 10× a 5% move is 50% — which is why over-leverage blows up accounts.</div>
         </div>
         <div class="q">
-          <div class="q-text">4. "Going short" means you profit when…</div>
+          <div class="q-text">"Going short" means you profit when…</div>
           <button class="opt" onclick="pick(this,false)">The price rises</button>
           <button class="opt" onclick="pick(this,true)">The price falls</button>
           <button class="opt" onclick="pick(this,false)">Nothing happens</button>
           <div class="q-exp">Short = betting the price will fall. You sell high first and buy back lower, keeping the difference.</div>
+        </div>
+
+                <div class="q">
+          <div class="q-text">What is the primary purpose of a stop-loss order?</div>
+          <button class="opt" onclick="pick(this,false)">To guarantee a profit</button>
+          <button class="opt" onclick="pick(this,true)">To cap your loss automatically if the trade goes against you</button>
+          <button class="opt" onclick="pick(this,false)">To double your position at a better price</button>
+          <div class="q-exp">A stop-loss is your pre-set exit — it turns a potential disaster into a controlled, planned loss.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">Market A has a spread of £0.02; market B's is £0.40. What does that tell you?</div>
+          <button class="opt" onclick="pick(this,false)">Market B is more profitable</button>
+          <button class="opt" onclick="pick(this,true)">Market A is more liquid and cheaper to trade</button>
+          <button class="opt" onclick="pick(this,false)">Market B has better prices</button>
+          <button class="opt" onclick="pick(this,false)">Nothing — spreads don't matter</button>
+          <div class="q-exp">Tight spreads mean deep liquidity and lower cost per trade. Wide spreads make every round-trip more expensive.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">You hold a leveraged position for several days. Which cost applies?</div>
+          <button class="opt" onclick="pick(this,true)">Overnight financing (swap) fees</button>
+          <button class="opt" onclick="pick(this,false)">A new spread every night</button>
+          <button class="opt" onclick="pick(this,false)">Extra commission per day held</button>
+          <button class="opt" onclick="pick(this,false)">No costs while holding</button>
+          <div class="q-exp">Leveraged positions usually incur a small financing charge for each night held — it adds up on longer holds.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">When is a market order the right choice over a limit order?</div>
+          <button class="opt" onclick="pick(this,false)">When you want a specific price and can wait</button>
+          <button class="opt" onclick="pick(this,true)">When getting in or out immediately matters more than the exact price</button>
+          <button class="opt" onclick="pick(this,false)">Never — limits are always better</button>
+          <button class="opt" onclick="pick(this,false)">Only in forex</button>
+          <div class="q-exp">Market orders trade price certainty for speed. Use them when execution now is the priority.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">Why does a losing short trade need especially careful risk control?</div>
+          <button class="opt" onclick="pick(this,false)">Shorts are taxed higher</button>
+          <button class="opt" onclick="pick(this,true)">A price can rise without limit, so the potential loss is theoretically unlimited</button>
+          <button class="opt" onclick="pick(this,false)">Brokers ban stop-losses on shorts</button>
+          <div class="q-exp">A long can only fall to zero; a short's loss grows as the price rises — and there's no ceiling.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">What is slippage?</div>
+          <button class="opt" onclick="pick(this,true)">The difference between the price you expected and the price you actually got</button>
+          <button class="opt" onclick="pick(this,false)">A broker commission</button>
+          <button class="opt" onclick="pick(this,false)">The gap between sessions</button>
+          <button class="opt" onclick="pick(this,false)">A chart error</button>
+          <div class="q-exp">Slippage is the execution gap — small in liquid markets, bigger in fast or thin ones.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">Which scheduled event is most likely to move an entire currency sharply?</div>
+          <button class="opt" onclick="pick(this,false)">A single company's product launch</button>
+          <button class="opt" onclick="pick(this,true)">A central-bank interest-rate decision</button>
+          <button class="opt" onclick="pick(this,false)">A celebrity endorsement</button>
+          <button class="opt" onclick="pick(this,false)">A stock split</button>
+          <div class="q-exp">Rate decisions reprice whole economies — currencies, indices and metals can all move violently around them.</div>
+        </div>
+        <div class="q">
+          <div class="q-text">With 20:1 leverage, a 2% move against your position costs you roughly…</div>
+          <button class="opt" onclick="pick(this,false)">2% of your margin</button>
+          <button class="opt" onclick="pick(this,true)">40% of your margin</button>
+          <button class="opt" onclick="pick(this,false)">4% of your margin</button>
+          <button class="opt" onclick="pick(this,false)">20% of your margin</button>
+          <button class="opt" onclick="pick(this,false)">Nothing until you close</button>
+          <div class="q-exp">Leverage multiplies: 2% × 20 = 40% of your margin gone on a 2% adverse move. Handle with care.</div>
+        </div>
+
+        <div id="quiz-result" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin:6px 0 20px;text-align:center">
+          <div id="qr-pct" style="font-family:var(--serif);font-size:40px;line-height:1"></div>
+          <div id="qr-msg" style="font-size:14px;color:var(--ink2);margin:10px 0 14px"></div>
+          <button id="qr-retake" type="button" class="btn-nav btn-next" onclick="startPaper()">Retake — fresh questions</button>
         </div>
 
         <h3 style="font-family:var(--serif);font-weight:400;font-size:20px;margin:28px 0 8px">Sources &amp; keep learning</h3>
@@ -439,6 +509,7 @@ footer a{color:var(--ink3)}
 
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="/auth.js?v=__BUILD_SHA__"></script>
+<script src="/userdata.js?v=__BUILD_SHA__"></script>
 <script>
 // ── Lesson player (same interaction as the paid modules) ──
 var LESSONS = ['Market, limit & stop orders','The bid, ask & spread','Going long vs short','Leverage & margin','The real costs of trading','What moves prices','Getting filled','Quick check'];
@@ -471,16 +542,59 @@ function updateProgress(){
   document.getElementById('prog-fill').style.width = pct+'%';
 }
 function completeLesson(i){ done[i]=true; saveDone(); updateProgress(); showLesson(Math.min(i+1,TOTAL-1)); }
-function pick(btn,correct){
-  var q=btn.closest('.q'); if(q.getAttribute('data-done'))return; q.setAttribute('data-done','1');
-  var opts=q.querySelectorAll('.opt'); for(var i=0;i<opts.length;i++)opts[i].disabled=true;
-  if(correct){btn.classList.add('correct');}else{btn.classList.add('wrong');for(var j=0;j<opts.length;j++){if(opts[j].getAttribute('onclick').indexOf('true')>-1)opts[j].classList.add('correct');}}
-  var e=q.querySelector('.q-exp'); if(e)e.classList.add('show');
-  done[TOTAL-1]=true; saveDone(); updateProgress();
-  var d=document.getElementById('dot-'+(TOTAL-1)); if(d)d.textContent='✓';
-  var it=document.getElementById('nav-'+(TOTAL-1)); if(it)it.classList.add('completed');
+// ── Quiz test mode (matches iOS): each attempt samples 5 questions from the
+// bank and shuffles question order AND answer positions. Pass mark 75% — the
+// quiz (and so the module) only completes on a pass; a retake is a fresh paper.
+var QUIZ_KEY = 'l201-quiz';
+var qActive = [], qAnswered = 0, qRight = 0;
+function qShuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function startPaper(){
+  var all = Array.prototype.slice.call(document.querySelectorAll('.quiz .q'));
+  if (!all.length) return;
+  qAnswered = 0; qRight = 0;
+  var res = document.getElementById('quiz-result'); if (res) res.style.display = 'none';
+  all.forEach(function(qEl){
+    qEl.style.display = 'none'; qEl.removeAttribute('data-done');
+    var exp = qEl.querySelector('.q-exp'); if (exp) exp.classList.remove('show');
+    var opts = Array.prototype.slice.call(qEl.querySelectorAll('.opt'));
+    opts.forEach(function(o){ o.disabled = false; o.classList.remove('correct','wrong'); });
+    qShuffle(opts).forEach(function(o){ qEl.insertBefore(o, exp); });
+  });
+  qActive = qShuffle(all.slice()).slice(0, Math.min(5, all.length));
+  var anchor = document.getElementById('quiz-result');
+  qActive.forEach(function(qEl){ anchor.parentNode.insertBefore(qEl, anchor); qEl.style.display = ''; });
 }
-renderList(); updateProgress(); showLesson(0);
+function pick(btn, correct){
+  var qEl = btn.closest('.q');
+  if (qEl.getAttribute('data-done')) return;
+  qEl.setAttribute('data-done','1');
+  var opts = qEl.querySelectorAll('.opt');
+  for (var i=0;i<opts.length;i++){ opts[i].disabled = true; }
+  if (correct){ btn.classList.add('correct'); qRight++; }
+  else { btn.classList.add('wrong'); for (var j=0;j<opts.length;j++){ if (opts[j].getAttribute('onclick').indexOf('true')>-1) opts[j].classList.add('correct'); } }
+  var e = qEl.querySelector('.q-exp'); if (e) e.classList.add('show');
+  qAnswered++;
+  if (qAnswered >= qActive.length) finishPaper();
+}
+function finishPaper(){
+  var pct = Math.round(qRight / qActive.length * 100), pass = pct >= 75;
+  var res = document.getElementById('quiz-result');
+  document.getElementById('qr-pct').textContent = pct + '%';
+  document.getElementById('qr-pct').style.color = pass ? 'var(--accent)' : 'var(--bad)';
+  document.getElementById('qr-msg').textContent = pass
+    ? 'Passed — ' + qRight + ' of ' + qActive.length + ' correct. Module complete.'
+    : qRight + ' of ' + qActive.length + ' correct. You need 75% to pass — retake for a fresh set of questions.';
+  document.getElementById('qr-retake').style.display = pass ? 'none' : '';
+  res.style.display = '';
+  res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (pass){
+    done[TOTAL-1] = true; saveDone(); updateProgress();
+    var d = document.getElementById('dot-'+(TOTAL-1)); if (d) d.textContent = '\u2713';
+    var it = document.getElementById('nav-'+(TOTAL-1)); if (it) it.classList.add('completed');
+    try { if (window.TraxentData) TraxentData.markLesson(QUIZ_KEY); } catch(e){}
+  }
+}
+updateProgress(); showLesson(0); startPaper();
 
 // ── Free-with-account gate → Auth0 signup / sign-in ──
 (function(){

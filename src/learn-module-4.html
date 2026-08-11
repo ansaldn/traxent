@@ -31,6 +31,7 @@
 <style id="auth-gate-style">body{visibility:hidden}</style>
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="/auth.js?v=__BUILD_SHA__"></script>
+<script src="/userdata.js?v=__BUILD_SHA__"></script>
 <script>requireMinPlan('observer');</script>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -755,12 +756,53 @@ const QUESTIONS = [
       c: "Correct. The two Wednesday violations were: (1) entering a trade with 'no clear setup' — a setup criteria violation, and (2) revenge trading at 3% risk instead of 1% — a risk management violation. These two decisions turned a manageable bad day into the worst session of the week.",
       w: "The Wednesday violations were specifically: first, entering a forced trade with no clear setup (setup criteria violation), and second, a revenge trade at 3× normal risk (risk management violation). These are the most common and most damaging trading plan failures in prop firm challenges."
     }
-  }
+  },
+  {"text": "FTMO's Two-Phase evaluation measures maximum drawdown how?", "options": ["Trailing your equity peak intraday", "Static from the starting balance", "Reset monthly", "End-of-day trailing"], "correct": 1, "fb": {"c": "Correct. FTMO's classic challenge uses a static max drawdown anchored to the starting balance.", "w": "FTMO's standard challenge drawdown is STATIC — measured from the starting balance, not trailing."}, "firms": ["ftmo"]},
+  {"text": "Topstep's consistency rule caps your best single day at roughly what share of total profit?", "options": ["10%", "30%", "50%", "90%"], "correct": 2, "fb": {"c": "Correct. Around 50% — no single day may dominate your profit, forcing genuine day-to-day consistency.", "w": "Topstep's consistency threshold is about 50% of total profit from any single day."}, "firms": ["topstep"]},
+  {"text": "Apex's consistency rule is stricter than most at around 30%. What behaviour is it designed to prevent?", "options": ["Trading too many contracts at once", "Passing the evaluation with one lucky outsized day instead of repeatable skill", "Holding trades over the weekend", "Trading outside US market hours"], "correct": 1, "fb": {"c": "Correct. Consistency rules exist so one jackpot day can't carry an evaluation — the firm wants repeatable performance.", "w": "The 30% cap stops a single windfall day from carrying the whole evaluation — firms fund repeatability, not luck."}, "firms": ["apex-trader-funding"]},
+  {"text": "MyFundedFutures measures its 3% drawdown at end of day. Compared with an intraday trailing measure, what does this allow?", "options": ["Nothing different — they're identical", "Your equity can dip intraday without breaching, as long as it recovers by the close", "Unlimited intraday losses with no consequences ever"], "correct": 1, "fb": {"c": "Correct. EOD measurement forgives intraday dips that recover before the close — only the closing equity is tested.", "w": "End-of-day measurement means the breach test happens at the close — intraday dips that recover don't count."}, "firms": ["myfundedfutures"]},
+  {"text": "Why do most firms impose a minimum number of trading days?", "options": ["To collect more commission", "To prove performance across different market conditions rather than one session", "Because regulators require it", "To keep servers busy"], "correct": 1, "fb": {"c": "Correct. Minimum days force the evaluation across varied conditions — one hot session proves little.", "w": "Minimum-day rules exist to see you perform across different days and conditions, not a single lucky session."}},
+  {"text": "A solid challenge trading plan should specify which of these BEFORE any trade is taken?", "options": ["Only the profit target", "Entry criteria, risk per trade, daily stop, and which sessions you trade", "Just the instruments you like", "The firm's payout schedule"], "correct": 1, "fb": {"c": "Correct. Entries, fixed risk, a personal daily stop and defined sessions — decided calmly in advance, followed mechanically.", "w": "A plan is the full ruleset: entry criteria, risk per trade, personal daily stop and trading windows — all pre-decided."}},
+  {"text": "You're comparing two firms: one with a 5% daily loss limit + static 10% max, another with no daily limit + 4% EOD trailing. Your trading style has volatile intraday swings that usually recover. Which fits better, and why?", "options": ["The first — daily limits suit volatile styles", "The second — EOD measurement forgives intraday swings that recover by the close", "Neither can work for this style", "Both are identical in practice"], "correct": 1, "fb": {"c": "Correct. If your equity dips intraday but recovers, EOD measurement is far more forgiving than an intraday daily limit.", "w": "Match the rule to the style: volatile-but-recovering intraday equity survives EOD measurement, but can breach an intraday daily cap."}, "firms": ["ftmo", "take-profit-trader"]}
 ];
+
+// ── Test mode (matches iOS): every attempt samples up to 5 questions from the
+// bank and shuffles BOTH question order and answer positions, so a retake is a
+// fresh paper — this is a test of knowledge, not a memorisable sequence.
+let PAPER = [];
+function buildPaper(bank){
+  const qs = bank.slice();
+  for (let i=qs.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [qs[i],qs[j]]=[qs[j],qs[i]]; }
+  // Personalisation: if the user tracks specific firms, bias the paper toward
+  // questions tagged with those firms' rules (up to 2 of the 5 slots) while
+  // keeping the rest general — their modules shape understanding of THEIR
+  // firms' rules as well as what other firms expect. Tags are web-side only:
+  // the extractor strips unknown fields, so modules.json is unaffected.
+  let tracked = [];
+  try { tracked = (window.TraxentData ? TraxentData.getFirms() : []) || []; } catch(e){}
+  let pool = qs;
+  if (tracked.length) {
+    const isRel = function(q){ return (q.firms || []).some(function(f){ return tracked.indexOf(f) !== -1; }); };
+    const rel = qs.filter(isRel), gen = qs.filter(function(q){ return !isRel(q); });
+    pool = rel.slice(0, 2).concat(gen);
+    for (let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  }
+  return pool.slice(0, Math.min(5, qs.length)).map(function(q){
+    const srcOpts = q.options || q.o;
+    const correctIdx = (q.correct !== undefined) ? q.correct : q.c;
+    const opts = srcOpts.map(function(text, idx){ return { text: text, ok: idx === correctIdx }; });
+    for (let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+    const texts = opts.map(function(o){ return o.text; });
+    const ci = opts.findIndex(function(o){ return o.ok; });
+    return { text: q.text || q.t, t: q.text || q.t, options: texts, o: texts, correct: ci, c: ci, fb: q.fb };
+  });
+}
+
 
 let curQ = 0, selOpt = null, answered = false, score = 0;
 
 function initQuiz() {
+  PAPER = buildPaper(QUESTIONS);
   curQ = 0; score = 0; selOpt = null; answered = false;
   document.getElementById('quiz-questions').style.display = 'block';
   document.getElementById('quiz-result').style.display = 'none';
@@ -768,16 +810,16 @@ function initQuiz() {
 }
 
 function renderDots() {
-  document.getElementById('q-dots').innerHTML = QUESTIONS.map((_,i) =>
+  document.getElementById('q-dots').innerHTML = PAPER.map((_,i) =>
     `<div class="q-dot ${i<curQ?'done':i===curQ?'active':''}"></div>`).join('');
 }
 
 function renderQ() {
-  const q = QUESTIONS[curQ];
-  const L = ['A','B','C','D'];
+  const q = PAPER[curQ];
+  const L = ['A','B','C','D','E'];
   document.getElementById('q-wrap').innerHTML = `
     <div class="q-card">
-      <div class="q-num">Question ${curQ+1} of ${QUESTIONS.length}</div>
+      <div class="q-num">Question ${curQ+1} of ${PAPER.length}</div>
       <div class="q-text">${q.text}</div>
       <div class="q-options">
         ${q.options.map((o,i) => `
@@ -804,7 +846,7 @@ function selQ(i) {
 function submitQ() {
   if (selOpt === null || answered) return;
   answered = true;
-  const q = QUESTIONS[curQ];
+  const q = PAPER[curQ];
   const ok = selOpt === q.correct;
   if (ok) score++;
   document.querySelectorAll('.q-opt').forEach((o,i) => {
@@ -817,26 +859,26 @@ function submitQ() {
   fb.innerHTML = `<strong>${ok ? '✓ Correct' : '✗ Not quite'}</strong> — ${ok ? q.fb.c : q.fb.w}`;
   document.getElementById('q-submit').style.display = 'none';
   document.getElementById('q-next').style.display = 'block';
-  document.getElementById('q-next').textContent = curQ < QUESTIONS.length - 1 ? 'Next →' : 'See results →';
+  document.getElementById('q-next').textContent = curQ < PAPER.length - 1 ? 'Next →' : 'See results →';
 }
 
 function nextQ() {
   curQ++;
-  if (curQ >= QUESTIONS.length) { showResult(); return; }
+  if (curQ >= PAPER.length) { showResult(); return; }
   renderDots(); renderQ();
 }
 
 function showResult() {
   document.getElementById('quiz-questions').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'block';
-  const pct = Math.round((score / QUESTIONS.length) * 100);
-  const pass = pct >= 80;
+  const pct = Math.round((score / PAPER.length) * 100);
+  const pass = pct >= 75;
   document.getElementById('result-pct').textContent = pct + '%';
   document.getElementById('result-pct').className = `result-pct ${pass ? 'pass' : 'fail'}`;
   document.getElementById('result-lbl').textContent = pass ? 'Final assessment passed' : 'Not quite — review and retry';
   document.getElementById('result-msg').textContent = pass
-    ? `You answered ${score} of ${QUESTIONS.length} correctly. You've completed the full Traxent learning programme. Time to apply what you've learned — open the readiness tracker and start scoring your trading habits.`
-    : `You answered ${score} of ${QUESTIONS.length} correctly. Review the lessons from the modules that caught you out, then retry. These concepts matter when real money is on the line.`;
+    ? `You answered ${score} of ${PAPER.length} correctly. You've completed the full Traxent learning programme. Time to apply what you've learned — open the readiness tracker and start scoring your trading habits.`
+    : `You answered ${score} of ${PAPER.length} correctly. Review the lessons from the modules that caught you out, then retry. These concepts matter when real money is on the line.`;
   if (pass) {
     document.getElementById('result-cta').style.display = 'inline-block';
     completed[3] = true;
@@ -845,6 +887,7 @@ function showResult() {
     updateProgress();
     setTimeout(() => document.getElementById('completion-banner').classList.add('show'), 500);
     localStorage.setItem('traxent_m4_complete', 'true');
+    try { if (window.TraxentData) TraxentData.markLesson('l4-quiz'); } catch(e){}
     localStorage.setItem('traxent_course_complete', 'true');
   }
 }

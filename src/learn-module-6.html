@@ -22,6 +22,7 @@
 <style id="auth-gate-style">body{visibility:hidden}</style>
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="/auth.js?v=__BUILD_SHA__"></script>
+<script src="/userdata.js?v=__BUILD_SHA__"></script>
 <script>requireMinPlan('challenger');</script>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -570,27 +571,68 @@ const QUESTIONS = [
   { text: "A system wins 40% of the time, with average wins of 2.5R and average losses of 1R. What is its expectancy?", options: ["−0.10R (loses over time)","+0.40R (profitable over time)","+1.50R","Exactly break-even"], correct: 1, fb: { c: "Correct. (0.4 × 2.5) − (0.6 × 1) = 1.0 − 0.6 = +0.40R per trade. Positive expectancy.", w: "Work it through: (0.4 × 2.5) − (0.6 × 1) = +0.40R. Positive expectancy despite a sub-50% win rate." } },
   { text: "In a trade journal, which single extra field is most likely to change your behaviour?", options: ["The exact entry and exit price","Whether the trade followed your plan ('plan match')","The time the market opened","The broker's spread at entry"], correct: 1, fb: { c: "Correct. 'Plan match' lets you sort trades into on/off-plan and see that most losses are off-plan — the clearest, most actionable leak.", w: "Price data is already in your platform. Logging whether the trade followed your plan is what reveals your real leaks." } },
   { text: "Why is an off-plan trade that WINS considered dangerous?", options: ["It isn't — a win is always good","The profit teaches your brain that breaking your rules pays off","Winning trades are taxed more heavily","It always reverses the next day"], correct: 1, fb: { c: "Correct. An off-plan win rewards rule-breaking behaviour, making you more likely to repeat it. The journal lets you label it a bad trade.", w: "An off-plan win reinforces the wrong behaviour — your brain remembers the money, not the broken rule. That's why it's dangerous." } },
-  { text: "What best indicates you are genuinely ready to buy a prop firm challenge?", options: ["You feel confident after a few good days","A 50+ trade sample with positive expectancy that stayed within the firm's daily and max-loss limits","You hit the profit target once in a demo","A friend passed the same firm's challenge"], correct: 1, fb: { c: "Correct. Readiness is evidence — a meaningful sample showing a positive, rule-respecting edge against that specific firm's limits.", w: "Readiness is data, not a feeling or a single result. You want a 50+ trade sample with positive expectancy inside the firm's limits." } }
+  { text: "What best indicates you are genuinely ready to buy a prop firm challenge?", options: ["You feel confident after a few good days","A 50+ trade sample with positive expectancy that stayed within the firm's daily and max-loss limits","You hit the profit target once in a demo","A friend passed the same firm's challenge"], correct: 1, fb: { c: "Correct. Readiness is evidence — a meaningful sample showing a positive, rule-respecting edge against that specific firm's limits.", w: "Readiness is data, not a feeling or a single result. You want a 50+ trade sample with positive expectancy inside the firm's limits." } },
+  {"text": "Expectancy per trade combines which ingredients?", "options": ["Win rate alone", "Win rate, average win size and average loss size", "Number of trades and account size", "Profit factor and leverage"], "correct": 1, "fb": {"c": "Correct. Expectancy = (win% × avg win) − (loss% × avg loss) — what a trade earns you on average.", "w": "Expectancy needs all three: how often you win, how big wins are, how big losses are."}},
+  {"text": "Why do traders measure results in R (risk units) instead of pounds?", "options": ["It sounds more professional", "It normalises results across position sizes and account growth, exposing the true quality of decisions", "Brokers require it", "It hides losses"], "correct": 1, "fb": {"c": "Correct. A +2R trade is a +2R trade at any account size — R strips money noise off the decision quality.", "w": "R-multiples make trades comparable regardless of size or account — the decision quality shows through."}},
+  {"text": "Your journal shows most losing R comes from trades tagged 'off-plan', while on-plan trades are profitable. The highest-leverage fix is…", "options": ["A new strategy", "Stop taking off-plan trades — the edge already works", "Increase size on everything", "Trade more instruments"], "correct": 1, "fb": {"c": "Correct. The edge exists; the leak is discipline. Cutting off-plan trades is the single highest-leverage change.", "w": "The data says the strategy works ON plan — the fix is eliminating off-plan trades, not finding a new edge."}},
+  {"text": "An off-plan trade that WINS should be journalled as…", "options": ["A success to repeat", "A bad trade that happened to pay — because it rewards rule-breaking", "Proof the plan is too strict", "Nothing unusual"], "correct": 1, "fb": {"c": "Correct. Winning off-plan trades are the dangerous ones — the profit teaches your brain that breaking rules pays.", "w": "Process over outcome: an off-plan winner is still a bad trade, and labelling it that way is what stops the habit."}},
+  {"text": "What belongs in a weekly review loop?", "options": ["Only the week's P&L", "Sort trades into on/off-plan × won/lost, find the biggest leak, set ONE change for next week", "Re-watching every chart tick by tick", "Comparing yourself to other traders"], "correct": 1, "fb": {"c": "Correct. The four-box sort plus a single concrete change — small, compounding improvements beat grand overhauls.", "w": "The loop is: categorise (on/off-plan vs won/lost), identify the one biggest leak, commit to one change. Repeat weekly."}},
+  {"text": "With a 40% win rate, which average R:R makes you profitable?", "options": ["1:1", "1:2", "Any ratio — 40% is unprofitable", "1:0.5"], "correct": 1, "fb": {"c": "Correct. At 1:2, break-even is ~33%, so 40% wins is comfortably profitable. Win rate means nothing without R:R.", "w": "At 1:2 R:R the break-even win rate is about 33% — so 40% is profitable. Win rate alone tells you little."}},
+  {"text": "For a prop evaluation with a ~50% consistency rule, which journal metric deserves special attention?", "options": ["Best single trade ever", "The share of total profit coming from your best single day", "Number of instruments traded", "Average hold time"], "correct": 1, "fb": {"c": "Correct. If one day dominates your profit you'd fail the consistency check — tracking that share tells you before the firm does.", "w": "Consistency rules test day-to-day evenness: watch what fraction of total profit your best day represents."}, "firms": ["topstep", "ftmo", "take-profit-trader"]}
 ];
+
+// ── Test mode (matches iOS): every attempt samples up to 5 questions from the
+// bank and shuffles BOTH question order and answer positions, so a retake is a
+// fresh paper — this is a test of knowledge, not a memorisable sequence.
+let PAPER = [];
+function buildPaper(bank){
+  const qs = bank.slice();
+  for (let i=qs.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [qs[i],qs[j]]=[qs[j],qs[i]]; }
+  // Personalisation: if the user tracks specific firms, bias the paper toward
+  // questions tagged with those firms' rules (up to 2 of the 5 slots) while
+  // keeping the rest general — their modules shape understanding of THEIR
+  // firms' rules as well as what other firms expect. Tags are web-side only:
+  // the extractor strips unknown fields, so modules.json is unaffected.
+  let tracked = [];
+  try { tracked = (window.TraxentData ? TraxentData.getFirms() : []) || []; } catch(e){}
+  let pool = qs;
+  if (tracked.length) {
+    const isRel = function(q){ return (q.firms || []).some(function(f){ return tracked.indexOf(f) !== -1; }); };
+    const rel = qs.filter(isRel), gen = qs.filter(function(q){ return !isRel(q); });
+    pool = rel.slice(0, 2).concat(gen);
+    for (let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  }
+  return pool.slice(0, Math.min(5, qs.length)).map(function(q){
+    const srcOpts = q.options || q.o;
+    const correctIdx = (q.correct !== undefined) ? q.correct : q.c;
+    const opts = srcOpts.map(function(text, idx){ return { text: text, ok: idx === correctIdx }; });
+    for (let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+    const texts = opts.map(function(o){ return o.text; });
+    const ci = opts.findIndex(function(o){ return o.ok; });
+    return { text: q.text || q.t, t: q.text || q.t, options: texts, o: texts, correct: ci, c: ci, fb: q.fb };
+  });
+}
+
 
 let curQ = 0, selOpt = null, answered = false, score = 0;
 
 function initQuiz() {
+  PAPER = buildPaper(QUESTIONS);
   curQ = 0; score = 0; selOpt = null; answered = false;
   document.getElementById('quiz-questions').style.display = 'block';
   document.getElementById('quiz-result').style.display = 'none';
   renderQ(); renderDots();
 }
 function renderDots() {
-  document.getElementById('q-dots').innerHTML = QUESTIONS.map((_,i) =>
+  document.getElementById('q-dots').innerHTML = PAPER.map((_,i) =>
     `<div class="q-dot ${i<curQ?'done':i===curQ?'active':''}"></div>`).join('');
 }
 function renderQ() {
-  const q = QUESTIONS[curQ];
-  const L = ['A','B','C','D'];
+  const q = PAPER[curQ];
+  const L = ['A','B','C','D','E'];
   document.getElementById('q-wrap').innerHTML = `
     <div class="q-card">
-      <div class="q-num">Question ${curQ+1} of ${QUESTIONS.length}</div>
+      <div class="q-num">Question ${curQ+1} of ${PAPER.length}</div>
       <div class="q-text">${q.text}</div>
       <div class="q-options">
         ${q.options.map((o,i)=>`<div class="q-opt" id="qo${i}" onclick="selQ(${i})"><div class="q-letter">${L[i]}</div><div class="q-opt-text">${o}</div></div>`).join('')}
@@ -611,7 +653,7 @@ function selQ(i) {
 function submitQ() {
   if (selOpt === null || answered) return;
   answered = true;
-  const q = QUESTIONS[curQ];
+  const q = PAPER[curQ];
   const ok = selOpt === q.correct;
   if (ok) score++;
   document.querySelectorAll('.q-opt').forEach((o,i) => {
@@ -624,24 +666,24 @@ function submitQ() {
   fb.innerHTML = `<strong>${ok?'✓ Correct':'✗ Not quite'}</strong> — ${ok?q.fb.c:q.fb.w}`;
   document.getElementById('q-submit').style.display = 'none';
   document.getElementById('q-next').style.display = 'block';
-  document.getElementById('q-next').textContent = curQ < QUESTIONS.length-1 ? 'Next →' : 'See results →';
+  document.getElementById('q-next').textContent = curQ < PAPER.length-1 ? 'Next →' : 'See results →';
 }
 function nextQ() {
   curQ++;
-  if (curQ >= QUESTIONS.length) { showResult(); return; }
+  if (curQ >= PAPER.length) { showResult(); return; }
   renderDots(); renderQ();
 }
 function showResult() {
   document.getElementById('quiz-questions').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'block';
-  const pct = Math.round((score/QUESTIONS.length)*100);
-  const pass = pct >= 80;
+  const pct = Math.round((score/PAPER.length)*100);
+  const pass = pct >= 75;
   document.getElementById('result-pct').textContent = pct+'%';
   document.getElementById('result-pct').className = `result-pct ${pass?'pass':'fail'}`;
   document.getElementById('result-lbl').textContent = pass ? 'Module 6 passed' : 'Not quite — try again';
   document.getElementById('result-msg').textContent = pass
-    ? `You answered ${score} of ${QUESTIONS.length} correctly. That completes the Traxent learning path. Now make every trade earn its place in your journal and let the readiness tracker tell you when you're ready.`
-    : `You answered ${score} of ${QUESTIONS.length} correctly. Review the lessons and try again — measuring your edge is what turns practice into progress.`;
+    ? `You answered ${score} of ${PAPER.length} correctly. That completes the Traxent learning path. Now make every trade earn its place in your journal and let the readiness tracker tell you when you're ready.`
+    : `You answered ${score} of ${PAPER.length} correctly. Review the lessons and try again — measuring your edge is what turns practice into progress.`;
   if (pass) {
     document.getElementById('result-cta').style.display = 'inline-block';
     completed[3] = true;
@@ -650,7 +692,8 @@ function showResult() {
     updateProgress();
     saveProgress();
     setTimeout(() => document.getElementById('completion-banner').classList.add('show'), 500);
-    try { localStorage.setItem('traxent_m6_complete', 'true'); } catch (e) {}
+    try { localStorage.setItem('traxent_m6_complete', 'true');
+    try { if (window.TraxentData) TraxentData.markLesson('l6-quiz'); } catch(e){} } catch (e) {}
   }
 }
 function retryQuiz() {

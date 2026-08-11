@@ -37,6 +37,30 @@ jobs:
           echo "auth.js references after stamping:"
           grep -h 'src="/\?auth.js' src/*.html | sort -u
 
+      - name: Regenerate content catalogs from lesson HTML
+        run: |
+          # Rebuilds src/content/modules.json (schemaVersion 2) from the lesson
+          # pages on EVERY deploy, so lesson/quiz edits reach iOS users without
+          # an App Store release — iOS fetches /content/modules.json each launch.
+          # Fail-open: if the extractor breaks, warn loudly and ship the last
+          # committed catalog rather than blocking the whole site deploy.
+          pip install --quiet beautifulsoup4 json5 cairosvg || true
+          set +e
+          python3 tools/extract_content.py . /tmp/content_out
+          extract_ok=$?
+          set -e
+          if [ "$extract_ok" -eq 0 ] && python3 -c "
+          import json,sys
+          d=json.load(open('/tmp/content_out/Modules.json'))
+          assert d.get('schemaVersion')==2, 'wrong schemaVersion'
+          assert len(d.get('modules',[]))>=10, 'fewer than 10 modules'
+          "; then
+            cp /tmp/content_out/Modules.json src/content/modules.json
+            echo "modules.json regenerated: $(python3 -c "import json;d=json.load(open('src/content/modules.json'));print(len(d['modules']),'modules')")"
+          else
+            echo "::warning::content extractor failed — shipping the committed src/content/modules.json unchanged"
+          fi
+
       - name: Verify HTML integrity (guard against truncated files)
         run: |
           # OneDrive has silently truncated HTML file tails before (eating the

@@ -255,6 +255,101 @@
        "correct": 1,
        "correctFeedback": "An index is a basket of many companies, used as a health-check on a whole market.",
        "wrongFeedback": "An index is a basket of many companies, used as a health-check on a whole market."
+      },
+      {
+       "text": "What is a dividend?",
+       "options": [
+        "A fee you pay to own shares",
+        "A share of company profits paid out to shareholders",
+        "The price difference between two exchanges"
+       ],
+       "correct": 1,
+       "correctFeedback": "Dividends are profit distributions — one of the two ways shares reward owners (the other is the share price rising).",
+       "wrongFeedback": "Dividends are profit distributions — one of the two ways shares reward owners (the other is the share price rising)."
+      },
+      {
+       "text": "Where does the money go when you buy shares of a listed company on an exchange?",
+       "options": [
+        "To the company itself",
+        "To the investor selling you their shares",
+        "To the stock exchange",
+        "To the government"
+       ],
+       "correct": 1,
+       "correctFeedback": "After the IPO, shares trade investor-to-investor. The company only raised money at the IPO itself.",
+       "wrongFeedback": "After the IPO, shares trade investor-to-investor. The company only raised money at the IPO itself."
+      },
+      {
+       "text": "Which of these is a stock exchange?",
+       "options": [
+        "The FTSE 100",
+        "Nasdaq",
+        "GBP/USD",
+        "The S&P 500"
+       ],
+       "correct": 1,
+       "correctFeedback": "Nasdaq is an exchange. The FTSE 100 and S&P 500 are indices (baskets), and GBP/USD is a forex pair.",
+       "wrongFeedback": "Nasdaq is an exchange. The FTSE 100 and S&P 500 are indices (baskets), and GBP/USD is a forex pair."
+      },
+      {
+       "text": "Why do prices sometimes 'gap' at the market open?",
+       "options": [
+        "The exchange resets prices overnight",
+        "News arrived while the market was closed, so the first trades reprice instantly",
+        "Traders forget the previous close",
+        "Charts malfunction overnight"
+       ],
+       "correct": 1,
+       "correctFeedback": "Prices can only change while the market is open — overnight news shows up as a jump at the next open.",
+       "wrongFeedback": "Prices can only change while the market is open — overnight news shows up as a jump at the next open."
+      },
+      {
+       "text": "What do market makers do?",
+       "options": [
+        "Set official prices for the government",
+        "Stand ready to buy and sell so orders can fill quickly",
+        "Predict where prices will go",
+        "Regulate the exchanges"
+       ],
+       "correct": 1,
+       "correctFeedback": "Market makers provide liquidity — they're always willing to buy or sell, which keeps markets flowing.",
+       "wrongFeedback": "Market makers provide liquidity — they're always willing to buy or sell, which keeps markets flowing."
+      },
+      {
+       "text": "Which market is open 24 hours, 5 days a week?",
+       "options": [
+        "The London Stock Exchange",
+        "Forex (currencies)",
+        "The New York Stock Exchange"
+       ],
+       "correct": 1,
+       "correctFeedback": "FX trades around the clock across global sessions during the week. Stock exchanges keep set hours.",
+       "wrongFeedback": "FX trades around the clock across global sessions during the week. Stock exchanges keep set hours."
+      },
+      {
+       "text": "An index like the S&P 500 is best described as…",
+       "options": [
+        "One giant company",
+        "A basket tracking many companies at once",
+        "A type of currency",
+        "A trading strategy",
+        "A broker"
+       ],
+       "correct": 1,
+       "correctFeedback": "An index bundles many companies into one number — a health-check on a whole market.",
+       "wrongFeedback": "An index bundles many companies into one number — a health-check on a whole market."
+      },
+      {
+       "text": "You own 100 of a company's 1,000,000 shares. What fraction of the company is yours?",
+       "options": [
+        "1%",
+        "0.01%",
+        "0.1%",
+        "10%"
+       ],
+       "correct": 1,
+       "correctFeedback": "100 ÷ 1,000,000 = 0.0001 = 0.01%. Small — but it's real ownership, with real rights.",
+       "wrongFeedback": "100 ÷ 1,000,000 = 0.0001 = 0.01%. Small — but it's real ownership, with real rights."
       }
      ],
      "intro": "Answer every question to complete this module."
@@ -517,6 +612,101 @@
        "correct": 1,
        "correctFeedback": "Short = betting the price will fall. You sell high first and buy back lower, keeping the difference.",
        "wrongFeedback": "Short = betting the price will fall. You sell high first and buy back lower, keeping the difference."
+      },
+      {
+       "text": "What is the primary purpose of a stop-loss order?",
+       "options": [
+        "To guarantee a profit",
+        "To cap your loss automatically if the trade goes against you",
+        "To double your position at a better price"
+       ],
+       "correct": 1,
+       "correctFeedback": "A stop-loss is your pre-set exit — it turns a potential disaster into a controlled, planned loss.",
+       "wrongFeedback": "A stop-loss is your pre-set exit — it turns a potential disaster into a controlled, planned loss."
+      },
+      {
+       "text": "Market A has a spread of £0.02; market B's is £0.40. What does that tell you?",
+       "options": [
+        "Market B is more profitable",
+        "Market A is more liquid and cheaper to trade",
+        "Market B has better prices",
+        "Nothing — spreads don't matter"
+       ],
+       "correct": 1,
+       "correctFeedback": "Tight spreads mean deep liquidity and lower cost per trade. Wide spreads make every round-trip more expensive.",
+       "wrongFeedback": "Tight spreads mean deep liquidity and lower cost per trade. Wide spreads make every round-trip more expensive."
+      },
+      {
+       "text": "You hold a leveraged position for several days. Which cost applies?",
+       "options": [
+        "Overnight financing (swap) fees",
+        "A new spread every night",
+        "Extra commission per day held",
+        "No costs while holding"
+       ],
+       "correct": 0,
+       "correctFeedback": "Leveraged positions usually incur a small financing charge for each night held — it adds up on longer holds.",
+       "wrongFeedback": "Leveraged positions usually incur a small financing charge for each night held — it adds up on longer holds."
+      },
+      {
+       "text": "When is a market order the right choice over a limit order?",
+       "options": [
+        "When you want a specific price and can wait",
+        "When getting in or out immediately matters more than the exact price",
+        "Never — limits are always better",
+        "Only in forex"
+       ],
+       "correct": 1,
+       "correctFeedback": "Market orders trade price certainty for speed. Use them when execution now is the priority.",
+       "wrongFeedback": "Market orders trade price certainty for speed. Use them when execution now is the priority."
+      },
+      {
+       "text": "Why does a losing short trade need especially careful risk control?",
+       "options": [
+        "Shorts are taxed higher",
+        "A price can rise without limit, so the potential loss is theoretically unlimited",
+        "Brokers ban stop-losses on shorts"
+       ],
+       "correct": 1,
+       "correctFeedback": "A long can only fall to zero; a short's loss grows as the price rises — and there's no ceiling.",
+       "wrongFeedback": "A long can only fall to zero; a short's loss grows as the price rises — and there's no ceiling."
+      },
+      {
+       "text": "What is slippage?",
+       "options": [
+        "The difference between the price you expected and the price you actually got",
+        "A broker commission",
+        "The gap between sessions",
+        "A chart error"
+       ],
+       "correct": 0,
+       "correctFeedback": "Slippage is the execution gap — small in liquid markets, bigger in fast or thin ones.",
+       "wrongFeedback": "Slippage is the execution gap — small in liquid markets, bigger in fast or thin ones."
+      },
+      {
+       "text": "Which scheduled event is most likely to move an entire currency sharply?",
+       "options": [
+        "A single company's product launch",
+        "A central-bank interest-rate decision",
+        "A celebrity endorsement",
+        "A stock split"
+       ],
+       "correct": 1,
+       "correctFeedback": "Rate decisions reprice whole economies — currencies, indices and metals can all move violently around them.",
+       "wrongFeedback": "Rate decisions reprice whole economies — currencies, indices and metals can all move violently around them."
+      },
+      {
+       "text": "With 20:1 leverage, a 2% move against your position costs you roughly…",
+       "options": [
+        "2% of your margin",
+        "40% of your margin",
+        "4% of your margin",
+        "20% of your margin",
+        "Nothing until you close"
+       ],
+       "correct": 1,
+       "correctFeedback": "Leverage multiplies: 2% × 20 = 40% of your margin gone on a 2% adverse move. Handle with care.",
+       "wrongFeedback": "Leverage multiplies: 2% × 20 = 40% of your margin gone on a 2% adverse move. Handle with care."
       }
      ],
      "intro": "Answer every question to complete this module."
@@ -776,6 +966,101 @@
        "correct": 1,
        "correctFeedback": "The rules — daily loss, max drawdown, consistency, minimum days — fail most people, and they're knowable in advance. That's exactly what Traxent scores you against.",
        "wrongFeedback": "The rules — daily loss, max drawdown, consistency, minimum days — fail most people, and they're knowable in advance. That's exactly what Traxent scores you against."
+      },
+      {
+       "text": "Using the 1% rule on a £25,000 account, your maximum risk per trade is…",
+       "options": [
+        "£25",
+        "£250",
+        "£2,500",
+        "£1,000"
+       ],
+       "correct": 1,
+       "correctFeedback": "1% of £25,000 = £250. The point: any single loss is survivable and forgettable.",
+       "wrongFeedback": "1% of £25,000 = £250. The point: any single loss is survivable and forgettable."
+      },
+      {
+       "text": "After a 10% drawdown, what gain gets you back to break-even?",
+       "options": [
+        "10%",
+        "About 11%",
+        "Exactly 12.5%",
+        "20%"
+       ],
+       "correct": 1,
+       "correctFeedback": "From 90p in the pound you need about +11% to reach 100 again. The deeper the hole, the steeper the climb out.",
+       "wrongFeedback": "From 90p in the pound you need about +11% to reach 100 again. The deeper the hole, the steeper the climb out."
+      },
+      {
+       "text": "At 1:3 risk-to-reward, roughly what win rate breaks even?",
+       "options": [
+        "25%",
+        "33%",
+        "50%",
+        "75%"
+       ],
+       "correct": 0,
+       "correctFeedback": "Winners pay 3× losses, so winning 1 in 4 breaks even. Bigger reward ratios buy you a lower required win rate.",
+       "wrongFeedback": "Winners pay 3× losses, so winning 1 in 4 breaks even. Bigger reward ratios buy you a lower required win rate."
+      },
+      {
+       "text": "When should your stop-loss be decided?",
+       "options": [
+        "Before entering the trade, while you're calm",
+        "After the trade moves against you",
+        "Only when the broker demands it"
+       ],
+       "correct": 0,
+       "correctFeedback": "Deciding your exit in advance is the whole discipline — mid-trade decisions are made by a stressed brain.",
+       "wrongFeedback": "Deciding your exit in advance is the whole discipline — mid-trade decisions are made by a stressed brain."
+      },
+      {
+       "text": "Chasing a move that has already run without you, entering late at a poor price, is called…",
+       "options": [
+        "Revenge trading",
+        "FOMO",
+        "Averaging in",
+        "Scalping"
+       ],
+       "correct": 1,
+       "correctFeedback": "Fear of missing out drags you in after the opportunity — late, extended, and badly priced.",
+       "wrongFeedback": "Fear of missing out drags you in after the opportunity — late, extended, and badly priced."
+      },
+      {
+       "text": "What makes demo (paper) trading genuinely useful rather than a game?",
+       "options": [
+        "Using an unrealistically large balance",
+        "Treating it seriously — realistic size, your real rules, honest review",
+        "Taking maximum leverage since it's free",
+        "Trading every market at once"
+       ],
+       "correct": 1,
+       "correctFeedback": "Demo builds real habits only if you trade it like real money — realistic size, real rules, honest journalling.",
+       "wrongFeedback": "Demo builds real habits only if you trade it like real money — realistic size, real rules, honest journalling."
+      },
+      {
+       "text": "In a prop firm evaluation, what are you actually paying for?",
+       "options": [
+        "A share of the firm's profits",
+        "An assessed attempt to prove you can trade their capital within their rules",
+        "Guaranteed funding",
+        "Trading signals"
+       ],
+       "correct": 1,
+       "correctFeedback": "The fee buys the evaluation itself — pass its rules and you trade the firm's capital; fail and the fee is spent.",
+       "wrongFeedback": "The fee buys the evaluation itself — pass its rules and you trade the firm's capital; fail and the fee is spent."
+      },
+      {
+       "text": "Most prop firm evaluations fail people on…",
+       "options": [
+        "Missing the profit target",
+        "Breaching rules like daily loss limits or maximum drawdown",
+        "Trading too few instruments",
+        "Using stop-losses"
+       ],
+       "correct": 1,
+       "correctFeedback": "The rules, not the target, are the killer — which is why rule-discipline is the core skill Traxent scores.",
+       "wrongFeedback": "The rules, not the target, are the killer — which is why rule-discipline is the core skill Traxent scores."
       }
      ],
      "intro": "Answer every question to complete this module."
@@ -1342,6 +1627,88 @@
        "correct": 2,
        "correctFeedback": "Correct. Most failures come from behaviour — overtrading, revenge trading after a loss, or taking oversized positions to chase a target. Not strategy.",
        "wrongFeedback": "While strategy matters, the primary cause of failures is behavioural — emotional decisions after losses, not strategy failure."
+      },
+      {
+       "text": "Why do prop firms set a daily loss limit at all?",
+       "options": [
+        "To cap how much profit a trader can make in one day",
+        "To protect their capital from a trader having one catastrophic day",
+        "To encourage traders to trade more frequently"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. The firm's capital is on the line — a daily loss limit stops one terrible day from doing serious damage.",
+       "wrongFeedback": "Think about whose money is at risk. The limit exists to protect the firm's capital from a single runaway day."
+      },
+      {
+       "text": "A market keeps bouncing between a clear ceiling and a clear floor without progressing. What is this called?",
+       "options": [
+        "An uptrend",
+        "A downtrend",
+        "A ranging market",
+        "A breakout"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. Price oscillating between support and resistance with no direction is a range.",
+       "wrongFeedback": "When price bounces between the same two levels without making progress, it's ranging — not trending."
+      },
+      {
+       "text": "You risk £50 on a trade with a stop 25 points away. What is your position size per point?",
+       "options": [
+        "£2 per point",
+        "£4 per point",
+        "£25 per point",
+        "£0.50 per point"
+       ],
+       "correct": 0,
+       "correctFeedback": "Correct. £50 ÷ 25 points = £2 per point.",
+       "wrongFeedback": "Divide the cash risk by the stop distance: £50 ÷ 25 = £2 per point."
+      },
+      {
+       "text": "Which of these best describes a funded trader's ongoing deal with a prop firm?",
+       "options": [
+        "Keep 100% of profits but pay a monthly fee",
+        "Keep the majority of profits, with the firm taking a small share",
+        "Salary plus bonuses set by the firm",
+        "Keep 25% of profits, the firm keeps 75%"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Typical splits give the trader 80-90% of profits; the firm keeps the rest.",
+       "wrongFeedback": "Funded traders usually keep the lion's share — often 80-90% — while the firm takes the remainder."
+      },
+      {
+       "text": "FTMO's evaluation uses a static maximum drawdown. What does 'static' mean here?",
+       "options": [
+        "The limit trails your equity peak upward as you profit",
+        "The limit is measured from your starting balance and never moves",
+        "The limit resets at the start of each trading day",
+        "The limit only applies during news events"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. A static drawdown is anchored to the starting balance — profits don't drag the floor up behind you.",
+       "wrongFeedback": "Static means fixed from the starting balance. A limit that follows your equity peak is a TRAILING drawdown."
+      },
+      {
+       "text": "Apex Trader Funding uses a trailing drawdown. Why is that generally harder to manage than a static one?",
+       "options": [
+        "It only counts closed trades",
+        "The floor rises with your equity peak, so early profits can be given back and still breach it",
+        "It is always a larger percentage than static limits"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. As your equity climbs, the drawdown floor climbs with it — give back early gains and you can fail while still above your starting balance.",
+       "wrongFeedback": "Trailing means the floor follows your equity peak up. That's what catches traders out after a strong start."
+      },
+      {
+       "text": "Which habit most directly prepares you for ANY firm's evaluation, regardless of its specific rules?",
+       "options": [
+        "Trading only during the London session",
+        "Maximising trade frequency to hit targets faster",
+        "Consistent risk per trade with a hard stop on every position",
+        "Focusing on one instrument forever"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. Fixed risk plus a hard stop keeps you inside daily loss and drawdown limits automatically — the rules most evaluations fail people on.",
+       "wrongFeedback": "The universal preparation is risk discipline: consistent risk per trade and a hard stop, which keeps you inside every firm's loss limits."
       }
      ],
      "intro": "5 questions covering the fundamentals from this module. You need 80% to pass and unlock Module 2. Take your time — understanding matters more than speed."
@@ -2086,6 +2453,88 @@
        "correct": 1,
        "correctFeedback": "Correct. Confluence is the coming together of multiple independent signals at the same level — increasing the probability that the trade works.",
        "wrongFeedback": "Not quite. Confluence means multiple independent signals pointing in the same direction at the same price level."
+      },
+      {
+       "text": "A bull flag forms after a sharp move up. What does the 'flag' portion look like when it's healthy?",
+       "options": [
+        "A steep collapse retracing most of the pole",
+        "A tight, orderly drift sideways or slightly down on falling volume",
+        "A wide, volatile range larger than the pole itself"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. A healthy flag is a calm, shallow consolidation — the market catching its breath, not reversing.",
+       "wrongFeedback": "The flag should be tight and orderly, drifting sideways/slightly against the trend on reduced volume."
+      },
+      {
+       "text": "An inside bar's entire range sits within the previous candle's range. What is the trading significance?",
+       "options": [
+        "The trend has definitively reversed",
+        "The market is compressing — a breakout of the mother bar's range often follows",
+        "Volume is guaranteed to spike",
+        "It signals institutional selling"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Inside bars mark compression; the break of the mother bar's high or low is the tradeable event.",
+       "wrongFeedback": "An inside bar is compression, not reversal — the signal comes when price breaks the mother bar's range."
+      },
+      {
+       "text": "What confirms a bullish break of structure (BOS)?",
+       "options": [
+        "Price touching the previous swing high",
+        "Price closing decisively above the previous swing high",
+        "Price closing above VWAP",
+        "Two consecutive green candles"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. A BOS needs a decisive close through the prior swing high — a wick alone isn't conviction.",
+       "wrongFeedback": "A touch or a wick isn't enough; structure breaks when price CLOSES through the previous swing high."
+      },
+      {
+       "text": "In a VWAP reclaim, what sequence are you watching for?",
+       "options": [
+        "Price loses VWAP, then reclaims it and holds above",
+        "Price never touches VWAP all session",
+        "VWAP crosses above the daily open",
+        "Price closes exactly on VWAP"
+       ],
+       "correct": 0,
+       "correctFeedback": "Correct. Lose it, reclaim it, hold it — the reclaim-and-hold is what shows buyers back in control.",
+       "wrongFeedback": "The reclaim pattern is: price loses VWAP, takes it back, and holds above. The hold is the confirmation."
+      },
+      {
+       "text": "Why does a pattern aligned WITH the higher-timeframe trend have better odds?",
+       "options": [
+        "Patterns only form in trends",
+        "You're joining the dominant order flow instead of fighting it",
+        "Lower timeframes are always noise",
+        "It guarantees the trade wins"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Trading with the higher-timeframe direction means the bigger flow is behind your trade — nothing is guaranteed, but odds improve.",
+       "wrongFeedback": "Alignment matters because the dominant flow is behind you. No guarantee — just better odds than fighting the tide."
+      },
+      {
+       "text": "You spot a textbook bull flag, but your prop firm evaluation has a daily loss limit you're close to breaching. What's the disciplined play?",
+       "options": [
+        "Take the trade at full size — the pattern is high quality",
+        "Skip or defer the trade; protecting the evaluation comes first",
+        "Double the size to win back the day's losses"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. No single pattern outranks survival. Near the daily limit, the evaluation IS the trade.",
+       "wrongFeedback": "Pattern quality never outranks the daily loss limit — breach it and the evaluation is gone. Protect the account first."
+      },
+      {
+       "text": "A flag's consolidation retraces 80% of its pole on rising volume. What should you conclude?",
+       "options": [
+        "A stronger breakout is coming",
+        "The pattern is compromised — deep retrace and rising counter-volume aren't flag behaviour",
+        "It has become an inside bar",
+        "Nothing changes; entry rules are identical"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Deep retracement with growing opposing volume says distribution, not rest — the flag thesis is broken.",
+       "wrongFeedback": "A healthy flag retraces shallowly on FALLING volume. 80% retrace on rising volume breaks the pattern's logic."
       }
      ],
      "intro": "5 questions on chart patterns. You need 80% to pass and unlock Module 3."
@@ -2651,6 +3100,89 @@
        "correct": 2,
        "correctFeedback": "Correct. Setting a personal daily limit well below the official one (e.g. 3% personal vs 5% official) creates a buffer and prevents a bad day from ending your challenge.",
        "wrongFeedback": "Not quite. Setting your personal daily limit below the firm's limit (e.g. 3% vs 5%) creates a buffer. Hitting your personal limit means you stop — there's still 2% of room before the official breach."
+      },
+      {
+       "text": "Your account is £20,000 and you risk 1% with a 40-point stop. Size per point?",
+       "options": [
+        "£5 per point",
+        "£2 per point",
+        "£10 per point",
+        "£0.50 per point"
+       ],
+       "correct": 0,
+       "correctFeedback": "Correct. 1% of £20,000 = £200; £200 ÷ 40 points = £5 per point.",
+       "wrongFeedback": "1% of £20,000 is £200. Divide by the 40-point stop: £5 per point."
+      },
+      {
+       "text": "Where does a technically-placed stop loss belong on a long trade?",
+       "options": [
+        "A fixed 10 points below entry, always",
+        "Beyond the structure that invalidates the setup — e.g. below the swing low",
+        "At the day's low, whatever the setup",
+        "Wherever it caps risk at exactly £100"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. The stop goes where the trade idea is proven wrong — beyond the invalidating structure — then size is calculated from that distance.",
+       "wrongFeedback": "Stops belong at the point of invalidation (like below the swing low), not at an arbitrary distance. Size adjusts to the stop, never the reverse."
+      },
+      {
+       "text": "Trading at 1:2 risk-to-reward, roughly what win rate breaks even?",
+       "options": [
+        "50%",
+        "33%",
+        "25%",
+        "66%"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Winners are twice the losers, so winning about a third of the time breaks even.",
+       "wrongFeedback": "At 1:2, one win pays for two losses — break-even is about 33%."
+      },
+      {
+       "text": "Why does over-leveraging blow up accounts even when the strategy has an edge?",
+       "options": [
+        "Leverage changes the strategy's win rate",
+        "Oversized losses dig drawdowns the edge can't climb out of before the account (or evaluation) dies",
+        "Brokers close leveraged accounts automatically",
+        "It doesn't — leverage only accelerates profits"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. The edge needs enough attempts to play out; oversized positions can end the account before it does.",
+       "wrongFeedback": "An edge plays out over many trades. Over-leverage means a normal losing streak becomes a fatal drawdown first."
+      },
+      {
+       "text": "After losing 20% of your account, what gain returns you to break-even?",
+       "options": [
+        "20%",
+        "25%",
+        "15%",
+        "40%"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. From 80p in the pound you need +25% to get back to 100.",
+       "wrongFeedback": "Recovery is asymmetric: lose 20% and the remaining 80% must grow 25% to break even."
+      },
+      {
+       "text": "Your firm has a 5% daily loss limit and you risk 1% per trade. What's the most disciplined reading of that combination?",
+       "options": [
+        "You can take unlimited trades — the limit is the firm's problem",
+        "Around 3-4 losses is a sensible personal stop for the day, well before the hard limit",
+        "You should risk 5% on one great trade instead"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Stopping at 3-4 losses leaves buffer for slippage and keeps you from ever testing the hard limit under tilt.",
+       "wrongFeedback": "The pro move is a personal daily stop BELOW the firm's limit — 3-4 one-percent losses — so the hard rule never comes into play."
+      },
+      {
+       "text": "Take Profit Trader's evaluation has NO daily loss limit but a 4% end-of-day trailing drawdown. What does that change about risk management?",
+       "options": [
+        "Nothing — trade exactly as with a daily limit",
+        "Intraday swings are survivable, but where you CLOSE the day is everything — end-of-day equity discipline replaces the daily cap",
+        "It means risk management is optional",
+        "You should hold losers overnight to reset the calculation"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. With an EOD trailing measure, the closing print is what counts — you must manage the day's finish, not just each trade.",
+       "wrongFeedback": "No daily cap doesn't mean no discipline: the 4% EOD trail makes your end-of-day equity the critical number."
       }
      ],
      "intro": "5 questions on risk management. You need 80% to pass and unlock Module 4 — Prop Firm Mastery."
@@ -3370,6 +3902,89 @@
        "correct": 1,
        "correctFeedback": "Correct. The two Wednesday violations were: (1) entering a trade with 'no clear setup' — a setup criteria violation, and (2) revenge trading at 3% risk instead of 1% — a risk management violation. These two decisions turned a manageable bad day into the worst session of the week.",
        "wrongFeedback": "The Wednesday violations were specifically: first, entering a forced trade with no clear setup (setup criteria violation), and second, a revenge trade at 3× normal risk (risk management violation). These are the most common and most damaging trading plan failures in prop firm challenges."
+      },
+      {
+       "text": "FTMO's Two-Phase evaluation measures maximum drawdown how?",
+       "options": [
+        "Trailing your equity peak intraday",
+        "Static from the starting balance",
+        "Reset monthly",
+        "End-of-day trailing"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. FTMO's classic challenge uses a static max drawdown anchored to the starting balance.",
+       "wrongFeedback": "FTMO's standard challenge drawdown is STATIC — measured from the starting balance, not trailing."
+      },
+      {
+       "text": "Topstep's consistency rule caps your best single day at roughly what share of total profit?",
+       "options": [
+        "10%",
+        "30%",
+        "50%",
+        "90%"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. Around 50% — no single day may dominate your profit, forcing genuine day-to-day consistency.",
+       "wrongFeedback": "Topstep's consistency threshold is about 50% of total profit from any single day."
+      },
+      {
+       "text": "Apex's consistency rule is stricter than most at around 30%. What behaviour is it designed to prevent?",
+       "options": [
+        "Trading too many contracts at once",
+        "Passing the evaluation with one lucky outsized day instead of repeatable skill",
+        "Holding trades over the weekend",
+        "Trading outside US market hours"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Consistency rules exist so one jackpot day can't carry an evaluation — the firm wants repeatable performance.",
+       "wrongFeedback": "The 30% cap stops a single windfall day from carrying the whole evaluation — firms fund repeatability, not luck."
+      },
+      {
+       "text": "MyFundedFutures measures its 3% drawdown at end of day. Compared with an intraday trailing measure, what does this allow?",
+       "options": [
+        "Nothing different — they're identical",
+        "Your equity can dip intraday without breaching, as long as it recovers by the close",
+        "Unlimited intraday losses with no consequences ever"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. EOD measurement forgives intraday dips that recover before the close — only the closing equity is tested.",
+       "wrongFeedback": "End-of-day measurement means the breach test happens at the close — intraday dips that recover don't count."
+      },
+      {
+       "text": "Why do most firms impose a minimum number of trading days?",
+       "options": [
+        "To collect more commission",
+        "To prove performance across different market conditions rather than one session",
+        "Because regulators require it",
+        "To keep servers busy"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Minimum days force the evaluation across varied conditions — one hot session proves little.",
+       "wrongFeedback": "Minimum-day rules exist to see you perform across different days and conditions, not a single lucky session."
+      },
+      {
+       "text": "A solid challenge trading plan should specify which of these BEFORE any trade is taken?",
+       "options": [
+        "Only the profit target",
+        "Entry criteria, risk per trade, daily stop, and which sessions you trade",
+        "Just the instruments you like",
+        "The firm's payout schedule"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Entries, fixed risk, a personal daily stop and defined sessions — decided calmly in advance, followed mechanically.",
+       "wrongFeedback": "A plan is the full ruleset: entry criteria, risk per trade, personal daily stop and trading windows — all pre-decided."
+      },
+      {
+       "text": "You're comparing two firms: one with a 5% daily loss limit + static 10% max, another with no daily limit + 4% EOD trailing. Your trading style has volatile intraday swings that usually recover. Which fits better, and why?",
+       "options": [
+        "The first — daily limits suit volatile styles",
+        "The second — EOD measurement forgives intraday swings that recover by the close",
+        "Neither can work for this style",
+        "Both are identical in practice"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. If your equity dips intraday but recovers, EOD measurement is far more forgiving than an intraday daily limit.",
+       "wrongFeedback": "Match the rule to the style: volatile-but-recovering intraday equity survives EOD measurement, but can breach an intraday daily cap."
       }
      ],
      "intro": "5 questions covering modules 1–4. Pass 80% to clear the foundation checkpoint and move on to the advanced modules (Psychology & Discipline, and Review & Building Your Edge). These test practical application — not definitions."
@@ -3779,6 +4394,89 @@
        "correct": 1,
        "correctFeedback": "Correct. Process over outcome. A rule-following trade that lost was good; a rule-breaking trade that won was bad — it rewarded the wrong behaviour.",
        "wrongFeedback": "Judge the process, not the outcome. A losing trade that followed your rules was good; a winning trade that broke them was bad."
+      },
+      {
+       "text": "After two quick losses you feel a surge to 'win it back' immediately with a bigger trade. What is this pattern, and what's the correct response?",
+       "options": [
+        "Revenge trading — step away or drop to minimum size per your written rules",
+        "Momentum trading — increase size while volatility is high",
+        "Intuition — act on it quickly before it fades"
+       ],
+       "correct": 0,
+       "correctFeedback": "Correct. That urge is revenge trading. The written rule — stop or size down — exists precisely because you can't reason well in that state.",
+       "wrongFeedback": "The 'win it back' urge after losses is revenge trading, and the answer is pre-written rules: stop for the day or cut size."
+      },
+      {
+       "text": "Why do written rules beat willpower for trading discipline?",
+       "options": [
+        "Willpower is infinite if you train it",
+        "Decisions made calmly in advance don't have to be re-made under stress, when your judgement is worst",
+        "Rules are only for beginners",
+        "Because firms require documentation"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. The whole point of pre-commitment: the decision is already made, so the stressed version of you just follows it.",
+       "wrongFeedback": "Under pressure, judgement degrades. Rules move the decision to when you were calm — that's why they beat in-the-moment willpower."
+      },
+      {
+       "text": "FOMO entries typically happen at what point in a move?",
+       "options": [
+        "Before the move starts",
+        "Early, at the planned trigger",
+        "Late, after the move is extended — at the worst available price",
+        "Only in ranging markets"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. FOMO strikes after a move is obvious — which is exactly when the price is worst and the risk is largest.",
+       "wrongFeedback": "Fear of missing out kicks in once a move is well underway — so FOMO entries are late, extended, and poorly priced."
+      },
+      {
+       "text": "You've hit your personal daily loss stop but 'feel certain' about one more setup. Under a prop firm's daily loss limit, taking it risks what?",
+       "options": [
+        "Nothing — feelings are data",
+        "Turning a controlled losing day into a breached evaluation, since tilt-driven certainty is exactly when errors compound",
+        "A margin call from your broker",
+        "Missing tomorrow's session"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. The 'certain' feeling after losses is tilt wearing a disguise — and near a daily limit it can end the whole evaluation.",
+       "wrongFeedback": "That certainty after losses IS tilt. One more trade near the daily limit risks the evaluation itself, not just one loss."
+      },
+      {
+       "text": "Which is a sign of tilt AFTER a winning streak?",
+       "options": [
+        "Reviewing the winners in your journal",
+        "Oversizing and loosening entry criteria because you feel invincible",
+        "Taking a planned break",
+        "Reducing size to protect profits"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Winner's tilt: euphoria loosens rules and inflates size. Streaks in either direction distort judgement.",
+       "wrongFeedback": "Tilt cuts both ways — after wins it shows up as oversizing and sloppy entries born of overconfidence."
+      },
+      {
+       "text": "A useful journal entry for psychology tracking records what alongside the trade details?",
+       "options": [
+        "The weather that day",
+        "Your emotional state and whether the trade followed your plan",
+        "Your favourite instrument only",
+        "Nothing extra — numbers are enough"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Emotion + plan-adherence per trade is what reveals patterns like tilt and FOMO in review.",
+       "wrongFeedback": "To catch behavioural leaks you need the feelings and plan-match logged with each trade — that's what review mines later."
+      },
+      {
+       "text": "What's the disciplined structure for a trading day, start to finish?",
+       "options": [
+        "Open charts and react to whatever moves",
+        "Pre-market plan → trade only planned setups → post-market review and journal",
+        "Trade all sessions to maximise opportunity",
+        "Check P&L constantly and adjust size to feelings"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Plan, execute the plan, review the execution — the loop that compounds discipline.",
+       "wrongFeedback": "The professional day is a loop: plan before, execute only the plan during, review honestly after."
       }
      ],
      "intro": "5 questions on trading psychology and discipline. You need 80% to pass. These ideas matter more under real pressure than any pattern — take your time."
@@ -4196,6 +4894,90 @@
        "correct": 1,
        "correctFeedback": "Correct. Readiness is evidence — a meaningful sample showing a positive, rule-respecting edge against that specific firm's limits.",
        "wrongFeedback": "Readiness is data, not a feeling or a single result. You want a 50+ trade sample with positive expectancy inside the firm's limits."
+      },
+      {
+       "text": "Expectancy per trade combines which ingredients?",
+       "options": [
+        "Win rate alone",
+        "Win rate, average win size and average loss size",
+        "Number of trades and account size",
+        "Profit factor and leverage"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Expectancy = (win% × avg win) − (loss% × avg loss) — what a trade earns you on average.",
+       "wrongFeedback": "Expectancy needs all three: how often you win, how big wins are, how big losses are."
+      },
+      {
+       "text": "Why do traders measure results in R (risk units) instead of pounds?",
+       "options": [
+        "It sounds more professional",
+        "It normalises results across position sizes and account growth, exposing the true quality of decisions",
+        "Brokers require it",
+        "It hides losses"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. A +2R trade is a +2R trade at any account size — R strips money noise off the decision quality.",
+       "wrongFeedback": "R-multiples make trades comparable regardless of size or account — the decision quality shows through."
+      },
+      {
+       "text": "Your journal shows most losing R comes from trades tagged 'off-plan', while on-plan trades are profitable. The highest-leverage fix is…",
+       "options": [
+        "A new strategy",
+        "Stop taking off-plan trades — the edge already works",
+        "Increase size on everything",
+        "Trade more instruments"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. The edge exists; the leak is discipline. Cutting off-plan trades is the single highest-leverage change.",
+       "wrongFeedback": "The data says the strategy works ON plan — the fix is eliminating off-plan trades, not finding a new edge."
+      },
+      {
+       "text": "An off-plan trade that WINS should be journalled as…",
+       "options": [
+        "A success to repeat",
+        "A bad trade that happened to pay — because it rewards rule-breaking",
+        "Proof the plan is too strict",
+        "Nothing unusual"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Winning off-plan trades are the dangerous ones — the profit teaches your brain that breaking rules pays.",
+       "wrongFeedback": "Process over outcome: an off-plan winner is still a bad trade, and labelling it that way is what stops the habit."
+      },
+      {
+       "text": "What belongs in a weekly review loop?",
+       "options": [
+        "Only the week's P&L",
+        "Sort trades into on/off-plan × won/lost, find the biggest leak, set ONE change for next week",
+        "Re-watching every chart tick by tick",
+        "Comparing yourself to other traders"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. The four-box sort plus a single concrete change — small, compounding improvements beat grand overhauls.",
+       "wrongFeedback": "The loop is: categorise (on/off-plan vs won/lost), identify the one biggest leak, commit to one change. Repeat weekly."
+      },
+      {
+       "text": "With a 40% win rate, which average R:R makes you profitable?",
+       "options": [
+        "1:1",
+        "1:2",
+        "Any ratio — 40% is unprofitable",
+        "1:0.5"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. At 1:2, break-even is ~33%, so 40% wins is comfortably profitable. Win rate means nothing without R:R.",
+       "wrongFeedback": "At 1:2 R:R the break-even win rate is about 33% — so 40% is profitable. Win rate alone tells you little."
+      },
+      {
+       "text": "For a prop evaluation with a ~50% consistency rule, which journal metric deserves special attention?",
+       "options": [
+        "Best single trade ever",
+        "The share of total profit coming from your best single day",
+        "Number of instruments traded",
+        "Average hold time"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. If one day dominates your profit you'd fail the consistency check — tracking that share tells you before the firm does.",
+       "wrongFeedback": "Consistency rules test day-to-day evenness: watch what fraction of total profit your best day represents."
       }
      ],
      "intro": "5 questions on metrics, journaling and the review loop. You need 80% to pass and complete the learning path."

@@ -22,6 +22,7 @@
 <style id="auth-gate-style">body{visibility:hidden}</style>
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="/auth.js?v=__BUILD_SHA__"></script>
+<script src="/userdata.js?v=__BUILD_SHA__"></script>
 <script>requireMinPlan('challenger');</script>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -529,27 +530,68 @@ const QUESTIONS = [
   { text: "A trader takes a loss and immediately enters an unplanned trade to 'make it back fast.' What is happening?", options: ["Smart capital recovery","Tilt / revenge trading","Disciplined risk management","A valid FOMO entry"], correct: 1, fb: { c: "Correct. The phrase 'make it back' after a loss, driving an unplanned trade, is the clearest signal of tilt. The right move is to stop.", w: "An unplanned trade driven by a desire to recover a loss is tilt. 'Make it back' is the warning phrase to watch for." } },
   { text: "Why are pre-committed rules (like 'two losses = stop for the day') more effective than willpower?", options: ["Willpower is unlimited, so rules are just a backup","Rules remove the decision from the moment when judgement is compromised","Rules guarantee you never have a losing day","Willpower works better the more stressed you are"], correct: 1, fb: { c: "Correct. You set rules while calm so your stressed self cannot override them. Willpower depletes exactly when pressure peaks.", w: "The value of a rule is that it removes the decision from the stressed moment. Willpower fades precisely when you need it most." } },
   { text: "You're chasing an 80-point move that already ran without you. What's the core problem with entering now?", options: ["The trend is too strong to trade","You'd be entering extended, far from any logical stop, with poor R:R","Large moves always reverse immediately","There is no problem — strong trends are free money"], correct: 1, fb: { c: "Correct. Chasing means a late entry with no logical invalidation and poor risk-to-reward — the defining flaw of FOMO trades.", w: "The problem is entry quality: chasing leaves you extended with no logical stop and bad R:R. Wait for a pullback or skip it." } },
-  { text: "How should you judge whether a single trade was 'good' or 'bad'?", options: ["By whether it made or lost money","By whether you followed your plan and rules","By how big the profit was","By whether other traders agreed with it"], correct: 1, fb: { c: "Correct. Process over outcome. A rule-following trade that lost was good; a rule-breaking trade that won was bad — it rewarded the wrong behaviour.", w: "Judge the process, not the outcome. A losing trade that followed your rules was good; a winning trade that broke them was bad." } }
+  { text: "How should you judge whether a single trade was 'good' or 'bad'?", options: ["By whether it made or lost money","By whether you followed your plan and rules","By how big the profit was","By whether other traders agreed with it"], correct: 1, fb: { c: "Correct. Process over outcome. A rule-following trade that lost was good; a rule-breaking trade that won was bad — it rewarded the wrong behaviour.", w: "Judge the process, not the outcome. A losing trade that followed your rules was good; a winning trade that broke them was bad." } },
+  {"text": "After two quick losses you feel a surge to 'win it back' immediately with a bigger trade. What is this pattern, and what's the correct response?", "options": ["Revenge trading — step away or drop to minimum size per your written rules", "Momentum trading — increase size while volatility is high", "Intuition — act on it quickly before it fades"], "correct": 0, "fb": {"c": "Correct. That urge is revenge trading. The written rule — stop or size down — exists precisely because you can't reason well in that state.", "w": "The 'win it back' urge after losses is revenge trading, and the answer is pre-written rules: stop for the day or cut size."}},
+  {"text": "Why do written rules beat willpower for trading discipline?", "options": ["Willpower is infinite if you train it", "Decisions made calmly in advance don't have to be re-made under stress, when your judgement is worst", "Rules are only for beginners", "Because firms require documentation"], "correct": 1, "fb": {"c": "Correct. The whole point of pre-commitment: the decision is already made, so the stressed version of you just follows it.", "w": "Under pressure, judgement degrades. Rules move the decision to when you were calm — that's why they beat in-the-moment willpower."}},
+  {"text": "FOMO entries typically happen at what point in a move?", "options": ["Before the move starts", "Early, at the planned trigger", "Late, after the move is extended — at the worst available price", "Only in ranging markets"], "correct": 2, "fb": {"c": "Correct. FOMO strikes after a move is obvious — which is exactly when the price is worst and the risk is largest.", "w": "Fear of missing out kicks in once a move is well underway — so FOMO entries are late, extended, and poorly priced."}},
+  {"text": "You've hit your personal daily loss stop but 'feel certain' about one more setup. Under a prop firm's daily loss limit, taking it risks what?", "options": ["Nothing — feelings are data", "Turning a controlled losing day into a breached evaluation, since tilt-driven certainty is exactly when errors compound", "A margin call from your broker", "Missing tomorrow's session"], "correct": 1, "fb": {"c": "Correct. The 'certain' feeling after losses is tilt wearing a disguise — and near a daily limit it can end the whole evaluation.", "w": "That certainty after losses IS tilt. One more trade near the daily limit risks the evaluation itself, not just one loss."}, "firms": ["ftmo", "topstep", "fundednext"]},
+  {"text": "Which is a sign of tilt AFTER a winning streak?", "options": ["Reviewing the winners in your journal", "Oversizing and loosening entry criteria because you feel invincible", "Taking a planned break", "Reducing size to protect profits"], "correct": 1, "fb": {"c": "Correct. Winner's tilt: euphoria loosens rules and inflates size. Streaks in either direction distort judgement.", "w": "Tilt cuts both ways — after wins it shows up as oversizing and sloppy entries born of overconfidence."}},
+  {"text": "A useful journal entry for psychology tracking records what alongside the trade details?", "options": ["The weather that day", "Your emotional state and whether the trade followed your plan", "Your favourite instrument only", "Nothing extra — numbers are enough"], "correct": 1, "fb": {"c": "Correct. Emotion + plan-adherence per trade is what reveals patterns like tilt and FOMO in review.", "w": "To catch behavioural leaks you need the feelings and plan-match logged with each trade — that's what review mines later."}},
+  {"text": "What's the disciplined structure for a trading day, start to finish?", "options": ["Open charts and react to whatever moves", "Pre-market plan → trade only planned setups → post-market review and journal", "Trade all sessions to maximise opportunity", "Check P&L constantly and adjust size to feelings"], "correct": 1, "fb": {"c": "Correct. Plan, execute the plan, review the execution — the loop that compounds discipline.", "w": "The professional day is a loop: plan before, execute only the plan during, review honestly after."}}
 ];
+
+// ── Test mode (matches iOS): every attempt samples up to 5 questions from the
+// bank and shuffles BOTH question order and answer positions, so a retake is a
+// fresh paper — this is a test of knowledge, not a memorisable sequence.
+let PAPER = [];
+function buildPaper(bank){
+  const qs = bank.slice();
+  for (let i=qs.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [qs[i],qs[j]]=[qs[j],qs[i]]; }
+  // Personalisation: if the user tracks specific firms, bias the paper toward
+  // questions tagged with those firms' rules (up to 2 of the 5 slots) while
+  // keeping the rest general — their modules shape understanding of THEIR
+  // firms' rules as well as what other firms expect. Tags are web-side only:
+  // the extractor strips unknown fields, so modules.json is unaffected.
+  let tracked = [];
+  try { tracked = (window.TraxentData ? TraxentData.getFirms() : []) || []; } catch(e){}
+  let pool = qs;
+  if (tracked.length) {
+    const isRel = function(q){ return (q.firms || []).some(function(f){ return tracked.indexOf(f) !== -1; }); };
+    const rel = qs.filter(isRel), gen = qs.filter(function(q){ return !isRel(q); });
+    pool = rel.slice(0, 2).concat(gen);
+    for (let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  }
+  return pool.slice(0, Math.min(5, qs.length)).map(function(q){
+    const srcOpts = q.options || q.o;
+    const correctIdx = (q.correct !== undefined) ? q.correct : q.c;
+    const opts = srcOpts.map(function(text, idx){ return { text: text, ok: idx === correctIdx }; });
+    for (let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+    const texts = opts.map(function(o){ return o.text; });
+    const ci = opts.findIndex(function(o){ return o.ok; });
+    return { text: q.text || q.t, t: q.text || q.t, options: texts, o: texts, correct: ci, c: ci, fb: q.fb };
+  });
+}
+
 
 let curQ = 0, selOpt = null, answered = false, score = 0;
 
 function initQuiz() {
+  PAPER = buildPaper(QUESTIONS);
   curQ = 0; score = 0; selOpt = null; answered = false;
   document.getElementById('quiz-questions').style.display = 'block';
   document.getElementById('quiz-result').style.display = 'none';
   renderQ(); renderDots();
 }
 function renderDots() {
-  document.getElementById('q-dots').innerHTML = QUESTIONS.map((_,i) =>
+  document.getElementById('q-dots').innerHTML = PAPER.map((_,i) =>
     `<div class="q-dot ${i<curQ?'done':i===curQ?'active':''}"></div>`).join('');
 }
 function renderQ() {
-  const q = QUESTIONS[curQ];
-  const L = ['A','B','C','D'];
+  const q = PAPER[curQ];
+  const L = ['A','B','C','D','E'];
   document.getElementById('q-wrap').innerHTML = `
     <div class="q-card">
-      <div class="q-num">Question ${curQ+1} of ${QUESTIONS.length}</div>
+      <div class="q-num">Question ${curQ+1} of ${PAPER.length}</div>
       <div class="q-text">${q.text}</div>
       <div class="q-options">
         ${q.options.map((o,i)=>`<div class="q-opt" id="qo${i}" onclick="selQ(${i})"><div class="q-letter">${L[i]}</div><div class="q-opt-text">${o}</div></div>`).join('')}
@@ -570,7 +612,7 @@ function selQ(i) {
 function submitQ() {
   if (selOpt === null || answered) return;
   answered = true;
-  const q = QUESTIONS[curQ];
+  const q = PAPER[curQ];
   const ok = selOpt === q.correct;
   if (ok) score++;
   document.querySelectorAll('.q-opt').forEach((o,i) => {
@@ -583,24 +625,24 @@ function submitQ() {
   fb.innerHTML = `<strong>${ok?'✓ Correct':'✗ Not quite'}</strong> — ${ok?q.fb.c:q.fb.w}`;
   document.getElementById('q-submit').style.display = 'none';
   document.getElementById('q-next').style.display = 'block';
-  document.getElementById('q-next').textContent = curQ < QUESTIONS.length-1 ? 'Next →' : 'See results →';
+  document.getElementById('q-next').textContent = curQ < PAPER.length-1 ? 'Next →' : 'See results →';
 }
 function nextQ() {
   curQ++;
-  if (curQ >= QUESTIONS.length) { showResult(); return; }
+  if (curQ >= PAPER.length) { showResult(); return; }
   renderDots(); renderQ();
 }
 function showResult() {
   document.getElementById('quiz-questions').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'block';
-  const pct = Math.round((score/QUESTIONS.length)*100);
-  const pass = pct >= 80;
+  const pct = Math.round((score/PAPER.length)*100);
+  const pass = pct >= 75;
   document.getElementById('result-pct').textContent = pct+'%';
   document.getElementById('result-pct').className = `result-pct ${pass?'pass':'fail'}`;
   document.getElementById('result-lbl').textContent = pass ? 'Module 5 passed' : 'Not quite — try again';
   document.getElementById('result-msg').textContent = pass
-    ? `You answered ${score} of ${QUESTIONS.length} correctly. This is the work most traders skip — and it is why they keep paying for resets. Module 6 builds the review habit that compounds it.`
-    : `You answered ${score} of ${QUESTIONS.length} correctly. Review the lessons and try again — psychology is the difference between knowing the rules and following them.`;
+    ? `You answered ${score} of ${PAPER.length} correctly. This is the work most traders skip — and it is why they keep paying for resets. Module 6 builds the review habit that compounds it.`
+    : `You answered ${score} of ${PAPER.length} correctly. Review the lessons and try again — psychology is the difference between knowing the rules and following them.`;
   if (pass) {
     document.getElementById('result-cta').style.display = 'inline-block';
     completed[3] = true;
@@ -609,7 +651,8 @@ function showResult() {
     updateProgress();
     saveProgress();
     setTimeout(() => document.getElementById('completion-banner').classList.add('show'), 500);
-    try { localStorage.setItem('traxent_m5_complete', 'true'); } catch (e) {}
+    try { localStorage.setItem('traxent_m5_complete', 'true');
+    try { if (window.TraxentData) TraxentData.markLesson('l5-quiz'); } catch(e){} } catch (e) {}
   }
 }
 function retryQuiz() {

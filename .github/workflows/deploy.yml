@@ -99,6 +99,7 @@ jobs:
             --include "flags.json" \
             --include "subscribe.js" \
             --include "launch-state.js" \
+            --include "content/*.json" \
             --cache-control "no-cache"
 
       - name: Invalidate CloudFront cache

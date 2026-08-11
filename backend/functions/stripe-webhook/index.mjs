@@ -61,6 +61,24 @@ async function removeAllPlanRoles(token, domain, userId, roleIds) {
 async function assignRole(token, domain, userId, roleId) {
   await fetch(`https://${domain}/api/v2/users/${encodeURIComponent(userId)}/roles`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ roles: [roleId] }) });
 }
+
+// Mirror the plan into the user-data table's PROFILE row. The weekly
+// readiness digest builds its send list from PROFILE rows, and GET /user
+// surfaces it as `profile` — keep it current the moment billing changes,
+// without waiting for the user's next login. Never throws.
+const USER_DATA_TABLE = process.env.USER_DATA_TABLE || 'TraxentUserData';
+async function upsertProfile(auth0UserId, plan, email) {
+  try {
+    const { PutCommand } = await import('@aws-sdk/lib-dynamodb');
+    await ddb.send(new PutCommand({
+      TableName: USER_DATA_TABLE,
+      Item: {
+        userId: auth0UserId, sk: 'PROFILE',
+        plan, email: email || null, updatedAt: new Date().toISOString(),
+      },
+    }));
+  } catch (e) { console.error('profile mirror (non-fatal):', e.message); }
+}
 export const handler = async (event) => {
   try {
     const [secretKey, webhookSecret, auth0Domain, m2mClientId, m2mClientSecret, priceObserver, priceChallenger, priceFundedReady] = await Promise.all([
@@ -100,6 +118,7 @@ export const handler = async (event) => {
         // under a WEAKER basis than waitlist consent. They can switch it off on
         // /account, which is the refusal route PECR requires.
         await syncCustomerToMarketing(s, s.metadata.plan);
+        await upsertProfile(s.metadata.auth0_user_id, s.metadata.plan, s.customer_details?.email || s.customer_email);
         break;
       }
       case 'customer.subscription.updated': {
@@ -119,6 +138,11 @@ export const handler = async (event) => {
             });
           }
         } catch (e) { console.error('plan sync (non-fatal):', e.message); }
+        {
+          let email = null;
+          try { email = (await stripe.customers.retrieve(s.customer))?.email || null; } catch {}
+          await upsertProfile(s.metadata.auth0_user_id, plan, email);
+        }
         break;
       }
       case 'customer.subscription.deleted': {
@@ -135,6 +159,11 @@ export const handler = async (event) => {
             });
           }
         } catch (e) { console.error('plan sync (non-fatal):', e.message); }
+        {
+          let email = null;
+          try { email = (await stripe.customers.retrieve(s.customer))?.email || null; } catch {}
+          await upsertProfile(s.metadata.auth0_user_id, 'free', email);
+        }
         break;
       }
     }

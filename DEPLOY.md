@@ -127,12 +127,15 @@ confirm modal calling it; the same endpoint serves the iOS app.
 
 One-time prerequisites:
 1. **Auth0 Machine-to-Machine app** authorized for the **Management API** with the
-   `delete:users` scope. Put its credentials in SSM:
+   `delete:users` scope. Its credentials live in SSM under the **`m2m_*`** names
+   (renamed from the old `mgmt_*` in `954a294` — one M2M app serves all Lambdas):
    ```
-   aws ssm put-parameter --name /traxent/auth0/mgmt_client_id     --type String       --value <id>     --region eu-west-2
-   aws ssm put-parameter --name /traxent/auth0/mgmt_client_secret --type SecureString  --value <secret> --region eu-west-2
+   aws ssm put-parameter --name /traxent/auth0/m2m_client_id     --type String        --value <id>     --region eu-west-2
+   aws ssm put-parameter --name /traxent/auth0/m2m_client_secret --type SecureString  --value <secret> --region eu-west-2
    ```
-   (These are separate from the webhook's `m2m_*` params, which don't have `delete:users`.)
+   (Already set in prod — only re-run these when rotating the secret. The app
+   needs `read:users`, `update:users` AND `delete:users`; the last one must be
+   ticked in the dashboard or account deletion 500s at step `auth0_delete`.)
 2. The Stripe customer must carry the Auth0 identity. `create-checkout` now stamps
    `auth0_sub` (and `auth0_user_id`) on the Stripe customer at checkout — already done; just
    redeploy that Lambda (§2). The delete flow also falls back to an email search for legacy customers.

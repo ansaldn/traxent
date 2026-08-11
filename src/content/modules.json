@@ -1,0 +1,4284 @@
+{
+ "schemaVersion": 2,
+ "modules": [
+  {
+   "id": "module-101",
+   "number": 1,
+   "numLabel": "Module 01",
+   "title": "Trading 101: How Markets Work",
+   "desc": "Completely free — no account needed. What a share is, how companies go public, how exchanges and prices work, and the main markets. Plain English, start from zero.",
+   "minPlan": "free",
+   "duration": "~25 min",
+   "lessons": [
+    {
+     "key": "l101-1",
+     "name": "What a company and a share are",
+     "type": "lesson",
+     "eyebrow": "Trading 101 · Lesson 1",
+     "title": "What is a company, and a share?",
+     "intro": "Everything in trading starts here. Get this one idea and the rest of the market suddenly makes sense.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l101-1-1",
+       "caption": "A share is one small slice of a whole company.",
+       "alt": "A company divided into many small shares, with one highlighted as yours."
+      },
+      {
+       "type": "paragraph",
+       "text": "A company is just a business that people own. When a business needs money to grow — to hire people, build products, open shops — one way to raise it is to sell small slices of ownership to the public. Those slices are called **shares** (or \"stock\")."
+      },
+      {
+       "type": "paragraph",
+       "text": "If a company is divided into a million shares and you own one, you own one-millionth of that business. That entitles you to a share of its future profits (sometimes paid out as a **dividend**) and a vote on big decisions. If the business becomes more valuable, your slice becomes more valuable too — and if it struggles, your slice is worth less."
+      },
+      {
+       "type": "callout",
+       "style": "info",
+       "title": null,
+       "text": "**Plain version:** a share is a tiny piece of a real company you can buy and sell. Owning shares makes you a part-owner, not a gambler on a number."
+      }
+     ]
+    },
+    {
+     "key": "l101-2",
+     "name": "Going public: IPOs",
+     "type": "lesson",
+     "eyebrow": "Trading 101 · Lesson 2",
+     "title": "Going public: IPOs",
+     "intro": "Where do shares come from in the first place? A company decides to open its doors to the public.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l101-2-1",
+       "caption": "At the IPO the company raises cash; after that, investors trade the shares between themselves.",
+       "alt": "A private company becoming publicly listed on an exchange through an IPO."
+      },
+      {
+       "type": "paragraph",
+       "text": "At first, a company's shares are usually held privately by its founders and early investors. When it decides to sell shares to the general public for the first time, that event is called an **Initial Public Offering**, or **IPO** — people say the company is \"going public\" or \"listing\"."
+      },
+      {
+       "type": "paragraph",
+       "text": "After the IPO, the shares trade on a stock exchange, where anyone can buy them from or sell them to other investors. The company got its cash at the IPO; from then on, the day-to-day price is just people buying and selling those existing shares among themselves."
+      },
+      {
+       "type": "paragraph",
+       "text": "This is a key idea: **when you buy Apple shares, you're not usually buying them from Apple** — you're buying them from another investor who wants to sell."
+      }
+     ]
+    },
+    {
+     "key": "l101-3",
+     "name": "Stock exchanges & market hours",
+     "type": "lesson",
+     "eyebrow": "Trading 101 · Lesson 3",
+     "title": "Stock exchanges & market hours",
+     "intro": "Markets aren't open 24/7 — and knowing when they open explains a lot of what you'll see.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l101-3-1",
+       "caption": "Prices can only change while the market is open — big overnight news shows up as a \"gap\" at the next open.",
+       "alt": "A trading day bar showing the market open and close times."
+      },
+      {
+       "type": "paragraph",
+       "text": "A **stock exchange** is the organised marketplace where shares are bought and sold. The big ones you'll hear about are the London Stock Exchange (LSE), the New York Stock Exchange (NYSE) and the Nasdaq. Each lists thousands of companies."
+      },
+      {
+       "type": "paragraph",
+       "text": "Exchanges are only open during set hours. For example, the main US market runs roughly 9:30am to 4:00pm New York time, Monday to Friday; London runs 8:00am to 4:30pm UK time. Outside those hours the market is closed, though some products (like currencies and futures) trade nearly around the clock across global sessions."
+      }
+     ]
+    },
+    {
+     "key": "l101-4",
+     "name": "Who's who in the market",
+     "type": "lesson",
+     "eyebrow": "Trading 101 · Lesson 4",
+     "title": "Who's who in the market",
+     "intro": "Every price is a tug-of-war between very different players. Here's who's pulling.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l101-4-1",
+       "caption": "You don't need to beat the institutions — just know they're on the other side of your trade.",
+       "alt": "Retail traders, institutions, brokers and market makers."
+      },
+      {
+       "type": "paragraph",
+       "text": "Lots of different players trade at once, and it helps to know who they are:"
+      },
+      {
+       "type": "list",
+       "ordered": false,
+       "items": [
+        "**Retail traders** — everyday individuals like you, trading their own money through an app or broker.",
+        "**Institutions** — banks, pension funds and hedge funds moving very large sums.",
+        "**Brokers** — the companies that give you access to the market and place your orders (for example, a trading app).",
+        "**Market makers** — firms that always stand ready to buy and sell, which keeps the market \"liquid\" so your order can fill quickly."
+       ]
+      }
+     ]
+    },
+    {
+     "key": "l101-5",
+     "name": "How a price is set",
+     "type": "lesson",
+     "eyebrow": "Trading 101 · Lesson 5",
+     "title": "How a price is actually set",
+     "intro": "Nobody hands down \"the price\". It's simpler — and more human — than that.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l101-5-1",
+       "caption": "The price is simply where a willing buyer and a willing seller meet.",
+       "alt": "Buyers and sellers meeting at an agreed price."
+      },
+      {
+       "type": "paragraph",
+       "text": "A share doesn't have an official price handed down by anyone. The price is simply **the last amount someone was willing to pay, and someone else was willing to accept**. It moves constantly as buyers and sellers change their minds."
+      },
+      {
+       "type": "paragraph",
+       "text": "At any moment there's a highest price buyers will pay (the **bid**) and a lowest price sellers will accept (the **ask**). When a buyer and seller agree, a trade happens and that becomes the new price. More eager buyers than sellers push the price up; more eager sellers push it down. That's supply and demand in action."
+      }
+     ]
+    },
+    {
+     "key": "l101-6",
+     "name": "Reading a chart & a ticker",
+     "type": "lesson",
+     "eyebrow": "Trading 101 · Lesson 6",
+     "title": "Reading a chart and a ticker",
+     "intro": "A chart looks intimidating until you know the one thing it's really telling you.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l101-6-1",
+       "caption": "Up-and-to-the-right means rising; down means falling. That's enough to start.",
+       "alt": "A rising price chart with a ticker symbol."
+      },
+      {
+       "type": "paragraph",
+       "text": "A **ticker** is the short code for a company — AAPL for Apple, TSLA for Tesla — usually shown next to its current price and how much it's changed today."
+      },
+      {
+       "type": "paragraph",
+       "text": "A **price chart** plots the price over time: time along the bottom, price up the side. Zoom out and you see the long-term trend; zoom in and you see today's wiggles. Most traders use \"candlestick\" charts, where each candle shows the open, high, low and close for a slice of time — but at this stage, just knowing that **up-and-to-the-right means rising, down means falling** is enough."
+      },
+      {
+       "type": "callout",
+       "style": "info",
+       "title": null,
+       "text": "**Try it:** open any free charting site, type a ticker, and switch between a 1-day and a 5-year view. Seeing the same company on both is the fastest way to build intuition."
+      }
+     ]
+    },
+    {
+     "key": "l101-7",
+     "name": "The main markets",
+     "type": "lesson",
+     "eyebrow": "Trading 101 · Lesson 7",
+     "title": "The main markets",
+     "intro": "Shares are just one item on the menu. Here's the whole menu, in plain terms.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l101-7-1",
+       "caption": "Most people focus on one or two. For now, just know the menu.",
+       "alt": "Five markets: stocks, indices, forex, futures and crypto."
+      },
+      {
+       "type": "paragraph",
+       "text": "Shares are just one of several markets you can trade. In plain terms:"
+      },
+      {
+       "type": "list",
+       "ordered": false,
+       "items": [
+        "**Stocks (equities)** — slices of individual companies.",
+        "**Indices** — a basket that tracks many companies at once (e.g. the S&P 500, the FTSE 100).",
+        "**Forex (FX)** — currencies traded in pairs, like GBP/USD; the largest market in the world and open 24/5.",
+        "**Futures** — contracts to buy or sell something (an index, oil, gold) at a set date; popular with active traders and most prop firms.",
+        "**Crypto** — digital assets like Bitcoin; trades 24/7 and is highly volatile."
+       ]
+      }
+     ]
+    },
+    {
+     "key": "l101-quiz",
+     "name": "Trading 101 quiz",
+     "type": "quiz",
+     "questions": [
+      {
+       "text": "When you buy a share of a listed company, what do you own?",
+       "options": [
+        "A loan the company must repay you",
+        "A small piece of ownership in the company",
+        "A guaranteed monthly income"
+       ],
+       "correct": 1,
+       "correctFeedback": "A share is part-ownership — you own a slice of the business and its future profits, not a loan or guaranteed income.",
+       "wrongFeedback": "A share is part-ownership — you own a slice of the business and its future profits, not a loan or guaranteed income."
+      },
+      {
+       "text": "What is an IPO?",
+       "options": [
+        "The first time a company sells shares to the public",
+        "A tax charged when you sell a share",
+        "A type of chart pattern"
+       ],
+       "correct": 0,
+       "correctFeedback": "IPO = Initial Public Offering: a company \"goes public\" and lists its shares on an exchange for the first time.",
+       "wrongFeedback": "IPO = Initial Public Offering: a company \"goes public\" and lists its shares on an exchange for the first time."
+      },
+      {
+       "text": "What sets a share's price at any given moment?",
+       "options": [
+        "The government sets it each morning",
+        "The company chooses its own price",
+        "What a buyer will pay and a seller will accept"
+       ],
+       "correct": 2,
+       "correctFeedback": "Price is just the meeting point of supply and demand — the last agreed price between a buyer and a seller.",
+       "wrongFeedback": "Price is just the meeting point of supply and demand — the last agreed price between a buyer and a seller."
+      },
+      {
+       "text": "Which of these tracks many companies at once?",
+       "options": [
+        "A single stock ticker",
+        "An index, like the S&P 500 or FTSE 100",
+        "A forex pair"
+       ],
+       "correct": 1,
+       "correctFeedback": "An index is a basket of many companies, used as a health-check on a whole market.",
+       "wrongFeedback": "An index is a basket of many companies, used as a health-check on a whole market."
+      }
+     ],
+     "intro": "Answer every question to complete this module."
+    }
+   ]
+  },
+  {
+   "id": "module-201",
+   "number": 2,
+   "numLabel": "Module 02",
+   "title": "Trading 201: Placing a Trade",
+   "desc": "Free with a free account. Order types, the bid/ask spread, going long vs short, leverage & margin, the real costs, and what moves prices.",
+   "minPlan": "free",
+   "duration": "~25 min",
+   "lessons": [
+    {
+     "key": "l201-1",
+     "name": "Market, limit & stop orders",
+     "type": "lesson",
+     "eyebrow": "Trading 201 · Lesson 1",
+     "title": "Market, limit and stop orders",
+     "intro": "An order is just an instruction to your broker. Three cover almost everything you'll do — and knowing when to use each is the difference between a clean entry and a nasty surprise.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l201-1-1",
+       "caption": "Market fills now; limit waits for your price; stop fires when a level is hit.",
+       "alt": "Price line showing a market order at the current price, a limit order below it, and a stop order as a trigger."
+      },
+      {
+       "type": "list",
+       "ordered": false,
+       "items": [
+        "**Market order** — \"buy/sell right now at whatever the current price is.\" Fast, but you don't control the exact price.",
+        "**Limit order** — \"only buy at £10.00 or lower\" (or \"only sell at £12.00 or higher\"). You control the price, but it might never fill if the market doesn't reach it.",
+        "**Stop order** — a trigger. \"If the price falls to £9.00, sell me out.\" Used to cap a loss (a stop-loss) or to enter once a level breaks."
+       ]
+      },
+      {
+       "type": "callout",
+       "style": "info",
+       "title": null,
+       "text": "**Rule of thumb:** use limit orders when price matters more than speed, market orders when getting in or out *now* matters more, and always know where your stop is before you enter."
+      }
+     ]
+    },
+    {
+     "key": "l201-2",
+     "name": "The bid, ask & spread",
+     "type": "lesson",
+     "eyebrow": "Trading 201 · Lesson 2",
+     "title": "The bid, the ask and the spread",
+     "intro": "There isn't one price — there are always two. The gap between them is a small cost you pay on every single trade.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l201-2-1",
+       "caption": "Buy at the ask, sell at the bid — you start each trade down by the spread.",
+       "alt": "A bid price and a higher ask price with the gap between them labelled as the spread."
+      },
+      {
+       "type": "paragraph",
+       "text": "At any moment there are two prices, not one: the **bid** (the highest price buyers will pay) and the **ask** (the lowest price sellers will accept). The gap between them is the **spread**."
+      },
+      {
+       "type": "paragraph",
+       "text": "When you buy at market you pay the ask; when you sell at market you receive the bid. So the spread is a small, built-in cost of trading — you start every trade slightly \"in the red\" by the spread. Heavily traded markets (like major currencies or big stocks) have tiny spreads; thin, obscure ones have wide spreads."
+      }
+     ]
+    },
+    {
+     "key": "l201-3",
+     "name": "Going long vs short",
+     "type": "lesson",
+     "eyebrow": "Trading 201 · Lesson 3",
+     "title": "Going long vs going short",
+     "intro": "You can profit whether a price rises or falls. Here's how both directions work — and why one of them needs extra care.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l201-3-1",
+       "caption": "Long = betting up. Short = betting down.",
+       "alt": "An upward green arrow labelled long and a downward red arrow labelled short."
+      },
+      {
+       "type": "paragraph",
+       "text": "**Going long** is the familiar one: you buy expecting the price to rise, then sell higher for a profit. Buy low, sell high."
+      },
+      {
+       "type": "paragraph",
+       "text": "**Going short** is the mirror image: you profit when the price *falls*. Your broker effectively lets you sell first at a high price and buy back later at a lower one, pocketing the difference. It's how traders can make money in falling markets — but because a price can (in theory) rise without limit, a short that goes wrong can lose more than you put in, so it needs careful risk control."
+      },
+      {
+       "type": "callout",
+       "style": "info",
+       "title": null,
+       "text": "**Key point:** prop firms and most trading platforms let you do both — being able to go short is what lets skilled traders profit in down markets too."
+      }
+     ]
+    },
+    {
+     "key": "l201-4",
+     "name": "Leverage & margin",
+     "type": "lesson",
+     "eyebrow": "Trading 201 · Lesson 4",
+     "title": "Leverage and margin, simply",
+     "intro": "Leverage is the feature that makes small accounts interesting — and the one that wipes most of them out. Both, for the same reason.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l201-4-1",
+       "caption": "10:1 leverage: £1,000 controls £10,000 — and multiplies every move by ten.",
+       "alt": "A small margin of one thousand pounds controlling a ten thousand pound position at ten to one leverage."
+      },
+      {
+       "type": "paragraph",
+       "text": "**Leverage** lets you control a large position with a small amount of your own money. With 10:1 leverage, £1,000 of your cash can control a £10,000 position. The slice of your money set aside to hold that position is called the **margin**."
+      },
+      {
+       "type": "paragraph",
+       "text": "Leverage cuts both ways — it multiplies gains *and* losses by the same amount. A 5% move in your favour on 10:1 leverage is a 50% gain; a 5% move against you is a 50% loss. This is exactly why beginners blow up: not because they picked wrong, but because they used far too much leverage. Treat it as something to use sparingly, not a shortcut."
+      }
+     ]
+    },
+    {
+     "key": "l201-5",
+     "name": "The real costs of trading",
+     "type": "lesson",
+     "eyebrow": "Trading 201 · Lesson 5",
+     "title": "The real costs of trading",
+     "intro": "Each cost is tiny. Across hundreds of trades, they decide whether a strategy is actually profitable.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l201-5-1",
+       "caption": "Know your total cost per trade — it's part of trading like a professional.",
+       "alt": "Three small stacked costs: spread, commission and overnight fees."
+      },
+      {
+       "type": "paragraph",
+       "text": "Beyond the spread, watch for:"
+      },
+      {
+       "type": "list",
+       "ordered": false,
+       "items": [
+        "**Commission** — a per-trade fee some brokers charge (many are now \"zero commission\" but earn from the spread instead).",
+        "**Overnight / swap fees** — if you hold a leveraged position overnight, you're often charged a small financing cost each day.",
+        "**Slippage** — the difference between the price you expected and the price you actually got (next lesson but one)."
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "None of these are huge on a single trade, but they add up over hundreds of trades."
+      }
+     ]
+    },
+    {
+     "key": "l201-6",
+     "name": "What moves prices",
+     "type": "lesson",
+     "eyebrow": "Trading 201 · Lesson 6",
+     "title": "What moves prices",
+     "intro": "You don't need to predict the news — but you do need to know when it's coming.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l201-6-1",
+       "caption": "Scheduled events (like a rate decision) can move prices fast — know when they're due.",
+       "alt": "A price line jumping sharply upward at the moment a news event lands."
+      },
+      {
+       "type": "paragraph",
+       "text": "Prices move when the balance of buyers and sellers shifts — and that usually happens because new information arrives. The big drivers:"
+      },
+      {
+       "type": "list",
+       "ordered": false,
+       "items": [
+        "**Company earnings** — quarterly results that beat or miss expectations move individual stocks sharply.",
+        "**Economic data** — inflation, jobs and interest-rate decisions move whole markets and currencies.",
+        "**News & sentiment** — headlines, and simple fear and greed, can move prices even without hard data."
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "You don't need to predict the news. But you should know when major scheduled events (like a central-bank rate decision) are due, because prices can move violently around them."
+      }
+     ]
+    },
+    {
+     "key": "l201-7",
+     "name": "Getting filled: liquidity & slippage",
+     "type": "lesson",
+     "eyebrow": "Trading 201 · Lesson 7",
+     "title": "Getting filled: liquidity and slippage",
+     "intro": "The price you click and the price you get aren't always the same. Here's why — and how to keep the gap tiny.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l201-7-1",
+       "caption": "In liquid markets the gap is tiny; it widens in thin markets and around news.",
+       "alt": "Expected fill price and a slightly worse actual fill price a small distance away."
+      },
+      {
+       "type": "paragraph",
+       "text": "**Liquidity** means how easily you can buy or sell without moving the price. A liquid market has lots of buyers and sellers, so your order fills instantly at the price you see. A thin market may not have anyone on the other side at your price."
+      },
+      {
+       "type": "paragraph",
+       "text": "**Slippage** is what happens when it doesn't fill exactly: in fast-moving or thin markets, the price you actually get can be a little worse (or occasionally better) than the price you clicked. It's usually tiny in big markets, and larger around news. Using limit orders and trading liquid markets keeps it under control."
+      }
+     ]
+    },
+    {
+     "key": "l201-quiz",
+     "name": "Trading 201 quiz",
+     "type": "quiz",
+     "questions": [
+      {
+       "text": "You want to buy only if the price drops to £10 or below. Which order?",
+       "options": [
+        "Market order",
+        "Limit order",
+        "There's no way to do that"
+       ],
+       "correct": 1,
+       "correctFeedback": "A limit order lets you set the maximum you'll pay (or minimum you'll accept). It only fills at your price or better.",
+       "wrongFeedback": "A limit order lets you set the maximum you'll pay (or minimum you'll accept). It only fills at your price or better."
+      },
+      {
+       "text": "What is the \"spread\"?",
+       "options": [
+        "The gap between the bid and the ask price",
+        "A tax on profits",
+        "The number of shares you own"
+       ],
+       "correct": 0,
+       "correctFeedback": "The spread is the difference between the highest price buyers will pay and the lowest sellers will accept — a small built-in cost of every trade.",
+       "wrongFeedback": "The spread is the difference between the highest price buyers will pay and the lowest sellers will accept — a small built-in cost of every trade."
+      },
+      {
+       "text": "On 10:1 leverage, a 5% move against your position means roughly what?",
+       "options": [
+        "A 5% loss",
+        "A 0.5% loss",
+        "A 50% loss"
+       ],
+       "correct": 2,
+       "correctFeedback": "Leverage multiplies both gains and losses. 10× a 5% move is 50% — which is why over-leverage blows up accounts.",
+       "wrongFeedback": "Leverage multiplies both gains and losses. 10× a 5% move is 50% — which is why over-leverage blows up accounts."
+      },
+      {
+       "text": "\"Going short\" means you profit when…",
+       "options": [
+        "The price rises",
+        "The price falls",
+        "Nothing happens"
+       ],
+       "correct": 1,
+       "correctFeedback": "Short = betting the price will fall. You sell high first and buy back lower, keeping the difference.",
+       "wrongFeedback": "Short = betting the price will fall. You sell high first and buy back lower, keeping the difference."
+      }
+     ],
+     "intro": "Answer every question to complete this module."
+    }
+   ]
+  },
+  {
+   "id": "module-301",
+   "number": 3,
+   "numLabel": "Module 03",
+   "title": "Trading 301: Risk & the Path to Funded",
+   "desc": "Free with a free account. Risk management, position sizing, stop-losses, drawdown, psychology and demo trading — and what prop firms actually are.",
+   "minPlan": "free",
+   "duration": "~28 min",
+   "lessons": [
+    {
+     "key": "l301-1",
+     "name": "Why risk management is everything",
+     "type": "lesson",
+     "eyebrow": "Trading 301 · Lesson 1",
+     "title": "Why risk management is the whole game",
+     "intro": "The single idea that separates traders who last from traders who don't. It isn't about being right.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l301-1-1",
+       "caption": "Keep losses small and let wins run, and you can be wrong often and still win.",
+       "alt": "Small controlled losses versus large wins keeping the account rising overall."
+      },
+      {
+       "type": "paragraph",
+       "text": "Here's the uncomfortable truth: you can be right more often than you're wrong and still lose all your money — if your losses are bigger than your wins. And you can be wrong most of the time and still profit — if you keep your losses small and let your wins run."
+      },
+      {
+       "type": "paragraph",
+       "text": "That's why professionals obsess over **risk**, not predictions. The first job of a trader isn't to make money; it's to **not lose too much**, so you're still around when your edge pays off. Everything else in this module builds on that idea."
+      }
+     ]
+    },
+    {
+     "key": "l301-2",
+     "name": "Position sizing & the 1% rule",
+     "type": "lesson",
+     "eyebrow": "Trading 301 · Lesson 2",
+     "title": "Position sizing and the 1% rule",
+     "intro": "How much to risk matters more than which trade you pick. Here's the simple guardrail the pros use.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l301-2-1",
+       "caption": "Risking ~1% per trade means a losing streak stings but never wipes you out.",
+       "alt": "An account bar with only 1 percent at risk on a single trade."
+      },
+      {
+       "type": "paragraph",
+       "text": "**Position sizing** is deciding how much to risk on a single trade — and it matters more than which trade you pick. A common guideline is the **1% rule**: never risk more than about 1% of your account on any one trade."
+      },
+      {
+       "type": "paragraph",
+       "text": "On a £10,000 account, that's £100 of risk per trade. If your stop-loss is 50 points away and each point is worth £2, that's already £100 — so that's your maximum size. Sizing this way means a losing streak stings but never wipes you out."
+      },
+      {
+       "type": "callout",
+       "style": "info",
+       "title": null,
+       "text": "Traxent's **position-size calculator** does this maths for you against each prop firm's limits — but doing it by hand a few times builds the instinct."
+      }
+     ]
+    },
+    {
+     "key": "l301-3",
+     "name": "Stop-losses & risk-to-reward",
+     "type": "lesson",
+     "eyebrow": "Trading 301 · Lesson 3",
+     "title": "Stop-losses and risk-to-reward",
+     "intro": "Decide your exit before you enter — and make sure the reward is worth the risk.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l301-3-1",
+       "caption": "At 1:2, you only need to win about a third of your trades to break even.",
+       "alt": "Risking one unit to make two units, a one to two risk to reward."
+      },
+      {
+       "type": "paragraph",
+       "text": "A **stop-loss** is a pre-set exit that caps your loss if a trade goes against you. Deciding it *before* you enter — when you're calm — is what stops a small loss becoming a catastrophic one."
+      },
+      {
+       "type": "paragraph",
+       "text": "**Risk-to-reward (R:R)** compares what you're risking to what you stand to gain. Risk £100 to make £200 and that's 1:2. With 1:2, you only need to win about a third of your trades to break even. This is the maths behind \"cut losses short, let winners run\" — it's not a slogan, it's arithmetic."
+      }
+     ]
+    },
+    {
+     "key": "l301-4",
+     "name": "Drawdown: how accounts blow up",
+     "type": "lesson",
+     "eyebrow": "Trading 301 · Lesson 4",
+     "title": "Drawdown: how accounts blow up",
+     "intro": "The maths of losses is brutal and non-obvious. Understand it and you'll protect your account by instinct.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l301-4-1",
+       "caption": "Avoiding deep drawdowns matters more than chasing big wins.",
+       "alt": "Losing 50 percent needs a 100 percent gain to recover."
+      },
+      {
+       "type": "paragraph",
+       "text": "**Drawdown** is how far your account has fallen from its peak. It matters because losses and the gains needed to recover them aren't symmetric:"
+      },
+      {
+       "type": "list",
+       "ordered": false,
+       "items": [
+        "Lose 10% → you need +11% to get back to even.",
+        "Lose 50% → you need +100% just to recover.",
+        "Lose 90% → you need +900%. Practically, you're done."
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "This is why avoiding deep drawdowns matters more than chasing big wins. It's also exactly what prop firms measure — most will fail your evaluation the moment your drawdown breaches their limit, which is why Traxent scores it so heavily."
+      }
+     ]
+    },
+    {
+     "key": "l301-5",
+     "name": "Psychology: FOMO, tilt & revenge",
+     "type": "lesson",
+     "eyebrow": "Trading 301 · Lesson 5",
+     "title": "Psychology: FOMO, tilt and revenge",
+     "intro": "Your biggest opponent isn't the market — it's the person clicking the buttons.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l301-5-1",
+       "caption": "Written rules, not willpower, are what flatten the emotional swings.",
+       "alt": "An emotional, erratic decision line versus a calm rule-based line."
+      },
+      {
+       "type": "paragraph",
+       "text": "Your biggest opponent is usually yourself. Three patterns catch almost everyone:"
+      },
+      {
+       "type": "list",
+       "ordered": false,
+       "items": [
+        "**FOMO** — chasing a move you've already missed, entering late at a bad price.",
+        "**Tilt** — trading emotionally after a loss (or a win), abandoning your plan.",
+        "**Revenge trading** — trying to \"win it back\" immediately with a bigger, riskier trade."
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "The fix isn't willpower — it's **rules written down in advance**: your max risk, your daily loss limit, when you stop for the day. A journal that records not just the trade but how you felt is how you spot these patterns and break them."
+      }
+     ]
+    },
+    {
+     "key": "l301-6",
+     "name": "Practise first: demo trading",
+     "type": "lesson",
+     "eyebrow": "Trading 301 · Lesson 6",
+     "title": "Practise first: demo trading",
+     "intro": "The flight simulator of trading. Use it properly and it's the cheapest lesson you'll ever get.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l301-6-1",
+       "caption": "Prove your approach is consistent on demo before real money or a paid evaluation.",
+       "alt": "Practising with virtual money before risking real money."
+      },
+      {
+       "type": "paragraph",
+       "text": "**Paper (demo) trading** means placing trades with virtual money in real market conditions. It's the flight simulator of trading: you build habits, test a strategy and learn the platform without risking a penny."
+      },
+      {
+       "type": "paragraph",
+       "text": "Treat it seriously — use a realistic account size and follow your real rules — and it's invaluable. Treat it as a game with infinite money and it teaches bad habits. The goal is to prove, to yourself, that your approach is consistent *before* real money or a paid evaluation is on the line. This is exactly what Traxent's sim journal and readiness score are built around."
+      }
+     ]
+    },
+    {
+     "key": "l301-7",
+     "name": "Prop firms & funded accounts",
+     "type": "lesson",
+     "eyebrow": "Trading 301 · Lesson 7",
+     "title": "What are prop firms and funded accounts?",
+     "intro": "The reason all this preparation is worth it — trading serious capital that isn't yours.",
+     "blocks": [
+      {
+       "type": "figure",
+       "image": "fig-l301-7-1",
+       "caption": "Pass a rules-based evaluation and you trade the firm's capital, keeping most of the profit.",
+       "alt": "A small personal account, an evaluation with rules, then a funded account with the firm's capital."
+      },
+      {
+       "type": "paragraph",
+       "text": "Most new traders don't have much capital — so a 20% year on £1,000 is only £200. **Proprietary trading firms (\"prop firms\")** solve this: they let you trade *their* capital and keep a large share of the profits (often 80–90%), so the same skill can earn far more."
+      },
+      {
+       "type": "paragraph",
+       "text": "The catch is you have to prove yourself first. You pay for an **evaluation (a \"challenge\")** — a demo account with strict rules: hit a profit target without breaching a daily loss limit or a maximum drawdown, often over a minimum number of days. Pass, and you're \"funded\" and trade for real. Fail, and you've lost the evaluation fee."
+      },
+      {
+       "type": "paragraph",
+       "text": "That's why preparation matters so much: **the rules, not the profit target, are what fail most people** — and they're knowable in advance. This is where the rest of Traxent picks up."
+      }
+     ]
+    },
+    {
+     "key": "l301-quiz",
+     "name": "Trading 301 quiz",
+     "type": "quiz",
+     "questions": [
+      {
+       "text": "Under the 1% rule, how much would you risk per trade on a £10,000 account?",
+       "options": [
+        "£1,000",
+        "About £100",
+        "Your whole account"
+       ],
+       "correct": 1,
+       "correctFeedback": "1% of £10,000 is £100 — the maximum you'd risk on any single trade, so a losing streak can't wipe you out.",
+       "wrongFeedback": "1% of £10,000 is £100 — the maximum you'd risk on any single trade, so a losing streak can't wipe you out."
+      },
+      {
+       "text": "After a 50% drawdown, what gain do you need to get back to even?",
+       "options": [
+        "50%",
+        "100%",
+        "25%"
+       ],
+       "correct": 1,
+       "correctFeedback": "Losses and recoveries aren't symmetric — halving your account means you must double what's left (+100%) to recover.",
+       "wrongFeedback": "Losses and recoveries aren't symmetric — halving your account means you must double what's left (+100%) to recover."
+      },
+      {
+       "text": "With a 1:2 risk-to-reward, roughly what win rate do you need to break even?",
+       "options": [
+        "About one third of trades",
+        "At least 80% of trades",
+        "Exactly 50%"
+       ],
+       "correct": 0,
+       "correctFeedback": "If winners are twice the size of losers, winning ~33% of the time breaks even. Good R:R means you don't need to be right often.",
+       "wrongFeedback": "If winners are twice the size of losers, winning ~33% of the time breaks even. Good R:R means you don't need to be right often."
+      },
+      {
+       "text": "What usually fails traders in a prop firm evaluation?",
+       "options": [
+        "Not hitting the profit target",
+        "Breaching a rule like the daily loss or drawdown limit",
+        "Trading too few different markets"
+       ],
+       "correct": 1,
+       "correctFeedback": "The rules — daily loss, max drawdown, consistency, minimum days — fail most people, and they're knowable in advance. That's exactly what Traxent scores you against.",
+       "wrongFeedback": "The rules — daily loss, max drawdown, consistency, minimum days — fail most people, and they're knowable in advance. That's exactly what Traxent scores you against."
+      }
+     ],
+     "intro": "Answer every question to complete this module."
+    }
+   ]
+  },
+  {
+   "id": "module-1",
+   "number": 4,
+   "numLabel": "Module 04",
+   "title": "Trading Fundamentals",
+   "desc": "The core trading skills in depth — what prop firms are, how markets move, and how to calculate risk on any trade. Builds on the free Trading 101-301.",
+   "minPlan": "observer",
+   "duration": "~25 min",
+   "lessons": [
+    {
+     "key": "l1-1",
+     "name": "What is a prop firm?",
+     "type": "lesson",
+     "eyebrow": "Module 1 · Lesson 1",
+     "title": "What is a prop firm?",
+     "intro": "Before you learn how to trade, understand what you're working toward. This lesson explains the prop firm model in plain English — including the specific rules you'll need to follow to pass a funded account evaluation.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "The problem with trading your own money"
+      },
+      {
+       "type": "paragraph",
+       "text": "Most people who want to trade face the same obstacle: **capital**. To make meaningful returns, you need a meaningful amount of money to trade with. If you have £1,000 and make a 10% return in a month, you've made £100. Impressive as a percentage — but not life-changing as an income."
+      },
+      {
+       "type": "paragraph",
+       "text": "The maths only works at scale. A 5% return on £100,000 is £5,000. Same skill, same percentage — very different outcome. This is where **proprietary trading firms**, or prop firms, come in."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Key concept",
+       "text": "A prop firm provides capital to traders who can demonstrate disciplined, consistent trading. You trade their money, keep the majority of profits, and they take a cut for providing the capital and absorbing the risk."
+      },
+      {
+       "type": "heading",
+       "text": "How the evaluation works"
+      },
+      {
+       "type": "paragraph",
+       "text": "To filter out gamblers from genuine traders, prop firms run evaluation programmes — commonly called \"challenges\". You pay a fee, trade a simulated account, and if you hit the profit target without breaking the rules, you receive a funded account."
+      },
+      {
+       "type": "heading",
+       "text": "Typical 2-step challenge structure"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Phase 1",
+         "value": "Challenge",
+         "sub": "Hit 10% profit target"
+        },
+        {
+         "label": "Phase 2",
+         "value": "Verification",
+         "sub": "Hit 5% — prove it repeatable"
+        },
+        {
+         "label": "Result",
+         "value": "Funded account",
+         "sub": "Trade up to £200k · keep 80-90%"
+        },
+        {
+         "label": "Daily loss limit",
+         "value": "5%",
+         "sub": "Breach once = fail immediately"
+        },
+        {
+         "label": "Max total loss",
+         "value": "10%",
+         "sub": "Static floor — never resets"
+        },
+        {
+         "label": "Min trading days",
+         "value": "4+",
+         "sub": "Can't pass on one lucky day"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "The rules — tap each one to understand it"
+      },
+      {
+       "type": "paragraph",
+       "text": "Most failures come not from bad trading but from breaking these rules. Click each rule below to understand exactly what it means in practice."
+      },
+      {
+       "type": "ruleCards",
+       "items": [
+        {
+         "name": "Daily loss limit",
+         "value": "5% / day",
+         "detail": "Your account equity — including unrealised losses on open trades — cannot drop more than 5% below your starting balance for that day. On a £100,000 account, equity must never fall below £95,000 at any point during the session, even on an open trade that hasn't been closed yet."
+        },
+        {
+         "name": "Maximum total loss",
+         "value": "10% overall",
+         "detail": "Your account balance can never fall below 90% of its starting value — ever, across the whole challenge. This is a permanent static floor. On a £100,000 account, your equity must never touch £90,000. Unlike the daily limit, this doesn't reset — it's permanent for the duration of the challenge."
+        },
+        {
+         "name": "Consistency rule",
+         "value": "30–50% max day",
+         "detail": "On funded accounts, some firms require that no single trading day accounts for more than 30–50% of your total profit. This prevents passing by getting lucky on one big news trade. It forces genuine consistency over time — which is exactly what prop firms want to see."
+        },
+        {
+         "name": "Minimum trading days",
+         "value": "4–7 days",
+         "detail": "You must trade on a minimum number of days during the challenge, even if you hit the profit target early. An account that hits 10% profit on day one still can't pass — you need to prove you can trade consistently over multiple sessions, not just get lucky once."
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "Why most traders fail challenges"
+      },
+      {
+       "type": "paragraph",
+       "text": "The failure rate on prop firm challenges is high — most estimates put it between 80–90% of first attempts. The reasons are almost never about skill or strategy."
+      },
+      {
+       "type": "stats",
+       "items": [
+        {
+         "value": "~80%",
+         "label": "Fail due to overtrading or revenge trading after a loss"
+        },
+        {
+         "value": "1 day",
+         "label": "Is all it takes to blow a challenge with one bad session"
+        },
+        {
+         "value": "£100–500",
+         "label": "Typical challenge fee paid before you even start"
+        }
+       ]
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "The pattern that kills most challenges",
+       "text": "A trader does well for two weeks, has one bad day, then tries to recover losses quickly by increasing position size. They breach the daily loss limit. The challenge ends. The fee is gone. This is why discipline matters more than strategy."
+      }
+     ]
+    },
+    {
+     "key": "l1-2",
+     "name": "How markets move",
+     "type": "lesson",
+     "eyebrow": "Module 1 · Lesson 2",
+     "title": "How markets move",
+     "intro": "Markets follow recurring patterns driven by human behaviour. This lesson covers the basics of price action — and you'll practise identifying market states directly on a real live chart.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Price reflects decisions, not just data"
+      },
+      {
+       "type": "paragraph",
+       "text": "Every movement in a market price is the result of buyers and sellers agreeing — or disagreeing — on value. When more people want to buy than sell, price moves up. When more want to sell than buy, price moves down. What you see on a chart is the collective expression of confidence, fear, greed, and analysis from everyone participating in that market."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Key concept",
+       "text": "Price action is the study of how price moves, without relying on external indicators. It asks: what is the market telling us right now, based purely on where price has been and where it is going?"
+      },
+      {
+       "type": "heading",
+       "text": "The three market states"
+      },
+      {
+       "type": "paragraph",
+       "text": "Markets spend most of their time in one of three states. Understanding which state you're in is the first question any trader should ask before placing a trade. Trading against a strong trend is one of the most common causes of losses — especially during a prop firm challenge when every loss counts against your drawdown."
+      },
+      {
+       "type": "heading",
+       "text": "The three market states"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Uptrend",
+         "value": "Higher highs",
+         "sub": "Each peak above last · buyers in control"
+        },
+        {
+         "label": "Downtrend",
+         "value": "Lower lows",
+         "sub": "Each low below last · sellers in control"
+        },
+        {
+         "label": "Ranging",
+         "value": "Sideways",
+         "sub": "Bouncing between levels · no winner"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "Now look at a real chart"
+      },
+      {
+       "type": "chart",
+       "kind": "uptrend",
+       "caption": "A clean uptrend: higher highs, higher lows."
+      },
+      {
+       "type": "exercise",
+       "badge": "Chart exercise 1",
+       "title": "Identify the market state on ES1!",
+       "question": "Looking at the **ES1! (S&P 500 futures) daily chart** — zoom out to see the last 6 months. What is the overall trend over that period?",
+       "options": [
+        {
+         "label": "Uptrend",
+         "value": "uptrend",
+         "feedback": "Correct. The S&P 500 futures have been in a broad uptrend — a series of higher highs and higher lows. This is the context a prop firm trader uses to guide trade direction: the bias is long until structure changes."
+        },
+        {
+         "label": "Ranging",
+         "value": "ranging",
+         "feedback": "This market is not ranging — look at the overall direction over 6 months. Are the highs getting higher or lower over time?"
+        },
+        {
+         "label": "Downtrend",
+         "value": "downtrend",
+         "feedback": "Look at the highs over the last 6 months. Are they getting progressively higher or lower? That directional pattern defines the trend."
+        }
+       ],
+       "correct": "uptrend"
+      },
+      {
+       "type": "exercise",
+       "badge": "Chart exercise 2",
+       "title": "Try EUR/USD",
+       "question": "Now switch to **EUR/USD** using the buttons above. Look at the **last 3 months**. What state is this market in?",
+       "options": [
+        {
+         "label": "Uptrend",
+         "value": "uptrend",
+         "feedback": "EUR/USD has generally been in a downtrend over recent months — lower highs and lower lows. A prop firm trader would be looking for short setups in a downtrend, not fighting the direction."
+        },
+        {
+         "label": "Ranging",
+         "value": "ranging",
+         "feedback": "EUR/USD has shown a directional bias recently. Look at whether the highs and lows are trending in one direction rather than bouncing between the same levels."
+        },
+        {
+         "label": "Downtrend",
+         "value": "downtrend",
+         "feedback": "Correct. EUR/USD has been in a downtrend — lower highs and lower lows. A trader following the trend would be looking for short setups. Trading long against this during a challenge would increase drawdown risk significantly."
+        }
+       ],
+       "correct": "downtrend"
+      },
+      {
+       "type": "heading",
+       "text": "What candlesticks tell you"
+      },
+      {
+       "type": "paragraph",
+       "text": "Most trading charts display price using **candlesticks**. Each candle represents a time period and shows four pieces of information: the opening price, closing price, highest price, and lowest price reached during that period."
+      },
+      {
+       "type": "heading",
+       "text": "Anatomy of a candlestick"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Open",
+         "value": "Start price",
+         "sub": "Where the period began"
+        },
+        {
+         "label": "Close",
+         "value": "End price",
+         "sub": "Where the period finished"
+        },
+        {
+         "label": "High / Low",
+         "value": "Extremes",
+         "sub": "Shown as wicks above and below"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "A **green candle** means price closed higher than it opened — buyers won that period. A **red candle** means price closed lower — sellers won. The wicks show how far price pushed before reversing."
+      },
+      {
+       "type": "heading",
+       "text": "Timeframes — same market, different zoom levels"
+      },
+      {
+       "type": "paragraph",
+       "text": "The same instrument looks very different depending on your timeframe. A market in a clear downtrend on the daily chart might show a short-term upward move on the 15-minute chart. Neither is wrong — they're different zoom levels of the same picture."
+      },
+      {
+       "type": "paragraph",
+       "text": "For prop firm challenges, most traders use the 15-minute or 1-hour chart for context, and the 5-minute chart for precise entries."
+      },
+      {
+       "type": "chart",
+       "kind": "ranging",
+       "caption": "A ranging market — price oscillating between support and resistance."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Why this matters for prop firms",
+       "text": "Prop firms evaluate you on consistency — not on predicting the market perfectly. A trader who understands market structure will avoid trading against strong trends, wait for clear setups, and manage risk appropriately. That is exactly the trader a prop firm wants to fund."
+      }
+     ]
+    },
+    {
+     "key": "l1-3",
+     "name": "Your first risk calculation",
+     "type": "lesson",
+     "eyebrow": "Module 1 · Lesson 3",
+     "title": "Your first risk calculation",
+     "intro": "Risk management is the single most important skill in trading. This lesson shows you how to calculate exactly how much to risk on any trade — and you'll practise the calculation using a live chart setup of your choice.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Why risk management beats strategy"
+      },
+      {
+       "type": "paragraph",
+       "text": "A trader with a mediocre strategy but excellent risk management will outperform a trader with a brilliant strategy and poor risk management — every time. Losses compound just as quickly as gains, and the maths of loss recovery is brutal."
+      },
+      {
+       "type": "stats",
+       "items": [
+        {
+         "value": "−10%",
+         "label": "Requires +11% just to get back to where you started"
+        },
+        {
+         "value": "−25%",
+         "label": "Requires +33% to recover"
+        },
+        {
+         "value": "−50%",
+         "label": "Requires +100% to recover — nearly impossible"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "The 1% rule"
+      },
+      {
+       "type": "paragraph",
+       "text": "Never risk more than **1% of your total account** on a single trade. On a £10,000 account, your maximum loss per trade is £100. Ten consecutive losers only costs you ~10% — recoverable. Risk 10% per trade and ten losers wipes you out entirely."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Key concept",
+       "text": "Your risk per trade is not the same as your position size. Risk is defined by your stop loss — the point at which you accept the trade hasn't worked. Position size is calculated from your risk amount divided by your stop loss distance."
+      },
+      {
+       "type": "heading",
+       "text": "Position size formula — step by step"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Step 1",
+         "value": "Define risk",
+         "sub": "Account × risk % = £ at risk"
+        },
+        {
+         "label": "Step 2",
+         "value": "Measure stop",
+         "sub": "|Entry − stop loss| = distance"
+        },
+        {
+         "label": "Step 3",
+         "value": "Calculate size",
+         "sub": "Risk £ ÷ stop distance = units"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "Practise on a real chart setup"
+      },
+      {
+       "type": "paragraph",
+       "text": "Pick an instrument below, study the current price levels, choose an entry and stop loss that make sense to you, then use the calculator to find your position size. There's no single right answer here — this is about practising the process."
+      },
+      {
+       "type": "chart",
+       "kind": "entryStop",
+       "caption": "Entry, stop and 2R target on a long setup."
+      },
+      {
+       "type": "paragraph",
+       "text": "Risk calculation — enter your setup from the chart above"
+      },
+      {
+       "type": "paragraph",
+       "text": "Account size"
+      },
+      {
+       "type": "paragraph",
+       "text": "£"
+      },
+      {
+       "type": "paragraph",
+       "text": "Risk per trade"
+      },
+      {
+       "type": "paragraph",
+       "text": "%"
+      },
+      {
+       "type": "paragraph",
+       "text": "Your entry price"
+      },
+      {
+       "type": "paragraph",
+       "text": "price"
+      },
+      {
+       "type": "paragraph",
+       "text": "Your stop loss price"
+      },
+      {
+       "type": "paragraph",
+       "text": "price"
+      },
+      {
+       "type": "paragraph",
+       "text": "Position size"
+      },
+      {
+       "type": "paragraph",
+       "text": "Enter prices above"
+      },
+      {
+       "type": "heading",
+       "text": "Risk to reward — why win rate isn't everything"
+      },
+      {
+       "type": "paragraph",
+       "text": "Many new traders focus entirely on their win rate. But a trader who wins 40% of their trades can still be highly profitable if winners are significantly larger than losers. This is the **risk to reward ratio (R:R)**."
+      },
+      {
+       "type": "heading",
+       "text": "Break-even win rate at different R:R ratios"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "R:R 1:1",
+         "value": "50% needed",
+         "sub": "Win half your trades to break even"
+        },
+        {
+         "label": "R:R 1:2",
+         "value": "34% needed",
+         "sub": "Lose twice as often — still profitable"
+        },
+        {
+         "label": "R:R 1:3",
+         "value": "25% needed",
+         "sub": "Win only 1 in 4 — still profitable"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "How this connects to prop firm rules"
+      },
+      {
+       "type": "paragraph",
+       "text": "Every prop firm sets a maximum daily loss limit — typically 4–5% of the account. If you risk 1% per trade, you can have four or five losing trades in a row before hitting the limit. If you risk 3% per trade, two bad trades end your day. The relationship between your risk per trade and the firm's daily limit defines how much room you have to be wrong — which you will be, regularly, even as a skilled trader."
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "Traxent note",
+       "text": "The position size calculator at /calculator does this automatically for any setup. The readiness tracker on the Challenger plan tracks whether your simulated trade sizing habits would pass each firm's rules over time."
+      }
+     ]
+    },
+    {
+     "key": "l1-quiz",
+     "name": "Module 1 quiz",
+     "type": "quiz",
+     "questions": [
+      {
+       "text": "A prop firm provides a trader with capital in exchange for what?",
+       "options": [
+        "A fixed monthly fee regardless of performance",
+        "A share of the profits generated from trading their capital",
+        "Ownership of a percentage of the trader's personal assets",
+        "A guarantee that the trader will never lose money"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Prop firms take a cut of profits — typically 10–20% — in exchange for providing the capital. The trader keeps the majority.",
+       "wrongFeedback": "Not quite. Prop firms make money by taking a share of profits. The ongoing model is profit sharing, not a flat fee."
+      },
+      {
+       "text": "In an uptrend, which pattern do you expect to see in price movement?",
+       "options": [
+        "Lower highs and lower lows",
+        "Higher highs and higher lows",
+        "Price moving sideways between two levels",
+        "Randomly alternating peaks and troughs"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. An uptrend is defined by higher highs and higher lows — each peak above the previous, each pullback stopping above the previous low.",
+       "wrongFeedback": "Not quite. An uptrend is identified by higher highs and higher lows. Lower highs and lower lows describe a downtrend."
+      },
+      {
+       "text": "You have a £5,000 account and want to risk 1% on a trade. Your stop loss is 20 points away. What is your position size in £ per point?",
+       "options": [
+        "£5 per point",
+        "£10 per point",
+        "£2.50 per point",
+        "£50 per point"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. 1% of £5,000 = £50 risk. £50 ÷ 20 points = £2.50 per point. If stopped out, you lose exactly £50.",
+       "wrongFeedback": "Check the maths. 1% of £5,000 = £50. Stop is 20 points away. £50 ÷ 20 = £2.50 per point."
+      },
+      {
+       "text": "A trader has a risk to reward ratio of 1:3. What is the minimum win rate they need to be profitable?",
+       "options": [
+        "50% — they need to win more than they lose",
+        "40% — slightly below even",
+        "25% — they only need to win 1 in 4 trades",
+        "75% — high win rate required for this ratio"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. At 1:3 R:R, each win earns 3x what each loss costs. Win 1, lose 3, you break even. That means 25% win rate is the break-even point.",
+       "wrongFeedback": "At a 1:3 R:R, if you win 1 trade and lose 3, you break even (1×3 = 3×1). So 25% win rate is the minimum needed."
+      },
+      {
+       "text": "What is the most common reason traders fail prop firm challenges?",
+       "options": [
+        "Their trading strategy is not profitable enough",
+        "The profit targets are set too high by the firms",
+        "Poor risk management and emotional trading after losses",
+        "Lack of access to quality market data"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. Most failures come from behaviour — overtrading, revenge trading after a loss, or taking oversized positions to chase a target. Not strategy.",
+       "wrongFeedback": "While strategy matters, the primary cause of failures is behavioural — emotional decisions after losses, not strategy failure."
+      }
+     ],
+     "intro": "5 questions covering the fundamentals from this module. You need 80% to pass and unlock Module 2. Take your time — understanding matters more than speed."
+    }
+   ]
+  },
+  {
+   "id": "module-2",
+   "number": 5,
+   "numLabel": "Module 05",
+   "title": "Chart Patterns",
+   "desc": "The 15 most reliable chart patterns used by funded traders — bull flags, bear flags, inside bars, BOS, VWAP reclaims, and more.",
+   "minPlan": "observer",
+   "duration": "~40 min",
+   "lessons": [
+    {
+     "key": "l2-1",
+     "name": "Bull flag and bear flag",
+     "type": "lesson",
+     "eyebrow": "Module 2 · Lesson 1",
+     "title": "Why patterns work",
+     "intro": "Chart patterns are not magic. They work because markets are made of humans — and humans react to price levels in predictable, repeatable ways. Understanding the psychology behind patterns separates traders who use them well from those who chase every candle.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Markets are driven by human psychology"
+      },
+      {
+       "type": "paragraph",
+       "text": "Every chart pattern is a visual representation of a battle between buyers and sellers. When you see a flag pattern, you're seeing a market that surged in one direction, paused while participants caught their breath, then continued. The pattern works not because of the shape, but because of what the shape tells you about who is in control and what they're likely to do next."
+      },
+      {
+       "type": "paragraph",
+       "text": "This is why the same patterns appear repeatedly across different instruments, timeframes, and decades. Human psychology doesn't change. Fear and greed look the same in 1990 as they do today."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Key concept",
+       "text": "A chart pattern is a shortcut for reading market psychology. The shape tells you the story of the battle between buyers and sellers — and gives you a probabilistic idea of what happens next."
+      },
+      {
+       "type": "heading",
+       "text": "Patterns only work in context"
+      },
+      {
+       "type": "paragraph",
+       "text": "The biggest mistake beginners make is trading patterns in isolation. A bull flag in a downtrend is a much weaker signal than a bull flag in an established uptrend. Context — the broader market structure from Module 1 — always takes priority over the pattern itself. Before you look for patterns, ask: what is the trend?"
+      },
+      {
+       "type": "heading",
+       "text": "Pattern validity depends on context"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "High probability",
+         "value": "With the trend",
+         "sub": "Bull flag in uptrend · continuation likely"
+        },
+        {
+         "label": "Lower probability",
+         "value": "Against the trend",
+         "sub": "Bull flag in downtrend · fighting the flow"
+        },
+        {
+         "label": "Neutral",
+         "value": "In a range",
+         "sub": "Either direction valid until breakout"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "Three things every valid pattern needs"
+      },
+      {
+       "type": "heading",
+       "text": "Pattern validity checklist"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "1. Structure",
+         "value": "Clear formation",
+         "sub": "Obvious, not forced"
+        },
+        {
+         "label": "2. Context",
+         "value": "Trend alignment",
+         "sub": "Aligns with higher timeframe"
+        },
+        {
+         "label": "3. Confirmation",
+         "value": "Trigger event",
+         "sub": "Price breaks boundary with conviction"
+        }
+       ]
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "For prop firm challenges",
+       "text": "Pattern trading works well in challenges because it gives you defined entry and exit points — which means defined risk. You always know where your stop loss goes before you enter."
+      }
+     ]
+    },
+    {
+     "key": "l2-2",
+     "name": "Inside bar — compression and breakout",
+     "type": "lesson",
+     "eyebrow": "Module 2 · Lesson 2",
+     "title": "Bull flag & bear flag",
+     "intro": "The flag pattern is one of the most reliable continuation patterns in trading. It appears across every market and every timeframe — and once you can identify it, you'll see it everywhere.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "What a flag looks like"
+      },
+      {
+       "type": "paragraph",
+       "text": "A flag has two parts: the **pole** and the **flag**. The pole is a sharp, strong move in one direction — driven by buyers (bull flag) or sellers (bear flag). The flag is the consolidation that follows — a slow, orderly pullback against the direction of the pole."
+      },
+      {
+       "type": "paragraph",
+       "text": "The key insight: the pullback is **not a reversal**. It's the market pausing before continuing in the original direction. Weak participants are shaken out. Strong participants use the pullback to enter at a better price."
+      },
+      {
+       "type": "heading",
+       "text": "Bull flag anatomy"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "The pole",
+         "value": "Sharp surge up",
+         "sub": "Strong momentum · large candles"
+        },
+        {
+         "label": "The flag",
+         "value": "Slow pullback",
+         "sub": "Orderly decline · small candles"
+        },
+        {
+         "label": "The breakout",
+         "value": "Continuation",
+         "sub": "Breaks flag high with momentum"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "📈"
+      },
+      {
+       "type": "paragraph",
+       "text": "Bull flag"
+      },
+      {
+       "type": "paragraph",
+       "text": "CONTINUATION · BULLISH"
+      },
+      {
+       "type": "paragraph",
+       "text": "Forms after a strong upward move. Price consolidates in a slight downward channel, then breaks out to the upside."
+      },
+      {
+       "type": "paragraph",
+       "text": "Entry:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Break above the upper trendline of the flag with a strong candle close"
+      },
+      {
+       "type": "paragraph",
+       "text": "Stop loss:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Below the low of the flag consolidation"
+      },
+      {
+       "type": "paragraph",
+       "text": "Target:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Measure the pole height and project from the breakout point"
+      },
+      {
+       "type": "paragraph",
+       "text": "Avoid:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Flags where the pullback retraces more than 50% of the pole"
+      },
+      {
+       "type": "paragraph",
+       "text": "📉"
+      },
+      {
+       "type": "paragraph",
+       "text": "Bear flag"
+      },
+      {
+       "type": "paragraph",
+       "text": "CONTINUATION · BEARISH"
+      },
+      {
+       "type": "paragraph",
+       "text": "The exact mirror of the bull flag. After a strong downward move, price consolidates in a slight upward channel before breaking down."
+      },
+      {
+       "type": "paragraph",
+       "text": "Entry:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Break below the lower trendline of the flag"
+      },
+      {
+       "type": "paragraph",
+       "text": "Stop loss:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Above the high of the flag consolidation"
+      },
+      {
+       "type": "paragraph",
+       "text": "Target:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Pole height projected downward from the breakout"
+      },
+      {
+       "type": "paragraph",
+       "text": "Avoid:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Flags that drift sideways rather than slightly against the trend"
+      },
+      {
+       "type": "chart",
+       "kind": "bullFlag",
+       "caption": "Bull flag: sharp pole, orderly pullback, breakout."
+      },
+      {
+       "type": "exercise",
+       "badge": "Chart exercise",
+       "title": "Flag pattern recognition",
+       "question": "A flag pattern has two parts. Which of the following best describes the **flag portion** of a valid bull flag?",
+       "options": [
+        {
+         "label": "A sharp move downward, reversing the pole completely",
+         "value": "a sharp move downward, reversing the pole completely",
+         "feedback": ""
+        },
+        {
+         "label": "A slow, orderly pullback in a slight downward channel",
+         "value": "a slow, orderly pullback in a slight downward channel",
+         "feedback": ""
+        },
+        {
+         "label": "A sideways range with no directional bias",
+         "value": "a sideways range with no directional bias",
+         "feedback": ""
+        },
+        {
+         "label": "A second surge upward continuing the pole direction",
+         "value": "a second surge upward continuing the pole direction",
+         "feedback": ""
+        }
+       ],
+       "correct": "a sharp move downward, reversing the pole completely"
+      }
+     ]
+    },
+    {
+     "key": "l2-3",
+     "name": "Break of structure (BOS)",
+     "type": "lesson",
+     "eyebrow": "Module 2 · Lesson 3",
+     "title": "Inside bar",
+     "intro": "The inside bar is a compression pattern — price is coiling before its next move. One of the cleanest patterns to trade because the rules are simple and risk is clearly defined.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "What an inside bar is"
+      },
+      {
+       "type": "paragraph",
+       "text": "An inside bar is any candle whose **high and low are completely contained within the range of the previous candle**. The previous candle — the mother bar — represents a period of price discovery. The inside bar represents a pause, a compression of energy before the next move."
+      },
+      {
+       "type": "heading",
+       "text": "Inside bar structure"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Mother bar",
+         "value": "Larger candle",
+         "sub": "Sets the range · defines high and low"
+        },
+        {
+         "label": "Inside bar",
+         "value": "Contained candle",
+         "sub": "Both high and low inside mother bar"
+        },
+        {
+         "label": "Breakout",
+         "value": "Direction signal",
+         "sub": "Break above = bullish · break below = bearish"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "🕯️"
+      },
+      {
+       "type": "paragraph",
+       "text": "Inside bar breakout"
+      },
+      {
+       "type": "paragraph",
+       "text": "CONTINUATION OR REVERSAL"
+      },
+      {
+       "type": "paragraph",
+       "text": "The inside bar is direction-neutral — it signals compression, not direction. The direction comes from context and from which side it breaks."
+      },
+      {
+       "type": "paragraph",
+       "text": "Entry:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Break of the mother bar high (bullish) or low (bearish) with a candle close outside"
+      },
+      {
+       "type": "paragraph",
+       "text": "Stop loss:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Opposite side of the mother bar"
+      },
+      {
+       "type": "paragraph",
+       "text": "Best context:"
+      },
+      {
+       "type": "paragraph",
+       "text": "After a trend, at a key support or resistance level"
+      },
+      {
+       "type": "paragraph",
+       "text": "Avoid:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Inside bars in choppy, ranging markets with no clear directional bias"
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Why this works for prop firm challenges",
+       "text": "Inside bars give you an extremely tight stop loss — you're risking the range of the mother bar, often just a few points or pips. This means very precise risk per trade, directly supporting daily loss limits."
+      },
+      {
+       "type": "chart",
+       "kind": "insideBar",
+       "caption": "Inside bar: the mother bar defines the range; breakout follows."
+      },
+      {
+       "type": "exercise",
+       "badge": "Chart exercise",
+       "title": "Inside bar identification",
+       "question": "For an inside bar to be valid, what must be true about its relationship to the mother bar?",
+       "options": [
+        {
+         "label": "Both the high AND the low must be inside the mother bar's range",
+         "value": "both the high and the low must be inside the mother bar's range",
+         "feedback": ""
+        },
+        {
+         "label": "Only the close needs to be inside the mother bar's range",
+         "value": "only the close needs to be inside the mother bar's range",
+         "feedback": ""
+        },
+        {
+         "label": "The inside bar must be a different colour to the mother bar",
+         "value": "the inside bar must be a different colour to the mother bar",
+         "feedback": ""
+        },
+        {
+         "label": "The inside bar must close at least 50% down from the mother bar high",
+         "value": "the inside bar must close at least 50% down from the mother bar high",
+         "feedback": ""
+        }
+       ],
+       "correct": "both the high and the low must be inside the mother bar's range"
+      }
+     ]
+    },
+    {
+     "key": "l2-4",
+     "name": "VWAP reclaim",
+     "type": "lesson",
+     "eyebrow": "Module 2 · Lesson 4",
+     "title": "Break of structure & VWAP reclaim",
+     "intro": "Two of the most widely used concepts by professional and prop firm traders. Break of structure tells you when a trend has genuinely changed. VWAP tells you who is in control of the session.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Break of structure (BOS)"
+      },
+      {
+       "type": "paragraph",
+       "text": "From Module 1 we know an uptrend is defined by higher highs and higher lows. A **break of structure** occurs when that sequence breaks — when price makes a lower low in an uptrend, or a higher high in a downtrend. This marks the moment when the balance of power shifts."
+      },
+      {
+       "type": "heading",
+       "text": "Break of structure — bullish and bearish"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Bullish BOS",
+         "value": "Higher high broken",
+         "sub": "Price closes above previous swing high"
+        },
+        {
+         "label": "Bearish BOS",
+         "value": "Lower low broken",
+         "sub": "Price closes below previous swing low"
+        },
+        {
+         "label": "Key rule",
+         "value": "Candle close",
+         "sub": "Close beyond the level — wicks don't count"
+        }
+       ]
+      },
+      {
+       "type": "callout",
+       "style": "info",
+       "title": "Real world example",
+       "text": "EUR/USD has been making lower highs and lower lows for two months — a clear downtrend. Then price makes a higher high, closing above the previous swing high. That is a bullish BOS. The trader does not immediately go long, but they stop looking for short entries and start watching for confirmation of the new direction."
+      },
+      {
+       "type": "heading",
+       "text": "VWAP — Volume Weighted Average Price"
+      },
+      {
+       "type": "paragraph",
+       "text": "VWAP is the average price at which a security has traded throughout the day, weighted by volume. It is the most widely watched intraday level by institutional traders — banks, hedge funds, and prop firms all use it as a reference point."
+      },
+      {
+       "type": "paragraph",
+       "text": "**Price above VWAP means buyers have been in control for the session. Price below means sellers have.** A VWAP reclaim — where price dips below it then closes back above — is a strong signal that buyers have reasserted control."
+      },
+      {
+       "type": "paragraph",
+       "text": "📊"
+      },
+      {
+       "type": "paragraph",
+       "text": "VWAP reclaim"
+      },
+      {
+       "type": "paragraph",
+       "text": "INTRADAY · MOMENTUM SIGNAL"
+      },
+      {
+       "type": "paragraph",
+       "text": "When price dips below VWAP but then closes back above it, buyers are stepping in at the average institutional price — a bullish signal."
+      },
+      {
+       "type": "paragraph",
+       "text": "Setup:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Price above VWAP, dips below briefly, then reclaims with a strong close above"
+      },
+      {
+       "type": "paragraph",
+       "text": "Entry:"
+      },
+      {
+       "type": "paragraph",
+       "text": "On the candle close back above VWAP, or a small pullback after the reclaim"
+      },
+      {
+       "type": "paragraph",
+       "text": "Stop loss:"
+      },
+      {
+       "type": "paragraph",
+       "text": "Below the low of the VWAP reclaim candle"
+      },
+      {
+       "type": "paragraph",
+       "text": "Best context:"
+      },
+      {
+       "type": "paragraph",
+       "text": "During trending sessions, not in choppy pre-market periods"
+      },
+      {
+       "type": "chart",
+       "kind": "bos",
+       "caption": "Bullish break of structure: previous swing high broken with conviction."
+      },
+      {
+       "type": "exercise",
+       "badge": "Chart exercise",
+       "title": "BOS identification",
+       "question": "In a confirmed downtrend with lower highs and lower lows, what event constitutes a **bullish break of structure**?",
+       "options": [
+        {
+         "label": "Price makes another lower low, continuing the pattern",
+         "value": "price makes another lower low, continuing the pattern",
+         "feedback": ""
+        },
+        {
+         "label": "Price makes a higher high — closing above the previous swing high",
+         "value": "price makes a higher high — closing above the previous swing high",
+         "feedback": ""
+        },
+        {
+         "label": "Price consolidates sideways for several candles",
+         "value": "price consolidates sideways for several candles",
+         "feedback": ""
+        },
+        {
+         "label": "A large green candle appears without closing above any previous high",
+         "value": "a large green candle appears without closing above any previous high",
+         "feedback": ""
+        }
+       ],
+       "correct": "price makes another lower low, continuing the pattern"
+      }
+     ]
+    },
+    {
+     "key": "l2-5",
+     "name": "Advanced patterns and combinations",
+     "type": "lesson",
+     "eyebrow": "Module 2 · Lesson 5",
+     "title": "Combining patterns",
+     "intro": "Single patterns are useful. Multiple patterns aligning at the same level are significantly more powerful. This lesson shows you how to combine what you've learned to find high-probability setups with tightly defined risk.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "The concept of confluence"
+      },
+      {
+       "type": "paragraph",
+       "text": "**Confluence** means the coming together of multiple signals at the same price level. When a bull flag forms at a key support level, and that level also happens to be VWAP, and the daily chart shows an uptrend — every signal points the same way. That is high confluence, representing a significantly higher probability trade than any single signal alone."
+      },
+      {
+       "type": "heading",
+       "text": "Confluence stacking — an example long setup"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Signal 1",
+         "value": "Daily uptrend",
+         "sub": "Higher highs and higher lows"
+        },
+        {
+         "label": "Signal 2",
+         "value": "Bull flag on 1H",
+         "sub": "Tight consolidation after strong move up"
+        },
+        {
+         "label": "Signal 3",
+         "value": "At VWAP support",
+         "sub": "Flag base sitting on intraday VWAP"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "A simple setup checklist"
+      },
+      {
+       "type": "heading",
+       "text": "Four questions before every trade"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Step 1",
+         "value": "What is the daily trend?",
+         "sub": "Only trade patterns that align with it"
+        },
+        {
+         "label": "Step 2",
+         "value": "Is a pattern forming?",
+         "sub": "Flag, inside bar, BOS, VWAP"
+        },
+        {
+         "label": "Step 3",
+         "value": "Any additional confluence?",
+         "sub": "Key level, VWAP, previous structure"
+        },
+        {
+         "label": "Step 4",
+         "value": "Where is my stop loss?",
+         "sub": "Must be clear before entry — never after"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "What separates traders who pass from those who don't"
+      },
+      {
+       "type": "paragraph",
+       "text": "Traders who pass prop firm challenges consistently have one thing in common: **selectivity**. They do not take every pattern. They wait for confluence. They pass on trades that look okay and wait for trades that look excellent. This is harder than it sounds — but selectivity is what keeps your drawdown within prop firm limits."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "The core principle",
+       "text": "You do not need many trades to pass a prop firm challenge. You need a handful of excellent trades. Quality over quantity is not a preference — for prop firm evaluation, it is the only viable strategy."
+      },
+      {
+       "type": "chart",
+       "kind": "vwapReclaim",
+       "caption": "VWAP reclaim: price loses VWAP, reclaims it, and holds above."
+      },
+      {
+       "type": "exercise",
+       "badge": "Chart exercise",
+       "title": "Confluence thinking",
+       "question": "You spot a bull flag forming on the 1-hour EUR/USD chart. The daily chart shows an uptrend. VWAP for the day sits exactly at the bottom of the flag. What does this combination represent?",
+       "options": [
+        {
+         "label": "High confluence — multiple signals align, increasing trade probability",
+         "value": "high confluence — multiple signals align, increasing trade probability",
+         "feedback": ""
+        },
+        {
+         "label": "A warning sign — too many signals means the trade is likely to fail",
+         "value": "a warning sign — too many signals means the trade is likely to fail",
+         "feedback": ""
+        },
+        {
+         "label": "No significance — each signal should be evaluated independently",
+         "value": "no significance — each signal should be evaluated independently",
+         "feedback": ""
+        },
+        {
+         "label": "A guaranteed win — all signals pointing the same way means it must go up",
+         "value": "a guaranteed win — all signals pointing the same way means it must go up",
+         "feedback": ""
+        }
+       ],
+       "correct": "high confluence — multiple signals align, increasing trade probability"
+      }
+     ]
+    },
+    {
+     "key": "l2-quiz",
+     "name": "Module 2 quiz",
+     "type": "quiz",
+     "questions": [
+      {
+       "text": "What is the most important factor to check before trading any chart pattern?",
+       "options": [
+        "The pattern must appear on a daily timeframe or higher",
+        "The pattern must align with the higher timeframe trend direction",
+        "The pattern must have occurred at least three times before",
+        "Volume must be higher than average when the pattern forms"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Context — the trend direction — is everything. A pattern with the trend has much higher probability than the same pattern against it.",
+       "wrongFeedback": "Not quite. The higher timeframe trend direction is the most important factor. A bull flag in a downtrend is far weaker than one in an uptrend."
+      },
+      {
+       "text": "What are the two components of a flag pattern?",
+       "options": [
+        "The head and the shoulders",
+        "The pole and the flag",
+        "The base and the breakout",
+        "The consolidation and the reversal"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. A flag has a pole (the sharp directional move) and a flag (the orderly consolidation that follows).",
+       "wrongFeedback": "Not quite. A flag consists of the pole (the sharp initial move) and the flag (the subsequent consolidation before the breakout)."
+      },
+      {
+       "text": "What makes an inside bar valid?",
+       "options": [
+        "The inside bar must be green to signal a bullish breakout",
+        "Both the high and low must be within the previous candle's range",
+        "The inside bar must close above the midpoint of the mother bar",
+        "Volume must decrease on the inside bar"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Both the high and low must be contained within the mother bar. That is the sole defining requirement.",
+       "wrongFeedback": "Not quite. The only requirement for a valid inside bar is that both the high and low are within the mother bar's range."
+      },
+      {
+       "text": "When price is above VWAP intraday, what does this indicate?",
+       "options": [
+        "The market is about to reverse downward",
+        "Buyers have been in control of the session at average prices",
+        "Sellers are dominating and price will fall",
+        "The instrument is overvalued and should not be traded"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Price above VWAP means the average transaction for the day has been profitable for buyers — the bullish bias is supported.",
+       "wrongFeedback": "Not quite. Price above VWAP means buyers have been in control of the session — a bullish indication."
+      },
+      {
+       "text": "What is confluence in trading?",
+       "options": [
+        "When two moving averages cross each other",
+        "When multiple independent signals align at the same price level",
+        "When a pattern appears on multiple instruments simultaneously",
+        "When trading volume confirms a price move"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Confluence is the coming together of multiple independent signals at the same level — increasing the probability that the trade works.",
+       "wrongFeedback": "Not quite. Confluence means multiple independent signals pointing in the same direction at the same price level."
+      }
+     ],
+     "intro": "5 questions on chart patterns. You need 80% to pass and unlock Module 3."
+    }
+   ]
+  },
+  {
+   "id": "module-3",
+   "number": 6,
+   "numLabel": "Module 06",
+   "title": "Risk Management",
+   "desc": "The skill that separates consistent traders from gamblers. Position sizing, stop placement, R:R ratios, and why most traders blow accounts.",
+   "minPlan": "observer",
+   "duration": "~35 min",
+   "lessons": [
+    {
+     "key": "l3-1",
+     "name": "Position sizing in depth",
+     "type": "lesson",
+     "eyebrow": "Module 3 · Lesson 1",
+     "title": "Position sizing in depth",
+     "intro": "You were introduced to position sizing in Module 1. This lesson goes deeper — showing you how to apply it across different account sizes, instruments, and risk tolerances using real current prices from a live chart.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "The formula revisited"
+      },
+      {
+       "type": "paragraph",
+       "text": "The position sizing formula from Module 1: **Position size = Risk amount ÷ Stop distance**. Simple in principle. The complexity comes from applying it correctly across different instruments where the price of a \"point\" or \"pip\" varies significantly."
+      },
+      {
+       "type": "paragraph",
+       "text": "For forex: a pip on EUR/USD at standard lot size equals approximately $10. For futures: a point on ES1! equals $50 per contract. For CFDs: varies by instrument and broker. The formula is the same — the units differ."
+      },
+      {
+       "type": "heading",
+       "text": "Position sizing across instruments"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Forex (EUR/USD)",
+         "value": "Lots / mini lots",
+         "sub": "1 pip ≈ $10 standard · $1 mini lot"
+        },
+        {
+         "label": "Futures (ES1!)",
+         "value": "Contracts",
+         "sub": "1 point = $50 per contract"
+        },
+        {
+         "label": "CFDs / indices",
+         "value": "Units / £ per point",
+         "sub": "Varies by broker · check instrument specs"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "Scaling risk with account size"
+      },
+      {
+       "type": "paragraph",
+       "text": "The 1% rule is a starting point, not a rigid rule. As your account grows and your consistency improves, some traders scale to 1.5% or 2% per trade. The key is that your risk per trade relative to the daily loss limit should leave you with enough buffer to weather a bad day."
+      },
+      {
+       "type": "heading",
+       "text": "Risk per trade vs daily loss limit — number of losses before hitting the limit"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Risk 0.5% per trade",
+         "value": "10 losses",
+         "sub": "Before hitting 5% daily limit · lots of room"
+        },
+        {
+         "label": "Risk 1% per trade",
+         "value": "5 losses",
+         "sub": "Before hitting limit · comfortable buffer"
+        },
+        {
+         "label": "Risk 2% per trade",
+         "value": "2-3 losses",
+         "sub": "One bad session ends your day"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "Live position sizing exercise"
+      },
+      {
+       "type": "paragraph",
+       "text": "Use the chart below to find a current setup on any instrument. Note the current price and where you would place a stop loss, then use the calculator to find your position size at different risk levels."
+      },
+      {
+       "type": "chart",
+       "kind": "entryStop",
+       "caption": "Position sizing starts from the stop distance on the chart."
+      },
+      {
+       "type": "paragraph",
+       "text": "Position size calculator — try different risk levels"
+      },
+      {
+       "type": "paragraph",
+       "text": "Account size"
+      },
+      {
+       "type": "paragraph",
+       "text": "£"
+      },
+      {
+       "type": "paragraph",
+       "text": "Risk per trade"
+      },
+      {
+       "type": "paragraph",
+       "text": "%"
+      },
+      {
+       "type": "paragraph",
+       "text": "Entry price"
+      },
+      {
+       "type": "paragraph",
+       "text": "price"
+      },
+      {
+       "type": "paragraph",
+       "text": "Stop loss price"
+      },
+      {
+       "type": "paragraph",
+       "text": "price"
+      },
+      {
+       "type": "paragraph",
+       "text": "Position size"
+      },
+      {
+       "type": "paragraph",
+       "text": "Enter prices above"
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Key principle",
+       "text": "Always calculate your position size before you enter a trade — never after. The calculation should confirm your size, not justify it. If the correct size feels too small, the trade might not be worth taking."
+      }
+     ]
+    },
+    {
+     "key": "l3-2",
+     "name": "Stop loss placement strategies",
+     "type": "lesson",
+     "eyebrow": "Module 3 · Lesson 2",
+     "title": "Stop loss placement",
+     "intro": "Where you place your stop loss is as important as where you enter. A stop placed too tight gets hit by normal market noise. A stop placed too wide means you're risking too much. This lesson covers the principles of logical stop placement.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "The purpose of a stop loss"
+      },
+      {
+       "type": "paragraph",
+       "text": "A stop loss has one job: to exit the trade at a predetermined price when the reason you entered is no longer valid. It is not there to prevent losses — losses are part of trading. It is there to ensure that any single loss is **controlled and predictable**."
+      },
+      {
+       "type": "paragraph",
+       "text": "The worst type of stop loss is one placed at a round number or at a fixed point distance from entry without any relationship to the market structure. A good stop loss is placed at a level where, if price reaches it, the original trade idea is clearly wrong."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Key concept",
+       "text": "Your stop loss should be placed at the point where the market tells you your trade idea is wrong — not at the point where your pain tolerance runs out."
+      },
+      {
+       "type": "heading",
+       "text": "Three logical stop loss placements"
+      },
+      {
+       "type": "heading",
+       "text": "Logical stop loss locations"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Below swing low",
+         "value": "Structure based",
+         "sub": "Below the low that defined the pattern entry"
+        },
+        {
+         "label": "Below mother bar",
+         "value": "Pattern based",
+         "sub": "For inside bars — below the mother bar low"
+        },
+        {
+         "label": "Below VWAP",
+         "value": "Level based",
+         "sub": "For VWAP reclaim entries — below the reclaim candle"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "The buffer principle"
+      },
+      {
+       "type": "paragraph",
+       "text": "Markets are not precise. Price often moves a few points beyond a level before reversing — this is called a **wick** or a **liquidity sweep**. Placing your stop exactly at a swing low means a single wick can stop you out even if your trade direction is correct. A small buffer — 1-3 points or pips beyond the level — helps avoid being stopped out by noise while still exiting if the level is genuinely broken."
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "Prop firm specific",
+       "text": "On futures accounts with trailing drawdown (Apex, MFFU), be especially careful about stop placement. A wide stop combined with multiple positions can consume your trailing drawdown quickly on a volatile day. Tight, logical stops protect both your trade and your drawdown buffer."
+      },
+      {
+       "type": "chart",
+       "kind": "stopPlacement",
+       "caption": "Stop placed below the swing low that defines the setup."
+      },
+      {
+       "type": "exercise",
+       "badge": "Chart exercise",
+       "title": "Stop loss logic",
+       "question": "You enter a long trade after a bull flag breakout. The flag consolidation low sits at 5,200. Current price is 5,215 at entry. Where is the most logical stop loss placement?",
+       "options": [
+        {
+         "label": "Exactly 10 points below entry — at 5,205",
+         "value": "exactly 10 points below entry — at 5,205",
+         "feedback": ""
+        },
+        {
+         "label": "At 5,000 — a major round number well below current price",
+         "value": "at 5,000 — a major round number well below current price",
+         "feedback": ""
+        },
+        {
+         "label": "Just below 5,200 — below the flag consolidation low with a small buffer",
+         "value": "just below 5,200 — below the flag consolidation low with a small buffer",
+         "feedback": ""
+        },
+        {
+         "label": "No stop loss — let the trade run and close manually if needed",
+         "value": "no stop loss — let the trade run and close manually if needed",
+         "feedback": ""
+        }
+       ],
+       "correct": "exactly 10 points below entry — at 5,205"
+      }
+     ]
+    },
+    {
+     "key": "l3-3",
+     "name": "Risk to reward — the long game",
+     "type": "lesson",
+     "eyebrow": "Module 3 · Lesson 3",
+     "title": "Risk to reward — the long game",
+     "intro": "Understanding risk to reward is what separates traders who think about each individual trade from traders who think about their edge over hundreds of trades. This lesson shows you why a 40% win rate can be more profitable than a 70% win rate.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Expectancy — what matters over time"
+      },
+      {
+       "type": "paragraph",
+       "text": "Every trader has a **win rate** (how often they are right) and an **average risk to reward ratio** (how much they make per winner relative to how much they lose per loser). These two numbers together determine whether a trading approach is profitable over time — regardless of any individual trade result."
+      },
+      {
+       "type": "paragraph",
+       "text": "The formula: **Expectancy = (Win rate × Average win) − (Loss rate × Average loss)**. If this number is positive, the approach is profitable over time. If it's negative, no amount of good luck makes it sustainable."
+      },
+      {
+       "type": "heading",
+       "text": "Expectancy examples — which approach is actually better?"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Trader A",
+         "value": "70% win rate",
+         "sub": "But average R:R is 0.5:1 · loses more than they win"
+        },
+        {
+         "label": "Trader A result",
+         "value": "Losing money",
+         "sub": "0.7×0.5 − 0.3×1 = 0.35 − 0.30 = +0.05 barely"
+        },
+        {
+         "label": "Trader B",
+         "value": "40% win rate",
+         "sub": "But average R:R is 2:1 · winners are larger"
+        },
+        {
+         "label": "Trader B result",
+         "value": "Profitable",
+         "sub": "0.4×2 − 0.6×1 = 0.8 − 0.6 = +0.2 per trade"
+        },
+        {
+         "label": "The lesson",
+         "value": "R:R matters more",
+         "sub": "High win rate with bad R:R loses · low win rate with good R:R wins"
+        },
+        {
+         "label": "Sweet spot",
+         "value": "1:2 minimum",
+         "sub": "Target at least 2× your risk on every trade"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "Setting realistic profit targets"
+      },
+      {
+       "type": "paragraph",
+       "text": "Profit targets should be set at **the next logical level of resistance** — not at an arbitrary 2:1 or 3:1 ratio. If the next resistance level is only 1.2× your risk, the trade has a poor R:R and should be skipped or have the stop tightened. If the next resistance is 4× your risk, you have an excellent setup."
+      },
+      {
+       "type": "chart",
+       "kind": "riskReward",
+       "caption": "1R risk against a 2R target — the maths behind expectancy."
+      },
+      {
+       "type": "paragraph",
+       "text": "R:R calculator — measure your setup"
+      },
+      {
+       "type": "paragraph",
+       "text": "Entry price"
+      },
+      {
+       "type": "paragraph",
+       "text": "price"
+      },
+      {
+       "type": "paragraph",
+       "text": "Stop loss price"
+      },
+      {
+       "type": "paragraph",
+       "text": "price"
+      },
+      {
+       "type": "paragraph",
+       "text": "Target price"
+      },
+      {
+       "type": "paragraph",
+       "text": "price"
+      },
+      {
+       "type": "paragraph",
+       "text": "Account risk £"
+      },
+      {
+       "type": "paragraph",
+       "text": "£"
+      },
+      {
+       "type": "paragraph",
+       "text": "Risk to reward"
+      },
+      {
+       "type": "paragraph",
+       "text": "Enter prices above"
+      }
+     ]
+    },
+    {
+     "key": "l3-4",
+     "name": "Over-leveraging — how accounts blow",
+     "type": "lesson",
+     "eyebrow": "Module 3 · Lesson 4",
+     "title": "How accounts blow up",
+     "intro": "Understanding the specific ways trading accounts get destroyed is just as important as knowing how to build them. This lesson covers the four most common account killers — all of which are preventable.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "The four account killers"
+      },
+      {
+       "type": "paragraph",
+       "text": "In almost every prop firm challenge failure, one of these four patterns is present. They're not about strategy — they're about psychology and discipline."
+      },
+      {
+       "type": "heading",
+       "text": "The four account killers"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "1. Revenge trading",
+         "value": "Emotional response",
+         "sub": "Taking bigger trades after a loss to \"get it back\""
+        },
+        {
+         "label": "2. Overtrading",
+         "value": "Too many trades",
+         "sub": "Taking setups that don't meet your criteria"
+        },
+        {
+         "label": "3. Moving stops",
+         "value": "Breaking the rules",
+         "sub": "Moving stop loss further away when trade goes wrong"
+        },
+        {
+         "label": "4. No daily loss limit",
+         "value": "No self-control",
+         "sub": "No personal rule to stop trading after losing X%"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "The revenge trading spiral"
+      },
+      {
+       "type": "paragraph",
+       "text": "Revenge trading is the single biggest cause of prop firm challenge failures. The pattern is consistent: trader loses a trade, feels frustrated, increases position size on the next trade to recover quickly, loses again, increases further, blows the daily loss limit. The entire sequence can happen in under an hour."
+      },
+      {
+       "type": "paragraph",
+       "text": "The solution is simple but hard to implement under pressure: **set a personal daily loss limit below the firm's limit**. If you lose 3% in a day, stop trading. Walk away. Come back tomorrow. The challenge has no time limit. The account does not care that you had a bad morning. Tomorrow is always a fresh start."
+      },
+      {
+       "type": "heading",
+       "text": "How professionals handle losses"
+      },
+      {
+       "type": "paragraph",
+       "text": "Professional prop firm traders treat a losing day the same way a professional golfer treats a bad hole: they don't try to make it back on the next hole with a reckless shot. They play the next hole as they would any other — with the same process, the same criteria, the same discipline."
+      },
+      {
+       "type": "paragraph",
+       "text": "This is the mental model that separates traders who consistently pass challenges from those who pass once, then fail repeatedly."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "The rule that saves most challenges",
+       "text": "Set your personal daily stop-loss at 2.5–3% — well below the firm's 4–5% limit. If you hit it, stop for the day. This one rule prevents revenge trading from ending your challenge, and leaves you with enough buffer that a bad morning can't cost you everything."
+      },
+      {
+       "type": "stats",
+       "items": [
+        {
+         "value": "3%",
+         "label": "Recommended personal daily stop — below the firm's 5% limit"
+        },
+        {
+         "value": "2%",
+         "label": "Buffer remaining to breathe if you hit your personal limit"
+        },
+        {
+         "value": "0",
+         "label": "Trades you should take after hitting your personal daily limit"
+        }
+       ]
+      },
+      {
+       "type": "exercise",
+       "badge": "Exercise",
+       "title": "Understanding account killers",
+       "question": "A trader is on a prop firm challenge. They've had three losing trades today and are down 3%. They feel the urge to take another trade with double their normal position size to recover the losses. What is the correct action?",
+       "options": [
+        {
+         "label": "Take the trade — a larger position means they can recover faster",
+         "value": "take the trade — a larger position means they can recover faster",
+         "feedback": ""
+        },
+        {
+         "label": "Take the trade but reduce to 1.5x their normal size instead of double",
+         "value": "take the trade but reduce to 1.5x their normal size instead of double",
+         "feedback": ""
+        },
+        {
+         "label": "Only take the trade if the setup aligns with their normal criteria",
+         "value": "only take the trade if the setup aligns with their normal criteria",
+         "feedback": ""
+        },
+        {
+         "label": "Stop trading for the day — they have hit their personal daily loss limit",
+         "value": "stop trading for the day — they have hit their personal daily loss limit",
+         "feedback": ""
+        }
+       ],
+       "correct": "take the trade — a larger position means they can recover faster"
+      }
+     ]
+    },
+    {
+     "key": "l3-quiz",
+     "name": "Module 3 quiz",
+     "type": "quiz",
+     "questions": [
+      {
+       "text": "What is the recommended maximum risk per trade for a prop firm challenge account?",
+       "options": [
+        "5% — matching the daily loss limit",
+        "0.1% — as small as possible",
+        "1% — leaving enough buffer for multiple losses",
+        "10% — maximise potential gains"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. 1% per trade means five consecutive losses before hitting the 5% daily limit — enough buffer to survive a bad day without ending your challenge.",
+       "wrongFeedback": "Not quite. 1% per trade is the standard recommendation. It leaves enough buffer (five losses before the 5% daily limit) to survive a bad session."
+      },
+      {
+       "text": "Where should a stop loss be placed on a bull flag breakout trade?",
+       "options": [
+        "At a fixed 10-point distance below entry regardless of structure",
+        "At a major round number below current price",
+        "Just below the low of the flag consolidation, with a small buffer",
+        "At the exact point where the flag started forming"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. The stop goes below the flag consolidation low — the structural level that defines the trade. If price breaks it, the bull flag is invalidated.",
+       "wrongFeedback": "Not quite. The logical stop is just below the flag consolidation low. This is the structural level — if price breaks it, the trade idea is clearly wrong."
+      },
+      {
+       "text": "A trader has a 40% win rate but an average risk to reward ratio of 1:3. Are they profitable?",
+       "options": [
+        "No — they lose more trades than they win so they must be losing money",
+        "Yes — at 1:3 R:R, a 40% win rate produces positive expectancy",
+        "Only if they trade at least 100 times to let the statistics play out",
+        "It depends on whether the markets are trending or ranging"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. 0.4×3 − 0.6×1 = 1.2 − 0.6 = +0.6 positive expectancy per trade. A 40% win rate with 1:3 R:R is a profitable system.",
+       "wrongFeedback": "Not quite. The maths: 0.4×3 − 0.6×1 = 1.2 − 0.6 = +0.6 positive expectancy per trade. A 40% win rate with 1:3 R:R produces positive expectancy."
+      },
+      {
+       "text": "What is revenge trading?",
+       "options": [
+        "Trading the same instrument multiple times in one day",
+        "Taking trades designed to recover a previous loss, often with increased position size",
+        "Trading against the trend to capture a reversal",
+        "Copying another trader's positions without understanding them"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Revenge trading is taking positions with the emotional goal of recovering a loss — often with larger size. It is the leading cause of prop firm challenge failures.",
+       "wrongFeedback": "Not quite. Revenge trading means taking a trade specifically to try to recover a loss, typically with increased position size. It is driven by emotion rather than strategy."
+      },
+      {
+       "text": "What is the recommended personal daily loss limit relative to the firm's official limit?",
+       "options": [
+        "Equal to the firm's limit — use every point of buffer available",
+        "Higher than the firm's limit — take more risk for more reward",
+        "Well below the firm's limit — stop trading before reaching the official maximum",
+        "It does not matter — professional traders do not use personal limits"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. Setting a personal daily limit well below the official one (e.g. 3% personal vs 5% official) creates a buffer and prevents a bad day from ending your challenge.",
+       "wrongFeedback": "Not quite. Setting your personal daily limit below the firm's limit (e.g. 3% vs 5%) creates a buffer. Hitting your personal limit means you stop — there's still 2% of room before the official breach."
+      }
+     ],
+     "intro": "5 questions on risk management. You need 80% to pass and unlock Module 4 — Prop Firm Mastery."
+    }
+   ]
+  },
+  {
+   "id": "module-4",
+   "number": 7,
+   "numLabel": "Module 07",
+   "title": "Prop Firm Mastery",
+   "desc": "Deep dive into the specific rules of at least 16 prop firms — FTMO, Apex, Topstep, MyFundedFutures and more. Build a challenge-ready trading plan and test it before you pay.",
+   "minPlan": "observer",
+   "duration": "~45 min",
+   "lessons": [
+    {
+     "key": "l4-1",
+     "name": "FTMO rules decoded",
+     "type": "lesson",
+     "eyebrow": "Module 4 · Lesson 1",
+     "title": "FTMO decoded",
+     "intro": "FTMO is one of the most established prop firms in the world. This lesson breaks down every rule in practical detail — not just what the rules are, but where traders consistently trip up and how to structure your challenge so you don't need to rely on luck.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "The FTMO evaluation structure"
+      },
+      {
+       "type": "paragraph",
+       "text": "FTMO uses a two-step evaluation. Phase 1 — the Challenge — requires a 10% profit target. Phase 2 — Verification — requires 5%. Both phases share the same loss limits. Importantly, there is **no time limit** on either phase. You can take as long as you need, which removes one of the biggest failure triggers: forcing trades near an artificial deadline."
+      },
+      {
+       "type": "heading",
+       "text": "FTMO 2-step challenge — key numbers on a £100k account"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Phase 1 profit target",
+         "value": "£10,000 (10%)",
+         "sub": "All positions must be closed before counting"
+        },
+        {
+         "label": "Phase 2 profit target",
+         "value": "£5,000 (5%)",
+         "sub": "Same loss rules apply throughout"
+        },
+        {
+         "label": "Time limit",
+         "value": "None",
+         "sub": "Take as long as you need — no deadline pressure"
+        },
+        {
+         "label": "Daily loss limit",
+         "value": "£5,000 (5%)",
+         "sub": "Including floating losses on open trades"
+        },
+        {
+         "label": "Max total loss",
+         "value": "£10,000 (10%)",
+         "sub": "Static floor — never resets upward"
+        },
+        {
+         "label": "Min trading days",
+         "value": "4 days",
+         "sub": "Per phase — can be non-consecutive"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "The floating loss rule — most misunderstood"
+      },
+      {
+       "type": "paragraph",
+       "text": "Most traders understand the 5% daily limit in concept. What catches people is how it's calculated: FTMO measures your **equity including unrealised floating losses on open positions**, from your account balance at midnight Prague time (CET/CEST)."
+      },
+      {
+       "type": "paragraph",
+       "text": "This means: if you start the day at £100,000 and open a position that goes −£5,100 floating — even though you haven't closed the trade — you've breached the daily limit. The trade is still live. The challenge is over. Even if it later recovers."
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "The floating loss trap",
+       "text": "If your stop loss is correctly placed and sized at 1% risk, a single trade can never breach the daily limit on its own. The trap only catches traders who trade too large, move stops wider, or don't use stops at all. Proper position sizing from Module 3 is your protection."
+      },
+      {
+       "type": "heading",
+       "text": "Static drawdown — why it gets easier over time"
+      },
+      {
+       "type": "paragraph",
+       "text": "FTMO's maximum loss limit is **static**: on a £100,000 account, the floor is always £90,000. No matter how much profit you make, the floor never moves up. This is a significant advantage — as your account grows from trading profits, the buffer between your current balance and the floor gets larger, not smaller. Once you're at £105,000, you have £15,000 of buffer above the £90,000 floor."
+      },
+      {
+       "type": "heading",
+       "text": "The 1-step FTMO — the Best Day rule"
+      },
+      {
+       "type": "paragraph",
+       "text": "FTMO also offers a 1-step challenge. It is faster but adds an additional constraint: your single most profitable day cannot exceed **50% of your total Positive Days' Profit**. This prevents traders passing via one lucky news event. For traders with consistent day-to-day performance, the 1-step can be faster. For traders with variable daily results, the 2-step is more forgiving."
+      },
+      {
+       "type": "exercise",
+       "badge": "FTMO exercise",
+       "title": "Floating loss scenario",
+       "question": "You're on a £100,000 FTMO Challenge. At midnight, your account balance was £100,000. You open a trade at 9 AM. By 11 AM the trade has a floating loss of £5,100 — it's still open. What has happened?",
+       "options": [
+        {
+         "label": "The daily loss limit has been breached — the challenge is over",
+         "value": "breached",
+         "feedback": ""
+        },
+        {
+         "label": "Nothing — floating losses don't count until the trade closes",
+         "value": "fine",
+         "feedback": ""
+        },
+        {
+         "label": "I've received a warning but can continue if I close the trade",
+         "value": "warning",
+         "feedback": ""
+        },
+        {
+         "label": "I should close the trade immediately to limit further damage",
+         "value": "close",
+         "feedback": ""
+        }
+       ],
+       "correct": "breached"
+      }
+     ]
+    },
+    {
+     "key": "l4-2",
+     "name": "Apex and MFFU — key differences",
+     "type": "lesson",
+     "eyebrow": "Module 4 · Lesson 2",
+     "title": "Apex, MFFU & FundedNext",
+     "intro": "Each prop firm has a different philosophy about how to evaluate traders. Understanding the key differences lets you choose the right firm for your trading style — and avoid being caught out by a rule you didn't know existed.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Side-by-side comparison"
+      },
+      {
+       "type": "table",
+       "rows": [
+        [
+         "Firm",
+         "Daily loss limit",
+         "Max drawdown",
+         "Drawdown type",
+         "Min days",
+         "Consistency rule"
+        ],
+        [
+         "FTMO (2-step)",
+         "5% — static",
+         "10% — static",
+         "Static floor",
+         "4 per phase",
+         "None on 2-step"
+        ],
+        [
+         "Apex Trader Funding",
+         "None on eval",
+         "~5% trailing",
+         "Intraday trailing",
+         "7 (legacy)",
+         "30–50% (funded PA)"
+        ],
+        [
+         "MyFundedFutures (Core)",
+         "None",
+         "3% EOD trailing",
+         "End-of-day",
+         "2",
+         "40% (funded phase)"
+        ],
+        [
+         "FundedNext (Futures)",
+         "None (Futures)",
+         "Varies by size",
+         "EOD trailing",
+         "5",
+         "40% (funded phase)"
+        ]
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "The critical difference — static vs trailing drawdown"
+      },
+      {
+       "type": "paragraph",
+       "text": "FTMO's drawdown is **static**: the floor is set at the start and never moves. This means the buffer between your current balance and the floor grows as you profit. The risk of breaching actually decreases over time."
+      },
+      {
+       "type": "paragraph",
+       "text": "Apex uses an **intraday trailing drawdown**: the floor follows your peak equity in real time, including unrealised gains on open trades. If your account grows to £107,000 intraday on a trade that hasn't closed, the floor may have moved up. If the trade then pulls back, you're closer to the floor than you expected — even though your closed balance is still higher than when you started."
+      },
+      {
+       "type": "heading",
+       "text": "Static vs trailing — practical example (£50k account, £2,500 DD)"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Start",
+         "value": "£50,000",
+         "sub": "Floor: £47,500 (both firms)"
+        },
+        {
+         "label": "FTMO after +£5k profit",
+         "value": "Floor: £47,500",
+         "sub": "Static — floor never moves. Buffer grows."
+        },
+        {
+         "label": "Apex after +£5k profit",
+         "value": "Floor: £52,500",
+         "sub": "Trailing — floor followed peak. Same buffer."
+        }
+       ]
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "Apex trailing drawdown — the key implication",
+       "text": "Never let a profitable trade run back to breakeven on an Apex account. The moment a trade shows £1,000 profit floating, the floor may have moved up by £1,000. Giving it back means moving £1,000 closer to a breach — even though your account balance hasn't changed from when you entered. Take profits consistently."
+      },
+      {
+       "type": "heading",
+       "text": "Which firm suits which trader?"
+      },
+      {
+       "type": "heading",
+       "text": "Firm matching guide"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Forex trader",
+         "value": "FTMO or FundedNext",
+         "sub": "Best instrument coverage for forex pairs"
+        },
+        {
+         "label": "Futures day trader",
+         "value": "Apex or MFFU",
+         "sub": "No daily limit on eval — more intraday freedom"
+        },
+        {
+         "label": "Swing trader",
+         "value": "FTMO Swing",
+         "sub": "Weekend holds allowed, news trading permitted"
+        },
+        {
+         "label": "Want more time",
+         "value": "FTMO 2-step",
+         "sub": "No time limit removes all deadline pressure"
+        },
+        {
+         "label": "Consistent daily trader",
+         "value": "MFFU Core",
+         "sub": "Only 2 minimum trading days required"
+        },
+        {
+         "label": "Looking to scale fast",
+         "value": "FundedNext",
+         "sub": "Scale to £4 million — fastest growth path"
+        }
+       ]
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "Always verify before purchasing",
+       "text": "Prop firm rules change frequently. The information in this module is based on publicly available documentation but may not reflect current terms. Always read the firm's website directly before purchasing any challenge. Traxent is not affiliated with any prop firm listed here."
+      },
+      {
+       "type": "exercise",
+       "badge": "Firm comparison exercise",
+       "title": "Trailing drawdown in practice",
+       "question": "You're trading an Apex account. Starting balance £50,000, trailing drawdown £2,500. After 3 days your account grew to £54,000. The trailing floor moved to £51,500. You then have a bad session and lose £2,000, bringing you to £52,000. Are you in breach?",
+       "options": [
+        {
+         "label": "No — £52,000 is above the £51,500 floor",
+         "value": "no",
+         "feedback": ""
+        },
+        {
+         "label": "Yes — I've lost more than 5% from starting balance",
+         "value": "yes-pct",
+         "feedback": ""
+        },
+        {
+         "label": "Yes — the floor is still at the original £47,500",
+         "value": "yes-original",
+         "feedback": ""
+        },
+        {
+         "label": "Not breached, but only £500 from the floor — reduce size",
+         "value": "close",
+         "feedback": ""
+        }
+       ],
+       "correct": "no"
+      }
+     ]
+    },
+    {
+     "key": "l4-3",
+     "name": "Building a consistent trading plan",
+     "type": "lesson",
+     "eyebrow": "Module 4 · Lesson 3",
+     "title": "Building your trading plan",
+     "intro": "Everything in this course leads here. A trading plan is not a strategy — it is the framework within which your strategy operates. Without one, even a profitable strategy fails under the emotional pressure of a real challenge.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "What a trading plan actually is"
+      },
+      {
+       "type": "paragraph",
+       "text": "A trading plan is a set of pre-committed decisions made when you're calm and thinking clearly — so you don't have to make them in the moment when emotions are high. It covers what you trade, when you trade, how much you risk, when you stop for the day, and how you review your performance."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "The key insight",
+       "text": "The purpose of a trading plan is to remove decisions from the heat of the moment. If your plan says \"stop after two losses in a day\", you don't need to decide whether today's third setup is \"different enough\" to override the rule. The decision is already made. Discipline is easier when the rules are pre-set."
+      },
+      {
+       "type": "heading",
+       "text": "The six components of a challenge-ready plan"
+      },
+      {
+       "type": "heading",
+       "text": "Your trading plan — six components"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "1. Instrument",
+         "value": "What you trade",
+         "sub": "1–2 instruments you know well — not new ones"
+        },
+        {
+         "label": "2. Session",
+         "value": "When you trade",
+         "sub": "London open, NY open — your best window only"
+        },
+        {
+         "label": "3. Setup criteria",
+         "value": "What triggers entry",
+         "sub": "Specific pattern + minimum confluence count"
+        },
+        {
+         "label": "4. Risk rules",
+         "value": "How much per trade",
+         "sub": "Max risk % · stop method · minimum R:R"
+        },
+        {
+         "label": "5. Daily stops",
+         "value": "When you quit",
+         "sub": "Personal daily loss limit · max trades per day"
+        },
+        {
+         "label": "6. Review process",
+         "value": "How you improve",
+         "sub": "Journal every trade · weekly review · patterns"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "Analyse this simulated trading week"
+      },
+      {
+       "type": "paragraph",
+       "text": "Below is a simulated week on a £100,000 FTMO Challenge at 1% risk per trade with a minimum 1:2 R:R. Study each day — especially Wednesday — and identify the trading plan violations before answering the exercise."
+      },
+      {
+       "type": "paragraph",
+       "text": "Simulated FTMO challenge week · £100,000 account · 1% risk"
+      },
+      {
+       "type": "paragraph",
+       "text": "Start: £100,000"
+      },
+      {
+       "type": "paragraph",
+       "text": "Day"
+      },
+      {
+       "type": "paragraph",
+       "text": "Trade"
+      },
+      {
+       "type": "paragraph",
+       "text": "Result"
+      },
+      {
+       "type": "paragraph",
+       "text": "Risk"
+      },
+      {
+       "type": "paragraph",
+       "text": "Balance"
+      },
+      {
+       "type": "paragraph",
+       "text": "Mon"
+      },
+      {
+       "type": "paragraph",
+       "text": "EUR/USD long · Bull flag breakout · 1H"
+      },
+      {
+       "type": "paragraph",
+       "text": "+£200 (1:2)"
+      },
+      {
+       "type": "paragraph",
+       "text": "1%"
+      },
+      {
+       "type": "paragraph",
+       "text": "£100,200"
+      },
+      {
+       "type": "paragraph",
+       "text": "Mon"
+      },
+      {
+       "type": "paragraph",
+       "text": "GBP/USD short · VWAP rejection · 15M"
+      },
+      {
+       "type": "paragraph",
+       "text": "+£300 (1:3)"
+      },
+      {
+       "type": "paragraph",
+       "text": "1%"
+      },
+      {
+       "type": "paragraph",
+       "text": "£100,500"
+      },
+      {
+       "type": "paragraph",
+       "text": "Tue"
+      },
+      {
+       "type": "paragraph",
+       "text": "ES1! long · Inside bar at support · 1H"
+      },
+      {
+       "type": "paragraph",
+       "text": "−£100"
+      },
+      {
+       "type": "paragraph",
+       "text": "1%"
+      },
+      {
+       "type": "paragraph",
+       "text": "£100,400"
+      },
+      {
+       "type": "paragraph",
+       "text": "Tue"
+      },
+      {
+       "type": "paragraph",
+       "text": "ES1! long again · BOS retest · 15M"
+      },
+      {
+       "type": "paragraph",
+       "text": "−£100"
+      },
+      {
+       "type": "paragraph",
+       "text": "1%"
+      },
+      {
+       "type": "paragraph",
+       "text": "£100,300"
+      },
+      {
+       "type": "paragraph",
+       "text": "Wed"
+      },
+      {
+       "type": "paragraph",
+       "text": "EUR/USD short · No clear setup — forced trade"
+      },
+      {
+       "type": "paragraph",
+       "text": "−£150"
+      },
+      {
+       "type": "paragraph",
+       "text": "1.5%"
+      },
+      {
+       "type": "paragraph",
+       "text": "£100,150"
+      },
+      {
+       "type": "paragraph",
+       "text": "Wed"
+      },
+      {
+       "type": "paragraph",
+       "text": "EUR/USD short again · Revenge trade · oversized"
+      },
+      {
+       "type": "paragraph",
+       "text": "−£300"
+      },
+      {
+       "type": "paragraph",
+       "text": "3% !"
+      },
+      {
+       "type": "paragraph",
+       "text": "£99,850"
+      },
+      {
+       "type": "paragraph",
+       "text": "Thu"
+      },
+      {
+       "type": "paragraph",
+       "text": "Took day off · reviewed Wednesday trades"
+      },
+      {
+       "type": "paragraph",
+       "text": "No trades"
+      },
+      {
+       "type": "paragraph",
+       "text": "—"
+      },
+      {
+       "type": "paragraph",
+       "text": "£99,850"
+      },
+      {
+       "type": "paragraph",
+       "text": "Fri"
+      },
+      {
+       "type": "paragraph",
+       "text": "GBP/USD long · Bull flag + VWAP reclaim"
+      },
+      {
+       "type": "paragraph",
+       "text": "+£200 (1:2)"
+      },
+      {
+       "type": "paragraph",
+       "text": "1%"
+      },
+      {
+       "type": "paragraph",
+       "text": "£100,050"
+      },
+      {
+       "type": "paragraph",
+       "text": "Week summary"
+      },
+      {
+       "type": "paragraph",
+       "text": "Net P&L"
+      },
+      {
+       "type": "paragraph",
+       "text": "+£50"
+      },
+      {
+       "type": "paragraph",
+       "text": "Win rate"
+      },
+      {
+       "type": "paragraph",
+       "text": "3 / 7 (43%)"
+      },
+      {
+       "type": "paragraph",
+       "text": "Worst day"
+      },
+      {
+       "type": "paragraph",
+       "text": "Wed: −£450"
+      },
+      {
+       "type": "paragraph",
+       "text": "Daily limit breached?"
+      },
+      {
+       "type": "paragraph",
+       "text": "No (max 4.5%)"
+      },
+      {
+       "type": "exercise",
+       "badge": "Trading plan exercise",
+       "title": "Identify the Wednesday violations",
+       "question": "Looking at the simulated week — Wednesday was clearly the worst day. The trader made **two specific trading plan violations** on Wednesday. What were they?",
+       "options": [
+        {
+         "label": "Forced a trade with no clear setup, then revenge traded at 3× normal risk",
+         "value": "forced-revenge",
+         "feedback": ""
+        },
+        {
+         "label": "Took too many trades — two is already one too many",
+         "value": "too-many",
+         "feedback": ""
+        },
+        {
+         "label": "Wrong instrument — should have switched away from EUR/USD",
+         "value": "instrument",
+         "feedback": ""
+        },
+        {
+         "label": "Wrong session — should have only traded the London open",
+         "value": "timing",
+         "feedback": ""
+        }
+       ],
+       "correct": "forced-revenge"
+      },
+      {
+       "type": "heading",
+       "text": "Choose your instrument — build your plan on the chart"
+      },
+      {
+       "type": "paragraph",
+       "text": "Use the chart below to identify which instrument you'd focus on during your first challenge. Look for the patterns from Module 2 that appear most clearly. This is the foundation of your personal trading plan — the instrument you know best is the one to trade."
+      },
+      {
+       "type": "chart",
+       "kind": "downtrend",
+       "caption": "Plan check: would your setup rules keep you out of this downtrend?"
+      }
+     ]
+    },
+    {
+     "key": "l4-quiz",
+     "name": "Final assessment — readiness check",
+     "type": "quiz",
+     "questions": [
+      {
+       "text": "You're on a £100,000 FTMO account. Your account balance at midnight was £103,000 (from previous profits). What is your maximum loss allowed today?",
+       "options": [
+        "£5,000 — always 5% of the original starting capital",
+        "£5,150 — 5% of yesterday's closing balance",
+        "£10,300 — 10% of yesterday's balance",
+        "£3,000 — the remaining buffer to the static floor"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. FTMO calculates the daily loss limit from your balance at midnight CET — not the original starting capital. At £103,000 closing balance, 5% = £5,150. Your daily limit grows slightly as your account grows.",
+       "wrongFeedback": "FTMO recalculates the daily loss limit from your balance at midnight each day. If your account closed at £103,000, your daily limit is 5% of that = £5,150. Not 5% of the original £100,000 starting capital."
+      },
+      {
+       "text": "Which firm uses an intraday trailing drawdown — meaning the floor follows your peak equity in real time, including unrealised gains on open trades?",
+       "options": [
+        "FTMO (static drawdown)",
+        "MyFundedFutures Core (EOD trailing)",
+        "Apex Trader Funding (intraday trailing)",
+        "FundedNext Futures (EOD trailing)"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. Apex uses an intraday trailing drawdown that follows peak equity including floating gains in real time. FTMO uses a static floor. MFFU and FundedNext use end-of-day trailing — the floor only updates once per day at market close.",
+       "wrongFeedback": "Apex Trader Funding uses intraday trailing drawdown. It follows your peak equity in real time, including unrealised profits. This is distinct from FTMO (static), MFFU (EOD trailing), and FundedNext (EOD trailing)."
+      },
+      {
+       "text": "During a prop firm challenge, you've hit your personal daily loss limit of 2.5% by midday. A very high-probability setup then appears. What do you do?",
+       "options": [
+        "Take the setup — it's too good to miss",
+        "Take half size — 0.5% risk instead of 1%",
+        "Close the platform — the rule applies even to good setups",
+        "Check the firm's official limit first — 2.5% might not be the real limit"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. Personal daily rules are only meaningful if they're absolute. The moment you make exceptions for 'good setups', the rule stops functioning. Every trader who broke their rules did so because the setup looked too good to skip. Stop when you hit the limit.",
+       "wrongFeedback": "Personal daily loss limits exist precisely to prevent this situation. If you allow exceptions for 'good setups', the rule becomes meaningless. The answer is always: stop trading when you hit your personal limit, regardless of what the next setup looks like."
+      },
+      {
+       "text": "A simulated trading week shows a trader with a 43% win rate but a net positive result. What does this tell you about their trading approach?",
+       "options": [
+        "Nothing — a 43% win rate is always unprofitable",
+        "They must be using very high risk per trade to compensate",
+        "They are using a risk to reward ratio greater than 1:1, so losing more often than winning is still profitable",
+        "This is impossible — you need 50%+ win rate to make money"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. A 43% win rate is profitable at 1:2 R:R (break-even is 34%). Winning less than half your trades while still making money is the expected outcome when targeting rewards that are larger than your risks. This is why R:R matters more than win rate.",
+       "wrongFeedback": "At 1:2 R:R, break-even win rate is 34%. A 43% win rate is above the break-even point — profitable. You don't need a 50%+ win rate when your winners are larger than your losers. Win rate alone tells you very little without the R:R context."
+      },
+      {
+       "text": "What are the two trading plan violations that caused the most damage in the simulated challenge week?",
+       "options": [
+        "Trading too many instruments and using the wrong timeframe",
+        "Forcing a trade with no clear setup, then revenge trading at 3× normal risk",
+        "Holding trades overnight and trading during news events",
+        "Taking too many trades on Monday and not enough on Thursday"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. The two Wednesday violations were: (1) entering a trade with 'no clear setup' — a setup criteria violation, and (2) revenge trading at 3% risk instead of 1% — a risk management violation. These two decisions turned a manageable bad day into the worst session of the week.",
+       "wrongFeedback": "The Wednesday violations were specifically: first, entering a forced trade with no clear setup (setup criteria violation), and second, a revenge trade at 3× normal risk (risk management violation). These are the most common and most damaging trading plan failures in prop firm challenges."
+      }
+     ],
+     "intro": "5 questions covering modules 1–4. Pass 80% to clear the foundation checkpoint and move on to the advanced modules (Psychology & Discipline, and Review & Building Your Edge). These test practical application — not definitions."
+    }
+   ]
+  },
+  {
+   "id": "module-5",
+   "number": 8,
+   "numLabel": "Module 08",
+   "title": "Trading Psychology & Discipline",
+   "desc": "The skill that separates traders who pass from traders who keep paying for resets. Master tilt, FOMO and revenge trading, and build a discipline system that holds under pressure.",
+   "minPlan": "challenger",
+   "duration": "~30 min",
+   "lessons": [
+    {
+     "key": "l5-1",
+     "name": "The trader's brain under pressure",
+     "type": "lesson",
+     "eyebrow": "Module 5 · Lesson 1",
+     "title": "The trader's brain under pressure",
+     "intro": "You can know every rule and pattern and still fail a challenge — because trading is a performance done under stress. This lesson explains what actually happens in your head when money is on the line, and why your worst decisions feel the most justified.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Why smart people make terrible trades"
+      },
+      {
+       "type": "paragraph",
+       "text": "When you place a trade, you are not a calm analyst. You are a nervous system reacting to perceived gain and loss. Decades of behavioural research show two forces dominate: **loss aversion** — losses hurt roughly twice as much as equivalent gains feel good — and **the fight-or-flight response**, which floods your body with cortisol and adrenaline the moment a position moves against you."
+      },
+      {
+       "type": "paragraph",
+       "text": "Under that chemistry, the part of your brain responsible for patient, rule-based decisions (the prefrontal cortex) gets quieter, and the reactive, threat-driven part gets louder. You do not feel irrational in that moment — you feel **certain**. That certainty is the trap."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Key concept",
+       "text": "Discipline is not about feeling calm. Everyone feels fear and greed. Discipline is the ability to follow your plan **despite** what you feel. The goal is not to remove emotion — it is to remove emotion's authority over your actions."
+      },
+      {
+       "type": "heading",
+       "text": "The three emotional states that cost money"
+      },
+      {
+       "type": "paragraph",
+       "text": "Almost every blown challenge traces back to one of three states. Learning to name the state you are in is the first step to interrupting it."
+      },
+      {
+       "type": "heading",
+       "text": "The three costly states"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Fear",
+         "value": "Hesitation",
+         "sub": "Skip valid setups · cut winners early · move stops away"
+        },
+        {
+         "label": "Greed",
+         "value": "Overreach",
+         "sub": "Oversize · add to winners blindly · ignore the plan"
+        },
+        {
+         "label": "Tilt",
+         "value": "Revenge",
+         "sub": "Trade to recover a loss · abandon rules entirely"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "The cost of one emotional decision"
+      },
+      {
+       "type": "paragraph",
+       "text": "In a prop firm challenge, the asymmetry is severe. Weeks of disciplined trading can be erased by a single tilt session. The maths of drawdown is unforgiving, which is exactly why emotional control is a hard requirement, not a soft skill."
+      },
+      {
+       "type": "stats",
+       "items": [
+        {
+         "value": "~2x",
+         "label": "How much more a loss hurts than an equal gain feels good (loss aversion)"
+        },
+        {
+         "value": "1 session",
+         "label": "Is all it takes for a tilt spiral to breach a daily loss limit"
+        },
+        {
+         "value": "80–90%",
+         "label": "Of challenge failures are behavioural, not strategic"
+        }
+       ]
+      },
+      {
+       "type": "exercise",
+       "badge": "Scenario 1",
+       "title": "Spot the state",
+       "question": "You take a loss right at your stop. Within 30 seconds you are sizing up a new trade that is not on your plan, telling yourself you can \"make it back quickly.\" Which state are you in?",
+       "options": [
+        {
+         "label": "Fear — you are protecting capital",
+         "value": "fear",
+         "feedback": "This is not fear. Fear makes you hesitate; here you are rushing to act to recover a loss — that is tilt."
+        },
+        {
+         "label": "Greed — you spotted a great opportunity",
+         "value": "greed",
+         "feedback": "This is not greed. The motive is recovering a loss, not pressing an advantage — that is tilt."
+        },
+        {
+         "label": "Tilt — you are trading to recover the loss",
+         "value": "tilt",
+         "feedback": "Correct. The instant urge to place an unplanned trade right after a loss, framed as \"making it back\", is textbook tilt. The disciplined response is to step away, not to act."
+        }
+       ],
+       "correct": "tilt"
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "The tell",
+       "text": "The phrase \"make it back\" is the single most reliable warning sign in trading. The market does not know or care that you just lost. A recovery trade is not analysis — it is your nervous system trying to undo pain. The correct response is almost always to stop trading for the session."
+      }
+     ]
+    },
+    {
+     "key": "l5-2",
+     "name": "Tilt, FOMO and revenge trading",
+     "type": "lesson",
+     "eyebrow": "Module 5 · Lesson 2",
+     "title": "Tilt, FOMO and revenge trading",
+     "intro": "These three patterns destroy more funded accounts than any bad strategy ever could. This lesson breaks down how each one works, how to recognise it in yourself in real time, and the specific circuit-breaker for each.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Tilt — the recovery spiral"
+      },
+      {
+       "type": "paragraph",
+       "text": "Tilt is borrowed from poker: a state of emotional frustration that leads to reckless decisions. In trading it usually starts with a loss that feels unfair — a stop hunt, a news spike, a trade that was \"right\" but stopped out. The frustration drives a bigger, faster trade to recover, which often loses, which deepens the tilt. Within an hour a disciplined trader can breach a daily limit they have respected for weeks."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Circuit-breaker for tilt",
+       "text": "A hard, pre-committed rule: **two losses in a row, or down 2% on the day, means you are done trading for that session.** Not \"one more trade.\" Done. Close the platform. The rule must be set before you trade, because in the moment your judgement is compromised."
+      },
+      {
+       "type": "heading",
+       "text": "FOMO — the fear of missing out"
+      },
+      {
+       "type": "paragraph",
+       "text": "FOMO is the urge to chase a move that is already running, because watching it go without you feels like losing money you never had. Chasing means entering late, with a wide or absent stop, far from any logical invalidation level. The risk-to-reward is terrible precisely because the easy part of the move is already gone."
+      },
+      {
+       "type": "heading",
+       "text": "A planned entry vs a FOMO chase"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Planned",
+         "value": "Wait for retrace",
+         "sub": "Enter near support · tight stop · clear invalidation"
+        },
+        {
+         "label": "FOMO",
+         "value": "Chase the candle",
+         "sub": "Enter extended · no logical stop · poor R:R"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "Revenge trading — making it personal"
+      },
+      {
+       "type": "paragraph",
+       "text": "Revenge trading treats the market as an opponent that owes you. It is tilt aimed at a specific instrument or a specific loss. The tell is emotional language: \"this pair always does this to me\", \"I'm getting my money back from gold today.\" The market is not an adversary. It is indifferent. Any sentence that frames a trade as payback is a signal to stop."
+      },
+      {
+       "type": "exercise",
+       "badge": "Scenario 2",
+       "title": "FOMO under challenge pressure",
+       "question": "NQ runs 80 points in your intended direction while you were away from the desk. You feel the urge to jump in so you do not \"miss the rest.\" You are two days into a challenge with a 4% daily limit. What is the disciplined action?",
+       "options": [
+        {
+         "label": "Enter now at market — the trend is clearly strong",
+         "value": "chase",
+         "feedback": "Chasing the move is the FOMO trap: late entry, no logical stop, bad R:R. Wait for a pullback or skip it."
+        },
+        {
+         "label": "Enter now but with double size to make up lost ground",
+         "value": "size",
+         "feedback": "Double size on a chased entry is the fastest route to a daily-limit breach. Wait for a defined entry instead."
+        },
+        {
+         "label": "Wait for a pullback to a level with a defined stop — or skip it",
+         "value": "wait",
+         "feedback": "Correct. The easy part of the move is gone. Waiting for a pullback to a level gives you a defined stop and acceptable risk-to-reward — and skipping it entirely is a perfectly good answer."
+        }
+       ],
+       "correct": "wait"
+      },
+      {
+       "type": "exercise",
+       "badge": "Scenario 3",
+       "title": "Catching tilt early",
+       "question": "You have lost two trades in a row this morning, both at your stop. Your pre-set rule is \"two losses = stop for the session.\" You still feel sharp and you see another setup forming. What do you do?",
+       "options": [
+        {
+         "label": "Take the setup — feeling sharp means the rule does not apply today",
+         "value": "take the setup — feeling sharp means the rule does not apply today",
+         "feedback": ""
+        },
+        {
+         "label": "Take it at half size as a compromise",
+         "value": "half",
+         "feedback": "Half size is still breaking the rule. A pre-committed limit only works if you do not bargain with it. Stop for the session."
+        },
+        {
+         "label": "Honour the rule — stop for the session, review tomorrow",
+         "value": "stop",
+         "feedback": "Correct. The rule exists precisely for moments when you feel fine and want to override it. Honouring it on the hard day is the entire point of having it."
+        }
+       ],
+       "correct": "stop"
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "Why \"I feel sharp\" is the trap",
+       "text": "Rules exist for the version of you that is compromised — and that version always believes it is the exception. The entire value of a pre-committed rule is that you follow it on the day you least want to. The moment you negotiate with the rule, you no longer have one."
+      }
+     ]
+    },
+    {
+     "key": "l5-3",
+     "name": "Building a discipline system",
+     "type": "lesson",
+     "eyebrow": "Module 5 · Lesson 3",
+     "title": "Building a discipline system",
+     "intro": "Willpower is unreliable — it fades exactly when pressure peaks. Professionals do not rely on willpower; they rely on systems that make the disciplined choice the default. This lesson gives you a concrete framework you can use from your next session.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Rules beat willpower"
+      },
+      {
+       "type": "paragraph",
+       "text": "The trader who says \"I'll just be more disciplined next time\" will fail again, because they are relying on a resource that depletes. The trader who writes down three hard rules and follows them mechanically will outperform them — not because they are calmer, but because they removed the decision from the moment of stress."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Key concept",
+       "text": "Make decisions when you are calm, so you do not have to make them when you are not. Every rule you set in advance is a decision your stressed self does not get to override."
+      },
+      {
+       "type": "heading",
+       "text": "The pre-trade checklist"
+      },
+      {
+       "type": "paragraph",
+       "text": "A 15-second checklist inserts a deliberate pause between impulse and action. It does not slow good trades down — it stops bad ones."
+      },
+      {
+       "type": "heading",
+       "text": "A minimal pre-trade checklist"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "1 · Setup",
+         "value": "Is this on my plan?",
+         "sub": "A defined setup — not a feeling"
+        },
+        {
+         "label": "2 · Stop",
+         "value": "Where is invalidation?",
+         "sub": "A logical level, set before entry"
+        },
+        {
+         "label": "3 · Size",
+         "value": "Is risk ≤ 1%?",
+         "sub": "Calculated, not eyeballed"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "Daily guardrails"
+      },
+      {
+       "type": "paragraph",
+       "text": "Beyond the per-trade checklist, set hard session limits before the day begins. These are the rails that keep a bad day from becoming a blown challenge."
+      },
+      {
+       "type": "heading",
+       "text": "Example daily guardrails"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Loss cap",
+         "value": "Stop at −2%",
+         "sub": "Well inside the firm's daily limit"
+        },
+        {
+         "label": "Streak rule",
+         "value": "2 losses = done",
+         "sub": "No \"one more\" after two losers"
+        },
+        {
+         "label": "Win rule",
+         "value": "Bank a great day",
+         "sub": "Hit target early? Protect it — stop"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "The role of the journal"
+      },
+      {
+       "type": "paragraph",
+       "text": "You cannot fix what you do not measure. A journal that records not just entries and exits but your **emotional state** and whether you followed your rules turns vague feelings into data. Over time you will see your own patterns — the time of day you tilt, the instrument that baits you, the setup you overtrade. Module 6 covers exactly how to build that review habit, and the Traxent journal and readiness tracker are designed to log this for you automatically."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Traxent note",
+       "text": "Process over outcome. A trade that followed every rule and still lost was a **good** trade. A trade that broke your rules and happened to win was a **bad** trade — it just rewarded the wrong behaviour. Judge yourself on the process, and the outcomes follow."
+      }
+     ]
+    },
+    {
+     "key": "l5-quiz",
+     "name": "Module 5 quiz",
+     "type": "quiz",
+     "questions": [
+      {
+       "text": "What is the best working definition of trading discipline?",
+       "options": [
+        "Never feeling fear or greed while trading",
+        "Following your plan despite what you feel in the moment",
+        "Trading only when you feel completely calm",
+        "Avoiding losses entirely through careful analysis"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Everyone feels emotion. Discipline is acting on your plan rather than your feelings — removing emotion's authority, not the emotion itself.",
+       "wrongFeedback": "Discipline is not the absence of emotion — you will always feel it. It is following your plan despite what you feel."
+      },
+      {
+       "text": "A trader takes a loss and immediately enters an unplanned trade to 'make it back fast.' What is happening?",
+       "options": [
+        "Smart capital recovery",
+        "Tilt / revenge trading",
+        "Disciplined risk management",
+        "A valid FOMO entry"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. The phrase 'make it back' after a loss, driving an unplanned trade, is the clearest signal of tilt. The right move is to stop.",
+       "wrongFeedback": "An unplanned trade driven by a desire to recover a loss is tilt. 'Make it back' is the warning phrase to watch for."
+      },
+      {
+       "text": "Why are pre-committed rules (like 'two losses = stop for the day') more effective than willpower?",
+       "options": [
+        "Willpower is unlimited, so rules are just a backup",
+        "Rules remove the decision from the moment when judgement is compromised",
+        "Rules guarantee you never have a losing day",
+        "Willpower works better the more stressed you are"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. You set rules while calm so your stressed self cannot override them. Willpower depletes exactly when pressure peaks.",
+       "wrongFeedback": "The value of a rule is that it removes the decision from the stressed moment. Willpower fades precisely when you need it most."
+      },
+      {
+       "text": "You're chasing an 80-point move that already ran without you. What's the core problem with entering now?",
+       "options": [
+        "The trend is too strong to trade",
+        "You'd be entering extended, far from any logical stop, with poor R:R",
+        "Large moves always reverse immediately",
+        "There is no problem — strong trends are free money"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Chasing means a late entry with no logical invalidation and poor risk-to-reward — the defining flaw of FOMO trades.",
+       "wrongFeedback": "The problem is entry quality: chasing leaves you extended with no logical stop and bad R:R. Wait for a pullback or skip it."
+      },
+      {
+       "text": "How should you judge whether a single trade was 'good' or 'bad'?",
+       "options": [
+        "By whether it made or lost money",
+        "By whether you followed your plan and rules",
+        "By how big the profit was",
+        "By whether other traders agreed with it"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Process over outcome. A rule-following trade that lost was good; a rule-breaking trade that won was bad — it rewarded the wrong behaviour.",
+       "wrongFeedback": "Judge the process, not the outcome. A losing trade that followed your rules was good; a winning trade that broke them was bad."
+      }
+     ],
+     "intro": "5 questions on trading psychology and discipline. You need 80% to pass. These ideas matter more under real pressure than any pattern — take your time."
+    }
+   ]
+  },
+  {
+   "id": "module-6",
+   "number": 9,
+   "numLabel": "Module 09",
+   "title": "Review & Building Your Edge",
+   "desc": "Turn your trade history into a feedback loop. Expectancy, thinking in R, journaling that changes behaviour, and the weekly review routine that compounds small gains into a real edge.",
+   "minPlan": "challenger",
+   "duration": "~32 min",
+   "lessons": [
+    {
+     "key": "l6-1",
+     "name": "The numbers that actually matter",
+     "type": "lesson",
+     "eyebrow": "Module 6 · Lesson 1",
+     "title": "The numbers that actually matter",
+     "intro": "Most traders track the wrong number: profit and loss. P&L is an outcome, not a cause. This lesson covers the handful of metrics that actually describe whether you have an edge — and lets you compute your own expectancy.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Win rate is not your edge"
+      },
+      {
+       "type": "paragraph",
+       "text": "New traders obsess over win rate, but a 70% win rate with tiny winners and huge losers loses money, while a 35% win rate with large winners and small losers prints. What matters is the combination of how often you win and how big your wins are relative to your losses. That combination has a name: **expectancy**."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Key concept — expectancy",
+       "text": "Expectancy is the average amount you can expect to win (or lose) per trade, in units of risk (R). The formula: **(Win% × Avg win in R) − (Loss% × Avg loss in R)**. A positive expectancy means that, repeated enough times, the system makes money. A negative one means it bleeds — no matter how good any single trade felt."
+      },
+      {
+       "type": "heading",
+       "text": "Thinking in R"
+      },
+      {
+       "type": "paragraph",
+       "text": "The cleanest way to measure trading is in **R** — multiples of the amount you risked. If you risk 1% and make 2%, that is +2R. If you risk 1% and lose it, that is −1R. Measuring in R removes account size and position size from the picture and lets you compare every trade on equal footing."
+      },
+      {
+       "type": "heading",
+       "text": "Two traders, same P&L, very different edge"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Trader A",
+         "value": "70% win · +0.5R / −1R",
+         "sub": "Expectancy: (0.7×0.5) − (0.3×1) = +0.05R"
+        },
+        {
+         "label": "Trader B",
+         "value": "40% win · +2.5R / −1R",
+         "sub": "Expectancy: (0.4×2.5) − (0.6×1) = +0.40R"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "Trader B wins less than half the time but has 8x the expectancy. Over 100 trades, Trader A nets +5R while Trader B nets +40R. Same markets — completely different outcome, driven by the size of winners relative to losers."
+      },
+      {
+       "type": "heading",
+       "text": "Compute your own expectancy"
+      },
+      {
+       "type": "paragraph",
+       "text": "Enter your real numbers from your trade log below. Use your last 30–50 trades for a meaningful sample — fewer than that and the result is mostly noise."
+      },
+      {
+       "type": "paragraph",
+       "text": "Expectancy calculator (in R)"
+      },
+      {
+       "type": "paragraph",
+       "text": "Win rate (%)"
+      },
+      {
+       "type": "paragraph",
+       "text": "Avg win (R)"
+      },
+      {
+       "type": "paragraph",
+       "text": "Avg loss (R)"
+      },
+      {
+       "type": "paragraph",
+       "text": "Expectancy per trade"
+      },
+      {
+       "type": "paragraph",
+       "text": "—"
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "Sample size matters",
+       "text": "A positive expectancy over 10 trades tells you almost nothing — variance dominates small samples. You need 50+ trades before the number means much, and you must keep risk consistent for R to be comparable. This is exactly the kind of consistency a prop firm is testing for."
+      }
+     ]
+    },
+    {
+     "key": "l6-2",
+     "name": "Journaling that changes behaviour",
+     "type": "lesson",
+     "eyebrow": "Module 6 · Lesson 2",
+     "title": "Journaling that changes behaviour",
+     "intro": "A journal that only records entries and exits is a spreadsheet. A journal that records your reasoning and emotional state is a mirror — and it is the single highest-leverage habit a developing trader can build.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "What to actually log"
+      },
+      {
+       "type": "paragraph",
+       "text": "Price data is the least useful thing in a trade journal — your platform already has it. The value is in the context only you can capture: **why** you took the trade, whether it matched your plan, how you felt, and what you did when it moved. That is the data that reveals your leaks."
+      },
+      {
+       "type": "heading",
+       "text": "Fields that change behaviour"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Setup",
+         "value": "Which plan?",
+         "sub": "Named setup, or \"off-plan\""
+        },
+        {
+         "label": "Plan match",
+         "value": "Yes / No",
+         "sub": "Did you follow your rules?"
+        },
+        {
+         "label": "Emotion",
+         "value": "State at entry",
+         "sub": "Calm · FOMO · tilt · bored"
+        },
+        {
+         "label": "Result",
+         "value": "In R",
+         "sub": "+/− multiples of risk"
+        },
+        {
+         "label": "Management",
+         "value": "What you did",
+         "sub": "Held stop? Moved it? Cut early?"
+        },
+        {
+         "label": "Lesson",
+         "value": "One line",
+         "sub": "What would you repeat or change?"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "The 'plan match' column is the whole game"
+      },
+      {
+       "type": "paragraph",
+       "text": "If you log only one extra field, log whether the trade followed your plan. Over a few weeks you can sort your trades into four boxes — and the pattern that emerges is almost always the same."
+      },
+      {
+       "type": "heading",
+       "text": "The four boxes"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "On-plan · won",
+         "value": "Repeat",
+         "sub": "Your edge working as designed"
+        },
+        {
+         "label": "On-plan · lost",
+         "value": "Fine",
+         "sub": "A good trade with a bad outcome"
+        },
+        {
+         "label": "Off-plan · lost",
+         "value": "Obvious leak",
+         "sub": "Easy to see and cut"
+        },
+        {
+         "label": "Off-plan · won",
+         "value": "Dangerous",
+         "sub": "Rewards the wrong behaviour"
+        }
+       ]
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "The most dangerous box",
+       "text": "Off-plan trades that **win** are the ones that destroy traders, because the profit teaches your brain that breaking the rules pays. The journal is what lets you label that win as a bad trade and refuse to repeat it. Without the record, you just remember the money."
+      },
+      {
+       "type": "exercise",
+       "badge": "Scenario 1",
+       "title": "Reading your own journal",
+       "question": "Your journal shows that 80% of your losing R comes from trades you marked \"off-plan\", and your on-plan trades have a positive expectancy. What is the highest-leverage change?",
+       "options": [
+        {
+         "label": "Find a new strategy — your edge is not good enough",
+         "value": "strategy",
+         "feedback": "A new strategy would throw away an edge that already works. The leak is off-plan trades — cut those."
+        },
+        {
+         "label": "Increase size on on-plan trades to grow faster",
+         "value": "size",
+         "feedback": "Increasing size magnifies both the edge and the leak. Fix the off-plan leak first, then consider sizing."
+        },
+        {
+         "label": "Simply stop taking off-plan trades — your edge already works",
+         "value": "discipline",
+         "feedback": "Correct. Your edge already works on-plan; the entire loss is coming from off-plan trades. Cutting them is the single highest-leverage change — no new strategy needed."
+        }
+       ],
+       "correct": "discipline"
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Traxent note",
+       "text": "The Traxent sim journal and readiness tracker are built to capture exactly these fields — plan match, emotion, result in R — and surface the patterns automatically, so you get the feedback loop without maintaining a spreadsheet by hand."
+      }
+     ]
+    },
+    {
+     "key": "l6-3",
+     "name": "The weekly review loop",
+     "type": "lesson",
+     "eyebrow": "Module 6 · Lesson 3",
+     "title": "The weekly review loop",
+     "intro": "Logging trades is input. The review is where the learning happens. This lesson gives you a repeatable weekly routine that turns a pile of trades into one or two concrete changes — the loop that separates traders who improve from traders who just accumulate screen time.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Why weekly, not daily"
+      },
+      {
+       "type": "paragraph",
+       "text": "Daily review is too noisy — a single day is mostly variance. Weekly gives you enough trades to see a pattern without so many that the signal blurs. The aim of each review is modest and specific: leave with **one thing to keep doing and one thing to change**. Not ten. One of each is enough to compound."
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "1 · Measure",
+         "value": "Expectancy & R",
+         "sub": "Update your numbers for the week"
+        },
+        {
+         "label": "2 · Sort",
+         "value": "Four boxes",
+         "sub": "On/off-plan vs won/lost"
+        },
+        {
+         "label": "3 · Find",
+         "value": "Biggest leak",
+         "sub": "Where did the losing R come from?"
+        },
+        {
+         "label": "4 · Decide",
+         "value": "One change",
+         "sub": "A single, specific rule tweak"
+        },
+        {
+         "label": "5 · Commit",
+         "value": "Write it down",
+         "sub": "Make it the focus of next week"
+        },
+        {
+         "label": "6 · Repeat",
+         "value": "Compound",
+         "sub": "Small weekly gains stack up"
+        }
+       ]
+      },
+      {
+       "type": "heading",
+       "text": "Make changes one at a time"
+      },
+      {
+       "type": "paragraph",
+       "text": "If you change five things at once and your results improve, you have no idea which change helped — and you cannot keep what worked. Change one variable, give it a meaningful sample of trades, then measure. This is the same discipline a scientist uses, and it is why traders who review methodically pull away from those who tinker constantly."
+      },
+      {
+       "type": "exercise",
+       "badge": "Scenario 2",
+       "title": "Choosing the change",
+       "question": "Your weekly review shows your expectancy is positive overall, but every Friday afternoon you give back most of the week's gains in over-traded, off-plan positions. What is the single best change for next week?",
+       "options": [
+        {
+         "label": "Rebuild your whole strategy from scratch",
+         "value": "overhaul",
+         "feedback": "Rebuilding everything is overkill and untestable. Change one variable that targets the Friday leak."
+        },
+        {
+         "label": "Add one rule: stop trading Friday after midday",
+         "value": "friday",
+         "feedback": "Correct. One specific, testable rule that targets the exact leak the data revealed. Measure it next week, then keep or adjust."
+        },
+        {
+         "label": "Trade bigger earlier in the week to bank more before Friday",
+         "value": "bigger",
+         "feedback": "Sizing up earlier ignores the actual leak and adds risk. Target the Friday over-trading with one rule."
+        }
+       ],
+       "correct": "friday"
+      },
+      {
+       "type": "exercise",
+       "badge": "Scenario 3",
+       "title": "Readiness, not hope",
+       "question": "You want to buy a prop firm challenge. Which signal best tells you that you are actually ready, rather than just hopeful?",
+       "options": [
+        {
+         "label": "You feel confident and have had a few good days recently",
+         "value": "feel",
+         "feedback": "Confidence is not readiness. You need a meaningful sample showing positive expectancy within the firm's limits."
+        },
+        {
+         "label": "A 50+ trade sample shows positive expectancy while staying inside the firm's daily and max-loss limits",
+         "value": "data",
+         "feedback": "Correct. Readiness is evidence: a meaningful sample with positive expectancy that respected the firm's limits. That is what tells you to buy a challenge."
+        },
+        {
+         "label": "You hit the profit target once in a demo last week",
+         "value": "target",
+         "feedback": "One target hit is a small sample and could be luck. Readiness needs a consistent, rule-respecting sample."
+        }
+       ],
+       "correct": "data"
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "This is what Traxent measures",
+       "text": "Readiness is evidence, not a feeling: a sample of trades with positive expectancy that would have respected a firm's specific rules. The Traxent readiness tracker scores exactly that against each firm, so you buy a challenge when the data says go — not when hope does."
+      }
+     ]
+    },
+    {
+     "key": "l6-quiz",
+     "name": "Module 6 quiz",
+     "type": "quiz",
+     "questions": [
+      {
+       "text": "Why is win rate a poor measure of a trading edge on its own?",
+       "options": [
+        "Win rate is impossible to calculate accurately",
+        "A high win rate with small winners and big losers can still lose money",
+        "Win rate only matters for futures, not forex",
+        "Prop firms ignore win rate entirely"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Edge is win rate combined with the size of winners vs losers — i.e. expectancy. A 70% win rate with tiny wins and big losses loses money.",
+       "wrongFeedback": "Win rate alone is misleading: you also need the size of wins vs losses. Together they form expectancy."
+      },
+      {
+       "text": "A system wins 40% of the time, with average wins of 2.5R and average losses of 1R. What is its expectancy?",
+       "options": [
+        "−0.10R (loses over time)",
+        "+0.40R (profitable over time)",
+        "+1.50R",
+        "Exactly break-even"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. (0.4 × 2.5) − (0.6 × 1) = 1.0 − 0.6 = +0.40R per trade. Positive expectancy.",
+       "wrongFeedback": "Work it through: (0.4 × 2.5) − (0.6 × 1) = +0.40R. Positive expectancy despite a sub-50% win rate."
+      },
+      {
+       "text": "In a trade journal, which single extra field is most likely to change your behaviour?",
+       "options": [
+        "The exact entry and exit price",
+        "Whether the trade followed your plan ('plan match')",
+        "The time the market opened",
+        "The broker's spread at entry"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. 'Plan match' lets you sort trades into on/off-plan and see that most losses are off-plan — the clearest, most actionable leak.",
+       "wrongFeedback": "Price data is already in your platform. Logging whether the trade followed your plan is what reveals your real leaks."
+      },
+      {
+       "text": "Why is an off-plan trade that WINS considered dangerous?",
+       "options": [
+        "It isn't — a win is always good",
+        "The profit teaches your brain that breaking your rules pays off",
+        "Winning trades are taxed more heavily",
+        "It always reverses the next day"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. An off-plan win rewards rule-breaking behaviour, making you more likely to repeat it. The journal lets you label it a bad trade.",
+       "wrongFeedback": "An off-plan win reinforces the wrong behaviour — your brain remembers the money, not the broken rule. That's why it's dangerous."
+      },
+      {
+       "text": "What best indicates you are genuinely ready to buy a prop firm challenge?",
+       "options": [
+        "You feel confident after a few good days",
+        "A 50+ trade sample with positive expectancy that stayed within the firm's daily and max-loss limits",
+        "You hit the profit target once in a demo",
+        "A friend passed the same firm's challenge"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Readiness is evidence — a meaningful sample showing a positive, rule-respecting edge against that specific firm's limits.",
+       "wrongFeedback": "Readiness is data, not a feeling or a single result. You want a 50+ trade sample with positive expectancy inside the firm's limits."
+      }
+     ],
+     "intro": "5 questions on metrics, journaling and the review loop. You need 80% to pass and complete the learning path."
+    }
+   ]
+  },
+  {
+   "id": "module-7",
+   "number": 10,
+   "numLabel": "Module 10",
+   "title": "Going Live: Choosing & Connecting Your Trading Account",
+   "desc": "The bridge from practising in Traxent to trading for real. Confirm your best-fit firm, choose a platform Traxent syncs with, connect it read-only so your real trades score themselves, then step into an evaluation with live data behind you.",
+   "minPlan": "challenger",
+   "duration": "~15 min",
+   "lessons": [
+    {
+     "key": "l7-1",
+     "name": "Confirm your best-fit firm",
+     "type": "lesson",
+     "title": "Confirm your best-fit firm",
+     "eyebrow": "Step 1 of 4",
+     "intro": "You've done the work and your readiness score says you're prepared. This module is the bridge from practising in Traxent to trading for real — choosing a platform, practising on it in demo, connecting it to Traxent so your real performance scores itself, and stepping into an evaluation with live data behind you.",
+     "blocks": [
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "Before you start",
+       "text": "This onboarding is designed for traders who have reached 85%+ readiness on a tracked firm. Not there yet? Keep logging trades on the readiness tracker first."
+      },
+      {
+       "type": "paragraph",
+       "text": "Open the readiness tracker and check the best-matched firm panel. It ranks at least 16 firms against how you actually trade — your drawdown discipline, consistency and trading days — and names the one whose rules fit you best."
+      }
+     ]
+    },
+    {
+     "key": "l7-2",
+     "name": "Choose a platform you can practise on",
+     "type": "lesson",
+     "title": "Choose a platform you can practise on — and that Traxent syncs with",
+     "eyebrow": "Step 2 of 4",
+     "blocks": [
+      {
+       "type": "paragraph",
+       "text": "Pick a trading platform that (a) matches your firm's asset class and (b) Traxent can read, so your trades flow in automatically. Start in **demo / paper mode** — it behaves like the real thing but risks nothing, and it's the cleanest way to rehearse the exact firm rules before you pay an evaluation fee."
+      },
+      {
+       "type": "list",
+       "ordered": false,
+       "items": [
+        "Futures (Apex, Topstep, MyFundedFutures, Tradeify…): Tradovate, NinjaTrader or Rithmic.",
+        "Forex / indices (FTMO, FundedNext, FXIFY…): cTrader or MetaTrader 4/5."
+       ]
+      }
+     ]
+    },
+    {
+     "key": "l7-3",
+     "name": "Connect it to Traxent (read-only)",
+     "type": "lesson",
+     "title": "Connect it to Traxent (read-only)",
+     "eyebrow": "Step 3 of 4",
+     "blocks": [
+      {
+       "type": "paragraph",
+       "text": "On the Integrations page, connect your account. Traxent only ever **reads** your closed trades and equity curve to score them — it never places trades or touches your funds. Your real performance then updates your readiness score and journal automatically."
+      }
+     ]
+    },
+    {
+     "key": "l7-4",
+     "name": "Attempt the evaluation & track funded phase",
+     "type": "lesson",
+     "title": "Attempt the evaluation — then track the funded phase",
+     "eyebrow": "Step 4 of 4",
+     "blocks": [
+      {
+       "type": "paragraph",
+       "text": "When your real, connected data holds above the firm's rules, buy the evaluation with confidence. After you pass, keep the account connected: Traxent tracks payout readiness and drawdown discipline on funded capital, so staying funded becomes as measurable as getting funded."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

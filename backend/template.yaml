@@ -58,13 +58,17 @@ Resources:
         Variables:
           STRIPE_KEY_PARAM: /traxent/stripe/key_webhook
           SUBSCRIBERS_TABLE: TraxentSubscribers
+          USER_DATA_TABLE: TraxentUserData
       Policies:
         - SSMParameterReadPolicy:
             ParameterName: traxent/*
-        # The subscribers table is owned by the traxent-user-data stack, so it is
-        # referenced by its fixed name rather than !Ref. Deploy that stack first.
+        # Both tables are owned by the traxent-user-data stack, so they are
+        # referenced by fixed name rather than !Ref. Deploy that stack first.
         - DynamoDBCrudPolicy:
             TableName: TraxentSubscribers
+        # PROFILE plan/email mirror — the weekly readiness digest's send list.
+        - DynamoDBCrudPolicy:
+            TableName: TraxentUserData
       Events:
         Api:
           Type: Api

@@ -1,0 +1,262 @@
+{
+ "schemaVersion": 1,
+ "updated": "2026-06-10",
+ "firms": [
+  {
+   "id": "ftmo",
+   "name": "FTMO",
+   "type": "Forex + Futures · 2-step",
+   "region": "Global (excl. US)",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 5,
+    "maxTotalLoss": 10,
+    "minTradingDays": 4,
+    "consistencyRule": 50,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "No time limit on challenges. Daily loss measured from midnight CET including floating losses. 1-step has a 50% best-day consistency rule; 2-step does not."
+  },
+  {
+   "id": "apex",
+   "name": "Apex Trader Funding",
+   "type": "Futures only · Trailing DD",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": null,
+    "maxTotalLoss": 5,
+    "minTradingDays": 7,
+    "consistencyRule": 30,
+    "stopLossRequired": true,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Trailing drawdown follows your peak equity including unrealised gains. No daily loss limit during evaluation. 30% consistency rule applies on funded accounts only."
+  },
+  {
+   "id": "mffu",
+   "name": "MyFundedFutures",
+   "type": "Futures only · EOD DD",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": null,
+    "maxTotalLoss": 3,
+    "minTradingDays": 2,
+    "consistencyRule": 40,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "EOD drawdown — floor recalculates at market close each day, not intraday. No daily loss limit. 40% consistency rule applies on Core funded accounts."
+  },
+  {
+   "id": "fundednext",
+   "name": "FundedNext",
+   "type": "Forex + Futures · 1-step",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 5,
+    "maxTotalLoss": 10,
+    "minTradingDays": 5,
+    "consistencyRule": 40,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Futures accounts have no daily loss limit. CFD accounts have 5% DLL. Consistency rule (40%) applies to funded Futures accounts only."
+  },
+  {
+   "id": "topstep",
+   "name": "Topstep",
+   "type": "Futures only · Trailing DD",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 2,
+    "maxTotalLoss": 4,
+    "minTradingDays": 2,
+    "consistencyRule": 50,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are for the 50K Trading Combine. The Max Loss Limit trails your highest end-of-day balance and locks once it reaches your starting balance. The daily loss limit is a soft breach (auto-liquidation), not an instant fail."
+  },
+  {
+   "id": "the5ers",
+   "name": "The5ers",
+   "type": "Forex · Scaling",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 5,
+    "maxTotalLoss": 10,
+    "minTradingDays": 0,
+    "consistencyRule": null,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are for the High Stakes program; daily drawdown is measured from the prior day closing balance. Newer 1-step CFD plans (Hyper/Pro Growth) use 3% daily / 6% max, and the Futures track adds a 30% best-trade consistency rule."
+  },
+  {
+   "id": "fxify",
+   "name": "FXIFY",
+   "type": "Forex + Futures · 2-step",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 4,
+    "maxTotalLoss": 10,
+    "minTradingDays": 4,
+    "consistencyRule": null,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are for the Two-Phase Standard challenge, whose max drawdown trails your balance. One-Phase and Lightning models use 3% daily / 4-6% max and add a 30% consistency rule."
+  },
+  {
+   "id": "e8",
+   "name": "E8 Funding",
+   "type": "Forex + Futures",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 5,
+    "maxTotalLoss": 8,
+    "minTradingDays": 0,
+    "consistencyRule": 40,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are for the E8 Classic forex evaluation. Daily drawdown is configurable (3-9.2%) on some models. A best-day consistency rule (40%, or 35% on Signature) applies on funded accounts."
+  },
+  {
+   "id": "fundingpips",
+   "name": "FundingPips",
+   "type": "CFDs · 2-step",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 5,
+    "maxTotalLoss": 10,
+    "minTradingDays": 3,
+    "consistencyRule": null,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are for the 2-Step Standard challenge. 1-Step and Pro models use 3% daily / 6% max. A 35% consistency rule applies only on Master on-demand payouts, not during evaluation."
+  },
+  {
+   "id": "tradeify",
+   "name": "Tradeify",
+   "type": "Futures only · EOD DD",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 3,
+    "maxTotalLoss": 4,
+    "minTradingDays": 3,
+    "consistencyRule": 40,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are representative of the 50K Growth/Select accounts. Drawdown is End-of-Day trailing (recalculates at the close) but is enforced in real time. Lightning accounts have no daily loss limit."
+  },
+  {
+   "id": "alphacapital",
+   "name": "Alpha Capital",
+   "type": "CFDs · 1-step",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 4,
+    "maxTotalLoss": 6,
+    "minTradingDays": 1,
+    "consistencyRule": 40,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are for Alpha One (1-step). Alpha Pro plans use 3-5% daily and 6-10% static max with a 3-day minimum. The 40% best-day rule applies to on-demand payouts."
+  },
+  {
+   "id": "goatfunded",
+   "name": "Goat Funded Trader",
+   "type": "Forex + Futures · 2-step",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 5,
+    "maxTotalLoss": 10,
+    "minTradingDays": 3,
+    "consistencyRule": null,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are for the 2-Step Standard challenge. The 2-Step GOAT model uses 4% daily and adds a 15% payout consistency rule. Instant Funding models close the account if floating PnL drops below -2%."
+  },
+  {
+   "id": "takeprofit",
+   "name": "Take Profit Trader",
+   "type": "Futures only · EOD DD",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": null,
+    "maxTotalLoss": 4,
+    "minTradingDays": 5,
+    "consistencyRule": 50,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are for the 50K evaluation (Test account). Drawdown is End-of-Day trailing and locks at the starting balance. No daily loss limit. The 50% consistency rule and 5-day minimum apply on the evaluation; the funded PRO account switches to intraday drawdown with no consistency rule."
+  },
+  {
+   "id": "fundedtradingplus",
+   "name": "Funded Trading Plus",
+   "type": "CFDs · 2-step",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 4,
+    "maxTotalLoss": 8,
+    "minTradingDays": 0,
+    "consistencyRule": 35,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are for the 2-Step Classic account. There is no minimum-trading-days requirement, but a 3% per-symbol loss cap applies. The 1-Step model uses a 6% relative max / 4% daily with no consistency rule."
+  },
+  {
+   "id": "maven",
+   "name": "Maven Trading",
+   "type": "Forex · 1-step",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 3,
+    "maxTotalLoss": 5,
+    "minTradingDays": 3,
+    "consistencyRule": null,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are for the 1-Step Challenge; max drawdown is EOD trailing from the highest equity point. The 2-Step plans use 4% daily / 8% max. A 20% consistency rule applies only to Instant accounts."
+  },
+  {
+   "id": "bulenox",
+   "name": "Bulenox",
+   "type": "Futures only · Trailing DD",
+   "region": "Global",
+   "available": true,
+   "rules": {
+    "maxDailyLoss": 2,
+    "maxTotalLoss": 5,
+    "minTradingDays": 0,
+    "consistencyRule": 40,
+    "stopLossRequired": false,
+    "maxRiskPerTrade": null
+   },
+   "notes": "Figures shown are for the 50K account. Trailing drawdown updates in real time; the daily loss limit (where present) is a soft suspension, not a fail. The 40% consistency rule applies to payouts, and 10 trading days are required before the first payout on the funded Master account."
+  }
+ ]
+}

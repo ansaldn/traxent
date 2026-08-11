@@ -240,7 +240,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
   <div class="page-header">
     <div class="page-eyebrow">Challenger feature</div>
     <h1 class="page-title">Readiness tracker</h1>
-    <p class="page-sub">Select up to 3 firms, log your trading habits, and see exactly where you stand against each firm's published rules.</p>
+    <p class="page-sub">Select up to 12 firms, log your trading habits, and see exactly where you stand against each firm's published rules.</p>
   </div>
 
   <!-- Firm selector -->
@@ -250,7 +250,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
       <span class="selector-count"><span id="selected-count">0</span> / 3 selected</span>
     </div>
     <div class="firms-grid" id="firms-grid"></div>
-    <div class="selector-note">Select up to 3 firms. Scores are based on publicly available rules — always verify directly with the firm before purchasing a challenge.</div>
+    <div class="selector-note">Select up to 12 firms. Scores are based on publicly available rules — always verify directly with the firm before purchasing a challenge.</div>
     <!-- Coming-soon chips hidden for UAT/launch. To re-enable: restore <div class="coming-soon-chips" id="coming-soon-grid"></div> here and uncomment renderer below. -->
   </div>
 
@@ -337,7 +337,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
     <div class="results-panel" id="results-panel">
       <div class="no-firms-msg" id="no-firms-msg">
         <div class="no-firms-msg-title">Select firms above to begin</div>
-        <div class="no-firms-msg-sub">Choose up to 3 firms and your scores will appear here</div>
+        <div class="no-firms-msg-sub">Choose up to 12 firms and your scores will appear here</div>
       </div>
     </div>
 
@@ -346,6 +346,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="auth.js?v=__BUILD_SHA__"></script>
+<script src="userdata.js?v=__BUILD_SHA__"></script>
 <script>
 
 // ── FIRM DATABASE ─────────────────────────────────────────────────────────────
@@ -614,11 +615,7 @@ const COMING_SOON_FIRMS = [];
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let selectedFirms = [];
-let trades = [
-  { result: 'win', risk: 1.0, rr: 2.0 },
-  { result: 'loss', risk: 1.0, rr: 0 },
-  { result: 'win', risk: 0.8, rr: 2.5 },
-];
+let trades = []; // starts empty — no seeded demo trades; real entries only
 
 // ── SCORING ENGINE ────────────────────────────────────────────────────────────
 function scoreFirm(firm) {
@@ -938,7 +935,7 @@ function recalculate() {
 function renderFirmSelector() {
   const grid = document.getElementById('firms-grid');
   grid.innerHTML = FIRMS.map(f => `
-    <div class="firm-chip ${selectedFirms.includes(f.id) ? 'selected' : ''} ${!selectedFirms.includes(f.id) && selectedFirms.length >= 3 ? 'disabled' : ''}"
+    <div class="firm-chip ${selectedFirms.includes(f.id) ? 'selected' : ''} ${!selectedFirms.includes(f.id) && selectedFirms.length >= 12 ? 'disabled' : ''}"
          id="chip-${f.id}" onclick="toggleFirm('${f.id}')">
       <div class="firm-chip-check">${selectedFirms.includes(f.id) ? '✓' : ''}</div>
       <div class="firm-chip-name">${f.name}</div>
@@ -965,11 +962,14 @@ function renderFirmSelector() {
 function toggleFirm(id) {
   if (selectedFirms.includes(id)) {
     selectedFirms = selectedFirms.filter(f => f !== id);
-  } else if (selectedFirms.length < 3) {
+  } else if (selectedFirms.length < 12) {
     selectedFirms.push(id);
   }
   renderFirmSelector();
   recalculate();
+  // Push the selection through PUT /user/firms so iOS (which syncs via the
+  // API) sees the same firms. Fire-and-forget: local UX never blocks on it.
+  try { if (window.TraxentData) TraxentData.setFirms(selectedFirms.slice()); } catch (e) {}
 }
 
 // ── TRADE LOG ─────────────────────────────────────────────────────────────────
@@ -1084,7 +1084,7 @@ async function initTracker() {
         <div class="upgrade-gate" style="grid-column:1/-1">
           <div class="upgrade-gate-title">Readiness tracker — Challenger feature</div>
           <div class="upgrade-gate-body">
-            The readiness tracker is available on the Challenger plan at £12.99/mo. Upgrade to select up to 3 prop firms and track your readiness against their published rules in real time.
+            The readiness tracker is available on the Challenger plan at £12.99/mo. Upgrade to select up to 12 prop firms and track your readiness against their published rules in real time.
           </div>
           <a href="/dashboard" class="btn-upgrade-gate" onclick="upgradePlan('challenger'); return false;">Upgrade to Challenger →</a>
         </div>
@@ -1093,6 +1093,19 @@ async function initTracker() {
     }
 
     loadFromStorage();
+
+    // Cross-device sync: pull cloud state first — firm selections made on iOS
+    // (or another browser) win over this tracker's local copy.
+    try {
+      if (window.TraxentData && TraxentData.apiEnabled()) {
+        const cloud = await TraxentData.sync();
+        if (cloud && Array.isArray(cloud.firms) && cloud.firms.length) {
+          const known = cloud.firms.filter(id => FIRMS.some(f => f.id === id));
+          if (known.length) selectedFirms = known;
+        }
+      }
+    } catch (e) { /* offline/API down — local copy stands */ }
+
     renderFirmSelector();
     renderTrades();
 

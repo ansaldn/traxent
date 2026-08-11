@@ -263,7 +263,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
         <span class="detail-label">Account ID</span>
         <span class="detail-value mono" id="detail-id" style="font-size:11px;color:var(--ink3)">—</span>
       </div>
-      <div class="detail-row">
+      <div class="detail-row" id="password-row">
         <span class="detail-label">Password</span>
         <button class="btn-link-edit" type="button" onclick="sendPasswordReset(this)">Send reset email</button>
       </div>
@@ -549,6 +549,21 @@ async function initAccount() {
     document.getElementById('detail-name').textContent = displayName;
     document.getElementById('detail-email').textContent = user.email;
     document.getElementById('detail-id').textContent = user.sub;
+
+    // Password reset only applies to email/password (database) identities.
+    // Social identities (apple|…, google-oauth2|…) have no Traxent password —
+    // the reset endpoint would "succeed" silently and email nothing, so hide
+    // the control and say where the login actually lives.
+    if (!user.sub.startsWith('auth0|')) {
+      const row = document.getElementById('password-row');
+      if (row) {
+        const provider = user.sub.startsWith('apple|') ? 'Apple'
+          : user.sub.startsWith('google') ? 'Google'
+          : 'your identity provider';
+        row.innerHTML = `<span class="detail-label">Password</span>`
+          + `<span class="detail-value" style="font-size:12px;color:var(--ink3)">Managed by ${provider} — you sign in with ${provider}, so there's no Traxent password to reset.</span>`;
+      }
+    }
 
     // Member since — parse from Auth0 sub or use today as fallback
     const createdAt = user.updated_at

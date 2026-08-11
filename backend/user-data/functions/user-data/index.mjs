@@ -77,6 +77,32 @@ async function putSingleton(userId, sk, data) {
   }));
 }
 
+// Self-healing plan/email mirror. The PROFILE row is what the weekly
+// readiness digest scans for its send list and what GET /user surfaces as
+// `profile` — but historically nothing wrote it. Upsert it whenever the
+// stored copy is missing or differs from the (verified) token's claims.
+// Never throws: a mirror problem must not break a data read.
+async function refreshProfile(user, existingProfile) {
+  try {
+    if (existingProfile
+      && existingProfile.plan === user.plan
+      && existingProfile.email === (user.email || existingProfile.email)) return existingProfile;
+    const profile = {
+      plan: user.plan,
+      email: user.email || existingProfile?.email || null,
+      updatedAt: new Date().toISOString(),
+    };
+    await ddb.send(new PutCommand({
+      TableName: TABLE,
+      Item: { userId: user.sub, sk: 'PROFILE', ...profile },
+    }));
+    return profile;
+  } catch (e) {
+    console.error('profile mirror (non-fatal):', e.message);
+    return existingProfile;
+  }
+}
+
 async function addTrade(userId, trade) {
   const id = randomUUID();
   const createdAt = new Date().toISOString();
@@ -116,9 +142,11 @@ export const handler = async (event) => {
   if (event.body) { try { body = JSON.parse(event.body); } catch { return json(400, { error: 'Invalid JSON body' }); } }
 
   try {
-    // GET /user → full state
+    // GET /user → full state (and self-heal the PROFILE plan/email mirror)
     if (method === 'GET' && (path === '/' || path === '')) {
-      return json(200, await getAllState(user.sub));
+      const state = await getAllState(user.sub);
+      state.profile = await refreshProfile(user, state.profile);
+      return json(200, state);
     }
     // PUT /user/progress
     if (method === 'PUT' && path === '/progress') {
@@ -130,6 +158,27 @@ export const handler = async (event) => {
     if (method === 'PUT' && path === '/firms') {
       if (!Array.isArray(body.firms)) return json(400, { error: 'firms array required' });
       await putSingleton(user.sub, 'FIRMS', body.firms.slice(0, 12).map(String));
+      return json(200, { ok: true });
+    }
+    // POST /user/device — iOS registers its APNs push token (best-effort,
+    // retried on launch). One row per token (sk = DEVICE#<token>), so a user
+    // with several devices keeps several rows; re-posting the same token is a
+    // clean upsert. Rows ride the existing delete-account purge (GDPR) because
+    // that purge removes every row under the userId.
+    if (method === 'POST' && path === '/device') {
+      const deviceToken = typeof body.token === 'string' ? body.token.trim() : '';
+      if (!deviceToken || deviceToken.length < 16 || deviceToken.length > 512) {
+        return json(400, { error: 'token (string) required' });
+      }
+      const platform = body.platform === 'android' ? 'android' : 'ios';
+      await ddb.send(new PutCommand({
+        TableName: TABLE,
+        Item: {
+          userId: user.sub, sk: `DEVICE#${deviceToken}`,
+          platform, pushOptIn: !!body.pushOptIn,
+          updatedAt: new Date().toISOString(),
+        },
+      }));
       return json(200, { ok: true });
     }
     // POST /user/trades

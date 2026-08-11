@@ -115,6 +115,20 @@ nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-
 footer{border-top:1px solid var(--border);margin-top:24px;padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
 footer a{color:var(--ink3)}
 @media(max-width:820px){.course{grid-template-columns:1fr;gap:24px}.sidebar{position:static}.lesson-title{font-size:30px}}
+
+/* In-lesson knowledge checks (JS-rendered — invisible to the content extractor) */
+.check{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin:26px 0 0}
+.check-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.check-q{font-size:15px;font-weight:500;margin-bottom:12px}
+.check .opt{display:block;width:100%;text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:var(--sans);font-size:14px;color:var(--ink2);cursor:pointer;margin-bottom:8px;transition:all .15s}
+.check .opt:hover{border-color:var(--accent)}
+.check .opt.correct{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:500}
+.check .opt.wrong{background:#fdeaea;border-color:var(--bad);color:var(--bad)}
+.check-fb{font-size:13.5px;color:var(--ink2);margin-top:4px;display:none;line-height:1.6}
+.check-fb.show{display:block}
+.check-retry{display:none;margin-top:10px;background:transparent;border:1px solid var(--border);color:var(--ink2);font-family:var(--sans);font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;cursor:pointer}
+.check-retry:hover{border-color:var(--accent);color:var(--accent)}
+.check-retry.show{display:inline-block}
 </style>
 <script src="/config.js" defer></script>
 </head>
@@ -540,6 +554,52 @@ function finishPaper(){
   }
 }
 updateProgress(); showLesson(0); startPaper();
+</script>
+
+<script>
+// ── In-lesson knowledge checks ──────────────────────────────────────────────
+// Rendered from JS on purpose: the content extractor parses static HTML only,
+// so these never leak into the iOS catalog (modules.json) or its decoder.
+// One per lesson; per-option feedback explains WHY each answer is right or
+// wrong; "Try again" appears only after a wrong answer (matches iOS rule).
+(function(){
+  var CHECKS = [{"q": "A friend says buying shares is 'just gambling on numbers'. What's the best correction?", "opts": [{"t": "They're right — share prices are random numbers", "fb": "Not quite. Prices move on real business performance and supply and demand — a share is ownership of an actual company, not a lottery ticket.", "ok": false}, {"t": "A share is part-ownership of a real business, with a claim on its profits", "fb": "Exactly. That's the foundation everything else builds on — you own a slice of something real.", "ok": true}, {"t": "Shares are loans that companies must repay", "fb": "That's a bond. Shares are ownership; nobody owes you your money back — your slice rises and falls with the business.", "ok": false}]}, {"q": "Apple did its IPO in 1980. When you buy AAPL today, who gets your money?", "opts": [{"t": "Apple — it funds their next product", "fb": "Common assumption, but no — Apple raised its cash at the IPO. Today you're buying from another investor who wants out.", "ok": false}, {"t": "The investor selling you their shares", "fb": "Right. After the IPO, it's investor-to-investor. The company isn't part of your trade at all.", "ok": true}, {"t": "The stock exchange keeps it", "fb": "The exchange just hosts the marketplace (taking tiny fees) — the sale money goes to the seller.", "ok": false}]}, {"q": "It's 8pm UK time and major news breaks about a London-listed company. What happens to its share price?", "opts": [{"t": "It updates immediately, markets never sleep", "fb": "Stock exchanges keep set hours — London closed at 4:30pm. Nothing can trade until reopen.", "ok": false}, {"t": "Nothing until the market reopens — then it may gap", "fb": "Right. The price is frozen while the market's closed; the news gets priced in one jump at the open. That's a gap.", "ok": true}, {"t": "The exchange reopens specially for big news", "fb": "Exchanges don't reopen for news — that's why overnight news creates opening gaps.", "ok": false}]}, {"q": "Why should a retail trader actually be glad market makers exist?", "opts": [{"t": "They push prices up over time", "fb": "Market makers don't drive direction — they quote both sides. Trends come from buyers and sellers overall.", "ok": false}, {"t": "They guarantee your trades profit", "fb": "Nobody guarantees profits. Their role is narrower — and still valuable.", "ok": false}, {"t": "Your orders fill instantly at fair prices because someone's always willing to trade", "fb": "Exactly — that's liquidity. Without standing buyers and sellers, you'd wait, and pay worse prices to trade.", "ok": true}]}, {"q": "A share's price just moved from £10.00 to £10.05 without any news. What most likely happened?", "opts": [{"t": "The company announced something secretly", "fb": "No announcement needed — prices move whenever the balance of buyers and sellers shifts, even quietly.", "ok": false}, {"t": "Eager buyers outnumbered sellers at £10.00, so the price moved up to find more sellers", "fb": "Right. Price is just the meeting point — more demand than supply at a level pushes it higher until they balance.", "ok": true}, {"t": "The exchange adjusted it for inflation", "fb": "Exchanges never set or adjust prices — only matched orders move them.", "ok": false}]}, {"q": "You open a 5-year chart and it climbs left to right; the 1-day chart looks like chaos. Which is 'the truth'?", "opts": [{"t": "The 1-day chart — it's most current", "fb": "It's most recent, but it's mostly noise. Zoom matters: the same company looks different at every scale.", "ok": false}, {"t": "Both — they show the same price at different zoom levels", "fb": "Right. Long-term trend and short-term wiggles coexist. Which one matters depends on how long you plan to hold.", "ok": true}, {"t": "The 5-year chart — daily moves are fake", "fb": "Daily moves are real trades, not fake — they're just a much smaller story than the multi-year trend.", "ok": false}]}, {"q": "A prop firm evaluation is offered on futures. Which market knowledge will you lean on most?", "opts": [{"t": "Contracts to buy or sell something at a set date — the market most prop firms use", "fb": "Right — futures are central to firms like Apex, Topstep and MFFU, which is why this course points there next.", "ok": true}, {"t": "Collecting dividends from blue-chip shares", "fb": "Dividends belong to long-term share ownership — futures trading is a different discipline.", "ok": false}, {"t": "24/7 crypto price swings", "fb": "Crypto trades round the clock, but most futures prop evaluations run on index futures with set sessions.", "ok": false}]}];
+  function render(i){
+    var body = document.querySelector('#lesson-' + i + ' .lesson-body');
+    var c = CHECKS[i];
+    if (!body || !c || body.querySelector('.check')) return;
+    var box = document.createElement('div');
+    box.className = 'check';
+    box.innerHTML = '<div class="check-eyebrow">Check yourself</div>'
+      + '<div class="check-q"></div>'
+      + c.opts.map(function(_, j){ return '<button type="button" class="opt" data-j="' + j + '"></button>'; }).join('')
+      + '<div class="check-fb"></div>'
+      + '<button type="button" class="check-retry">Try again</button>';
+    box.querySelector('.check-q').textContent = c.q;
+    var btns = box.querySelectorAll('.opt');
+    for (var j = 0; j < btns.length; j++) btns[j].textContent = c.opts[j].t;
+    var fb = box.querySelector('.check-fb'), retry = box.querySelector('.check-retry');
+    function reset(){
+      for (var j = 0; j < btns.length; j++){ btns[j].disabled = false; btns[j].classList.remove('correct','wrong'); }
+      fb.classList.remove('show'); retry.classList.remove('show');
+    }
+    box.addEventListener('click', function(e){
+      var btn = e.target.closest('.check .opt');
+      if (btn){
+        if (btn.disabled) return;
+        var opt = c.opts[+btn.getAttribute('data-j')];
+        for (var j = 0; j < btns.length; j++) btns[j].disabled = true;
+        btn.classList.add(opt.ok ? 'correct' : 'wrong');
+        fb.textContent = opt.fb; fb.classList.add('show');
+        if (!opt.ok) retry.classList.add('show'); // try again only after a wrong answer
+        return;
+      }
+      if (e.target.closest('.check-retry')) reset();
+    });
+    body.appendChild(box);
+  }
+  for (var i = 0; i < CHECKS.length; i++) render(i);
+})();
 </script>
 <script src="/consent.js" defer></script>
 </body>

@@ -131,6 +131,20 @@ nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-
 footer{border-top:1px solid var(--border);margin-top:24px;padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
 footer a{color:var(--ink3)}
 @media(max-width:820px){.course{grid-template-columns:1fr;gap:24px}.sidebar{position:static}.lesson-title{font-size:30px}}
+
+/* In-lesson knowledge checks (JS-rendered — invisible to the content extractor) */
+.check{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin:26px 0 0}
+.check-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.check-q{font-size:15px;font-weight:500;margin-bottom:12px}
+.check .opt{display:block;width:100%;text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:var(--sans);font-size:14px;color:var(--ink2);cursor:pointer;margin-bottom:8px;transition:all .15s}
+.check .opt:hover{border-color:var(--accent)}
+.check .opt.correct{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:500}
+.check .opt.wrong{background:#fdeaea;border-color:var(--bad);color:var(--bad)}
+.check-fb{font-size:13.5px;color:var(--ink2);margin-top:4px;display:none;line-height:1.6}
+.check-fb.show{display:block}
+.check-retry{display:none;margin-top:10px;background:transparent;border:1px solid var(--border);color:var(--ink2);font-family:var(--sans);font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;cursor:pointer}
+.check-retry:hover{border-color:var(--accent);color:var(--accent)}
+.check-retry.show{display:inline-block}
 </style>
 <script src="/config.js" defer></script>
 </head>
@@ -608,6 +622,52 @@ updateProgress(); showLesson(0); startPaper();
       }
     }catch(e){}
   })();
+})();
+</script>
+
+<script>
+// ── In-lesson knowledge checks ──────────────────────────────────────────────
+// Rendered from JS on purpose: the content extractor parses static HTML only,
+// so these never leak into the iOS catalog (modules.json) or its decoder.
+// One per lesson; per-option feedback explains WHY each answer is right or
+// wrong; "Try again" appears only after a wrong answer (matches iOS rule).
+(function(){
+  var CHECKS = [{"q": "A trader wins 60% of trades but risks 10% of their account on each. A 5-loss streak arrives (it will). What's left?", "opts": [{"t": "About 90% of the account", "fb": "Each loss is 10% of the whole account — five in a row leaves roughly 59%, needing +69% just to recover.", "ok": false}, {"t": "Roughly 59% — and a mountain to climb back", "fb": "Right. Win rate didn't save them; size did the damage. This is why risk-per-trade beats being right.", "ok": true}, {"t": "Nothing changes — 60% win rate guarantees profit", "fb": "No win rate survives oversized losses. The maths of drawdown doesn't care how often you're right.", "ok": false}]}, {"q": "£10,000 account, 1% rule, stop 50 points away, £1 per point per contract. How many contracts?", "opts": [{"t": "2 — £100 risk ÷ (50 points × £1)", "fb": "Right. Risk budget first (£100), stop distance second, size LAST. The size is the output, never the input.", "ok": true}, {"t": "10 — a round number feels right", "fb": "Feelings aren't sizing. Work backwards from the £100 risk budget and the 50-point stop: 2 contracts.", "ok": false}, {"t": "20 — maximise the winner", "fb": "That risks £1,000 — 10% of the account on one trade. One bad day of those ends the account.", "ok": false}]}, {"q": "Mid-trade, price nears your stop and you're tempted to 'give it more room' by moving the stop away. What's true?", "opts": [{"t": "Moving the stop is fine — flexibility wins", "fb": "Moving stops away converts a planned loss into an unplanned bigger one — the exact habit stops exist to prevent.", "ok": false}, {"t": "The stop was set at the invalidation point when you were calm — moving it now abandons the plan", "fb": "Right. If price hits your stop, the trade idea was wrong. Accepting the planned loss IS the system working.", "ok": true}, {"t": "Stops are only suggestions", "fb": "A stop you won't honour is no stop at all — your risk-per-trade maths becomes fiction.", "ok": false}]}, {"q": "Your firm allows 6% max drawdown; you're down 4.5%. A 'sure thing' setup appears. Thoughtful response?", "opts": [{"t": "Bet the remaining 1.5% — sure things pay", "fb": "'Sure things' after losses are usually tilt talking. Risking the last buffer on one trade is how evaluations die.", "ok": false}, {"t": "Tiny size or no trade — protect the remaining buffer; live to trade tomorrow", "fb": "Right. Near the drawdown limit, survival IS the strategy. The firm is testing exactly this discipline.", "ok": true}, {"t": "Drawdown limits reset if you explain yourself", "fb": "No firm resets a breached limit — the rule is the rule, which is why buffer management matters.", "ok": false}]}, {"q": "You lost 3 trades this morning and feel a powerful urge to keep trading to 'fix' the day. Name the pattern and the pro response.", "opts": [{"t": "Revenge trading — stop for the day per your written rules", "fb": "Right. The urge to win it back is the most expensive feeling in trading. The pre-written daily stop exists for this moment.", "ok": true}, {"t": "Dedication — push through the slump", "fb": "Pushing through tilt compounds losses. Discipline sometimes looks like walking away.", "ok": false}, {"t": "Intuition — your gut has data", "fb": "After losses, your 'gut' is adrenaline. Rules made calmly outrank feelings made angrily.", "ok": false}]}, {"q": "What separates practice that builds skill from demo trading that builds bad habits?", "opts": [{"t": "Using max leverage since it's fake money", "fb": "Treating demo like a casino teaches casino habits. The point is rehearsing your REAL rules.", "ok": false}, {"t": "Realistic size, your real rules, honest journalling — as if the money were real", "fb": "Right. Demo done seriously is a flight simulator; done casually it's a video game that trains recklessness.", "ok": true}, {"t": "Trading 20 markets at once for experience", "fb": "Breadth isn't the goal — repetition of your actual planned process is.", "ok": false}]}, {"q": "A firm offers you a £100k funded account after passing a £500 evaluation. Why would they do that?", "opts": [{"t": "Charity — they like helping traders", "fb": "Firms are businesses: the evaluation fee plus profit-share on funded traders IS the model.", "ok": false}, {"t": "Your proven rule-discipline makes lending you capital profitable — they keep a share of what you make", "fb": "Right. You proved you protect capital; they supply it and take ~10-20% of profits. Skill scales past your own savings.", "ok": true}, {"t": "It's a trick — funded accounts don't exist", "fb": "Funded trading is a real, established industry — the catch isn't existence, it's the rules you must keep obeying.", "ok": false}]}];
+  function render(i){
+    var body = document.querySelector('#lesson-' + i + ' .lesson-body');
+    var c = CHECKS[i];
+    if (!body || !c || body.querySelector('.check')) return;
+    var box = document.createElement('div');
+    box.className = 'check';
+    box.innerHTML = '<div class="check-eyebrow">Check yourself</div>'
+      + '<div class="check-q"></div>'
+      + c.opts.map(function(_, j){ return '<button type="button" class="opt" data-j="' + j + '"></button>'; }).join('')
+      + '<div class="check-fb"></div>'
+      + '<button type="button" class="check-retry">Try again</button>';
+    box.querySelector('.check-q').textContent = c.q;
+    var btns = box.querySelectorAll('.opt');
+    for (var j = 0; j < btns.length; j++) btns[j].textContent = c.opts[j].t;
+    var fb = box.querySelector('.check-fb'), retry = box.querySelector('.check-retry');
+    function reset(){
+      for (var j = 0; j < btns.length; j++){ btns[j].disabled = false; btns[j].classList.remove('correct','wrong'); }
+      fb.classList.remove('show'); retry.classList.remove('show');
+    }
+    box.addEventListener('click', function(e){
+      var btn = e.target.closest('.check .opt');
+      if (btn){
+        if (btn.disabled) return;
+        var opt = c.opts[+btn.getAttribute('data-j')];
+        for (var j = 0; j < btns.length; j++) btns[j].disabled = true;
+        btn.classList.add(opt.ok ? 'correct' : 'wrong');
+        fb.textContent = opt.fb; fb.classList.add('show');
+        if (!opt.ok) retry.classList.add('show'); // try again only after a wrong answer
+        return;
+      }
+      if (e.target.closest('.check-retry')) reset();
+    });
+    body.appendChild(box);
+  }
+  for (var i = 0; i < CHECKS.length; i++) render(i);
 })();
 </script>
 <script src="/consent.js" defer></script>

@@ -133,6 +133,20 @@ nav{position:sticky;top:0;z-index:200;background:rgba(247,246,242,.92);backdrop-
 footer{border-top:1px solid var(--border);margin-top:24px;padding:32px;text-align:center;font-size:12px;color:var(--ink3)}
 footer a{color:var(--ink3)}
 @media(max-width:820px){.course{grid-template-columns:1fr;gap:24px}.sidebar{position:static}.lesson-title{font-size:30px}}
+
+/* In-lesson knowledge checks (JS-rendered — invisible to the content extractor) */
+.check{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin:26px 0 0}
+.check-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.check-q{font-size:15px;font-weight:500;margin-bottom:12px}
+.check .opt{display:block;width:100%;text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:var(--sans);font-size:14px;color:var(--ink2);cursor:pointer;margin-bottom:8px;transition:all .15s}
+.check .opt:hover{border-color:var(--accent)}
+.check .opt.correct{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:500}
+.check .opt.wrong{background:#fdeaea;border-color:var(--bad);color:var(--bad)}
+.check-fb{font-size:13.5px;color:var(--ink2);margin-top:4px;display:none;line-height:1.6}
+.check-fb.show{display:block}
+.check-retry{display:none;margin-top:10px;background:transparent;border:1px solid var(--border);color:var(--ink2);font-family:var(--sans);font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;cursor:pointer}
+.check-retry:hover{border-color:var(--accent);color:var(--accent)}
+.check-retry.show{display:inline-block}
 </style>
 <script src="/config.js" defer></script>
 </head>
@@ -619,6 +633,52 @@ updateProgress(); showLesson(0); startPaper();
       }
     }catch(e){}
   })();
+})();
+</script>
+
+<script>
+// ── In-lesson knowledge checks ──────────────────────────────────────────────
+// Rendered from JS on purpose: the content extractor parses static HTML only,
+// so these never leak into the iOS catalog (modules.json) or its decoder.
+// One per lesson; per-option feedback explains WHY each answer is right or
+// wrong; "Try again" appears only after a wrong answer (matches iOS rule).
+(function(){
+  var CHECKS = [{"q": "You want out of a losing position RIGHT NOW. Which order type — and what's the trade-off?", "opts": [{"t": "Market order — instant, but the exact fill price isn't guaranteed", "fb": "Right. Speed costs certainty: you'll exit now, at whatever the market's showing (plus any slippage).", "ok": true}, {"t": "Limit order — set your price and wait", "fb": "A limit might never fill while the loss grows. When 'now' matters more than price, that's a market order.", "ok": false}, {"t": "Stop order above the current price", "fb": "A stop is a trigger for later, not an immediate exit.", "ok": false}]}, {"q": "The quote reads bid £9.98 / ask £10.02. You buy at market, then immediately sell. What happened?", "opts": [{"t": "Nothing — you're flat at £0.00", "fb": "You bought at £10.02 and sold at £9.98 — the 4p spread came straight out of your pocket. That's the built-in cost.", "ok": false}, {"t": "You lost the 4p spread per share", "fb": "Right — buy at the ask, sell at the bid. Every round trip starts down by the spread, which is why tight spreads matter.", "ok": true}, {"t": "You made 4p per share", "fb": "Other way round — the spread is a cost to you, income to the market maker.", "ok": false}]}, {"q": "A trader is convinced a stock will FALL and wants to profit. What do they do, and what's the special risk?", "opts": [{"t": "Buy shares and wait", "fb": "Buying profits from rises. To profit from a fall, you need the mirror-image trade.", "ok": false}, {"t": "Go short — sell first, buy back cheaper; but losses are unlimited if it rises", "fb": "Exactly. Shorting profits from falls, but a rising price has no ceiling — which is why shorts demand strict stops.", "ok": true}, {"t": "Hold cash — you profit automatically when prices fall", "fb": "Cash avoids loss but earns nothing from the fall itself. Shorting is the active trade.", "ok": false}]}, {"q": "Two traders each have £1,000. One uses 2:1 leverage, the other 20:1. The market drops 4%. Compare outcomes.", "opts": [{"t": "Both lose 4% of their money", "fb": "Leverage multiplies the account impact: the same 4% move hits them very differently.", "ok": false}, {"t": "The 2:1 trader loses ~8% of margin; the 20:1 trader loses ~80%", "fb": "Right — multiply the move by the leverage. Same market, same direction; one shrug, one near-wipeout.", "ok": true}, {"t": "Leverage only multiplies profits, not losses", "fb": "It multiplies both, symmetrically — that's exactly why over-leverage destroys accounts.", "ok": false}]}, {"q": "Your 'zero-commission' broker charges nothing per trade. Where's the catch usually hiding?", "opts": [{"t": "There is no catch — trading is free", "fb": "Brokers aren't charities: the cost usually moves into the spread you cross on every trade.", "ok": false}, {"t": "In the spread — you pay it on every trade", "fb": "Right. 'Zero commission' typically means the cost is baked into slightly wider spreads. Know your all-in cost.", "ok": true}, {"t": "They bill you annually in secret", "fb": "Regulated brokers can't hide bills — the visible-but-easily-ignored cost is the spread.", "ok": false}]}, {"q": "A central-bank rate decision lands in 10 minutes and you have no position. The disciplined move is…", "opts": [{"t": "Open a big position to catch the move", "fb": "Guessing a binary event with size is gambling — spreads widen and slippage spikes at exactly that moment.", "ok": false}, {"t": "Wait — let the event pass, then trade the calmer aftermath if a setup appears", "fb": "Right. You don't need to predict news; you need to know when it's due and stand aside while it detonates.", "ok": true}, {"t": "News never matters to prices", "fb": "Scheduled macro news is one of the biggest price movers there is — respect the calendar.", "ok": false}]}, {"q": "You place a market order in a thin, quiet market and get filled noticeably worse than the on-screen price. That's…", "opts": [{"t": "Slippage — thin liquidity means the next willing seller was further away", "fb": "Right. Fewer participants = worse fills. Liquid markets and limit orders keep slippage tiny.", "ok": true}, {"t": "A broker error you can dispute", "fb": "It's usually not an error — it's how thin order books work. The screen price is the LAST trade, not a promise.", "ok": false}, {"t": "Impossible — you always get the screen price", "fb": "The screen shows the last trade; your fill depends on who's actually there to take the other side.", "ok": false}]}];
+  function render(i){
+    var body = document.querySelector('#lesson-' + i + ' .lesson-body');
+    var c = CHECKS[i];
+    if (!body || !c || body.querySelector('.check')) return;
+    var box = document.createElement('div');
+    box.className = 'check';
+    box.innerHTML = '<div class="check-eyebrow">Check yourself</div>'
+      + '<div class="check-q"></div>'
+      + c.opts.map(function(_, j){ return '<button type="button" class="opt" data-j="' + j + '"></button>'; }).join('')
+      + '<div class="check-fb"></div>'
+      + '<button type="button" class="check-retry">Try again</button>';
+    box.querySelector('.check-q').textContent = c.q;
+    var btns = box.querySelectorAll('.opt');
+    for (var j = 0; j < btns.length; j++) btns[j].textContent = c.opts[j].t;
+    var fb = box.querySelector('.check-fb'), retry = box.querySelector('.check-retry');
+    function reset(){
+      for (var j = 0; j < btns.length; j++){ btns[j].disabled = false; btns[j].classList.remove('correct','wrong'); }
+      fb.classList.remove('show'); retry.classList.remove('show');
+    }
+    box.addEventListener('click', function(e){
+      var btn = e.target.closest('.check .opt');
+      if (btn){
+        if (btn.disabled) return;
+        var opt = c.opts[+btn.getAttribute('data-j')];
+        for (var j = 0; j < btns.length; j++) btns[j].disabled = true;
+        btn.classList.add(opt.ok ? 'correct' : 'wrong');
+        fb.textContent = opt.fb; fb.classList.add('show');
+        if (!opt.ok) retry.classList.add('show'); // try again only after a wrong answer
+        return;
+      }
+      if (e.target.closest('.check-retry')) reset();
+    });
+    body.appendChild(box);
+  }
+  for (var i = 0; i < CHECKS.length; i++) render(i);
 })();
 </script>
 <script src="/consent.js" defer></script>

@@ -65,12 +65,18 @@ jobs:
       - name: SAM deploy
         working-directory: backend/user-data
         run: |
+          # AdminSubs comes from the ADMIN_SUBS repo VARIABLE (Settings →
+          # Secrets and variables → Actions → Variables): comma-separated Auth0
+          # subs allowed to view /admin. Without passing it here, every deploy
+          # silently reset the parameter to its '' default — which denies
+          # EVERYONE, which is why the admin dashboard never showed numbers.
           sam deploy \
             --stack-name traxent-user-data \
             --resolve-s3 \
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
+            --parameter-overrides "AdminSubs=${{ vars.ADMIN_SUBS }}" \
             --region eu-west-2
 
       - name: Show API URL

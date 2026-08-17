@@ -22,6 +22,7 @@
 <style id="auth-gate-style">body{visibility:hidden}</style>
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="/auth.js?v=__BUILD_SHA__"></script>
+<script src="/userdata.js?v=__BUILD_SHA__"></script>
 <script>requireMinPlan('challenger');</script>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -90,7 +91,7 @@ h1{font-family:var(--serif);font-size:42px;font-weight:400;line-height:1.06;marg
   <div class="foot">Read-only data sync · You can disconnect any account at any time, which deletes its synced trades.</div>
 </div>
 <script>
-(function(){
+(async function(){
   var PROVIDERS = [
     {id:"ctrader", name:"cTrader", asset:"Forex · Indices · CFDs", desc:"Connect via cTrader's secure login. Syncs closed positions and balance history.", phase:1},
     {id:"mt", name:"MetaTrader 4/5", asset:"Forex · Indices · Metals", desc:"Connect with a read-only investor password. Works with most MT4/MT5 brokers.", phase:1},
@@ -105,13 +106,62 @@ h1{font-family:var(--serif);font-size:42px;font-weight:400;line-height:1.06;marg
   var prettyPlan = { observer:"Observer", challenger:"Challenger", funded_ready:"Funded Trader", enterprise:"Enterprise" }[plan] || "Challenger";
   var max = (plan in PLAN_MAX) ? PLAN_MAX[plan] : 1;
 
-  var connections = [];
-  try {
-    if (window.TraxentData && typeof window.TraxentData.getConnections === 'function') {
-      connections = window.TraxentData.getConnections() || [];
-    }
-  } catch(e){}
+  // ── cTrader (the first LIVE connector) ──────────────────────────────────
+  // OAuth flow: Connect → cTrader consent (scope=accounts, read-only) →
+  // redirected back here with ?code= → exchanged server-side, tokens never
+  // touch this page. state guards against CSRF'd codes.
+  var API = (window.TraxentData && TraxentData.apiEnabled()) ? TraxentData.apiBase() : null;
+  var ct = { connected: false, authUrl: null };
 
+  async function api(path, opts){
+    var token = await authBearerToken();
+    var res = await fetch(API + path, Object.assign({}, opts, {
+      headers: Object.assign({ 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, (opts && opts.headers) || {})
+    }));
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  }
+
+  async function refreshCtrader(){
+    if (!API) return;
+    try { ct = await api('/user/ctrader/status', { method: 'GET' }); } catch(e){ /* leave defaults */ }
+  }
+
+  // Returning from cTrader consent? Exchange the one-time code first.
+  var q = new URLSearchParams(location.search);
+  if (q.get('code')) {
+    var sent = null;
+    try { sent = sessionStorage.getItem('tx_ct_state'); sessionStorage.removeItem('tx_ct_state'); } catch(e){}
+    var returned = q.get('state');
+    if (returned && sent && returned !== sent) {
+      alert('Connection cancelled: the security check on the redirect did not match. Please try connecting again.');
+    } else {
+      try {
+        await api('/user/ctrader/exchange', { method: 'POST', body: JSON.stringify({ code: q.get('code') }) });
+        alert('cTrader connected — read-only. Your closed trades will appear after the first sync.');
+      } catch(e) {
+        alert('Connecting cTrader failed — the code may have expired. Please try again.');
+      }
+    }
+    history.replaceState({}, document.title, location.pathname); // never leave codes in the URL/history
+  }
+
+  await refreshCtrader();
+
+  function connectCtrader(){
+    if (!ct.authUrl) { alert('Connection service unavailable — please try again shortly.'); return; }
+    var state = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    try { sessionStorage.setItem('tx_ct_state', state); } catch(e){}
+    window.location.href = ct.authUrl + '&state=' + encodeURIComponent(state);
+  }
+
+  async function disconnectCtrader(){
+    if (!confirm('Disconnect cTrader? Traxent deletes its stored access to your account.')) return;
+    try { await api('/user/ctrader', { method: 'DELETE' }); } catch(e){}
+    location.reload();
+  }
+
+  var connections = ct.connected ? [{ id: 'ctrader' }] : [];
   document.getElementById('planName').textContent = prettyPlan;
   document.getElementById('connMax').textContent = max === 99 ? "∞" : max;
   document.getElementById('connUsed').textContent = connections.length;
@@ -121,7 +171,6 @@ h1{font-family:var(--serif);font-size:42px;font-weight:400;line-height:1.06;marg
   var grid = document.getElementById('providerGrid');
 
   function notify(p){
-    // Placeholder: records interest until the live connector is switched on.
     try {
       if (window.TraxentData && typeof window.TraxentData.requestIntegration === 'function') {
         window.TraxentData.requestIntegration(p.id);
@@ -130,24 +179,32 @@ h1{font-family:var(--serif);font-size:42px;font-weight:400;line-height:1.06;marg
     alert("Thanks — we'll email you the moment the " + p.name + " connector goes live.");
   }
 
+  var LIVE = { ctrader: !!API }; // flip per-provider as each connector is approved
+
   PROVIDERS.forEach(function(p){
     var card = document.createElement('div');
     card.className = 'card';
-    var live = false; // flip per-provider to true as each connector is approved
-    var badge = live ? '<span class="badge">Live</span>' : '<span class="badge soon">Coming online</span>';
+    var live = !!LIVE[p.id];
+    var isConnected = p.id === 'ctrader' && ct.connected;
+    var badge = isConnected ? '<span class="badge">Connected ✓</span>'
+      : live ? '<span class="badge">Live</span>'
+      : '<span class="badge soon">Coming online</span>';
     card.innerHTML =
       '<div class="card-top"><div class="card-name">'+p.name+'</div>'+badge+'</div>'+
       '<div class="card-asset">'+p.asset+'</div>'+
       '<div class="card-desc">'+p.desc+'</div>';
     var btn = document.createElement('button');
     btn.className = 'btn';
-    if (live) {
+    if (isConnected) {
+      btn.textContent = 'Disconnect';
+      btn.style.background = 'transparent'; btn.style.color = 'var(--bad, #9e1a1a)';
+      btn.addEventListener('click', disconnectCtrader);
+    } else if (live) {
       btn.textContent = atLimit ? 'Connection limit reached' : 'Connect';
       btn.disabled = atLimit;
-      btn.addEventListener('click', function(){ window.location.href = '/api/integrations/'+p.id+'/connect'; });
+      btn.addEventListener('click', connectCtrader);
     } else {
       btn.textContent = 'Notify me when live';
-      btn.disabled = false;
       btn.style.background = 'transparent'; btn.style.color = 'var(--accent)';
       btn.addEventListener('click', function(){ notify(p); });
     }

@@ -528,6 +528,51 @@ Resources:
             Path: /user/marketing
             Method: POST
 
+# cTrader connection API (read-only scope). Isolated from the data function
+  # because it alone reads the cTrader OAuth secrets from SSM and writes the
+  # CONNECTION#ctrader token row. Its specific routes take precedence over the
+  # data function's greedy ANY /user/{proxy+}.
+  CtraderConnectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-ctrader-connect
+      Handler: index.handler
+      CodeUri: functions/ctrader-connect/
+      Timeout: 15
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref UserDataTable
+          AUTH0_ISSUER: !Ref Auth0Issuer
+          AUTH0_AUDIENCE: !Ref Auth0Audience
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+          CTRADER_REDIRECT_URI: https://traxent.io/integrations
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UserDataTable
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/ctrader/*"
+      Events:
+        Status:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/ctrader/status
+            Method: GET
+        Exchange:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/ctrader/exchange
+            Method: POST
+        Disconnect:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/ctrader
+            Method: DELETE
+
   # Admin-only aggregate metrics dashboard (GET /admin/metrics). Returns COUNTS
   # ONLY — total signups (Auth0 Mgmt API), active subs + MRR + plan mix (Stripe),
   # and usage totals (DynamoDB) — never any per-user record, so it stays low

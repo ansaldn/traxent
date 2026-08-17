@@ -13,9 +13,15 @@
  *   1. Actions → Library → Create Action → "Link accounts by verified email",
  *      trigger: Login / Post Login, runtime: Node 18+.
  *   2. Paste this file.
- *   3. Secrets (left panel): DOMAIN (auth.traxent.io custom domain is fine),
+ *   3. Secrets (left panel): DOMAIN = the CANONICAL tenant domain, e.g.
+ *      `traxent.uk.auth0.com` — NOT the custom domain auth.traxent.io. The
+ *      Management API token audience only resolves on the canonical domain;
+ *      with the custom domain the token request fails and linking silently
+ *      never happens. Find it: Applications → APIs → Auth0 Management API →
+ *      Identifier (the host inside it). Bare hostname, no https://.
  *      CLIENT_ID / CLIENT_SECRET of the existing M2M app (needs read:users,
  *      update:users — both already granted; linking uses update:users).
+ *      After changing any secret you MUST click Deploy again.
  *   4. Dependencies: none (uses fetch, available in Node 18 runtime).
  *   5. Deploy, then drag the Action into the Login flow
  *      (Actions → Flows → Login), BEFORE any Action that reads roles/plan.
@@ -29,18 +35,20 @@
  */
 exports.onExecutePostLogin = async (event, api) => {
   const { user } = event;
+  const log = (msg) => console.log(`[link-accounts] ${user.user_id}: ${msg}`);
 
   // Only link on verified emails — an unverified email is an attacker's claim.
-  if (!user.email || !user.email_verified) return;
+  if (!user.email || !user.email_verified) { log('skip: email missing or unverified'); return; }
 
   // Apple private relay can never match the user's real email; skip quietly.
   // (The /account page offers manual linking guidance for this case.)
-  if (user.email.endsWith('@privaterelay.appleid.com')) return;
+  if (user.email.endsWith('@privaterelay.appleid.com')) { log('skip: private relay email'); return; }
 
   // Already linked? A user with >1 identity has been through this.
-  if ((user.identities || []).length > 1) return;
+  if ((user.identities || []).length > 1) { log('skip: already linked'); return; }
 
   const domain = event.secrets.DOMAIN;
+  if (!domain || domain.includes('://')) { log('MISCONFIG: DOMAIN secret must be a bare hostname'); return; }
 
   let token;
   try {
@@ -54,9 +62,15 @@ exports.onExecutePostLogin = async (event, api) => {
         grant_type: 'client_credentials',
       }),
     });
-    token = (await res.json()).access_token;
-    if (!token) return; // never block login on a linking failure
-  } catch { return; }
+    const body = await res.json();
+    token = body.access_token;
+    if (!token) {
+      // The classic cause: DOMAIN set to the custom domain — the Management
+      // API audience only resolves on the canonical *.auth0.com domain.
+      log(`FAIL: no mgmt token (HTTP ${res.status} ${body.error || ''} ${body.error_description || ''}) — is DOMAIN the canonical tenant domain?`);
+      return; // never block login on a linking failure
+    }
+  } catch (e) { log('FAIL: token request threw — ' + e.message); return; }
 
   // Find other users with the same email; keep only verified matches.
   let candidates;
@@ -66,10 +80,11 @@ exports.onExecutePostLogin = async (event, api) => {
       { headers: { authorization: `Bearer ${token}` } },
     );
     const all = await res.json();
-    if (!Array.isArray(all)) return;
+    if (!Array.isArray(all)) { log(`FAIL: users-by-email returned ${res.status} non-array`); return; }
     candidates = all.filter(u => u.user_id !== user.user_id && u.email_verified);
-  } catch { return; }
-  if (!candidates.length) return;
+  } catch (e) { log('FAIL: users-by-email threw — ' + e.message); return; }
+  if (!candidates.length) { log('skip: no other verified user with this email'); return; }
+  log(`linking with ${candidates.map(c => c.user_id).join(', ')}`);
 
   // Oldest identity wins as primary, so the longest-lived `sub` — and all the
   // DynamoDB data keyed by it — survives the merge.
@@ -92,9 +107,10 @@ exports.onExecutePostLogin = async (event, api) => {
     if (primary.user_id !== user.user_id) {
       api.authentication.setPrimaryUser(primary.user_id);
     }
+    log(`SUCCESS: primary=${primary.user_id}`);
   } catch (e) {
     // Linking failed — log and let the login proceed unlinked rather than
     // locking the user out. The next login retries automatically.
-    console.log('account-linking failed (non-blocking):', e.message);
+    log('FAIL: link call threw (non-blocking) — ' + e.message);
   }
 };

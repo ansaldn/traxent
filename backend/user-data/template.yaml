@@ -510,6 +510,12 @@ Resources:
             ApiId: !Ref UserDataApi
             Path: /user/password-reset
             Method: POST
+        VerificationEmail:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/verification-email
+            Method: POST
         # The customer's own marketing opt-out. Soft opt-in under UK PECR is
         # only lawful if refusing is simple, so this route is a legal
         # requirement of emailing customers, not a nice-to-have. Both methods

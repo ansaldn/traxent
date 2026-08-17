@@ -440,6 +440,19 @@ async function initHome() {
       ? 'You’re on the free plan — jump in, or unlock the full toolkit below.'
       : 'Pick up right where you left off.';
 
+    // Unverified-email nudge: without verification, Apple/Google sign-in can't
+    // link to this account and recovery is weaker. Shown until verified
+    // (claim refreshes at next sign-in after they click the link).
+    if (user.sub.startsWith('auth0|') && user.email_verified === false) {
+      const sub = document.getElementById('hello-sub');
+      const nudge = document.createElement('div');
+      nudge.style.cssText = 'margin-top:14px;padding:12px 16px;background:rgba(176,96,0,.07);border:1px solid rgba(176,96,0,.25);border-radius:10px;font-size:13.5px;color:var(--ink2);max-width:560px;line-height:1.55';
+      nudge.innerHTML = '<strong style="color:var(--warn,#b06000)">Verify your email.</strong> '
+        + 'Click the link we sent to <strong>' + (user.email || 'your inbox') + '</strong> — it secures your account and lets Apple or Google sign-in connect to it. '
+        + '<a href="/account" style="color:var(--accent);font-weight:500">Resend from your account page →</a>';
+      sub.parentNode.insertBefore(nudge, sub.nextSibling);
+    }
+
     document.getElementById('support-mail').href =
       'mailto:hello@traxent.io?subject=' + encodeURIComponent('Member support — ' + (PLAN_LABEL[plan] || 'Free')) +
       '&body=' + encodeURIComponent('Account: ' + (user.email || '') + '\nPlan: ' + (PLAN_LABEL[plan] || 'Free') + '\n\nHow can we help?\n');

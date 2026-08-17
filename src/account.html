@@ -548,6 +548,30 @@ async function initAccount() {
     // Account details
     document.getElementById('detail-name').textContent = displayName;
     document.getElementById('detail-email').textContent = user.email;
+
+    // Email verification status — visible and self-serve. An unverified email
+    // silently blocks Apple/Google account linking, so users must be able to
+    // see it and fix it here rather than needing a tenant admin.
+    if (user.sub.startsWith('auth0|')) {
+      const emailEl = document.getElementById('detail-email');
+      const badge = document.createElement('span');
+      if (user.email_verified) {
+        badge.textContent = ' Verified ✓';
+        badge.style.cssText = 'font-size:11px;color:var(--accent);font-weight:500;margin-left:8px';
+        emailEl.appendChild(badge);
+      } else {
+        badge.textContent = ' Not verified';
+        badge.style.cssText = 'font-size:11px;color:var(--warn,#b06000);font-weight:600;margin-left:8px';
+        emailEl.appendChild(badge);
+        const row = emailEl.closest('.detail-row') || emailEl.parentElement;
+        const note = document.createElement('div');
+        note.style.cssText = 'font-size:12px;color:var(--ink3);margin-top:6px;line-height:1.5';
+        note.innerHTML = 'Verify your email to secure your account and let Apple/Google sign-in link to it. '
+          + '<button type="button" class="btn-link-edit" onclick="resendVerification(this)">Resend verification email</button>'
+          + '<span style="display:block;margin-top:2px">Already clicked the link? Sign out and back in to update.</span>';
+        row.appendChild(note);
+      }
+    }
     document.getElementById('detail-id').textContent = user.sub;
 
     // Password reset only applies to email/password (database) identities.
@@ -908,6 +932,24 @@ async function saveProfile() {
     showToast(err.message || 'Could not save changes.', false);
   } finally {
     btn.disabled = false; btn.textContent = 'Save changes';
+  }
+}
+
+async function resendVerification(btn) {
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  try {
+    const token = await authBearerToken();
+    const res = await fetch(TraxentData.apiBase() + '/user/verification-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: '{}'
+    });
+    if (!res.ok) throw new Error('send failed');
+    showToast('Verification email sent — check your inbox (and spam).');
+    if (btn) btn.textContent = 'Sent ✓';
+  } catch (err) {
+    showToast('Could not send the verification email — try again shortly.', false);
+    if (btn) { btn.disabled = false; btn.textContent = 'Resend verification email'; }
   }
 }
 

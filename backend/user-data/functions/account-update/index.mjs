@@ -116,6 +116,29 @@ export const handler = async (event) => {
       return json(200, { success: true, message: 'Password reset email sent.' });
     }
 
+    // ── Resend the email-verification link (self-serve) ──────────────────
+    // An unverified email silently blocks account linking (Apple/Google → the
+    // post-login Action refuses unverified matches) — and users can't see or
+    // fix that without this. Only meaningful for database identities; social
+    // logins arrive pre-verified.
+    if (path.endsWith('/verification-email')) {
+      if (!auth.sub.startsWith('auth0|')) {
+        return json(400, { error: 'This sign-in method does not use Traxent email verification.' });
+      }
+      const token = await mgmtToken(domain, mId, mSecret);
+      const res = await fetch(`https://${domain}/api/v2/jobs/verification-email`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: auth.sub }),
+      });
+      if (!res.ok) {
+        const t = await res.text().catch(() => '');
+        console.error('verification email failed:', res.status, t);
+        return json(502, { error: 'Could not send the verification email — try again shortly.' });
+      }
+      return json(200, { success: true, message: 'Verification email sent — check your inbox.' });
+    }
+
     // ── Marketing preference (the customer's own opt-out) ─────────────────
     // Soft opt-in under PECR is only lawful if refusing is simple. This is that
     // route: the account page reads and writes it, and the change reaches

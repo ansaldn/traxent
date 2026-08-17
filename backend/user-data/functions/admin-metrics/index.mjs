@@ -52,6 +52,12 @@ const AUDIENCES = (process.env.AUTH0_AUDIENCE
 const ADMIN_SUBS = new Set(
   (process.env.ADMIN_SUBS || '').split(',').map(s => s.trim()).filter(Boolean),
 );
+// Test accounts excluded from every metric (comma-separated Auth0 `sub`s) —
+// David's own test users would badly distort small early numbers. Set via the
+// METRICS_EXCLUDE_SUBS repo variable → MetricsExcludeSubs template parameter.
+const EXCLUDED_SUBS = new Set(
+  (process.env.METRICS_EXCLUDE_SUBS || '').split(',').map(s => s.trim()).filter(Boolean),
+);
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const ssm = new SSMClient({});
@@ -101,10 +107,14 @@ async function getSignupCount() {
   if (!tokenRes.ok || !tok.access_token) {
     throw new Error('Auth0 management token failed: ' + (tok.error_description || tokenRes.status));
   }
-  const usersRes = await fetch(
-    `https://${domain}/api/v2/users?include_totals=true&per_page=0`,
-    { headers: { Authorization: `Bearer ${tok.access_token}` } },
-  );
+  // Exclude test accounts from the count via a negated user-id search (v3
+  // search syntax). With no exclusions this is the plain total, as before.
+  let url = `https://${domain}/api/v2/users?include_totals=true&per_page=0`;
+  if (EXCLUDED_SUBS.size) {
+    const q = `-user_id:(${[...EXCLUDED_SUBS].map(s => `"${s}"`).join(' OR ')})`;
+    url += `&search_engine=v3&q=${encodeURIComponent(q)}`;
+  }
+  const usersRes = await fetch(url, { headers: { Authorization: `Bearer ${tok.access_token}` } });
   const data = await usersRes.json().catch(() => ({}));
   if (!usersRes.ok) {
     // 403 here almost always means the m2m app is missing the `read:users` scope.
@@ -162,6 +172,9 @@ async function getStripeMetrics() {
       expand: ['data.items.data.price'],
     });
     for (const sub of res.data) {
+      // Skip test accounts' subscriptions (checkout stamps auth0_user_id
+      // into subscription metadata, so the mapping is direct).
+      if (EXCLUDED_SUBS.size && EXCLUDED_SUBS.has(sub.metadata?.auth0_user_id)) continue;
       activeSubscriptions += 1;
       // A subscription's plan = the plan of its first recognised priced item.
       let subPlan = 'other';
@@ -210,6 +223,7 @@ async function getUsageMetrics() {
       ExclusiveStartKey: lastKey,
     }));
     for (const it of (out.Items || [])) {
+      if (it.userId && EXCLUDED_SUBS.has(it.userId)) continue; // test accounts
       if (it.userId) distinctUsers.add(it.userId);
       const sk = it.sk || '';
       if (sk === 'PROGRESS') {
@@ -269,6 +283,7 @@ export const handler = async (event) => {
     signups: null,
     subscriptions: null,
     usage: null,
+    excludedTestAccounts: EXCLUDED_SUBS.size, // transparency: how many subs are filtered out
     generatedAt: new Date().toISOString(),
   };
 

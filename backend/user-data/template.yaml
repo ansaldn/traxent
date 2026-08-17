@@ -29,6 +29,14 @@ Parameters:
     Type: String
     Default: https://traxent.io
     Description: CORS allowed origin for the API.
+  MetricsExcludeSubs:
+    Type: String
+    Default: ''
+    Description: >
+      Comma-separated Auth0 user IDs (subs) excluded from ALL admin metrics —
+      test accounts that would distort signup/usage/revenue numbers. Passed
+      from the METRICS_EXCLUDE_SUBS GitHub repo variable by deploy-infra.
+    NoEcho: true
   AdminSubs:
     Type: String
     Default: ''
@@ -639,6 +647,7 @@ Resources:
           AUTH0_AUDIENCE: !Ref Auth0Audience
           ALLOWED_ORIGIN: !Ref AllowedOrigin
           ADMIN_SUBS: !Ref AdminSubs
+          METRICS_EXCLUDE_SUBS: !Ref MetricsExcludeSubs
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref UserDataTable

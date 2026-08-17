@@ -76,7 +76,7 @@ jobs:
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
-            --parameter-overrides "AdminSubs=${{ vars.ADMIN_SUBS }}" \
+            --parameter-overrides "AdminSubs=${{ vars.ADMIN_SUBS }}" "MetricsExcludeSubs=${{ vars.METRICS_EXCLUDE_SUBS }}" \
             --region eu-west-2
 
       - name: Show API URL

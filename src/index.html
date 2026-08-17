@@ -29,6 +29,15 @@
      into the current phase and reveals matching [data-launch] blocks. -->
 <script src="/flags.js?v=__BUILD_SHA__"></script>
 <script src="/launch-state.js?v=__BUILD_SHA__"></script>
+<style>
+/* Fail-safe: content for the NEXT phase can never appear early, even if
+   launch-state.js fails to load on a device (stale SW cache, blocked script).
+   launch-state.js reveals it by setting data-launch-show at the right time.
+   !important so inline display styles cannot defeat the gate. Prelaunch
+   elements are deliberately NOT hidden here — that is the fail-open state. */
+[data-launch="launched"]:not([data-launch-show]){display:none!important}
+</style>
+
 <!-- PWA manifest -->
 <link rel="manifest" href="/manifest.json">
  

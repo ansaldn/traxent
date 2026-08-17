@@ -182,7 +182,7 @@
   // phase. Injected rather than living in each page's stylesheet so a page can
   // never forget it.
   var style = document.createElement('style');
-  style.textContent = '[data-launch]:not([data-launch-show]){display:none}';
+  style.textContent = '[data-launch]:not([data-launch-show]){display:none!important}';
   (document.head || document.documentElement).appendChild(style);
 
   global.TraxentLaunch = TraxentLaunch;

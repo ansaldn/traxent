@@ -1,0 +1,13 @@
+{
+  "name": "ctrader-sync",
+  "version": "1.0.0",
+  "main": "index.mjs",
+  "type": "module",
+  "license": "ISC",
+  "description": "Traxent cTrader deal-sync worker: pulls closed deals (read-only) into RTRADE# rows for readiness scoring.",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.700.0",
+    "@aws-sdk/lib-dynamodb": "^3.700.0",
+    "aws-jwt-verify": "^4.0.1"
+  }
+}

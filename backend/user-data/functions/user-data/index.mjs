@@ -59,14 +59,21 @@ async function getAllState(userId) {
     ExpressionAttributeValues: { ':u': userId },
   }));
   const items = out.Items || [];
-  const state = { progress: {}, firms: [], trades: [], profile: null };
+  // `realTrades` is ADDITIVE (2026-08-11, cTrader sync): synced closed deals
+  // from connected accounts, kept separate from the sim journal's `trades`.
+  // Additive key only — existing keys unchanged (iOS decoders ignore unknown
+  // keys; change flagged to the iOS team regardless). CONNECTION#/DEVICE# rows
+  // deliberately never surface here.
+  const state = { progress: {}, firms: [], trades: [], realTrades: [], profile: null };
   for (const it of items) {
     if (it.sk === 'PROGRESS') state.progress = it.data || {};
     else if (it.sk === 'FIRMS') state.firms = it.data || [];
     else if (it.sk === 'PROFILE') state.profile = { plan: it.plan, email: it.email, updatedAt: it.updatedAt };
     else if (it.sk && it.sk.startsWith('TRADE#')) state.trades.push({ id: it.sk.slice(6), ...it.data, createdAt: it.createdAt });
+    else if (it.sk && it.sk.startsWith('RTRADE#')) state.realTrades.push({ id: it.sk.slice(7), source: it.source, ...it.data, createdAt: it.createdAt });
   }
   state.trades.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+  state.realTrades.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
   return state;
 }
 

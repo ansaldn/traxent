@@ -573,6 +573,44 @@ Resources:
             Path: /user/ctrader
             Method: DELETE
 
+# cTrader deal-sync worker. Scheduled sweep of every connected user, plus an
+  # on-demand POST /user/ctrader/sync so trades appear right after connecting.
+  # Read-only against cTrader (accounts scope). Untestable until app approval —
+  # per-user failures are logged and isolated, never fatal to the run.
+  CtraderSyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: traxent-ctrader-sync
+      Handler: index.handler
+      CodeUri: functions/ctrader-sync/
+      Timeout: 300
+      MemorySize: 512
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref UserDataTable
+          AUTH0_ISSUER: !Ref Auth0Issuer
+          AUTH0_AUDIENCE: !Ref Auth0Audience
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UserDataTable
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/traxent/ctrader/*"
+      Events:
+        SyncNow:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref UserDataApi
+            Path: /user/ctrader/sync
+            Method: POST
+        Sweep:
+          Type: Schedule
+          Properties:
+            Schedule: rate(6 hours)
+            Description: Sync closed cTrader deals for all connected Traxent users.
+
   # Admin-only aggregate metrics dashboard (GET /admin/metrics). Returns COUNTS
   # ONLY — total signups (Auth0 Mgmt API), active subs + MRR + plan mix (Stripe),
   # and usage totals (DynamoDB) — never any per-user record, so it stays low

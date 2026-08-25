@@ -99,6 +99,36 @@ export const handler = async (event) => {
     let stripeEvent;
     try { stripeEvent = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret); }
     catch (err) { return { statusCode: 400, body: `Webhook Error: ${err.message}` }; }
+
+    // ── Idempotency guard ───────────────────────────────────────────────────
+    // Stripe retries deliveries and can send the same event more than once.
+    // Conditional-put the event id; if it already exists we've processed this
+    // exact event before → acknowledge 200 and do nothing (role changes, emails
+    // and marketing syncs must not run twice). Fail-open: a dedup-table problem
+    // must never block real event processing. TTL clears rows after 3 days
+    // (Stripe's maximum retry window).
+    const DEDUP_TABLE = process.env.WEBHOOK_DEDUP_TABLE;
+    if (DEDUP_TABLE) {
+      try {
+        const { PutCommand } = await import('@aws-sdk/lib-dynamodb');
+        await ddb.send(new PutCommand({
+          TableName: DEDUP_TABLE,
+          Item: {
+            eventId: stripeEvent.id,
+            type: stripeEvent.type,
+            receivedAt: new Date().toISOString(),
+            expiresAt: Math.floor(Date.now() / 1000) + 3 * 24 * 3600,
+          },
+          ConditionExpression: 'attribute_not_exists(eventId)',
+        }));
+      } catch (e) {
+        if (e.name === 'ConditionalCheckFailedException') {
+          console.log('duplicate webhook delivery ignored:', stripeEvent.id, stripeEvent.type);
+          return { statusCode: 200, body: JSON.stringify({ received: true, duplicate: true }) };
+        }
+        console.error('dedup guard (non-fatal, continuing):', e.message);
+      }
+    }
     const token = await getAuth0Token(auth0Domain, m2mClientId, m2mClientSecret);
     const roleIds = await getRoleIds(token, auth0Domain);
     switch (stripeEvent.type) {

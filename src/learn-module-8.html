@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script defer data-domain="traxent.io" src="https://plausible.io/js/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.auth0.com https://plausible.io https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.tradingview.com https://s.tradingview.com https://auth.traxent.io https://*.auth0.com; connect-src 'self' https://auth.traxent.io https://*.auth0.com https://*.execute-api.eu-west-2.amazonaws.com https://fonts.googleapis.com https://fonts.gstatic.com https://plausible.io https://connect.facebook.net https://www.facebook.com; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Traxent">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed:', err));
+    });
+  }
+</script>
+<title>Module 10: Trading Strategies — Traxent Learn</title>
+<style id="auth-gate-style">body{visibility:hidden}</style>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
+<script src="/auth.js?v=__BUILD_SHA__"></script>
+<script src="/userdata.js?v=__BUILD_SHA__"></script>
+<script>requireMinPlan('challenger');</script>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f2; --ink: #0e0e0c; --ink2: #3a3a36; --ink3: #7a7a72;
+  --accent: #0a6e4f; --accent-light: rgba(10,110,79,.08); --accent-mid: #1a9e72;
+  --border: rgba(14,14,12,0.1); --border2: rgba(14,14,12,0.06);
+  --surface: #ffffff; --surface2: #f0efe9;
+  --good: #0a6e4f; --warn: #b06000; --bad: #9e1a1a;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', sans-serif; --mono: 'Geist Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; }
+.nav-logo { font-family: var(--mono); font-size: 15px; color: var(--ink); text-decoration: none; }
+.nav-logo em { font-style: normal; color: var(--accent); }
+.nav-back { font-size: 13px; color: var(--ink3); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
+.nav-back:hover { color: var(--ink); }
+.nav-back::before { content: '←'; }
+.learn-wrap { max-width: 1160px; margin: 0 auto; padding: 40px 32px; display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: start; }
+.sidebar { position: sticky; top: 76px; }
+.module-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.module-title { font-family: var(--serif); font-size: 18px; font-weight: 400; color: var(--ink); margin-bottom: 4px; }
+.module-meta { font-size: 12px; color: var(--ink3); margin-bottom: 20px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink3); margin-bottom: 6px; }
+.progress-bar { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; margin-bottom: 20px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.5s ease; }
+.lesson-list { display: flex; flex-direction: column; gap: 2px; }
+.lesson-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
+.lesson-item:hover { background: var(--surface); border-color: var(--border); }
+.lesson-item.active { background: var(--surface); border-color: var(--accent); }
+.lesson-item.completed .lesson-dot { background: var(--accent); color: white; border-color: var(--accent); }
+.lesson-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; font-family: var(--mono); color: var(--ink3); flex-shrink: 0; transition: all 0.2s; }
+.lesson-item.active .lesson-dot { background: var(--accent); color: white; border-color: var(--accent); }
+.lesson-name { font-size: 13px; color: var(--ink); }
+.lesson-item.active .lesson-name { font-weight: 500; color: var(--accent); }
+.lesson-dur { font-size: 10px; color: var(--ink3); font-family: var(--mono); margin-top: 1px; }
+.quiz-sep { height: 1px; background: var(--border); margin: 8px 0; }
+.sidebar-note { margin-top: 20px; padding: 14px 16px; background: var(--accent-light); border: 1px solid rgba(10,110,79,.15); border-radius: 8px; font-size: 12px; color: var(--ink2); line-height: 1.5; }
+.lesson-main { min-height: 60vh; }
+.lesson-hd { margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.lesson-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.lesson-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+.lesson-title { font-family: var(--serif); font-size: 38px; font-weight: 400; line-height: 1.1; color: var(--ink); margin-bottom: 14px; }
+.lesson-intro { font-size: 16px; color: var(--ink2); line-height: 1.7; font-weight: 300; max-width: 640px; }
+.lesson-body { max-width: 720px; }
+.lesson-body h2 { font-family: var(--serif); font-size: 24px; font-weight: 400; color: var(--ink); margin: 36px 0 14px; }
+.lesson-body p { font-size: 15px; color: var(--ink2); line-height: 1.8; margin-bottom: 16px; font-weight: 300; }
+.lesson-body strong { color: var(--ink); font-weight: 500; }
+.callout { border-radius: 8px; padding: 16px 20px; margin: 24px 0; }
+.callout-key { background: var(--accent-light); border: 1px solid rgba(10,110,79,.15); border-left: 3px solid var(--accent); }
+.callout-key .cl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.callout-example { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--ink3); }
+.callout-example .cl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
+.callout-warn { background: rgba(176,96,0,.06); border: 1px solid rgba(176,96,0,.15); border-left: 3px solid var(--warn); }
+.callout-warn .cl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warn); margin-bottom: 8px; }
+.callout p { margin-bottom: 0; font-size: 14px; }
+.vis-exp { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 24px 0; }
+.vis-exp-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); margin-bottom: 14px; }
+.vis-row { display: flex; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 10px; }
+.vis-row:last-child { margin-bottom: 0; }
+.vis-cell { flex: 1; padding: 10px 14px; border-right: 1px solid var(--border); }
+.vis-cell:last-child { border-right: none; }
+.vis-cell-label { font-size: 10px; font-family: var(--mono); color: var(--ink3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+.vis-cell-val { font-size: 13px; color: var(--ink); font-weight: 500; }
+.vis-cell-sub { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+.vis-good { background: rgba(10,110,79,.06); }
+.vis-bad { background: rgba(158,26,26,.06); }
+.vis-cell-val.green { color: var(--good); }
+.vis-cell-val.red { color: var(--bad); }
+.exercise { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin: 28px 0; }
+.exercise-hd { padding: 14px 20px; border-bottom: 1px solid var(--border2); background: var(--surface2); display: flex; align-items: center; gap: 10px; }
+.ex-badge { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); border: 1px solid rgba(10,110,79,.2); padding: 3px 8px; border-radius: 3px; }
+.ex-title { font-size: 14px; font-weight: 500; color: var(--ink); }
+.exercise-body { padding: 20px; }
+.ex-question { font-size: 15px; color: var(--ink2); line-height: 1.6; margin-bottom: 18px; font-weight: 300; }
+.ex-question strong { color: var(--ink); font-weight: 500; }
+.ex-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.ex-opt { padding: 12px 18px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); font-size: 14px; color: var(--ink2); cursor: pointer; transition: all 0.15s; font-family: var(--sans); text-align: left; line-height: 1.5; }
+.ex-opt:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+.ex-opt.correct { border-color: var(--good); background: rgba(10,110,79,.08); color: var(--good); font-weight: 500; }
+.ex-opt.incorrect { border-color: var(--bad); background: rgba(158,26,26,.06); color: var(--bad); }
+.ex-feedback { padding: 14px 16px; border-radius: 8px; font-size: 14px; line-height: 1.6; display: none; }
+.ex-feedback.show { display: block; }
+.ex-feedback.correct { background: rgba(10,110,79,.08); border: 1px solid rgba(10,110,79,.2); color: var(--good); }
+.ex-feedback.incorrect { background: rgba(158,26,26,.06); border: 1px solid rgba(158,26,26,.15); color: var(--bad); }
+.ex-next-btn { margin-top: 14px; background: var(--accent); color: white; border: none; border-radius: 7px; padding: 10px 20px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--sans); transition: background 0.15s; display: none; }
+.ex-next-btn.show { display: inline-block; }
+.ex-next-btn:hover { background: #085e43; }
+.steps-list { counter-reset: step; margin: 20px 0; }
+.step-item { display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid var(--border2); }
+.step-item:last-child { border-bottom: 1px solid var(--border2); }
+.step-n { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 12px; }
+.step-t { font-size: 14.5px; color: var(--ink2); line-height: 1.65; font-weight: 300; }
+.step-t strong { color: var(--ink); font-weight: 500; }
+.lesson-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border); }
+.btn-nav { display: flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; }
+.btn-prev { background: var(--surface); border: 1px solid var(--border); color: var(--ink2); }
+.btn-prev:hover { border-color: var(--ink); }
+.btn-prev::before { content: '←'; }
+.btn-next { background: var(--accent); color: white; }
+.btn-next:hover { background: #085e43; }
+.btn-next::after { content: '→'; }
+.nav-info { font-size: 12px; color: var(--ink3); font-family: var(--mono); }
+.quiz-wrap { max-width: 700px; }
+.quiz-hd { margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.quiz-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.quiz-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+.quiz-title { font-family: var(--serif); font-size: 38px; font-weight: 400; color: var(--ink); margin-bottom: 10px; }
+.quiz-sub { font-size: 15px; color: var(--ink2); line-height: 1.65; font-weight: 300; }
+.q-dots { display: flex; gap: 8px; margin-bottom: 32px; }
+.q-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); transition: all 0.2s; }
+.q-dot.active { background: var(--accent); border-color: var(--accent); }
+.q-dot.done { background: var(--accent); border-color: var(--accent); opacity: 0.4; }
+.q-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 26px; margin-bottom: 20px; }
+.q-num { font-family: var(--mono); font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+.q-text { font-size: 16px; color: var(--ink); line-height: 1.55; margin-bottom: 22px; }
+.q-options { display: flex; flex-direction: column; gap: 10px; }
+.q-opt { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+.q-opt:hover { border-color: var(--accent); background: var(--accent-light); }
+.q-opt.selected { border-color: var(--accent); background: var(--accent-light); }
+.q-opt.correct { border-color: var(--good); background: rgba(10,110,79,.08); }
+.q-opt.incorrect { border-color: var(--bad); background: rgba(158,26,26,.06); }
+.q-letter { width: 22px; height: 22px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; color: var(--ink3); flex-shrink: 0; transition: all 0.15s; }
+.q-opt.selected .q-letter { background: var(--accent); color: white; border-color: var(--accent); }
+.q-opt.correct .q-letter { background: var(--good); color: white; border-color: var(--good); }
+.q-opt.incorrect .q-letter { background: var(--bad); color: white; border-color: var(--bad); }
+.q-opt-text { font-size: 14px; color: var(--ink2); line-height: 1.5; padding-top: 2px; }
+.q-feedback { padding: 12px 16px; border-radius: 8px; margin-top: 14px; font-size: 14px; line-height: 1.55; display: none; }
+.q-feedback.show { display: block; }
+.q-feedback.correct { background: rgba(10,110,79,.08); border: 1px solid rgba(10,110,79,.2); color: var(--good); }
+.q-feedback.incorrect { background: rgba(158,26,26,.06); border: 1px solid rgba(158,26,26,.15); color: var(--bad); }
+.q-btn-row { display: flex; justify-content: flex-end; margin-top: 20px; gap: 10px; }
+.q-btn { padding: 11px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; }
+.q-submit { background: var(--accent); color: white; }
+.q-submit:hover { background: #085e43; }
+.q-submit:disabled { opacity: 0.35; cursor: not-allowed; }
+.q-next-btn { background: var(--ink); color: white; display: none; }
+.q-next-btn:hover { background: var(--accent); }
+.quiz-result { text-align: center; padding: 48px 0; display: none; }
+.result-pct { font-family: var(--serif); font-size: 80px; font-weight: 400; font-style: italic; line-height: 1; margin-bottom: 10px; }
+.result-pct.pass { color: var(--good); }
+.result-pct.fail { color: var(--bad); }
+.result-lbl { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 20px; }
+.result-msg { font-size: 15px; color: var(--ink2); line-height: 1.65; max-width: 480px; margin: 0 auto 28px; font-weight: 300; }
+.result-actions { display: flex; gap: 12px; justify-content: center; }
+.btn-result { padding: 11px 22px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: all 0.15s; text-decoration: none; display: inline-block; }
+.btn-result-primary { background: var(--accent); color: white; }
+.btn-result-primary:hover { background: #085e43; }
+.btn-result-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--ink2); }
+.completion-banner { background: var(--ink); border-radius: 12px; padding: 24px 28px; margin-top: 32px; display: none; }
+.completion-banner.show { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.cb-title { font-family: var(--serif); font-size: 20px; color: white; }
+.cb-sub { font-size: 13px; color: rgba(255,255,255,.45); margin-top: 4px; }
+.cb-btn { background: var(--accent-mid); color: white; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; white-space: nowrap; }
+/* Preference picker + variant panels (JS-rendered — extractor-invisible) */
+.pref-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin: 0 0 26px; }
+.pref-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.pref-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.pref-row:last-child { margin-bottom: 0; }
+.pref-lbl { font-size: 12px; color: var(--ink3); width: 60px; }
+.pref-btn { border: 1px solid var(--border); background: var(--bg); color: var(--ink2); border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-family: var(--sans); cursor: pointer; transition: all 0.15s; }
+.pref-btn:hover { border-color: var(--accent); color: var(--accent); }
+.pref-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500; }
+.variant-panel { background: var(--accent-light); border: 1px solid rgba(10,110,79,.18); border-radius: 10px; padding: 16px 20px; margin: 0 0 24px; font-size: 14px; color: var(--ink2); line-height: 1.7; }
+.variant-panel .vp-t { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.variant-panel ul { margin: 8px 0 0 18px; }
+.variant-panel li { margin-bottom: 6px; }
+@media (max-width: 900px) {
+  .learn-wrap { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .learn-wrap { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">trax<em>ent</em></a>
+  <a href="/learn" class="nav-back">All modules</a>
+</nav>
+
+<div class="learn-wrap">
+  <aside class="sidebar">
+    <div class="module-label">Module 10 · Challenger</div>
+    <div class="module-title">Trading Strategies</div>
+    <div class="module-meta">6 lessons · 1 quiz · ~50 min</div>
+    <div class="progress-label"><span>Progress</span><span id="prog-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="lesson-list">
+      <div class="lesson-item active" id="nav-0" onclick="showLesson(0)">
+        <div class="lesson-dot" id="dot-0">1</div>
+        <div><div class="lesson-name">What a strategy actually is</div><div class="lesson-dur">7 min · Interactive</div></div>
+      </div>
+      <div class="lesson-item" id="nav-1" onclick="showLesson(1)">
+        <div class="lesson-dot" id="dot-1">2</div>
+        <div><div class="lesson-name">The strategy families</div><div class="lesson-dur">8 min · Taxonomy</div></div>
+      </div>
+      <div class="lesson-item" id="nav-2" onclick="showLesson(2)">
+        <div class="lesson-dot" id="dot-2">3</div>
+        <div><div class="lesson-name">The stack: firm, platform, you</div><div class="lesson-dur">6 min · Factoid</div></div>
+      </div>
+      <div class="lesson-item" id="nav-3" onclick="showLesson(3)">
+        <div class="lesson-dot" id="dot-3">4</div>
+        <div><div class="lesson-name">Manual vs automated — and AI</div><div class="lesson-dur">8 min · Reality check</div></div>
+      </div>
+      <div class="lesson-item" id="nav-4" onclick="showLesson(4)">
+        <div class="lesson-dot" id="dot-4">5</div>
+        <div><div class="lesson-name">Build it: idea → written rules</div><div class="lesson-dur">10 min · Guided build</div></div>
+      </div>
+      <div class="lesson-item" id="nav-5" onclick="showLesson(5)">
+        <div class="lesson-dot" id="dot-5">6</div>
+        <div><div class="lesson-name">Test it: backtest → paper</div><div class="lesson-dur">10 min · Walkthrough</div></div>
+      </div>
+      <div class="quiz-sep"></div>
+      <div class="lesson-item" id="nav-6" onclick="showLesson(6)">
+        <div class="lesson-dot" id="dot-6">✦</div>
+        <div><div class="lesson-name">Module 10 quiz</div><div class="lesson-dur">5 questions · Pass 75%</div></div>
+      </div>
+    </div>
+    <div class="sidebar-note">A strategy is what turns everything you've learned into repeatable decisions. Build one on paper here — then Going Live shows you how to connect it to Traxent so your results score themselves.</div>
+  </aside>
+
+  <main>
+
+    <!-- ── LESSON 1: What a strategy actually is ── -->
+    <div id="lesson-0" class="lesson-main">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 10 · Lesson 1</div>
+        <h1 class="lesson-title">What a strategy actually is</h1>
+        <p class="lesson-intro">Most people think a strategy is a prediction about where price will go. It isn't. A strategy is a set of written rules that tells you what to do — before, during and after every trade — so that no single decision depends on how you feel in the moment.</p>
+      </div>
+      <div class="lesson-body">
+        <p>You already have most of the ingredients. The patterns from Chart Patterns are <strong>setups</strong>. The stop-loss and sizing maths from Risk Management is your <strong>risk rule</strong>. The journal loop from Review &amp; Building Your Edge is your <strong>feedback system</strong>. A strategy is simply those pieces written down as one connected, testable procedure.</p>
+        <h2>The five parts every strategy has</h2>
+        <p>Strip away the jargon and every real trading strategy — from a beginner's first ruleset to a hedge fund's algorithm — answers the same five questions:</p>
+        <div class="vis-exp">
+          <div class="vis-exp-title">Anatomy of a strategy</div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">1 · Market</div><div class="vis-cell-val">What do I trade?</div><div class="vis-cell-sub">One instrument, one timeframe, defined sessions</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">2 · Setup</div><div class="vis-cell-val">What must be true?</div><div class="vis-cell-sub">The conditions that qualify a trade at all</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">3 · Entry</div><div class="vis-cell-val">What triggers it?</div><div class="vis-cell-sub">The exact, observable signal to act</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">4 · Exit</div><div class="vis-cell-val">Where am I wrong / right?</div><div class="vis-cell-sub">Stop-loss AND profit target, decided in advance</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell vis-good"><div class="vis-cell-label">5 · Risk</div><div class="vis-cell-val green">How much per trade?</div><div class="vis-cell-sub">Fixed risk, position sized from the stop distance</div></div>
+          </div>
+        </div>
+        <p>The test of a real strategy is brutal and simple: <strong>could a stranger trade it identically from your written rules alone?</strong> If any part needs your gut feel to interpret — "enter when it looks strong" — it isn't a rule yet, and it can't be tested, improved or trusted under pressure.</p>
+        <div class="callout callout-key">
+          <div class="cl">Key idea</div>
+          <p>A strategy doesn't predict the market. It standardises <strong>you</strong>. The market stays uncertain either way — the strategy removes your in-the-moment judgement as a variable, which is exactly what a prop firm evaluation is testing.</p>
+        </div>
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">Exercise</span><span class="ex-title">Rule or vibe?</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">Which of these is a genuine, testable strategy rule?</p>
+            <div class="ex-opts" id="ex1-opts">
+              <button class="ex-opt" onclick="checkEx('ex1','vibe1',this,'rule')">"Buy when the market looks like it's turning bullish"</button>
+              <button class="ex-opt" onclick="checkEx('ex1','rule',this,'rule')">"Enter long when price closes above the 20-period high; stop below the last swing low; risk 1%"</button>
+              <button class="ex-opt" onclick="checkEx('ex1','vibe2',this,'rule')">"Trade aggressively when confident, carefully when not"</button>
+            </div>
+            <div class="ex-feedback" id="ex1-fb"></div>
+            <button class="ex-next-btn" id="ex1-next" onclick="completeLesson(0)">Next lesson</button>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <span></span>
+        <span class="nav-info">Lesson 1 of 6</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(0)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- ── LESSON 2: The strategy families ── -->
+    <div id="lesson-1" class="lesson-main" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 10 · Lesson 2</div>
+        <h1 class="lesson-title">The strategy families</h1>
+        <p class="lesson-intro">Almost every strategy ever traded belongs to one of a few families, each built on a different belief about how price behaves. Knowing the families stops you reinventing wheels — and tells you which wheels suit a prop firm's rules.</p>
+      </div>
+      <div class="lesson-body">
+        <h2>The three core families</h2>
+        <div class="vis-exp">
+          <div class="vis-exp-title">Strategy families and the belief behind each</div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Trend following</div><div class="vis-cell-val">"What's moving keeps moving"</div><div class="vis-cell-sub">Buy strength, sell weakness · fewer, bigger wins · long losing streaks between them</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Mean reversion</div><div class="vis-cell-val">"What's stretched snaps back"</div><div class="vis-cell-sub">Fade extremes back to an average · many small wins · occasional sharp losses</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Breakout / momentum</div><div class="vis-cell-val">"Compression precedes expansion"</div><div class="vis-cell-sub">Enter as a range breaks · frequent false starts · pays on expansion days</div></div>
+          </div>
+        </div>
+        <p>Cutting across the families is <strong>holding time</strong>: scalping (seconds to minutes), intraday (closed by the session's end) and swing (days to weeks). The family says <em>why</em> you enter; the holding time says <em>how long</em> you're exposed.</p>
+        <h2>Why this matters for funded accounts</h2>
+        <p>Firm rules quietly favour some profiles. A <strong>trailing drawdown</strong> punishes trend strategies that give back open profit while riding a move. A <strong>consistency rule</strong> punishes styles that make a month in one day. A <strong>daily loss limit</strong> punishes mean-reversion's occasional sharp loss if your sizing is loose. None of this makes a family wrong — it means the pairing of strategy and firm is a decision, and it's exactly the pairing your readiness tracker measures from your real numbers.</p>
+        <div class="callout callout-example">
+          <div class="cl">Worked example</div>
+          <p>A swing trend-follower averaging one big winner a week would sail through FTMO's static drawdown but repeatedly trip Topstep's ~50% consistency check. The same trader flattening trades daily with fixed 1% risk fits both. Same skill — different strategy-to-rules fit.</p>
+        </div>
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">Exercise</span><span class="ex-title">Name that family</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">A strategy sells when price stretches more than 2% above its 20-day average, targeting a return to that average. Which family?</p>
+            <div class="ex-opts" id="ex2-opts">
+              <button class="ex-opt" onclick="checkEx('ex2','trend',this,'meanrev')">Trend following</button>
+              <button class="ex-opt" onclick="checkEx('ex2','meanrev',this,'meanrev')">Mean reversion</button>
+              <button class="ex-opt" onclick="checkEx('ex2','breakout',this,'meanrev')">Breakout</button>
+            </div>
+            <div class="ex-feedback" id="ex2-fb"></div>
+            <button class="ex-next-btn" id="ex2-next" onclick="completeLesson(1)">Next lesson</button>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-nav btn-prev" onclick="showLesson(0)">Previous</button>
+        <span class="nav-info">Lesson 2 of 6</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(1)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- ── LESSON 3: The stack ── -->
+    <div id="lesson-2" class="lesson-main" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 10 · Lesson 3</div>
+        <h1 class="lesson-title">The stack: firm, platform, data, you</h1>
+        <p class="lesson-intro">Here's a fact that confuses almost every new funded trader: the prop firm you pay does not build the software you trade on. Understanding who provides what — the stack — explains a dozen things that otherwise seem mysterious.</p>
+      </div>
+      <div class="lesson-body">
+        <p>A funded account is really <strong>four layers working together</strong>, usually owned by four different companies:</p>
+        <div class="vis-exp">
+          <div class="vis-exp-title">The funded trading stack</div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Layer 1 · The firm</div><div class="vis-cell-val">Capital + rules</div><div class="vis-cell-sub">FTMO, Apex, Topstep… they fund you, set the limits, and pay out. That's ALL they provide.</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Layer 2 · The platform</div><div class="vis-cell-val">Execution software</div><div class="vis-cell-sub">Tradovate, NinjaTrader, cTrader, MT5, DXtrade — where your orders actually live</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Layer 3 · Data &amp; routing</div><div class="vis-cell-val">Prices in, orders out</div><div class="vis-cell-sub">Exchange data feeds (e.g. CME) and the brokers/routers that carry orders</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell vis-good"><div class="vis-cell-label">Layer 4 · You</div><div class="vis-cell-val green">The strategy</div><div class="vis-cell-sub">Your rules, executed on layer 2, judged against layer 1's limits</div></div>
+          </div>
+        </div>
+        <p><strong>Even when it looks built-in, it usually isn't.</strong> Many firms embed a platform inside their own website with their logo on it — a white-label. Under the paint it's still cTrader, DXtrade or Match-Trader, run by the platform company. That's why two "different" firms can feel identical to trade on, and why your platform skills transfer between firms.</p>
+        <h2>Why the layering matters to you</h2>
+        <p>Three practical consequences. First, <strong>your strategy lives at the platform layer</strong> — learn Tradovate or TradingView once and you can carry the same strategy across many firms. Second, <strong>the firm only sees results</strong> — it judges your account against its rules; it doesn't care which buttons you pressed. Third, this is <strong>why Traxent connects to platforms, not firms</strong>: your fills live on the platform layer, so one read-only platform connection covers whichever firm's challenge you're running on it.</p>
+        <div class="callout callout-key">
+          <div class="cl">The factoid, in one line</div>
+          <p>Prop firms provide the <strong>capital and the rulebook</strong>. The <strong>platform</strong> provides the trading — even when it's wearing the firm's logo.</p>
+        </div>
+        <div class="exercise">
+          <div class="exercise-hd"><span class="ex-badge">Exercise</span><span class="ex-title">Who provides what?</span></div>
+          <div class="exercise-body">
+            <p class="ex-question">You're trading an Apex evaluation through a Tradovate screen. Your order fills badly during a fast market. Which layer executed that fill?</p>
+            <div class="ex-opts" id="ex3-opts">
+              <button class="ex-opt" onclick="checkEx('ex3','firm',this,'platform')">Apex — it's their evaluation</button>
+              <button class="ex-opt" onclick="checkEx('ex3','platform',this,'platform')">The platform/routing layer — Apex only supplies capital and rules</button>
+              <button class="ex-opt" onclick="checkEx('ex3','traxent',this,'platform')">Traxent — it tracks the account</button>
+            </div>
+            <div class="ex-feedback" id="ex3-fb"></div>
+            <button class="ex-next-btn" id="ex3-next" onclick="completeLesson(2)">Next lesson</button>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-nav btn-prev" onclick="showLesson(1)">Previous</button>
+        <span class="nav-info">Lesson 3 of 6</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(2)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- ── LESSON 4: Manual vs automated + AI ── -->
+    <div id="lesson-3" class="lesson-main" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 10 · Lesson 4</div>
+        <h1 class="lesson-title">Manual vs automated — and the AI reality check</h1>
+        <p class="lesson-intro">Every strategy sits somewhere on a spectrum: from a human reading rules off a checklist to code executing with no human at all. In the AI era you need to know what automation genuinely does well, what it doesn't — and what your firm allows.</p>
+      </div>
+      <div class="lesson-body">
+        <h2>The spectrum</h2>
+        <div class="vis-exp">
+          <div class="vis-exp-title">From discretionary to fully automated</div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Discretionary</div><div class="vis-cell-val">Human decides</div><div class="vis-cell-sub">Rules guide judgement; you click the buttons</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Systematic manual</div><div class="vis-cell-val">Rules decide, human executes</div><div class="vis-cell-sub">Zero interpretation; you're the executor</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">Semi-automated</div><div class="vis-cell-val">Code signals, human confirms</div><div class="vis-cell-sub">Alerts fire; you approve each entry</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">Fully automated</div><div class="vis-cell-val">Code decides and executes</div><div class="vis-cell-sub">A strategy script or bot trades unattended</div></div>
+          </div>
+        </div>
+        <p><strong>What automation is genuinely good at:</strong> perfect discipline (code never revenge-trades), perfect consistency (the same rule executed the same way, every time), and testability (you can run a coded strategy against years of history in seconds). Notice what those are — the exact things Modules 8 and 9 taught you humans struggle with.</p>
+        <p><strong>What it cannot do:</strong> know the future. A backtest shows how rules <em>would have</em> performed on data the market has already revealed — and an "AI strategy" is still a set of learned rules facing an uncertain tomorrow. The uncomfortable truth of the AI era: tools that make strategy-building easy make <strong>overfitting</strong> easy too — tuning rules so tightly to the past that they describe history instead of an edge. You'll learn to spot that in Lesson 6.</p>
+        <div class="callout callout-warn">
+          <div class="cl">Check your firm's rules first</div>
+          <p>Automation policy is a <strong>firm rule like any other</strong> — and it varies widely. Some firms welcome EAs and bots, others ban fully-automated or copy trading outright, and many allow automation in evaluation but restrict it when funded. Before you ever deploy a strategy on a challenge, read your firm's automation policy the way you read its drawdown rule. Breaching it can void a passed evaluation.</p>
+        </div>
+        <div class="callout callout-key">
+          <div class="cl">Where we're heading</div>
+          <p>For the build in the next lesson we use <strong>semi- and fully-automated on paper only</strong> — the point is to <em>watch your rules trade without you</em>, which is the fastest way to see whether the rules alone hold up. What you deploy later, and where, is your call and your firm's rulebook.</p>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-nav btn-prev" onclick="showLesson(2)">Previous</button>
+        <span class="nav-info">Lesson 4 of 6</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(3)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- ── LESSON 5: Build it ── -->
+    <div id="lesson-4" class="lesson-main" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 10 · Lesson 5</div>
+        <h1 class="lesson-title">Build it: from idea to written rules</h1>
+        <p class="lesson-intro">Time to build one. We'll take a deliberately simple, classic idea — a moving-average pullback in the direction of the trend — write it as five testable rules, and set it up on a free TradingView paper account so you can watch it trade in the next lesson.</p>
+      </div>
+      <div class="lesson-body">
+        <div id="pref-mount"></div>
+        <h2>Step 1 — write the rules</h2>
+        <p>Our example strategy, written the way every strategy should be. Nothing here is a recommendation to trade real money — it's a teaching chassis, chosen because every part is simple enough to verify by eye:</p>
+        <div class="callout callout-example">
+          <div class="cl">The example ruleset — "MA pullback"</div>
+          <p><strong>Market:</strong> one liquid instrument (our walkthrough uses an index future), 15-minute chart, main session only. <strong>Setup:</strong> price above the 50-period moving average — we only look for longs in an uptrend. <strong>Entry:</strong> price pulls back to touch the 20-period MA, then closes back above it. <strong>Exit:</strong> stop-loss below the pullback low; target at 2× the stop distance (1:2 R:R). <strong>Risk:</strong> 1% of the account per trade, position sized from the stop distance.</p>
+        </div>
+        <p>Read it against Lesson 1's five parts — market, setup, entry, exit, risk — and notice a stranger could trade it identically. That's the bar.</p>
+        <h2>Step 2 — set up the platform</h2>
+        <p>TradingView is our walkthrough platform because it's free, needs no broker, includes paper trading, and has a built-in strategy tester — a beginner can go from rules to a running paper strategy in one sitting:</p>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><div class="step-t"><strong>Create a free TradingView account</strong> (tradingview.com) and open a chart for your instrument on the 15-minute timeframe.</div></div>
+          <div class="step-item"><div class="step-n">2</div><div class="step-t"><strong>Add the two moving averages</strong> — Indicators → search "Moving Average" → add one set to length 50 and one to length 20. You can now <em>see</em> your setup and entry conditions.</div></div>
+          <div class="step-item"><div class="step-n">3</div><div class="step-t"><strong>Open the Pine Editor</strong> (bottom panel) → New → Strategy. TradingView gives you a working strategy template immediately.</div></div>
+          <div class="step-item"><div class="step-n">4</div><div class="step-t"><strong>Describe the rules in Pine Script.</strong> The built-in template plus the editor's autocomplete gets you remarkably far: the conditions are <em>close &gt; ta.sma(close, 50)</em> for the setup and a cross back above <em>ta.sma(close, 20)</em> for the entry, with <em>strategy.exit</em> setting the stop and the 1:2 target. Save, then <strong>Add to chart</strong>.</div></div>
+          <div class="step-item"><div class="step-n">5</div><div class="step-t"><strong>Look at the chart.</strong> Every historical entry and exit your rules would have taken is now painted on the price history — your first sight of the strategy trading without you.</div></div>
+        </div>
+        <div class="callout callout-key">
+          <div class="cl">If you'd rather not touch code</div>
+          <p>The strategy works identically as a <strong>manual checklist</strong>: keep the two MAs on the chart, and when the four conditions line up, place the trade yourself in TradingView's paper-trading panel (right-click the chart → Trade). Same rules, human executor — that's the "systematic manual" point on last lesson's spectrum, and it's how many funded traders operate permanently.</p>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-nav btn-prev" onclick="showLesson(3)">Previous</button>
+        <span class="nav-info">Lesson 5 of 6</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(4)">Next lesson</button>
+      </div>
+    </div>
+
+    <!-- ── LESSON 6: Test it ── -->
+    <div id="lesson-5" class="lesson-main" style="display:none">
+      <div class="lesson-hd">
+        <div class="lesson-eyebrow">Module 10 · Lesson 6</div>
+        <h1 class="lesson-title">Test it: backtest, paper-trade, judge</h1>
+        <p class="lesson-intro">A strategy you haven't tested is an opinion. Testing happens in two stages — against the past, then against the live-but-riskless present — and you already own the maths to judge the results.</p>
+      </div>
+      <div class="lesson-body">
+        <div id="pref-mount-2"></div>
+        <h2>Stage 1 — the backtest</h2>
+        <p>With your strategy added to the chart, open the <strong>Strategy Tester</strong> panel. TradingView has already run your rules over the visible history. Four numbers matter, in this order:</p>
+        <div class="vis-exp">
+          <div class="vis-exp-title">Reading the Strategy Tester like a prop trader</div>
+          <div class="vis-row">
+            <div class="vis-cell vis-bad"><div class="vis-cell-label">1 · Max drawdown</div><div class="vis-cell-val red">Read this FIRST</div><div class="vis-cell-sub">Would this dip have breached your firm's daily loss or max drawdown? If yes, nothing else matters.</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">2 · Number of trades</div><div class="vis-cell-val">Sample size</div><div class="vis-cell-sub">Under ~50 trades, the other numbers are mostly noise</div></div>
+            <div class="vis-cell"><div class="vis-cell-label">3 · Win rate + avg win/loss</div><div class="vis-cell-val">Your expectancy inputs</div><div class="vis-cell-sub">Feed them into Module 9's expectancy formula</div></div>
+          </div>
+          <div class="vis-row">
+            <div class="vis-cell"><div class="vis-cell-label">4 · Profit factor</div><div class="vis-cell-val">Gross wins ÷ gross losses</div><div class="vis-cell-sub">Above ~1.3 with a real sample is worth forward-testing</div></div>
+          </div>
+        </div>
+        <div class="callout callout-warn">
+          <div class="cl">The overfitting trap</div>
+          <p>If you tweak settings until the backtest looks perfect — nudging the MA lengths, adding filters until every loser disappears — you haven't found an edge, you've <strong>memorised the past</strong>. A robust strategy performs <em>acceptably</em> across different settings and different periods; a curve-fit one performs brilliantly on exactly one configuration and collapses everywhere else. When in doubt, test the same rules on a time period you didn't build them on.</p>
+        </div>
+        <h2>Stage 2 — the forward test</h2>
+        <p>The backtest earns the strategy an audition, not a job. Now trade it on <strong>paper, in real time</strong> — TradingView's paper account executes your entries live with virtual money. Run it for at least a few weeks or ~20 trades, treating it exactly as seriously as Module 6's demo-trading lesson taught: realistic size, every rule honoured, every trade journalled.</p>
+        <p>This is where Traxent closes the loop: log the paper trades in your <strong>sim journal</strong> (or connect the platform when your integration goes live) and the <strong>readiness tracker</strong> scores your strategy's real behaviour against each firm's actual limits — drawdown shape, consistency, daily losses. The strategy stops being an idea and becomes a measured profile you can put in front of a specific firm's rulebook.</p>
+        <h2>Other platforms, same recipe</h2>
+        <p>Prefer to build where you'll eventually trade? The recipe is identical — rules, backtest, paper, judge — only the tooling changes. <strong>MetaTrader 5</strong> automates via Expert Advisors with its own Strategy Tester; <strong>cTrader</strong> uses cBots (C#) with built-in backtesting; <strong>Tradovate</strong> has no native builder, so automation there runs through connected tools — most traders prototype on TradingView first, then execute on Tradovate manually or via a bridge. Whatever the venue: paper first, firm's automation policy checked, always.</p>
+        <div class="callout callout-key">
+          <div class="cl">Module complete — what you now have</div>
+          <p>A written, testable strategy; a backtest you know how to read sceptically; a paper account running it forward; and a scoring loop that judges it against real firm rules. Next: the quiz — then Going Live shows you how to connect the account so your results score themselves.</p>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <button class="btn-nav btn-prev" onclick="showLesson(4)">Previous</button>
+        <span class="nav-info">Lesson 6 of 6</span>
+        <button class="btn-nav btn-next" onclick="completeLesson(5)">Take the quiz</button>
+      </div>
+    </div>
+
+    <!-- ── QUIZ ── -->
+    <div id="lesson-6" class="lesson-main" style="display:none">
+      <div class="quiz-wrap">
+        <div class="quiz-hd">
+          <div class="quiz-eyebrow">Module 10 · Quiz</div>
+          <h1 class="quiz-title">Test your knowledge</h1>
+          <p class="quiz-sub">5 questions drawn from a larger bank on strategy construction, the funded-trading stack, and testing. You need 75% to pass — a retake deals fresh questions.</p>
+        </div>
+        <div id="quiz-questions">
+          <div class="q-dots" id="q-dots"></div>
+          <div id="q-wrap"></div>
+          <div class="q-btn-row">
+            <button class="q-btn q-submit" id="q-submit" onclick="submitQ()" disabled>Submit answer</button>
+            <button class="q-btn q-next-btn" id="q-next" onclick="nextQ()">Next →</button>
+          </div>
+        </div>
+        <div class="quiz-result" id="quiz-result">
+          <div class="result-pct" id="result-pct"></div>
+          <div class="result-lbl" id="result-lbl"></div>
+          <div class="result-msg" id="result-msg"></div>
+          <div class="result-actions">
+            <button class="btn-result btn-result-secondary" onclick="retryQuiz()">Retry quiz</button>
+            <a href="/learn" class="btn-result btn-result-primary" id="result-cta" style="display:none">Back to modules →</a>
+          </div>
+          <div class="completion-banner" id="completion-banner">
+            <div><div class="cb-title">Module 10 complete</div><div class="cb-sub">Module 11 — Going Live — connects your strategy's account to Traxent.</div></div>
+            <a href="/learn" class="cb-btn">Continue →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const LESSON_KEYS = ['l8-1','l8-2','l8-3','l8-4','l8-5','l8-6','l8-quiz'];
+const completed = [false, false, false, false, false, false, false];
+
+function saveProgress() {
+  try {
+    const p = JSON.parse(localStorage.getItem('traxent_progress') || '{}');
+    completed.forEach((done, i) => { if (done) p[LESSON_KEYS[i]] = true; });
+    localStorage.setItem('traxent_progress', JSON.stringify(p));
+  } catch (e) { /* storage unavailable — non-fatal */ }
+}
+
+function showLesson(i) {
+  for (let j = 0; j < 7; j++) {
+    document.getElementById('lesson-' + j).style.display = 'none';
+    document.getElementById('nav-' + j).classList.remove('active');
+  }
+  document.getElementById('lesson-' + i).style.display = 'block';
+  document.getElementById('nav-' + i).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function completeLesson(i) {
+  completed[i] = true;
+  document.getElementById('dot-' + i).textContent = '✓';
+  document.getElementById('nav-' + i).classList.add('completed');
+  updateProgress();
+  saveProgress();
+  try { if (window.TraxentData) TraxentData.markLesson(LESSON_KEYS[i]); } catch (e) {}
+  showLesson(i + 1);
+  if (i === 5) initQuiz();
+}
+
+function updateProgress() {
+  const done = completed.filter(Boolean).length;
+  const pct = Math.round((done / 7) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+}
+
+const EX_FB = {
+  ex1: {
+    rule: { correct: 'Correct. Every term is observable and precise — a stranger could trade it identically, which means it can be tested, measured and improved.', incorrect: 'Look for the option where every condition is observable — no interpretation, no mood. Only one could be handed to a stranger and traded identically.' },
+    vibe1: { correct: 'Not quite — "looks like it\'s turning bullish" needs your gut to interpret, so two traders would take different trades from the same words.', incorrect: '"Looks bullish" is a vibe, not a rule — it cannot be backtested because it means something different every time you read it.' },
+    vibe2: { correct: 'Not quite — "when confident" makes your emotional state a trading input, which is exactly what a strategy exists to remove.', incorrect: 'Sizing by confidence puts feelings back in charge. A real risk rule is fixed and numeric — 1% is 1% on your best and worst days.' }
+  },
+  ex2: {
+    meanrev: { correct: 'Correct. Selling a stretch above the average, targeting a return to it, is the definition of mean reversion — the belief that extremes snap back.', incorrect: 'The strategy bets that a stretched price returns to its average. That belief — extremes snap back — defines mean reversion.' },
+    trend: { correct: 'Not quite — a trend follower would buy that strength expecting continuation, not fade it back to the average.', incorrect: 'Trend following buys strength expecting more of it. This strategy does the opposite — it fades the stretch. That\'s mean reversion.' },
+    breakout: { correct: 'Not quite — breakout trading enters as a range breaks, expecting expansion. This enters against the move, expecting contraction.', incorrect: 'A breakout trade bets on expansion after compression. Fading a stretch back to an average is the opposite bet — mean reversion.' }
+  },
+  ex3: {
+    platform: { correct: 'Correct. Order execution lives on the platform and routing layers. Apex supplies the capital and judges the result against its rules — it never touched your order.', incorrect: 'Think in layers: the firm funds and judges; the platform and routing execute. A bad fill happens where orders live — the platform layer.' },
+    firm: { correct: 'Not quite — the firm sets rules and supplies capital, but your order never passes through the firm. Execution is the platform layer\'s job.', incorrect: 'Apex never executes anything — it funds the account and applies the rulebook. The fill happened on the platform/routing layer.' },
+    traxent: { correct: 'Not quite — Traxent only reads your closed trades to score them. It sits outside the execution path entirely.', incorrect: 'Traxent is read-only analytics on top of the stack — it can see the bad fill afterwards, but it played no part in executing it.' }
+  }
+};
+
+function checkEx(exId, chosen, btn, correct) {
+  const opts = document.querySelectorAll('#' + exId + '-opts .ex-opt');
+  opts.forEach(o => { o.disabled = true; o.onclick = null; });
+  const isCorrect = chosen === correct;
+  if (btn && btn.classList) btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+  const fb = document.getElementById(exId + '-fb');
+  fb.className = `ex-feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+  const msg = EX_FB[exId][chosen] || EX_FB[exId][correct];
+  fb.innerHTML = `<strong>${isCorrect ? '✓ Good' : 'Not quite'}</strong> — ${isCorrect ? msg.correct : msg.incorrect}`;
+  document.getElementById(exId + '-next').classList.add('show');
+}
+
+// QUIZ
+const QUESTIONS = [
+  { text: "What is the defining test of a real trading strategy?", options: ["It predicts where price will go next","A stranger could trade it identically from the written rules alone","It never has a losing month","It uses at least two indicators"], correct: 1, fb: { c: "Correct. A strategy standardises decisions — if every rule is observable and precise, it can be tested, measured and improved. Prediction isn't the job.", w: "Strategies don't predict; they standardise. The bar is whether the written rules alone produce identical trades from any executor." } },
+  { text: "Which five parts does every complete strategy define?", options: ["Market, setup, entry, exit, risk","Indicator, timeframe, broker, leverage, target","News, sentiment, volume, trend, luck","Entry, exit, and a profit goal"], correct: 0, fb: { c: "Correct. What you trade, what must be true, what triggers entry, where you're wrong/right, and how much you risk — every real strategy answers all five.", w: "The anatomy is: market, setup conditions, entry trigger, exits (stop AND target), and fixed risk per trade." } },
+  { text: "A strategy buys strength expecting the move to continue. Its family is…", options: ["Mean reversion","Trend following","Arbitrage","Scalping"], correct: 1, fb: { c: "Correct. 'What's moving keeps moving' is the trend-following belief — buy strength, ride it, accept long quiet spells between big winners.", w: "Buying strength expecting continuation is trend following. (Scalping is a holding time, not a family.)" } },
+  { text: "Why can a firm's trailing drawdown rule clash with trend-following strategies?", options: ["Trend strategies trade too rarely to qualify","Riding a big move means giving back open profit — which a trailing drawdown counts against you","Trailing drawdowns ban moving averages","It can't — all rules affect all strategies equally"], correct: 1, fb: { c: "Correct. A trailing measure follows your equity peak up, so the give-back that trend riding requires can breach the limit even in profit. Strategy-to-firm fit is a real decision.", w: "Trend riding means letting open profit breathe. A trailing drawdown follows your peak, so that breathing room can itself breach the rule." }, firms: ["apex-trader-funding","tradeify","myfundedfutures"] },
+  { text: "In the funded-trading stack, what does the prop firm itself actually provide?", options: ["The trading platform and charts","Capital and the rulebook — nothing else","The exchange data feed","The strategy"], correct: 1, fb: { c: "Correct. Firms fund accounts, set rules, and pay out. The software you trade on is the platform layer — even when it's white-labelled with the firm's logo.", w: "The firm's contribution is capital plus rules. The screen you trade on belongs to the platform layer (Tradovate, cTrader, DXtrade…), whoever's logo it wears." } },
+  { text: "A firm's website has its own built-in web trader with the firm's branding. What's most likely true?", options: ["The firm built its own trading platform from scratch","It's a white-labelled platform (like DXtrade or cTrader) run by a platform company","Trades placed there don't count toward the evaluation","It means the firm is unregulated"], correct: 1, fb: { c: "Correct. Building an execution platform is a huge undertaking — firms almost always white-label an existing one. Under the paint, it's the platform layer as usual.", w: "Branding is paint. Firms almost never build execution software — embedded traders are white-labels of platforms like DXtrade, Match-Trader or cTrader." } },
+  { text: "What is automation genuinely best at?", options: ["Knowing the future better than humans","Executing rules with perfect discipline and consistency","Guaranteeing profits in all markets","Removing the need for risk management"], correct: 1, fb: { c: "Correct. Code never revenge-trades and never loosens a rule after a losing streak — it automates discipline, not foresight. The future stays uncertain for everyone.", w: "Automation's edge is flawless execution of the rules it's given — discipline and consistency. It knows nothing about the future." } },
+  { text: "Before deploying any automated strategy on a funded evaluation, what must you check?", options: ["That the bot has a high backtest win rate","The firm's automation policy — some ban or restrict bots and copy trading","That the strategy uses AI","Nothing — automation is always allowed"], correct: 1, fb: { c: "Correct. Automation policy is a firm rule like drawdown: some firms welcome EAs, others ban full automation or restrict it once funded. Breaching it can void a pass.", w: "Firms differ sharply on automation — allowed, restricted, or banned. It's a rulebook item, and breaching it can void a passed evaluation." }, firms: ["ftmo","apex-trader-funding","topstep"] },
+  { text: "You tweak your strategy's settings until the backtest shows almost no losing trades. What have you most likely done?", options: ["Found a genuine edge","Overfitted — tuned the rules to memorise the past","Proved the strategy is ready for real money","Eliminated market risk"], correct: 1, fb: { c: "Correct. Perfect backtests are the classic overfitting signature — the rules now describe history rather than an edge. Robust strategies perform acceptably across settings and periods.", w: "A too-perfect backtest is the warning sign of curve-fitting: the rules memorised the past. Test on data you didn't build the rules on." } },
+  { text: "Which Strategy Tester number should a prop-focused trader read FIRST?", options: ["Net profit","Win rate","Maximum drawdown","Total number of trades"], correct: 2, fb: { c: "Correct. If the historical drawdown would have breached your firm's limits, the strategy fails the evaluation regardless of its profit. Rules first, profit second — always.", w: "For funded trading, max drawdown comes first: a breach ends the evaluation no matter how profitable the strategy is overall." }, firms: ["ftmo","myfundedfutures","take-profit-trader"] },
+  { text: "Why does a backtest of 12 trades tell you very little?", options: ["Backtests only work with over 1,000 trades","The sample is too small — a dozen results are mostly noise, not evidence","Old data doesn't count","Twelve is an unlucky number"], correct: 1, fb: { c: "Correct. Expectancy needs a sample. A handful of trades can look brilliant or terrible by pure chance — dozens of trades, ideally 50+, before the statistics mean anything.", w: "Small samples are noise. The same strategy can look amazing or awful over 12 trades by luck alone — you need a real sample before judging." } },
+  { text: "What is the purpose of forward-testing on paper after a good backtest?", options: ["To make the backtest look official","To see the rules perform on data that didn't exist when you wrote them — with zero money at risk","Paper results count toward funded evaluations","To satisfy the platform's terms of service"], correct: 1, fb: { c: "Correct. Forward-testing is the honest exam: live, unseen data, real conditions, no risk. It's the step that separates a curve-fit backtest from a working strategy.", w: "The backtest used data your rules could have memorised. Paper trading tests them on genuinely unseen, live data — the fairest audition there is." } }
+];
+
+// ── Test mode (matches iOS): every attempt samples up to 5 questions from the
+// bank and shuffles BOTH question order and answer positions, so a retake is a
+// fresh paper — this is a test of knowledge, not a memorisable sequence.
+let PAPER = [];
+function buildPaper(bank){
+  const qs = bank.slice();
+  for (let i=qs.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [qs[i],qs[j]]=[qs[j],qs[i]]; }
+  let tracked = [];
+  try { tracked = (window.TraxentData ? TraxentData.getFirms() : []) || []; } catch(e){}
+  let pool = qs;
+  if (tracked.length) {
+    const isRel = function(q){ return (q.firms || []).some(function(f){ return tracked.indexOf(f) !== -1; }); };
+    const rel = qs.filter(isRel), gen = qs.filter(function(q){ return !isRel(q); });
+    pool = rel.slice(0, 2).concat(gen);
+    for (let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  }
+  return pool.slice(0, Math.min(5, qs.length)).map(function(q){
+    const srcOpts = q.options || q.o;
+    const correctIdx = (q.correct !== undefined) ? q.correct : q.c;
+    const opts = srcOpts.map(function(text, idx){ return { text: text, ok: idx === correctIdx }; });
+    for (let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+    const texts = opts.map(function(o){ return o.text; });
+    const ci = opts.findIndex(function(o){ return o.ok; });
+    return { text: q.text || q.t, t: q.text || q.t, options: texts, o: texts, correct: ci, c: ci, fb: q.fb };
+  });
+}
+
+let curQ = 0, selOpt = null, answered = false, score = 0;
+
+function initQuiz() {
+  PAPER = buildPaper(QUESTIONS);
+  curQ = 0; score = 0; selOpt = null; answered = false;
+  document.getElementById('quiz-questions').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  renderQ(); renderDots();
+}
+function renderDots() {
+  document.getElementById('q-dots').innerHTML = PAPER.map((_,i) =>
+    `<div class="q-dot ${i<curQ?'done':i===curQ?'active':''}"></div>`).join('');
+}
+function renderQ() {
+  const q = PAPER[curQ];
+  const L = ['A','B','C','D','E'];
+  document.getElementById('q-wrap').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Question ${curQ+1} of ${PAPER.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-options">
+        ${q.options.map((o,i)=>`<div class="q-opt" id="qo${i}" onclick="selQ(${i})"><div class="q-letter">${L[i]}</div><div class="q-opt-text">${o}</div></div>`).join('')}
+      </div>
+      <div class="q-feedback" id="q-fb"></div>
+    </div>`;
+  selOpt = null; answered = false;
+  document.getElementById('q-submit').disabled = true;
+  document.getElementById('q-submit').style.display = 'block';
+  document.getElementById('q-next').style.display = 'none';
+}
+function selQ(i) {
+  if (answered) return;
+  selOpt = i;
+  document.querySelectorAll('.q-opt').forEach((o,j) => o.classList.toggle('selected', j===i));
+  document.getElementById('q-submit').disabled = false;
+}
+function submitQ() {
+  if (selOpt === null || answered) return;
+  answered = true;
+  const q = PAPER[curQ];
+  const ok = selOpt === q.correct;
+  if (ok) score++;
+  document.querySelectorAll('.q-opt').forEach((o,i) => {
+    o.classList.remove('selected');
+    if (i===q.correct) o.classList.add('correct');
+    else if (i===selOpt && !ok) o.classList.add('incorrect');
+  });
+  const fb = document.getElementById('q-fb');
+  fb.className = `q-feedback show ${ok?'correct':'incorrect'}`;
+  fb.innerHTML = `<strong>${ok?'✓ Correct':'✗ Not quite'}</strong> — ${ok?q.fb.c:q.fb.w}`;
+  document.getElementById('q-submit').style.display = 'none';
+  document.getElementById('q-next').style.display = 'block';
+  document.getElementById('q-next').textContent = curQ < PAPER.length-1 ? 'Next →' : 'See results →';
+}
+function nextQ() {
+  curQ++;
+  if (curQ >= PAPER.length) { showResult(); return; }
+  renderDots(); renderQ();
+}
+function showResult() {
+  document.getElementById('quiz-questions').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+  const pct = Math.round((score/PAPER.length)*100);
+  const pass = pct >= 75;
+  document.getElementById('result-pct').textContent = pct+'%';
+  document.getElementById('result-pct').className = `result-pct ${pass?'pass':'fail'}`;
+  document.getElementById('result-lbl').textContent = pass ? 'Module 10 passed' : 'Not quite — try again';
+  document.getElementById('result-msg').textContent = pass
+    ? `You answered ${score} of ${PAPER.length} correctly. You can now build, test and judge a strategy like a professional — Going Live connects the account so your results score themselves.`
+    : `You answered ${score} of ${PAPER.length} correctly. Review the lessons and retake — a fresh set of questions is dealt every attempt.`;
+  if (pass) {
+    document.getElementById('result-cta').style.display = 'inline-block';
+    completed[6] = true;
+    document.getElementById('dot-6').textContent = '✓';
+    document.getElementById('nav-6').classList.add('completed');
+    updateProgress();
+    saveProgress();
+    setTimeout(() => document.getElementById('completion-banner').classList.add('show'), 500);
+    try { localStorage.setItem('traxent_m8_complete', 'true');
+    try { if (window.TraxentData) TraxentData.markLesson('l8-quiz'); } catch(e){} } catch (e) {}
+  }
+}
+function retryQuiz() {
+  document.getElementById('quiz-result').style.display = 'none';
+  initQuiz();
+}
+
+initQuiz();
+
+// ── Preference layer (JS-rendered — invisible to the content extractor, so the
+// iOS catalog carries the clean default path: guided-automated, futures).
+// The picker tailors the build/test lessons: style changes the walkthrough
+// emphasis, market changes the example instrument. Stored per-browser.
+(function(){
+  var KEY = 'tx_strat_prefs';
+  function prefs(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ return {}; } }
+  function save(p){ try { localStorage.setItem(KEY, JSON.stringify(p)); } catch(e){} }
+  var state = Object.assign({ style: 'auto', market: 'futures' }, prefs());
+
+  var MARKET = {
+    futures: { name: 'Index futures', sym: 'an index future (e.g. the S&P 500 e-mini)', note: 'The market most futures prop firms (Apex, Topstep, MFFU) evaluate on. Main session ≈ 14:30–21:00 UK time.' },
+    forex:   { name: 'Forex', sym: 'a major pair (e.g. EUR/USD)', note: 'The market FTMO-style firms evaluate on. Liquid nearly 24/5 — pick ONE session (e.g. London) and treat it as your trading day.' },
+    stocks:  { name: 'Stocks', sym: 'a large-cap stock or index ETF', note: 'Great for learning — but note most prop evaluations run on futures or FX, so treat stocks as your practice ground.' }
+  };
+
+  function panelHTML(){
+    var m = MARKET[state.market];
+    var styleBlock = state.style === 'manual'
+      ? '<div class="vp-t">Your path: systematic manual</div>'
+        + 'Skip the Pine Editor steps (3–4). Instead: keep both moving averages on the chart, open TradingView’s <strong>paper-trading panel</strong> (right-click the chart → Trade), and execute the written rules yourself each time all four conditions line up. Your discipline is the machine — journal every trade including the ones you skipped.'
+      : '<div class="vp-t">Your path: guided automation</div>'
+        + 'Follow all five steps — the Pine strategy executes and paints every historical trade for you. On the forward test, let it run on paper and resist overriding it: the whole point is seeing the rules trade <em>without</em> you.';
+    return styleBlock
+      + '<ul><li><strong>Your market — ' + m.name + ':</strong> use ' + m.sym + ' on the 15-minute chart.</li>'
+      + '<li>' + m.note + '</li></ul>';
+  }
+
+  function mount(id){
+    var host = document.getElementById(id);
+    if (!host) return;
+    host.innerHTML = ''
+      + '<div class="pref-box">'
+      + '<div class="pref-title">Tailor this walkthrough</div>'
+      + '<div class="pref-row"><span class="pref-lbl">Style</span>'
+      +   '<button type="button" class="pref-btn" data-k="style" data-v="auto">Guided automation</button>'
+      +   '<button type="button" class="pref-btn" data-k="style" data-v="manual">Manual (no code)</button></div>'
+      + '<div class="pref-row"><span class="pref-lbl">Market</span>'
+      +   '<button type="button" class="pref-btn" data-k="market" data-v="futures">Futures</button>'
+      +   '<button type="button" class="pref-btn" data-k="market" data-v="forex">Forex</button>'
+      +   '<button type="button" class="pref-btn" data-k="market" data-v="stocks">Stocks</button></div>'
+      + '</div>'
+      + '<div class="variant-panel" data-vp></div>';
+    host.addEventListener('click', function(e){
+      var b = e.target.closest('.pref-btn');
+      if (!b) return;
+      state[b.getAttribute('data-k')] = b.getAttribute('data-v');
+      save(state);
+      renderAll();
+    });
+  }
+
+  function renderAll(){
+    ['pref-mount','pref-mount-2'].forEach(function(id){
+      var host = document.getElementById(id);
+      if (!host || !host.firstChild) return;
+      host.querySelectorAll('.pref-btn').forEach(function(b){
+        b.classList.toggle('on', state[b.getAttribute('data-k')] === b.getAttribute('data-v'));
+      });
+      var vp = host.querySelector('[data-vp]');
+      if (vp) vp.innerHTML = panelHTML();
+    });
+  }
+
+  mount('pref-mount');
+  mount('pref-mount-2');
+  renderAll();
+})();
+</script>
+<script src="/consent.js?v=__BUILD_SHA__" defer></script>
+<script src="/content-guard.js?v=__BUILD_SHA__" defer></script>
+</body>
+</html>

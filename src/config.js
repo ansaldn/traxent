@@ -22,7 +22,7 @@
   var CONFIG = {
     companyName: 'Akpan Holdings Limited',
     productName: 'Traxent',
-    moduleCount: '10',  // 3 free foundational (Trading 101/201/301) + 7 core modules (src/learn-module-*.html)
+    moduleCount: '11',  // 3 free foundational (Trading 101/201/301) + 8 core modules (src/learn-module-*.html)
     firmCount: '16',    // prop firms with a rules page (count of src/firm-*.html)
     contactEmail: 'hello@traxent.io',
     securityEmail: 'security@traxent.io',

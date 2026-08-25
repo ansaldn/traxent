@@ -666,6 +666,19 @@ Resources:
   UserDataApi:
     Type: AWS::Serverless::HttpApi
     Properties:
+      # Gateway-level JWT check (M1): rejects missing/invalid Auth0 tokens at the
+      # edge, BEFORE any Lambda is invoked (and billed). The functions all keep
+      # their own verify + sub/plan checks — this is defence-in-depth, not a
+      # replacement. CORS preflight (OPTIONS) is exempt automatically.
+      # ROLLBACK: delete this Auth: block and redeploy.
+      Auth:
+        Authorizers:
+          Auth0JWT:
+            IdentitySource: "$request.header.Authorization"
+            JwtConfiguration:
+              issuer: !Ref Auth0Issuer
+              audience: !Split [",", !Ref Auth0Audience]
+        DefaultAuthorizer: Auth0JWT
       CorsConfiguration:
         AllowOrigins:
           - !Ref AllowedOrigin

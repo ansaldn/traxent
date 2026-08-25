@@ -166,7 +166,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
   <div class="learn-header">
     <div class="learn-eyebrow">Learning centre</div>
     <h1 class="learn-title">Your path to funded</h1>
-    <p class="learn-sub"><span data-tx="moduleCount">10</span> modules and 50+ lessons — start completely free with <strong>Trading 101, 201 &amp; 301</strong> (how markets work, placing a trade, and risk), then go deeper into chart patterns, prop-firm rules, psychology and building a measurable edge. Beginners welcome — no experience needed.</p>
+    <p class="learn-sub"><span data-tx="moduleCount">11</span> modules and 60+ lessons — start completely free with <strong>Trading 101, 201 &amp; 301</strong> (how markets work, placing a trade, and risk), then go deeper into chart patterns, prop-firm rules, psychology and building a measurable edge. Beginners welcome — no experience needed.</p>
     <div class="learn-progress-row">
       <span class="lpr-label">Overall progress</span>
       <div class="lpr-bar"><div class="lpr-fill" id="overall-fill" style="width:0%"></div></div>
@@ -367,8 +367,28 @@ const MODULES = [
     ]
   },
   {
-    id: 'module-7',
+    id: 'module-8',
     num: 'Module 10',
+    title: 'Trading Strategies',
+    desc: 'Turn everything into a written, testable strategy. The strategy families, the firm/platform stack, automation and the AI reality check — then build one and watch it trade on paper.',
+    tag: 'challenger',
+    tagLabel: 'Challenger+',
+    minPlan: 'challenger',
+    duration: '~50 min',
+    link: '/learn-module-8',
+    lessons: [
+      { name: 'What a strategy actually is', type: 'Lesson', key: 'l8-1' },
+      { name: 'The strategy families', type: 'Lesson', key: 'l8-2' },
+      { name: 'The stack: firm, platform, you', type: 'Lesson', key: 'l8-3' },
+      { name: 'Manual vs automated — and AI', type: 'Lesson', key: 'l8-4' },
+      { name: 'Build it: idea to written rules', type: 'Lesson', key: 'l8-5' },
+      { name: 'Test it: backtest to paper', type: 'Lesson', key: 'l8-6' },
+      { name: 'Module 10 quiz', type: 'Quiz', key: 'l8-quiz' },
+    ]
+  },
+  {
+    id: 'module-7',
+    num: 'Module 11',
     title: 'Going Live: Choosing & Connecting Your Trading Account',
     desc: 'The bridge from practising in Traxent to trading for real. Confirm your best-fit firm, choose a platform Traxent syncs with, connect it read-only so your real trades score themselves, then step into an evaluation with live data behind you.',
     tag: 'challenger',
@@ -415,7 +435,7 @@ async function initLearn() {
     // Show plan banner if on free plan
     if (plan === 'free') {
       document.getElementById('plan-banner').style.display = 'flex';
-      document.getElementById('plan-banner-text').innerHTML = `You're on the <strong>free plan</strong> — Trading 101, 201 &amp; 301 (Modules 1-3) are fully accessible. Upgrade to Observer at <strong>£4.99/mo</strong> for Modules 4-7, or Challenger for the full ten-module path.`;
+      document.getElementById('plan-banner-text').innerHTML = `You're on the <strong>free plan</strong> — Trading 101, 201 &amp; 301 (Modules 1-3) are fully accessible. Upgrade to Observer at <strong>£4.99/mo</strong> for Modules 4-7, or Challenger for the full eleven-module path.`;
       document.getElementById('learn-cta').style.display = 'flex';
     }
 

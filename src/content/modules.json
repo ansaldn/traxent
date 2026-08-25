@@ -4985,9 +4985,711 @@
    ]
   },
   {
-   "id": "module-7",
+   "id": "module-8",
    "number": 10,
    "numLabel": "Module 10",
+   "title": "Trading Strategies",
+   "desc": "Turn everything into a written, testable strategy. The strategy families, the firm/platform stack, automation and the AI reality check — then build one and watch it trade on paper.",
+   "minPlan": "challenger",
+   "duration": "~50 min",
+   "lessons": [
+    {
+     "key": "l8-1",
+     "name": "What a strategy actually is",
+     "type": "lesson",
+     "eyebrow": "Module 10 · Lesson 1",
+     "title": "What a strategy actually is",
+     "intro": "Most people think a strategy is a prediction about where price will go. It isn't. A strategy is a set of written rules that tells you what to do — before, during and after every trade — so that no single decision depends on how you feel in the moment.",
+     "blocks": [
+      {
+       "type": "paragraph",
+       "text": "You already have most of the ingredients. The patterns from Chart Patterns are **setups**. The stop-loss and sizing maths from Risk Management is your **risk rule**. The journal loop from Review & Building Your Edge is your **feedback system**. A strategy is simply those pieces written down as one connected, testable procedure."
+      },
+      {
+       "type": "heading",
+       "text": "The five parts every strategy has"
+      },
+      {
+       "type": "paragraph",
+       "text": "Strip away the jargon and every real trading strategy — from a beginner's first ruleset to a hedge fund's algorithm — answers the same five questions:"
+      },
+      {
+       "type": "heading",
+       "text": "Anatomy of a strategy"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "1 · Market",
+         "value": "What do I trade?",
+         "sub": "One instrument, one timeframe, defined sessions"
+        },
+        {
+         "label": "2 · Setup",
+         "value": "What must be true?",
+         "sub": "The conditions that qualify a trade at all"
+        },
+        {
+         "label": "3 · Entry",
+         "value": "What triggers it?",
+         "sub": "The exact, observable signal to act"
+        },
+        {
+         "label": "4 · Exit",
+         "value": "Where am I wrong / right?",
+         "sub": "Stop-loss AND profit target, decided in advance"
+        },
+        {
+         "label": "5 · Risk",
+         "value": "How much per trade?",
+         "sub": "Fixed risk, position sized from the stop distance"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "The test of a real strategy is brutal and simple: **could a stranger trade it identically from your written rules alone?** If any part needs your gut feel to interpret — \"enter when it looks strong\" — it isn't a rule yet, and it can't be tested, improved or trusted under pressure."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Key idea",
+       "text": "A strategy doesn't predict the market. It standardises **you**. The market stays uncertain either way — the strategy removes your in-the-moment judgement as a variable, which is exactly what a prop firm evaluation is testing."
+      },
+      {
+       "type": "exercise",
+       "badge": "Exercise",
+       "title": "Rule or vibe?",
+       "question": "Which of these is a genuine, testable strategy rule?",
+       "options": [
+        {
+         "label": "\"Buy when the market looks like it's turning bullish\"",
+         "value": "vibe1",
+         "feedback": ""
+        },
+        {
+         "label": "\"Enter long when price closes above the 20-period high; stop below the last swing low; risk 1%\"",
+         "value": "rule",
+         "feedback": ""
+        },
+        {
+         "label": "\"Trade aggressively when confident, carefully when not\"",
+         "value": "vibe2",
+         "feedback": ""
+        }
+       ],
+       "correct": "rule"
+      }
+     ]
+    },
+    {
+     "key": "l8-2",
+     "name": "The strategy families",
+     "type": "lesson",
+     "eyebrow": "Module 10 · Lesson 2",
+     "title": "The strategy families",
+     "intro": "Almost every strategy ever traded belongs to one of a few families, each built on a different belief about how price behaves. Knowing the families stops you reinventing wheels — and tells you which wheels suit a prop firm's rules.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "The three core families"
+      },
+      {
+       "type": "heading",
+       "text": "Strategy families and the belief behind each"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Trend following",
+         "value": "\"What's moving keeps moving\"",
+         "sub": "Buy strength, sell weakness · fewer, bigger wins · long losing streaks between them"
+        },
+        {
+         "label": "Mean reversion",
+         "value": "\"What's stretched snaps back\"",
+         "sub": "Fade extremes back to an average · many small wins · occasional sharp losses"
+        },
+        {
+         "label": "Breakout / momentum",
+         "value": "\"Compression precedes expansion\"",
+         "sub": "Enter as a range breaks · frequent false starts · pays on expansion days"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "Cutting across the families is **holding time**: scalping (seconds to minutes), intraday (closed by the session's end) and swing (days to weeks). The family says *why* you enter; the holding time says *how long* you're exposed."
+      },
+      {
+       "type": "heading",
+       "text": "Why this matters for funded accounts"
+      },
+      {
+       "type": "paragraph",
+       "text": "Firm rules quietly favour some profiles. A **trailing drawdown** punishes trend strategies that give back open profit while riding a move. A **consistency rule** punishes styles that make a month in one day. A **daily loss limit** punishes mean-reversion's occasional sharp loss if your sizing is loose. None of this makes a family wrong — it means the pairing of strategy and firm is a decision, and it's exactly the pairing your readiness tracker measures from your real numbers."
+      },
+      {
+       "type": "callout",
+       "style": "info",
+       "title": "Worked example",
+       "text": "A swing trend-follower averaging one big winner a week would sail through FTMO's static drawdown but repeatedly trip Topstep's ~50% consistency check. The same trader flattening trades daily with fixed 1% risk fits both. Same skill — different strategy-to-rules fit."
+      },
+      {
+       "type": "exercise",
+       "badge": "Exercise",
+       "title": "Name that family",
+       "question": "A strategy sells when price stretches more than 2% above its 20-day average, targeting a return to that average. Which family?",
+       "options": [
+        {
+         "label": "Trend following",
+         "value": "trend",
+         "feedback": ""
+        },
+        {
+         "label": "Mean reversion",
+         "value": "meanrev",
+         "feedback": ""
+        },
+        {
+         "label": "Breakout",
+         "value": "breakout",
+         "feedback": ""
+        }
+       ],
+       "correct": "meanrev"
+      }
+     ]
+    },
+    {
+     "key": "l8-3",
+     "name": "The stack: firm, platform, you",
+     "type": "lesson",
+     "eyebrow": "Module 10 · Lesson 3",
+     "title": "The stack: firm, platform, data, you",
+     "intro": "Here's a fact that confuses almost every new funded trader: the prop firm you pay does not build the software you trade on. Understanding who provides what — the stack — explains a dozen things that otherwise seem mysterious.",
+     "blocks": [
+      {
+       "type": "paragraph",
+       "text": "A funded account is really **four layers working together**, usually owned by four different companies:"
+      },
+      {
+       "type": "heading",
+       "text": "The funded trading stack"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Layer 1 · The firm",
+         "value": "Capital + rules",
+         "sub": "FTMO, Apex, Topstep… they fund you, set the limits, and pay out. That's ALL they provide."
+        },
+        {
+         "label": "Layer 2 · The platform",
+         "value": "Execution software",
+         "sub": "Tradovate, NinjaTrader, cTrader, MT5, DXtrade — where your orders actually live"
+        },
+        {
+         "label": "Layer 3 · Data & routing",
+         "value": "Prices in, orders out",
+         "sub": "Exchange data feeds (e.g. CME) and the brokers/routers that carry orders"
+        },
+        {
+         "label": "Layer 4 · You",
+         "value": "The strategy",
+         "sub": "Your rules, executed on layer 2, judged against layer 1's limits"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "**Even when it looks built-in, it usually isn't.** Many firms embed a platform inside their own website with their logo on it — a white-label. Under the paint it's still cTrader, DXtrade or Match-Trader, run by the platform company. That's why two \"different\" firms can feel identical to trade on, and why your platform skills transfer between firms."
+      },
+      {
+       "type": "heading",
+       "text": "Why the layering matters to you"
+      },
+      {
+       "type": "paragraph",
+       "text": "Three practical consequences. First, **your strategy lives at the platform layer** — learn Tradovate or TradingView once and you can carry the same strategy across many firms. Second, **the firm only sees results** — it judges your account against its rules; it doesn't care which buttons you pressed. Third, this is **why Traxent connects to platforms, not firms**: your fills live on the platform layer, so one read-only platform connection covers whichever firm's challenge you're running on it."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "The factoid, in one line",
+       "text": "Prop firms provide the **capital and the rulebook**. The **platform** provides the trading — even when it's wearing the firm's logo."
+      },
+      {
+       "type": "exercise",
+       "badge": "Exercise",
+       "title": "Who provides what?",
+       "question": "You're trading an Apex evaluation through a Tradovate screen. Your order fills badly during a fast market. Which layer executed that fill?",
+       "options": [
+        {
+         "label": "Apex — it's their evaluation",
+         "value": "firm",
+         "feedback": ""
+        },
+        {
+         "label": "The platform/routing layer — Apex only supplies capital and rules",
+         "value": "platform",
+         "feedback": ""
+        },
+        {
+         "label": "Traxent — it tracks the account",
+         "value": "traxent",
+         "feedback": ""
+        }
+       ],
+       "correct": "platform"
+      }
+     ]
+    },
+    {
+     "key": "l8-4",
+     "name": "Manual vs automated — and AI",
+     "type": "lesson",
+     "eyebrow": "Module 10 · Lesson 4",
+     "title": "Manual vs automated — and the AI reality check",
+     "intro": "Every strategy sits somewhere on a spectrum: from a human reading rules off a checklist to code executing with no human at all. In the AI era you need to know what automation genuinely does well, what it doesn't — and what your firm allows.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "The spectrum"
+      },
+      {
+       "type": "heading",
+       "text": "From discretionary to fully automated"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "Discretionary",
+         "value": "Human decides",
+         "sub": "Rules guide judgement; you click the buttons"
+        },
+        {
+         "label": "Systematic manual",
+         "value": "Rules decide, human executes",
+         "sub": "Zero interpretation; you're the executor"
+        },
+        {
+         "label": "Semi-automated",
+         "value": "Code signals, human confirms",
+         "sub": "Alerts fire; you approve each entry"
+        },
+        {
+         "label": "Fully automated",
+         "value": "Code decides and executes",
+         "sub": "A strategy script or bot trades unattended"
+        }
+       ]
+      },
+      {
+       "type": "paragraph",
+       "text": "**What automation is genuinely good at:** perfect discipline (code never revenge-trades), perfect consistency (the same rule executed the same way, every time), and testability (you can run a coded strategy against years of history in seconds). Notice what those are — the exact things Modules 8 and 9 taught you humans struggle with."
+      },
+      {
+       "type": "paragraph",
+       "text": "**What it cannot do:** know the future. A backtest shows how rules *would have* performed on data the market has already revealed — and an \"AI strategy\" is still a set of learned rules facing an uncertain tomorrow. The uncomfortable truth of the AI era: tools that make strategy-building easy make **overfitting** easy too — tuning rules so tightly to the past that they describe history instead of an edge. You'll learn to spot that in Lesson 6."
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "Check your firm's rules first",
+       "text": "Automation policy is a **firm rule like any other** — and it varies widely. Some firms welcome EAs and bots, others ban fully-automated or copy trading outright, and many allow automation in evaluation but restrict it when funded. Before you ever deploy a strategy on a challenge, read your firm's automation policy the way you read its drawdown rule. Breaching it can void a passed evaluation."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Where we're heading",
+       "text": "For the build in the next lesson we use **semi- and fully-automated on paper only** — the point is to *watch your rules trade without you*, which is the fastest way to see whether the rules alone hold up. What you deploy later, and where, is your call and your firm's rulebook."
+      }
+     ]
+    },
+    {
+     "key": "l8-5",
+     "name": "Build it: idea to written rules",
+     "type": "lesson",
+     "eyebrow": "Module 10 · Lesson 5",
+     "title": "Build it: from idea to written rules",
+     "intro": "Time to build one. We'll take a deliberately simple, classic idea — a moving-average pullback in the direction of the trend — write it as five testable rules, and set it up on a free TradingView paper account so you can watch it trade in the next lesson.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Step 1 — write the rules"
+      },
+      {
+       "type": "paragraph",
+       "text": "Our example strategy, written the way every strategy should be. Nothing here is a recommendation to trade real money — it's a teaching chassis, chosen because every part is simple enough to verify by eye:"
+      },
+      {
+       "type": "callout",
+       "style": "info",
+       "title": "The example ruleset — \"MA pullback\"",
+       "text": "**Market:** one liquid instrument (our walkthrough uses an index future), 15-minute chart, main session only. **Setup:** price above the 50-period moving average — we only look for longs in an uptrend. **Entry:** price pulls back to touch the 20-period MA, then closes back above it. **Exit:** stop-loss below the pullback low; target at 2× the stop distance (1:2 R:R). **Risk:** 1% of the account per trade, position sized from the stop distance."
+      },
+      {
+       "type": "paragraph",
+       "text": "Read it against Lesson 1's five parts — market, setup, entry, exit, risk — and notice a stranger could trade it identically. That's the bar."
+      },
+      {
+       "type": "heading",
+       "text": "Step 2 — set up the platform"
+      },
+      {
+       "type": "paragraph",
+       "text": "TradingView is our walkthrough platform because it's free, needs no broker, includes paper trading, and has a built-in strategy tester — a beginner can go from rules to a running paper strategy in one sitting:"
+      },
+      {
+       "type": "paragraph",
+       "text": "1"
+      },
+      {
+       "type": "paragraph",
+       "text": "Create a free TradingView account"
+      },
+      {
+       "type": "paragraph",
+       "text": "(tradingview.com) and open a chart for your instrument on the 15-minute timeframe."
+      },
+      {
+       "type": "paragraph",
+       "text": "2"
+      },
+      {
+       "type": "paragraph",
+       "text": "Add the two moving averages"
+      },
+      {
+       "type": "paragraph",
+       "text": "— Indicators → search \"Moving Average\" → add one set to length 50 and one to length 20. You can now"
+      },
+      {
+       "type": "paragraph",
+       "text": "see"
+      },
+      {
+       "type": "paragraph",
+       "text": "your setup and entry conditions."
+      },
+      {
+       "type": "paragraph",
+       "text": "3"
+      },
+      {
+       "type": "paragraph",
+       "text": "Open the Pine Editor"
+      },
+      {
+       "type": "paragraph",
+       "text": "(bottom panel) → New → Strategy. TradingView gives you a working strategy template immediately."
+      },
+      {
+       "type": "paragraph",
+       "text": "4"
+      },
+      {
+       "type": "paragraph",
+       "text": "Describe the rules in Pine Script."
+      },
+      {
+       "type": "paragraph",
+       "text": "The built-in template plus the editor's autocomplete gets you remarkably far: the conditions are"
+      },
+      {
+       "type": "paragraph",
+       "text": "close > ta.sma(close, 50)"
+      },
+      {
+       "type": "paragraph",
+       "text": "for the setup and a cross back above"
+      },
+      {
+       "type": "paragraph",
+       "text": "ta.sma(close, 20)"
+      },
+      {
+       "type": "paragraph",
+       "text": "for the entry, with"
+      },
+      {
+       "type": "paragraph",
+       "text": "strategy.exit"
+      },
+      {
+       "type": "paragraph",
+       "text": "setting the stop and the 1:2 target. Save, then"
+      },
+      {
+       "type": "paragraph",
+       "text": "Add to chart"
+      },
+      {
+       "type": "paragraph",
+       "text": "."
+      },
+      {
+       "type": "paragraph",
+       "text": "5"
+      },
+      {
+       "type": "paragraph",
+       "text": "Look at the chart."
+      },
+      {
+       "type": "paragraph",
+       "text": "Every historical entry and exit your rules would have taken is now painted on the price history — your first sight of the strategy trading without you."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "If you'd rather not touch code",
+       "text": "The strategy works identically as a **manual checklist**: keep the two MAs on the chart, and when the four conditions line up, place the trade yourself in TradingView's paper-trading panel (right-click the chart → Trade). Same rules, human executor — that's the \"systematic manual\" point on last lesson's spectrum, and it's how many funded traders operate permanently."
+      }
+     ]
+    },
+    {
+     "key": "l8-6",
+     "name": "Test it: backtest to paper",
+     "type": "lesson",
+     "eyebrow": "Module 10 · Lesson 6",
+     "title": "Test it: backtest, paper-trade, judge",
+     "intro": "A strategy you haven't tested is an opinion. Testing happens in two stages — against the past, then against the live-but-riskless present — and you already own the maths to judge the results.",
+     "blocks": [
+      {
+       "type": "heading",
+       "text": "Stage 1 — the backtest"
+      },
+      {
+       "type": "paragraph",
+       "text": "With your strategy added to the chart, open the **Strategy Tester** panel. TradingView has already run your rules over the visible history. Four numbers matter, in this order:"
+      },
+      {
+       "type": "heading",
+       "text": "Reading the Strategy Tester like a prop trader"
+      },
+      {
+       "type": "grid",
+       "items": [
+        {
+         "label": "1 · Max drawdown",
+         "value": "Read this FIRST",
+         "sub": "Would this dip have breached your firm's daily loss or max drawdown? If yes, nothing else matters."
+        },
+        {
+         "label": "2 · Number of trades",
+         "value": "Sample size",
+         "sub": "Under ~50 trades, the other numbers are mostly noise"
+        },
+        {
+         "label": "3 · Win rate + avg win/loss",
+         "value": "Your expectancy inputs",
+         "sub": "Feed them into Module 9's expectancy formula"
+        },
+        {
+         "label": "4 · Profit factor",
+         "value": "Gross wins ÷ gross losses",
+         "sub": "Above ~1.3 with a real sample is worth forward-testing"
+        }
+       ]
+      },
+      {
+       "type": "callout",
+       "style": "warn",
+       "title": "The overfitting trap",
+       "text": "If you tweak settings until the backtest looks perfect — nudging the MA lengths, adding filters until every loser disappears — you haven't found an edge, you've **memorised the past**. A robust strategy performs *acceptably* across different settings and different periods; a curve-fit one performs brilliantly on exactly one configuration and collapses everywhere else. When in doubt, test the same rules on a time period you didn't build them on."
+      },
+      {
+       "type": "heading",
+       "text": "Stage 2 — the forward test"
+      },
+      {
+       "type": "paragraph",
+       "text": "The backtest earns the strategy an audition, not a job. Now trade it on **paper, in real time** — TradingView's paper account executes your entries live with virtual money. Run it for at least a few weeks or ~20 trades, treating it exactly as seriously as Module 6's demo-trading lesson taught: realistic size, every rule honoured, every trade journalled."
+      },
+      {
+       "type": "paragraph",
+       "text": "This is where Traxent closes the loop: log the paper trades in your **sim journal** (or connect the platform when your integration goes live) and the **readiness tracker** scores your strategy's real behaviour against each firm's actual limits — drawdown shape, consistency, daily losses. The strategy stops being an idea and becomes a measured profile you can put in front of a specific firm's rulebook."
+      },
+      {
+       "type": "heading",
+       "text": "Other platforms, same recipe"
+      },
+      {
+       "type": "paragraph",
+       "text": "Prefer to build where you'll eventually trade? The recipe is identical — rules, backtest, paper, judge — only the tooling changes. **MetaTrader 5** automates via Expert Advisors with its own Strategy Tester; **cTrader** uses cBots (C#) with built-in backtesting; **Tradovate** has no native builder, so automation there runs through connected tools — most traders prototype on TradingView first, then execute on Tradovate manually or via a bridge. Whatever the venue: paper first, firm's automation policy checked, always."
+      },
+      {
+       "type": "callout",
+       "style": "key",
+       "title": "Module complete — what you now have",
+       "text": "A written, testable strategy; a backtest you know how to read sceptically; a paper account running it forward; and a scoring loop that judges it against real firm rules. Next: the quiz — then Going Live shows you how to connect the account so your results score themselves."
+      }
+     ]
+    },
+    {
+     "key": "l8-quiz",
+     "name": "Module 10 quiz",
+     "type": "quiz",
+     "questions": [
+      {
+       "text": "What is the defining test of a real trading strategy?",
+       "options": [
+        "It predicts where price will go next",
+        "A stranger could trade it identically from the written rules alone",
+        "It never has a losing month",
+        "It uses at least two indicators"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. A strategy standardises decisions — if every rule is observable and precise, it can be tested, measured and improved. Prediction isn't the job.",
+       "wrongFeedback": "Strategies don't predict; they standardise. The bar is whether the written rules alone produce identical trades from any executor."
+      },
+      {
+       "text": "Which five parts does every complete strategy define?",
+       "options": [
+        "Market, setup, entry, exit, risk",
+        "Indicator, timeframe, broker, leverage, target",
+        "News, sentiment, volume, trend, luck",
+        "Entry, exit, and a profit goal"
+       ],
+       "correct": 0,
+       "correctFeedback": "Correct. What you trade, what must be true, what triggers entry, where you're wrong/right, and how much you risk — every real strategy answers all five.",
+       "wrongFeedback": "The anatomy is: market, setup conditions, entry trigger, exits (stop AND target), and fixed risk per trade."
+      },
+      {
+       "text": "A strategy buys strength expecting the move to continue. Its family is…",
+       "options": [
+        "Mean reversion",
+        "Trend following",
+        "Arbitrage",
+        "Scalping"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. 'What's moving keeps moving' is the trend-following belief — buy strength, ride it, accept long quiet spells between big winners.",
+       "wrongFeedback": "Buying strength expecting continuation is trend following. (Scalping is a holding time, not a family.)"
+      },
+      {
+       "text": "Why can a firm's trailing drawdown rule clash with trend-following strategies?",
+       "options": [
+        "Trend strategies trade too rarely to qualify",
+        "Riding a big move means giving back open profit — which a trailing drawdown counts against you",
+        "Trailing drawdowns ban moving averages",
+        "It can't — all rules affect all strategies equally"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. A trailing measure follows your equity peak up, so the give-back that trend riding requires can breach the limit even in profit. Strategy-to-firm fit is a real decision.",
+       "wrongFeedback": "Trend riding means letting open profit breathe. A trailing drawdown follows your peak, so that breathing room can itself breach the rule."
+      },
+      {
+       "text": "In the funded-trading stack, what does the prop firm itself actually provide?",
+       "options": [
+        "The trading platform and charts",
+        "Capital and the rulebook — nothing else",
+        "The exchange data feed",
+        "The strategy"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Firms fund accounts, set rules, and pay out. The software you trade on is the platform layer — even when it's white-labelled with the firm's logo.",
+       "wrongFeedback": "The firm's contribution is capital plus rules. The screen you trade on belongs to the platform layer (Tradovate, cTrader, DXtrade…), whoever's logo it wears."
+      },
+      {
+       "text": "A firm's website has its own built-in web trader with the firm's branding. What's most likely true?",
+       "options": [
+        "The firm built its own trading platform from scratch",
+        "It's a white-labelled platform (like DXtrade or cTrader) run by a platform company",
+        "Trades placed there don't count toward the evaluation",
+        "It means the firm is unregulated"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Building an execution platform is a huge undertaking — firms almost always white-label an existing one. Under the paint, it's the platform layer as usual.",
+       "wrongFeedback": "Branding is paint. Firms almost never build execution software — embedded traders are white-labels of platforms like DXtrade, Match-Trader or cTrader."
+      },
+      {
+       "text": "What is automation genuinely best at?",
+       "options": [
+        "Knowing the future better than humans",
+        "Executing rules with perfect discipline and consistency",
+        "Guaranteeing profits in all markets",
+        "Removing the need for risk management"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Code never revenge-trades and never loosens a rule after a losing streak — it automates discipline, not foresight. The future stays uncertain for everyone.",
+       "wrongFeedback": "Automation's edge is flawless execution of the rules it's given — discipline and consistency. It knows nothing about the future."
+      },
+      {
+       "text": "Before deploying any automated strategy on a funded evaluation, what must you check?",
+       "options": [
+        "That the bot has a high backtest win rate",
+        "The firm's automation policy — some ban or restrict bots and copy trading",
+        "That the strategy uses AI",
+        "Nothing — automation is always allowed"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Automation policy is a firm rule like drawdown: some firms welcome EAs, others ban full automation or restrict it once funded. Breaching it can void a pass.",
+       "wrongFeedback": "Firms differ sharply on automation — allowed, restricted, or banned. It's a rulebook item, and breaching it can void a passed evaluation."
+      },
+      {
+       "text": "You tweak your strategy's settings until the backtest shows almost no losing trades. What have you most likely done?",
+       "options": [
+        "Found a genuine edge",
+        "Overfitted — tuned the rules to memorise the past",
+        "Proved the strategy is ready for real money",
+        "Eliminated market risk"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Perfect backtests are the classic overfitting signature — the rules now describe history rather than an edge. Robust strategies perform acceptably across settings and periods.",
+       "wrongFeedback": "A too-perfect backtest is the warning sign of curve-fitting: the rules memorised the past. Test on data you didn't build the rules on."
+      },
+      {
+       "text": "Which Strategy Tester number should a prop-focused trader read FIRST?",
+       "options": [
+        "Net profit",
+        "Win rate",
+        "Maximum drawdown",
+        "Total number of trades"
+       ],
+       "correct": 2,
+       "correctFeedback": "Correct. If the historical drawdown would have breached your firm's limits, the strategy fails the evaluation regardless of its profit. Rules first, profit second — always.",
+       "wrongFeedback": "For funded trading, max drawdown comes first: a breach ends the evaluation no matter how profitable the strategy is overall."
+      },
+      {
+       "text": "Why does a backtest of 12 trades tell you very little?",
+       "options": [
+        "Backtests only work with over 1,000 trades",
+        "The sample is too small — a dozen results are mostly noise, not evidence",
+        "Old data doesn't count",
+        "Twelve is an unlucky number"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Expectancy needs a sample. A handful of trades can look brilliant or terrible by pure chance — dozens of trades, ideally 50+, before the statistics mean anything.",
+       "wrongFeedback": "Small samples are noise. The same strategy can look amazing or awful over 12 trades by luck alone — you need a real sample before judging."
+      },
+      {
+       "text": "What is the purpose of forward-testing on paper after a good backtest?",
+       "options": [
+        "To make the backtest look official",
+        "To see the rules perform on data that didn't exist when you wrote them — with zero money at risk",
+        "Paper results count toward funded evaluations",
+        "To satisfy the platform's terms of service"
+       ],
+       "correct": 1,
+       "correctFeedback": "Correct. Forward-testing is the honest exam: live, unseen data, real conditions, no risk. It's the step that separates a curve-fit backtest from a working strategy.",
+       "wrongFeedback": "The backtest used data your rules could have memorised. Paper trading tests them on genuinely unseen, live data — the fairest audition there is."
+      }
+     ],
+     "intro": "5 questions drawn from a larger bank on strategy construction, the funded-trading stack, and testing. You need 75% to pass — a retake deals fresh questions."
+    }
+   ]
+  },
+  {
+   "id": "module-7",
+   "number": 11,
+   "numLabel": "Module 11",
    "title": "Going Live: Choosing & Connecting Your Trading Account",
    "desc": "The bridge from practising in Traxent to trading for real. Confirm your best-fit firm, choose a platform Traxent syncs with, connect it read-only so your real trades score themselves, then step into an evaluation with live data behind you.",
    "minPlan": "challenger",

@@ -48,6 +48,27 @@ Resources:
             Method: post
             RestApiId: !Ref TraxentApi
 
+  # Webhook idempotency ledger — one row per processed Stripe event id, so a
+  # retried delivery can't run role changes / emails twice. Rows expire via TTL
+  # after 3 days (Stripe's max retry window). The webhook fails OPEN if this
+  # table is unreachable — dedup is protection, never a blocker.
+  WebhookDedupTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: TraxentWebhookDedup
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: eventId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: eventId
+          KeyType: HASH
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+      SSESpecification:
+        SSEEnabled: true
+
   StripeWebhookFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -59,6 +80,7 @@ Resources:
           STRIPE_KEY_PARAM: /traxent/stripe/key_webhook
           SUBSCRIBERS_TABLE: TraxentSubscribers
           USER_DATA_TABLE: TraxentUserData
+          WEBHOOK_DEDUP_TABLE: !Ref WebhookDedupTable
       Policies:
         - SSMParameterReadPolicy:
             ParameterName: traxent/*
@@ -69,6 +91,8 @@ Resources:
         # PROFILE plan/email mirror — the weekly readiness digest's send list.
         - DynamoDBCrudPolicy:
             TableName: TraxentUserData
+        - DynamoDBCrudPolicy:
+            TableName: !Ref WebhookDedupTable
       Events:
         Api:
           Type: Api

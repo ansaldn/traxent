@@ -33,6 +33,7 @@ const NETWORK_ONLY = [
   '/webhooks',
   '/subscribe',      // waitlist signups — must never be served from cache
   '/signup',         // account creation — always fresh, never a cached shell
+  'execute-api',     // the user-data / payments HTTP APIs — never cache user data
   'auth0.com',
   'stripe.com',
   'tradingview.com'
@@ -63,6 +64,16 @@ self.addEventListener('activate', event => {
 // Fetch — network first for most requests, cache fallback
 self.addEventListener('fetch', event => {
   const url = event.request.url;
+
+  // The service worker must NEVER mediate non-GET requests. POST/PUT/DELETE
+  // can't be served from cache, and the catch-all below falls back to
+  // caches.match() on a network failure — which resolves to null for an
+  // uncacheable request, so respondWith throws "FetchEvent.respondWith received
+  // an error: Returned response is null" and the request dies IN THE BROWSER
+  // before it ever reaches the API. That is exactly what silently broke
+  // DELETE /user/account (account deletion). Returning without calling
+  // respondWith hands the request straight to the browser's normal networking.
+  if (event.request.method !== 'GET') return;
 
   // Always go to network for these
   if (NETWORK_ONLY.some(pattern => url.includes(pattern))) {

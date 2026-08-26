@@ -1,0 +1,286 @@
+{
+  "account.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 14,
+    "hazards": []
+  },
+  "admin.html": {
+    "inlineScriptBlocks": 1,
+    "inlineHandlers": 4,
+    "hazards": []
+  },
+  "blog-ego-in-trading.html": {
+    "inlineScriptBlocks": 3,
+    "inlineHandlers": 4,
+    "hazards": []
+  },
+  "blog-handling-losing-trades.html": {
+    "inlineScriptBlocks": 3,
+    "inlineHandlers": 4,
+    "hazards": []
+  },
+  "blog-how-to-get-funded-prop-firm.html": {
+    "inlineScriptBlocks": 4,
+    "inlineHandlers": 4,
+    "hazards": []
+  },
+  "blog.html": {
+    "inlineScriptBlocks": 3,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "calculator.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 14,
+    "hazards": []
+  },
+  "calendar.html": {
+    "inlineScriptBlocks": 1,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "challenge-lab.html": {
+    "inlineScriptBlocks": 4,
+    "inlineHandlers": 89,
+    "hazards": []
+  },
+  "chart.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 28,
+    "hazards": []
+  },
+  "compare.html": {
+    "inlineScriptBlocks": 1,
+    "inlineHandlers": 2,
+    "hazards": []
+  },
+  "dashboard.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 6,
+    "hazards": []
+  },
+  "enterprise.html": {
+    "inlineScriptBlocks": 1,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "faq.html": {
+    "inlineScriptBlocks": 3,
+    "inlineHandlers": 27,
+    "hazards": []
+  },
+  "firm-alpha-capital.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-apex-trader-funding.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-bulenox.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-e8-funding.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-ftmo.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-funded-trading-plus.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-fundednext.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-fundingpips.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-fxify.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-goat-funded-trader.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-maven-trading.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-myfundedfutures.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-take-profit-trader.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-the5ers.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-topstep.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firm-tradeify.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 5,
+    "hazards": []
+  },
+  "firms.html": {
+    "inlineScriptBlocks": 1,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "founding-terms.html": {
+    "inlineScriptBlocks": 0,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "home.html": {
+    "inlineScriptBlocks": 1,
+    "inlineHandlers": 8,
+    "hazards": [
+      "javascript-url"
+    ]
+  },
+  "index.html": {
+    "inlineScriptBlocks": 7,
+    "inlineHandlers": 4,
+    "hazards": []
+  },
+  "integrations.html": {
+    "inlineScriptBlocks": 3,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "journal.html": {
+    "inlineScriptBlocks": 3,
+    "inlineHandlers": 23,
+    "hazards": []
+  },
+  "learn-101.html": {
+    "inlineScriptBlocks": 3,
+    "inlineHandlers": 59,
+    "hazards": []
+  },
+  "learn-201.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 59,
+    "hazards": []
+  },
+  "learn-301.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 59,
+    "hazards": []
+  },
+  "learn-module-1.html": {
+    "inlineScriptBlocks": 4,
+    "inlineHandlers": 44,
+    "hazards": []
+  },
+  "learn-module-2.html": {
+    "inlineScriptBlocks": 4,
+    "inlineHandlers": 58,
+    "hazards": []
+  },
+  "learn-module-3.html": {
+    "inlineScriptBlocks": 4,
+    "inlineHandlers": 47,
+    "hazards": []
+  },
+  "learn-module-4.html": {
+    "inlineScriptBlocks": 4,
+    "inlineHandlers": 34,
+    "hazards": []
+  },
+  "learn-module-5.html": {
+    "inlineScriptBlocks": 3,
+    "inlineHandlers": 25,
+    "hazards": []
+  },
+  "learn-module-6.html": {
+    "inlineScriptBlocks": 3,
+    "inlineHandlers": 28,
+    "hazards": []
+  },
+  "learn-module-7.html": {
+    "inlineScriptBlocks": 3,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "learn-module-8.html": {
+    "inlineScriptBlocks": 3,
+    "inlineHandlers": 34,
+    "hazards": []
+  },
+  "learn.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "news.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 9,
+    "hazards": []
+  },
+  "open.html": {
+    "inlineScriptBlocks": 1,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "privacy.html": {
+    "inlineScriptBlocks": 1,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "security.html": {
+    "inlineScriptBlocks": 0,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "signup.html": {
+    "inlineScriptBlocks": 1,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "terms.html": {
+    "inlineScriptBlocks": 1,
+    "inlineHandlers": 0,
+    "hazards": []
+  },
+  "tracker.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 15,
+    "hazards": [
+      "eval"
+    ]
+  },
+  "waitlist.html": {
+    "inlineScriptBlocks": 2,
+    "inlineHandlers": 1,
+    "hazards": []
+  }
+}

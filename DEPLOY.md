@@ -133,9 +133,11 @@ One-time prerequisites:
    aws ssm put-parameter --name /traxent/auth0/m2m_client_id     --type String        --value <id>     --region eu-west-2
    aws ssm put-parameter --name /traxent/auth0/m2m_client_secret --type SecureString  --value <secret> --region eu-west-2
    ```
-   (Already set in prod — only re-run these when rotating the secret. The app
-   needs `read:users`, `update:users` AND `delete:users`; the last one must be
-   ticked in the dashboard or account deletion 500s at step `auth0_delete`.)
+   (Already set in prod — only re-run these when rotating the secret. The app —
+   "Traxent Backend", Client ID `fkUa17h4Bnup7ch8jvR5ih71VrZuSmQF` — needs
+   `read:users`, `update:users` AND `delete:users`. **All three are CONFIRMED
+   granted** (verified in the Auth0 dashboard 2026-08-26, 6/273 permissions).
+   This is settled — do not re-flag `delete:users` as missing.)
 2. The Stripe customer must carry the Auth0 identity. `create-checkout` now stamps
    `auth0_sub` (and `auth0_user_id`) on the Stripe customer at checkout — already done; just
    redeploy that Lambda (§2). The delete flow also falls back to an email search for legacy customers.

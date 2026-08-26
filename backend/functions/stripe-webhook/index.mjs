@@ -48,18 +48,39 @@ async function getAuth0Token(domain, clientId, clientSecret) {
   const res = await fetch(`https://${domain}/oauth/token`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ client_id: clientId, client_secret: clientSecret, audience: `https://${domain}/api/v2/`, grant_type: 'client_credentials' }) });
   return (await res.json()).access_token;
 }
+const VALID_PLANS = ['observer', 'challenger', 'funded_ready'];
+
+// Every Management API call is now checked (WB-012). fetch only rejects on a
+// network error — a 429/403/5xx resolves normally — so an unchecked call fails
+// SILENTLY, leaving a paid user on `free` or holding two plan roles while the
+// handler still returns 200 (Stripe never retries). Throwing here bubbles to
+// the top-level catch → 500 → Stripe redelivers.
 async function getRoleIds(token, domain) {
   const res = await fetch(`https://${domain}/api/v2/roles?per_page=50`, { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) throw new Error(`Auth0 roles fetch failed: ${res.status}`);
   const roles = await res.json();
   return { observer: roles.find(r => r.name === 'observer')?.id, challenger: roles.find(r => r.name === 'challenger')?.id, funded_ready: roles.find(r => r.name === 'funded_ready')?.id };
 }
 async function removeAllPlanRoles(token, domain, userId, roleIds) {
   const ids = Object.values(roleIds).filter(Boolean);
   if (!ids.length) return;
-  await fetch(`https://${domain}/api/v2/users/${encodeURIComponent(userId)}/roles`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ roles: ids }) });
+  const res = await fetch(`https://${domain}/api/v2/users/${encodeURIComponent(userId)}/roles`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ roles: ids }) });
+  // 204 = removed; DELETE of a role the user doesn't have is still 204.
+  if (!res.ok) throw new Error(`Auth0 role removal failed for ${userId}: ${res.status}`);
 }
-async function assignRole(token, domain, userId, roleId) {
-  await fetch(`https://${domain}/api/v2/users/${encodeURIComponent(userId)}/roles`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ roles: [roleId] }) });
+async function assignRole(token, domain, userId, plan, roleIds) {
+  // Validate the plan string BEFORE touching roles — an unknown plan used to
+  // post {"roles":[null]} AFTER removal had already run, leaving the user on
+  // free (WB-012). Guard first so removal+assign stay atomic in intent.
+  if (!VALID_PLANS.includes(plan)) throw new Error(`Unknown plan '${plan}' — refusing to assign roles`);
+  const roleId = roleIds[plan];
+  if (!roleId) throw new Error(`No Auth0 role id for plan '${plan}'`);
+  const res = await fetch(`https://${domain}/api/v2/users/${encodeURIComponent(userId)}/roles`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ roles: [roleId] }) });
+  if (!res.ok) throw new Error(`Auth0 role assign failed for ${userId} (${plan}): ${res.status}`);
+}
+// Downgrade = remove every plan role, leaving the user on the implicit `free`.
+async function downgradeToFree(token, domain, userId, roleIds) {
+  await removeAllPlanRoles(token, domain, userId, roleIds);
 }
 
 // Mirror the plan into the user-data table's PROFILE row. The weekly
@@ -136,7 +157,7 @@ export const handler = async (event) => {
         const s = stripeEvent.data.object;
         if (!s.metadata?.auth0_user_id || !s.metadata?.plan) break;
         await removeAllPlanRoles(token, auth0Domain, s.metadata.auth0_user_id, roleIds);
-        await assignRole(token, auth0Domain, s.metadata.auth0_user_id, roleIds[s.metadata.plan]);
+        await assignRole(token, auth0Domain, s.metadata.auth0_user_id, s.metadata.plan, roleIds);
         // Best-effort branded welcome email via Resend. Fully guarded: a missing key
         // or any failure is swallowed so it can NEVER block or break plan provisioning.
         try {
@@ -154,25 +175,70 @@ export const handler = async (event) => {
       case 'customer.subscription.updated': {
         const s = stripeEvent.data.object;
         if (!s.metadata?.auth0_user_id) break;
+        const userId = s.metadata.auth0_user_id;
         const plan = PRICE_TO_PLAN[s.items.data[0]?.price.id];
-        if (!plan || s.status !== 'active') break;
-        await removeAllPlanRoles(token, auth0Domain, s.metadata.auth0_user_id, roleIds);
-        await assignRole(token, auth0Domain, s.metadata.auth0_user_id, roleIds[plan]);
-        // Keep the `plan` contact property current so broadcasts can segment on
-        // tier. This only updates an existing row — it never adds anyone.
-        try {
-          const cust = await stripe.customers.retrieve(s.customer);
-          if (cust?.email) {
-            await upsertSubscriber(ddb, SUBSCRIBERS_TABLE, {
-              email: cust.email, plan: PLAN_LABELS[plan] || plan, source: 'stripe-subscription-updated',
-            });
-          }
-        } catch (e) { console.error('plan sync (non-fatal):', e.message); }
-        {
-          let email = null;
-          try { email = (await stripe.customers.retrieve(s.customer))?.email || null; } catch {}
-          await upsertProfile(s.metadata.auth0_user_id, plan, email);
+        // Entitlement is driven by STATUS, not just the active case (WB-001).
+        // Previously any non-active status was ignored, so a past_due / unpaid /
+        // canceled subscriber silently kept their paid role forever.
+        const ENTITLED = ['active', 'trialing'];    // has access
+        const REVOKED = ['canceled', 'unpaid', 'incomplete_expired', 'paused']; // lose access
+        let email = null;
+        try { email = (await stripe.customers.retrieve(s.customer))?.email || null; } catch {}
+
+        if (ENTITLED.includes(s.status) && plan) {
+          await removeAllPlanRoles(token, auth0Domain, userId, roleIds);
+          await assignRole(token, auth0Domain, userId, plan, roleIds);
+          try {
+            if (email) await upsertSubscriber(ddb, SUBSCRIBERS_TABLE, { email, plan: PLAN_LABELS[plan] || plan, source: 'stripe-subscription-updated' });
+          } catch (e) { console.error('plan sync (non-fatal):', e.message); }
+          await upsertProfile(userId, plan, email);
+        } else if (REVOKED.includes(s.status)) {
+          await downgradeToFree(token, auth0Domain, userId, roleIds);
+          try {
+            if (email) await upsertSubscriber(ddb, SUBSCRIBERS_TABLE, { email, plan: 'free', source: 'stripe-subscription-' + s.status });
+          } catch (e) { console.error('plan sync (non-fatal):', e.message); }
+          await upsertProfile(userId, 'free', email);
         }
+        // 'past_due' is deliberately left in a GRACE state: keep access while
+        // Stripe's dunning retries. The terminal transition (canceled/unpaid)
+        // or a final invoice.payment_failed will revoke.
+        break;
+      }
+      case 'invoice.payment_failed': {
+        // A charge failed (expired card, insufficient funds, 3DS abandoned).
+        // While Stripe still plans a retry (next_payment_attempt set) we stay in
+        // grace. On the FINAL failure Stripe stops retrying → revoke access so a
+        // non-paying subscriber can't keep paid features indefinitely (WB-001).
+        const inv = stripeEvent.data.object;
+        let subId = inv.subscription;
+        if (!subId) break;
+        let sub = null;
+        try { sub = await stripe.subscriptions.retrieve(subId); } catch (e) { console.error('sub retrieve (payment_failed):', e.message); }
+        const userId = sub?.metadata?.auth0_user_id;
+        if (!userId) break;
+        const finalAttempt = !inv.next_payment_attempt;
+        if (finalAttempt) {
+          await downgradeToFree(token, auth0Domain, userId, roleIds);
+          let email = inv.customer_email || null;
+          if (!email) { try { email = (await stripe.customers.retrieve(inv.customer))?.email || null; } catch {} }
+          await upsertProfile(userId, 'free', email);
+          console.log('final payment failure — downgraded to free:', userId);
+        } else {
+          console.log('payment failed, retry scheduled — grace period:', userId, 'next:', inv.next_payment_attempt);
+        }
+        break;
+      }
+      case 'customer.subscription.trial_will_end': {
+        // Heads-up point before the first real charge (WB-001). The event is now
+        // handled (no longer silently dropped) and logged for visibility; wiring
+        // a branded "your trial ends in 3 days" email via Resend is the next
+        // step once a template exists. Never throws, never affects entitlement.
+        const s = stripeEvent.data.object;
+        try {
+          const email = (await stripe.customers.retrieve(s.customer))?.email || null;
+          console.log('trial_will_end:', s.metadata?.auth0_user_id, email, 'trial_end:', s.trial_end);
+          // TODO: sendTrialEndingEmail(resendKey, email) when the template ships.
+        } catch (e) { console.error('trial_will_end (non-fatal):', e.message); }
         break;
       }
       case 'customer.subscription.deleted': {

@@ -91,6 +91,13 @@ Resources:
         PointInTimeRecoveryEnabled: true
       SSESpecification:
         SSEEnabled: true
+      # Auto-expires short-lived rows carrying a numeric epoch `expiresAt`
+      # (currently the cTrader OAuth state rows — WB-NEW-03). The token
+      # CONNECTION# row's `expiresAt` is an ISO STRING, which DynamoDB TTL
+      # ignores, so this only reaps the state rows.
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
 
   # ── Marketing / waitlist subscribers ──────────────────────────────────────
   # The system of record for the mailing list, replacing Formspree. Resend is a
@@ -214,6 +221,11 @@ Resources:
             ApiId: !Ref UserDataApi
             Path: /scim/v2/{proxy+}
             Method: ANY
+            # PUBLIC to Auth0JWT: SCIM authenticates via its own bearer token
+            # (customer IdP), not an Auth0 user JWT. Opt out of the default
+            # authorizer or every provisioning call 401s. (WB-003)
+            Auth:
+              Authorizer: NONE
 
   # Inbound enterprise enquiries from /enterprise. Public, same abuse controls
   # as /subscribe. Notifies the alerts topic so a lead can't sit unseen.
@@ -241,6 +253,10 @@ Resources:
             ApiId: !Ref UserDataApi
             Path: /enterprise/enquiry
             Method: POST
+            # PUBLIC: leads have no account/JWT. Protected by honeypot + per-IP
+            # cap. Opt out of the default Auth0 authorizer. (WB-003)
+            Auth:
+              Authorizer: NONE
 
   # PUBLIC endpoint — no Auth0 token, by necessity: the people signing up don't
   # have accounts yet. Protected by a honeypot field, strict server-side address
@@ -276,6 +292,11 @@ Resources:
             ApiId: !Ref UserDataApi
             Path: /subscribe
             Method: POST
+            # PUBLIC: sign-ups have no account yet. Protected by honeypot,
+            # address validation and a per-IP hourly cap. Opt out of the
+            # default Auth0 authorizer or the whole waitlist 401s. (WB-003)
+            Auth:
+              Authorizer: NONE
 
   # Receives Resend's unsubscribe / bounce / complaint / suppression events so
   # this table stays accurate. Public route, authenticated purely by the Svix
@@ -305,6 +326,11 @@ Resources:
             ApiId: !Ref UserDataApi
             Path: /webhooks/resend
             Method: POST
+            # PUBLIC to Auth0JWT: authenticated by the Svix signature instead
+            # (verified in resend-webhook/svix.mjs). Resend's servers can't send
+            # an Auth0 token. Opt out of the default authorizer. (WB-003)
+            Auth:
+              Authorizer: NONE
 
   # Nightly reconciliation between this table and Resend.
   #

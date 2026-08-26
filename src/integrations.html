@@ -127,24 +127,24 @@ h1{font-family:var(--serif);font-size:42px;font-weight:400;line-height:1.06;marg
     try { ct = await api('/user/ctrader/status', { method: 'GET' }); } catch(e){ /* leave defaults */ }
   }
 
-  // Returning from cTrader consent? Exchange the one-time code first.
+  // Returning from cTrader consent? Relay the code AND the state to the server,
+  // which is the sole authority on the state's validity (WB-NEW-03). The
+  // browser no longer generates or compares state — a missing/forged state is
+  // rejected server-side, so this fails CLOSED.
   var q = new URLSearchParams(location.search);
   if (q.get('code')) {
-    var sent = null;
-    try { sent = sessionStorage.getItem('tx_ct_state'); sessionStorage.removeItem('tx_ct_state'); } catch(e){}
-    var returned = q.get('state');
-    if (returned && sent && returned !== sent) {
-      alert('Connection cancelled: the security check on the redirect did not match. Please try connecting again.');
-    } else {
-      try {
-        await api('/user/ctrader/exchange', { method: 'POST', body: JSON.stringify({ code: q.get('code') }) });
-        alert('cTrader connected — read-only. Pulling your recent closed trades now; they sync automatically from here.');
-        // Kick the first sync immediately (fire-and-forget; the 6-hourly sweep
-        // covers it if this one fails).
-        api('/user/ctrader/sync', { method: 'POST', body: '{}' }).catch(function(){});
-      } catch(e) {
-        alert('Connecting cTrader failed — the code may have expired. Please try again.');
-      }
+    var returnedState = q.get('state') || '';
+    try {
+      await api('/user/ctrader/exchange', {
+        method: 'POST',
+        body: JSON.stringify({ code: q.get('code'), state: returnedState })
+      });
+      alert('cTrader connected — read-only. Pulling your recent closed trades now; they sync automatically from here.');
+      // Kick the first sync immediately (fire-and-forget; the 6-hourly sweep
+      // covers it if this one fails).
+      api('/user/ctrader/sync', { method: 'POST', body: '{}' }).catch(function(){});
+    } catch(e) {
+      alert('Connecting cTrader could not be completed — the request could not be verified or the code expired. Please start the connection again.');
     }
     history.replaceState({}, document.title, location.pathname); // never leave codes in the URL/history
   }
@@ -152,10 +152,10 @@ h1{font-family:var(--serif);font-size:42px;font-weight:400;line-height:1.06;marg
   await refreshCtrader();
 
   function connectCtrader(){
+    // authUrl already carries a server-minted, user-bound state (WB-NEW-03) —
+    // the browser just follows it. It no longer generates its own.
     if (!ct.authUrl) { alert('Connection service unavailable — please try again shortly.'); return; }
-    var state = Math.random().toString(36).slice(2) + Date.now().toString(36);
-    try { sessionStorage.setItem('tx_ct_state', state); } catch(e){}
-    window.location.href = ct.authUrl + '&state=' + encodeURIComponent(state);
+    window.location.href = ct.authUrl;
   }
 
   async function disconnectCtrader(){

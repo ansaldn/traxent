@@ -1,0 +1,60 @@
+# Traxent gitleaks config — used by CI (security-scan.yml) and the pre-commit hook.
+# Extends the full gitleaks default rule set, adds rules for OUR providers, and
+# allowlists the known-public identifiers that would otherwise false-positive.
+
+[extend]
+useDefault = true
+
+# ── Custom rules for Traxent's providers ─────────────────────────────────────
+
+[[rules]]
+id = "resend-api-key"
+description = "Resend API key"
+regex = '''re_[A-Za-z0-9]{16,}'''
+keywords = ["re_"]
+
+[[rules]]
+id = "stripe-webhook-secret"
+description = "Stripe webhook signing secret"
+regex = '''whsec_[A-Za-z0-9]{20,}'''
+keywords = ["whsec_"]
+
+[[rules]]
+id = "auth0-client-secret-assignment"
+description = "Auth0 client secret assigned in code (secrets belong in SSM)"
+regex = '''(?i)(client_secret|clientSecret)\s*[:=]\s*['"][A-Za-z0-9_\-]{40,}['"]'''
+keywords = ["client_secret", "clientSecret"]
+
+# ── Allowlist ────────────────────────────────────────────────────────────────
+# Public-by-design identifiers and documentation placeholders. Anything matched
+# here is NEVER a secret: SPA/Native client IDs are shipped to every browser and
+# app binary; price_/prod_ IDs appear in receipts and dashboards; XXXX/<...>
+# values are doc placeholders.
+
+[allowlist]
+description = "Traxent known-public identifiers and doc placeholders"
+regexes = [
+  # Auth0 PUBLIC application client IDs (web SPA + iOS native) — sent to every client
+  '''ilvfACgF2sCmLWaugCn11qTB04aTvWxz''',
+  '''YKvrjZoxnehdES7nmMs9SRXi3G0MdXcK''',
+  # Documentation placeholders (SECURITY-ACTIONS.md, EMAIL-SETUP.md, runbooks)
+  '''(sk|rk)_(live|test)_X{3,}''',
+  '''whsec_X{3,}''',
+  '''re_X{3,}''',
+  '''price_(LIVE|TEST)_[a-z_]+''',
+  '''<YOUR_AWS_ACCOUNT_ID>''',
+  # Stripe price IDs are non-secret identifiers (appear in frontend/receipts)
+  '''price_[0-9A-Za-z]{10,}''',
+  # Subresource Integrity hashes on <script> tags — hashes of PUBLIC CDN files
+  '''integrity="sha(256|384|512)-[A-Za-z0-9+/=]+"''',
+  # Auth0 database connection NAME (a public identifier, not a credential)
+  '''Username-Password-Authentication''',
+]
+paths = [
+  # Dependency lockfiles: integrity hashes trip entropy rules; Dependabot owns these
+  '''package-lock\.json''',
+  # SAM build artifacts (copies of source; scan the source instead)
+  '''\.aws-sam/''',
+  # Binary/media and design assets
+  '''\.(png|jpg|jpeg|ico|svg|woff2?)$''',
+]

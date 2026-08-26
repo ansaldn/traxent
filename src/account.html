@@ -624,9 +624,10 @@ async function initAccount() {
     loadMarketingPreference();
 
   } catch (err) {
+    // WB-004: never localStorage.clear() on a render error — it destroyed
+    // progress, journal data and Auth0's cached session. Log and let the page
+    // stay; the user keeps their data and session.
     console.error('Account page error:', err);
-    localStorage.clear();
-    window.location.href = '/';
   }
 }
 

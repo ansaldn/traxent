@@ -509,7 +509,7 @@ function completeLesson(i) {
   document.getElementById('nav-' + i).classList.add('completed');
   updateProgress();
   saveProgress();
-  showLesson(i + 1);
+  try{if(window.TraxentData)TraxentData.markLesson('l6-'+(i+1));}catch(e){} showLesson(i + 1);
   if (i === 2) initQuiz();
 }
 

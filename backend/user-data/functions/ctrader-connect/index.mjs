@@ -21,6 +21,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, GetCommand, PutCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 import { JwtRsaVerifier } from 'aws-jwt-verify';
+import { randomUUID } from 'crypto';
 
 const TABLE = process.env.TABLE_NAME;
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || 'https://traxent.io';
@@ -69,10 +70,43 @@ async function getParam(name) {
 }
 
 const SK = 'CONNECTION#ctrader';
+const STATE_SK = 'CTRADER_OAUTH_STATE';       // one pending state per user
+const STATE_TTL_SECONDS = 10 * 60;            // 10-minute window
 
 async function getConnection(userId) {
   const r = await ddb.send(new GetCommand({ TableName: TABLE, Key: { userId, sk: SK } }));
   return r.Item || null;
+}
+
+// ── CSRF state (WB-NEW-03) ───────────────────────────────────────────────────
+// The OAuth `state` is minted and stored SERVER-SIDE, bound to the user's sub,
+// with a short TTL. Exchange requires it, rejects when absent/unknown/expired,
+// and consumes it on use so a code can't be replayed. The browser only relays
+// the opaque value back — it is never the source of truth.
+async function mintState(userId) {
+  const state = randomUUID();
+  await ddb.send(new PutCommand({
+    TableName: TABLE,
+    Item: {
+      userId, sk: STATE_SK, state,
+      createdAt: new Date().toISOString(),
+      expiresAt: Math.floor(Date.now() / 1000) + STATE_TTL_SECONDS, // DynamoDB TTL attribute
+    },
+  }));
+  return state;
+}
+
+// Returns true only if `state` is present, matches the stored value for this
+// user, and hasn't expired. Deletes the stored state either way (single use).
+async function consumeState(userId, state) {
+  if (!state || typeof state !== 'string') return false;
+  const r = await ddb.send(new GetCommand({ TableName: TABLE, Key: { userId, sk: STATE_SK } }));
+  const row = r.Item;
+  // Always clear it — a failed attempt shouldn't leave a reusable state behind.
+  await ddb.send(new DeleteCommand({ TableName: TABLE, Key: { userId, sk: STATE_SK } })).catch(() => {});
+  if (!row || row.state !== state) return false;
+  if (row.expiresAt && row.expiresAt < Math.floor(Date.now() / 1000)) return false;
+  return true;
 }
 
 // cTrader's token endpoint has answered in both camelCase and snake_case over
@@ -135,9 +169,12 @@ export const handler = async (event) => {
         getConnection(user.sub),
         getParam('/traxent/ctrader/client_id'),
       ]);
+      // Mint a server-side, user-bound state and embed it in the auth URL.
+      const state = await mintState(user.sub);
       const authUrl = `${AUTH_BASE}?client_id=${encodeURIComponent(clientId)}`
         + `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`
-        + `&scope=accounts&response_type=code&product=web`;
+        + `&scope=accounts&response_type=code&product=web`
+        + `&state=${encodeURIComponent(state)}`;
       return json(200, {
         connected: !!conn,
         since: conn?.updatedAt || null,
@@ -150,6 +187,13 @@ export const handler = async (event) => {
     if (method === 'POST' && path === '/exchange') {
       const code = typeof body.code === 'string' ? body.code.trim() : '';
       if (!code) return json(400, { error: 'code required' });
+      // CSRF: state is REQUIRED and validated server-side (WB-NEW-03). Absent,
+      // unknown, expired or another user's state all fail — a crafted
+      // ?code=… link with no valid state can no longer bind an account.
+      const state = typeof body.state === 'string' ? body.state.trim() : '';
+      if (!(await consumeState(user.sub, state))) {
+        return json(400, { error: 'invalid_state', message: 'Connection request could not be verified. Please start the connection again.' });
+      }
       const [clientId, clientSecret] = await Promise.all([
         getParam('/traxent/ctrader/client_id'),
         getParam('/traxent/ctrader/client_secret'),

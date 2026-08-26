@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Traxent pre-commit hook — blocks a commit that contains a detectable secret,
+# BEFORE it ever enters git history (history contamination is what forces
+# rotation + rewrites; catching it here keeps it a harmless diff).
+#
+# One-time setup on each machine:
+#   brew install gitleaks
+#   git config core.hooksPath .githooks
+#
+# Bypass (emergencies only, CI will still catch it): git commit --no-verify
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "⚠️  gitleaks not installed — secret pre-commit check SKIPPED."
+  echo "   Install with: brew install gitleaks   (CI still scans every push)"
+  exit 0
+fi
+
+if ! gitleaks protect --staged --config .gitleaks.toml --verbose; then
+  echo ""
+  echo "❌ Commit blocked: a potential secret is staged (see finding above)."
+  echo "   Real secret → remove it from the diff; it belongs in AWS SSM."
+  echo "   False positive → add a narrowly-scoped allowlist entry in .gitleaks.toml."
+  exit 1
+fi

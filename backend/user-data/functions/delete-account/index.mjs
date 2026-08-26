@@ -204,7 +204,26 @@ async function auth0Error(res) {
 }
 
 async function deleteAuth0User(sub) {
-  const domain = new URL(ISSUER).hostname;
+  // Management API calls must target the CANONICAL tenant domain, not the custom
+  // domain. auth.traxent.io (the ISSUER) validates USER tokens fine but CANNOT
+  // mint Management API tokens — the same gotcha the account-linking Action hit.
+  // stripe-webhook and account-update both read /traxent/auth0/domain (the
+  // canonical dev-…us.auth0.com) and work; this function used to derive the
+  // domain from ISSUER (the custom domain), which is why deletion 500'd at
+  // auth0_token/auth0_delete while everything else on the same app + scope
+  // succeeded. Read the canonical domain from SSM like its siblings.
+  let domain;
+  try {
+    domain = await getParam('/traxent/auth0/domain');
+  } catch (e) {
+    // Fallback keeps old behaviour rather than making things worse.
+    console.warn('auth0/domain SSM read failed, falling back to ISSUER host:', e.message);
+    domain = new URL(ISSUER).hostname;
+  }
+  // Be robust to a mis-set param: strip any scheme and trailing slash so a
+  // value like "https://dev-xxx.us.auth0.com/" still yields a bare hostname
+  // (otherwise the URL becomes https://https://.../oauth/token and 500s).
+  domain = String(domain).trim().replace(/^https?:\/\//, '').replace(/\/+$/, '');
 
   let clientId, clientSecret;
   try {

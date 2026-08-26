@@ -61,6 +61,15 @@ jobs:
             echo "::warning::content extractor failed — shipping the committed src/content/modules.json unchanged"
           fi
 
+      - name: Inject CSP script hashes (pilot pages)
+        run: |
+          # CSP Phase 2 (see CSP-REFACTOR.md): hash every inline script/handler on
+          # the pilot pages and append to their CSP meta. Modern browsers then
+          # ignore 'unsafe-inline' and enforce the hashes; legacy browsers keep
+          # working. MUST run after the __BUILD_SHA__ stamping (hashes cover the
+          # final bytes). Deploy-time only — nothing is committed to the pages.
+          node scripts/csp-hash.mjs src
+
       - name: Verify HTML integrity (guard against truncated files)
         run: |
           # OneDrive has silently truncated HTML file tails before (eating the

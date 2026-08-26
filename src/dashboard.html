@@ -430,9 +430,21 @@ async function initDashboard() {
     }
 
   } catch (err) {
+    // WB-004: NEVER localStorage.clear() here — it wiped course progress,
+    // journal trades AND Auth0's cached credentials (cacheLocation:localstorage),
+    // so any unrelated JS error silently destroyed the user's work and signed
+    // them out. A render error is not a reason to erase data. Log and show a
+    // recoverable message; leave storage untouched.
     console.error('Dashboard error:', err);
-    localStorage.clear();
-    window.location.href = '/';
+    var el = document.getElementById('loading');
+    if (el) {
+      el.innerHTML = '<div class="loading-logo">trax<em>ent</em></div>'
+        + '<p style="max-width:340px;text-align:center;color:var(--ink3);font-size:14px;line-height:1.6">'
+        + 'Something went wrong loading your dashboard. Your progress is safe. '
+        + '<a href="/dashboard" style="color:var(--accent)">Reload</a> — or '
+        + '<a href="/" style="color:var(--accent)">go home</a>.</p>';
+      el.style.display = 'flex';
+    }
   }
 }
 

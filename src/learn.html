@@ -195,6 +195,7 @@ nav { background: var(--surface); border-bottom: 1px solid var(--border); paddin
 
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0.8/auth0-spa-js.production.js" integrity="sha384-zVM3YoOThNVWy1csEJq5Hbk+eeS0XrkL2lCADHb8HnFew6raF21cbOCcMgedS7HO" crossorigin="anonymous"></script>
 <script src="auth.js?v=__BUILD_SHA__"></script>
+<script src="userdata.js?v=__BUILD_SHA__"></script>
 <script>
 
 const MODULES = [
@@ -429,8 +430,40 @@ async function initLearn() {
     const plan = (claims && claims[`${ns}/plan`]) || 'free';
     const userLevel = PLAN_HIERARCHY.indexOf(plan);
 
-    // Load progress from localStorage
+    // Progress = cloud ∪ local, so a different browser/device or cleared site
+    // data never reads as zero, and iOS-side completions show here too (WB-009).
+    // We also fold in the free-course local keys, which the starter pages wrote
+    // under a separate index-based store (WB-007), including logged-out 101.
     const progress = JSON.parse(localStorage.getItem('traxent_progress') || '{}');
+
+    // 1 — pull the cloud document and merge its lesson keys in (union: never
+    // let a cloud read erase a local completion, matching iOS's `$0 || $1`).
+    try {
+      if (window.TraxentData && typeof TraxentData.sync === 'function') {
+        await TraxentData.sync();
+        const cloud = (typeof TraxentData.getProgress === 'function') ? (TraxentData.getProgress() || {}) : {};
+        for (const k in cloud) { if (cloud[k]) progress[k] = true; }
+        // Persist the union back so the rest of the page (and a later offline
+        // load) sees the same merged view.
+        try { localStorage.setItem('traxent_progress', JSON.stringify(progress)); } catch (e) {}
+      }
+    } catch (e) { console.warn('progress sync (non-fatal):', e); }
+
+    // 2 — fold the starter free-course store (index-based per module) into the
+    // flat lesson keys this page renders from. Final index is the quiz slot.
+    try {
+      const legacy = JSON.parse(localStorage.getItem('tx_course_progress') || '{}');
+      const STARTER = { 'learn-101': { prefix: 'l101', lessons: 6 }, 'learn-201': { prefix: 'l201', lessons: 6 }, 'learn-301': { prefix: 'l301', lessons: 6 } };
+      for (const mk in STARTER) {
+        const d = legacy[mk]; if (!d) continue;
+        const { prefix, lessons } = STARTER[mk];
+        for (const idx in d) {
+          if (!d[idx]) continue;
+          const n = Number(idx);
+          progress[n >= lessons ? `${prefix}-quiz` : `${prefix}-${n + 1}`] = true;
+        }
+      }
+    } catch (e) { /* non-fatal */ }
 
     // Show plan banner if on free plan
     if (plan === 'free') {

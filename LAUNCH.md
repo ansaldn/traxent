@@ -58,24 +58,37 @@ they'll ask.
 
 # 🔵 CHECK — state unknown, here's how to find out
 
-## T1. Account deletion — still failing
+## T1. Account deletion — real root cause found & fixed (2026-08-26)
 
-The `m2m_*` parameter fix was real but wasn't the whole problem. Deletion still
-doesn't work, and the reason it has taken two rounds is that **nothing in the
-system was saying what went wrong**: the Lambda caught every error and returned
-a bare `deletion_failed`, and the account page showed "deletion isn't available
-yet" no matter what came back. Both now name the failing step.
+Three things were blamed over time; only the third was the actual live bug:
 
-### Step 1 — check Auth0 scopes first (30 seconds, no deploy)
+1. **SSM names** (fixed earlier) — used to read `mgmt_*` params that were never
+   created → `getParam` threw. Renamed to `m2m_*` (commit `954a294`).
+2. **`delete:users` scope** (never the problem) — CONFIRMED ACTIVE on the
+   **Traxent Backend** M2M app (`fkUa17h4Bnup7ch8jvR5ih71VrZuSmQF`), verified in
+   the Auth0 dashboard 2026-08-26 (`read:users` + `update:users` + `delete:users`,
+   6/273). It had been active for weeks. A red herring.
+3. **Wrong Auth0 domain for the Management call** (THE bug, fixed in code
+   2026-08-26) — delete-account minted its Management API token against the
+   CUSTOM domain (`AUTH0_ISSUER` = `auth.traxent.io`), which validates user
+   tokens but **cannot mint Management API tokens** — the same gotcha the
+   account-linking Action hit. `stripe-webhook` and `account-update` read the
+   canonical domain from `/traxent/auth0/domain` (`dev-…us.auth0.com`) and work;
+   delete-account used `new URL(ISSUER).hostname`. It now reads
+   `/traxent/auth0/domain` like its siblings.
 
-The most likely cause, and it costs nothing to rule out. Auth0 Dashboard →
-**Applications** → the M2M app → **APIs** tab → **Auth0 Management API** →
-expand **Permissions**.
+Error visibility was fixed too: the Lambda returns a named `step` (`billing` /
+`data_purge` / `auth0_credentials` / `auth0_token` / `auth0_delete`) instead of a
+bare `deletion_failed`.
 
-`delete:users` must be ticked. It is a **separate scope** from the
-`read:users` / `update:users` that `account-update` and the Stripe webhook use —
-so an app that works everywhere else in Traxent will still fail on this one
-call, with a 403 that the old code reported as an anonymous 500.
+**Deploy Infra, then prove it in prod** (no code change can do this last part):
+
+### Confirm — delete one throwaway account (the definitive test)
+
+Create a throwaway account, delete it from `/account`, and confirm a **204** (and
+that the Auth0 user is gone). If it still 500s, the response now carries the
+exact `step` — send me that value and it points straight at the cause. Do NOT
+re-attribute a failure to `delete:users`; that scope is confirmed present above.
 
 If it isn't ticked: tick it, save, and retest. No deploy needed — the scope is
 granted on Auth0's side.

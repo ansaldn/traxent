@@ -635,7 +635,7 @@ function completeLesson(i) {
   dot.textContent = '✓';
   document.getElementById('nav-' + i).classList.add('completed');
   updateProgress();
-  showLesson(i + 1);
+  try{if(window.TraxentData)TraxentData.markLesson('l1-'+(i+1));}catch(e){} showLesson(i + 1);
   if (i === 2) initQuiz();
 }
 

@@ -1,0 +1,67 @@
+name: Security Scan
+
+# Layered scanning (free equivalents of GitHub Secret Protection / Code Security):
+#   gitleaks — secret detection over the FULL git history + working tree. FAILS the
+#              build on any finding: this is the authoritative, un-bypassable alert.
+#   semgrep  — static analysis (SAST) of the Lambda/JS code. Report-only for now
+#              (surface findings without blocking); tighten to blocking once the
+#              baseline is confirmed clean for a few weeks.
+#
+# NOTE: a failing job here does NOT stop the separate deploy workflows on a direct
+# push to main (workflows are independent). It alerts (GitHub emails you on
+# failure) and blocks any PR if branch protection requires this check. The
+# pre-push prevention layer is the local pre-commit hook (.githooks/).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '0 6 * * 1'   # weekly Monday sweep of full history
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0        # full history — a secret in ANY commit is a finding
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "true"
+          # Config picked up automatically from .gitleaks.toml at repo root.
+
+  semgrep:
+    name: Code scan (semgrep — report only)
+    runs-on: ubuntu-latest
+    continue-on-error: true     # report-only phase: never blocks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run semgrep
+        run: |
+          pip install --quiet semgrep
+          # security-audit: dangerous patterns; javascript: language rules.
+          # Excludes: third-party HTML learn content is scanned too (cheap), but
+          # lockfiles and assets are skipped for speed.
+          semgrep scan \
+            --config p/security-audit \
+            --config p/javascript \
+            --exclude '*.lock' --exclude 'package-lock.json' \
+            --exclude 'Brand' --exclude '*.png' --exclude '*.svg' \
+            --text --output semgrep-report.txt || true
+          echo "── Semgrep findings ──"
+          cat semgrep-report.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-report
+          path: semgrep-report.txt
+          retention-days: 30

@@ -544,7 +544,7 @@ function updateProgress(){
   document.getElementById('prog-pct').textContent=pct+'%';
   document.getElementById('prog-fill').style.width=pct+'%';
 }
-function completeLesson(i){ done[i]=true; saveDone(); updateProgress(); showLesson(Math.min(i+1,TOTAL-1)); }
+function completeLesson(i){ done[i]=true; saveDone(); try{if(window.TraxentData)TraxentData.markLesson('l301-'+(i+1));}catch(e){} updateProgress(); showLesson(Math.min(i+1,TOTAL-1)); }
 // ── Quiz test mode (matches iOS): each attempt samples 5 questions from the
 // bank and shuffles question order AND answer positions. Pass mark 75% — the
 // quiz (and so the module) only completes on a pass; a retake is a fresh paper.

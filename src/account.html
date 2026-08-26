@@ -589,11 +589,13 @@ async function initAccount() {
       }
     }
 
-    // Member since — parse from Auth0 sub or use today as fallback
-    const createdAt = user.updated_at
-      ? new Date(user.updated_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-      : 'March 2026';
-    document.getElementById('detail-since').textContent = createdAt;
+    // Member since — only show a real date. WB-022: the old code invented
+    // "March 2026" when updated_at was missing, which is a specific false claim
+    // about the user's own account. Leave the row's default "—" instead.
+    if (user.updated_at) {
+      document.getElementById('detail-since').textContent =
+        new Date(user.updated_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
 
     // Plan card
     renderPlanCard(plan);

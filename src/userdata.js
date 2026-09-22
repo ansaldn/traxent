@@ -55,9 +55,27 @@ window.TraxentData = {
     try {
       const s = await apiFetch('', { method: 'GET' });
       if (s && typeof s === 'object') {
-        lsSet(LS_PROGRESS, s.progress || {});
-        lsSet(LS_FIRMS, s.firms || []);
-        lsSet(LS_TRADES, s.trades || []);
+        // MERGE — never clobber. This used to do `lsSet(LS_PROGRESS, s.progress
+        // || {})`, a one-way server→local overwrite, so an empty or partial
+        // cloud document silently erased the browser's history. Union matches
+        // iOS's UserDataService.sync() semantics ($0 || $1): a lesson completed
+        // on EITHER side stays completed.
+        const mergedProgress = Object.assign({}, lsGet(LS_PROGRESS, {}), s.progress || {});
+        lsSet(LS_PROGRESS, mergedProgress);
+
+        // Firms/trades: prefer the cloud when it actually has content, but
+        // never let an empty cloud wipe a populated local list. The trade-off
+        // (a deselect-everything on another device may not propagate until the
+        // next explicit write) is deliberate — silent data loss is worse.
+        if (Array.isArray(s.firms) && s.firms.length) lsSet(LS_FIRMS, s.firms);
+
+        if (Array.isArray(s.trades) && s.trades.length) {
+          const byId = new Map();
+          for (const t of lsGet(LS_TRADES, [])) if (t && t.id) byId.set(t.id, t);
+          for (const t of s.trades) if (t && t.id) byId.set(t.id, t); // cloud wins per-id
+          lsSet(LS_TRADES, Array.from(byId.values())
+            .sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || ''))));
+        }
       }
       return s;
     } catch { return null; }
@@ -69,7 +87,22 @@ window.TraxentData = {
     lsSet(LS_PROGRESS, progress);
     try { await apiFetch('/progress', { method: 'PUT', body: JSON.stringify({ progress }) }); } catch {}
   },
-  async markLesson(key) { const p = this.getProgress(); p[key] = true; await this.setProgress(p); },
+  // Marking a lesson does a WHOLE-DOCUMENT, last-write-wins PUT (a contract
+  // shared with iOS). That makes the document we send only as complete as our
+  // local copy — so from a freshly-cleared or incognito browser, completing one
+  // lesson used to overwrite the server's entire history with a single key.
+  // Guard both ends: pull-and-merge first, and only push when we have an
+  // authoritative base (a successful sync). If the server is unreachable we
+  // still record it locally; the next successful sync pushes the merged doc.
+  async markLesson(key) {
+    const synced = await this.sync();
+    const p = this.getProgress();
+    p[key] = true;
+    lsSet(LS_PROGRESS, p);
+    if (synced) {
+      try { await apiFetch('/progress', { method: 'PUT', body: JSON.stringify({ progress: p }) }); } catch {}
+    }
+  },
 
   // ── Firm selection ──
   getFirms() { return lsGet(LS_FIRMS, []); },

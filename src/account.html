@@ -694,7 +694,7 @@ async function upgradeViaCheckout(plan) {
     const { url } = await res.json();
     window.location.href = url;
   } catch (err) {
-    showToast('Something went wrong — please try again.', false);
+    showToast('Couldn\'t start checkout — please try again, or email hello@traxent.io.', false);
   }
 }
 

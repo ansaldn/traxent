@@ -393,7 +393,7 @@ async function upgradeTo(targetPlan) {
     window.location.href = '/dashboard?upgraded=true';
   } catch (e) {
     console.error('upgrade error', e);
-    showToast('Something went wrong — please try again.', false);
+    showToast('Couldn\'t start the upgrade — please try again, or email hello@traxent.io.', false);
   }
 }
 

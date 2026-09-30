@@ -92,3 +92,34 @@ check billing. Root is the reliable way in when SSO is being unhelpful.
   overspend.
 - **Uptime monitor** — a scheduled check on `traxent.io` reports an outage within
   ~30 minutes rather than it being found by chance.
+
+## Custom 404 page (branded)
+
+**Status (audited 2026-09-30):** a request for a non-existent path (e.g.
+`traxent.io/does-not-exist`) returns **HTTP 404 but serves the full homepage**
+(`index.html`, ~64 KB) — the S3 website **error document is currently set to
+`index.html`**. That's confusing UX and shows a member-redirect script running on
+an error page. A branded `src/404.html` now ships in the repo (deploys to
+`s3://traxent.io/404.html` like any other file). It is `noindex`.
+
+**Owner action to make it show** (needs AWS credentials — not doable from the repo):
+
+1. **S3 (minimal, recommended).** Point the bucket's static-website **Error
+   document** at `404.html`:
+   ```bash
+   aws s3 website s3://traxent.io --index-document index.html --error-document 404.html
+   ```
+   Then invalidate CloudFront: `aws cloudfront create-invalidation --distribution-id E2RA25KNTQMO22 --paths "/*"`.
+
+   **Why this is safe:** clean URLs to *real* pages (`/learn-101` etc.) return 200
+   and never touch the error document — only genuinely-missing paths do — so this
+   changes the not-found experience without affecting working links. (Confirmed by
+   probing live: real clean URLs → 200; missing paths → the error document.)
+   The one thing to confirm first: no route intentionally relies on the current
+   `index.html` fallback (this is an MPA of real `.html` files, so none should).
+
+2. **CloudFront custom error response (optional, for caching control).**
+   Distribution `E2RA25KNTQMO22` → Error pages → Create: HTTP error code **404**,
+   Response page path **`/404.html`**, HTTP Response code **404**. Do **not** map
+   403/other codes to `/404.html` blindly — S3 website already returns 404 for
+   missing keys, so the S3 error-document change above is sufficient on its own.
